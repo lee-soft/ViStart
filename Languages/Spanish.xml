@@ -1,0 +1,65 @@
+<!--Traducido por/ Translated by: Nicolás Hermosilla P. - 2013-->
+<strings>
+
+    <string value="Cerrar Sesión" id="strLogOff" />
+    <string value="Cambiar de Usuario" id="strSwitchUser"  />
+    <string value="Apagar" id="strShutdown" />
+    <string value="Reiniciar" id="strRestart" />
+    <string value="Bloquear" id="strStandBy" />
+    <string value="Hibernar" id="strHibernate" />
+    <string value="Salir" id="strExit" />
+    <string value="Acerca de..." id="strAbout" />
+    <string value="Opciones" id="strOptions" />
+    
+    <string value="Todos los Programas" id="strAllPrograms" />
+    <string value="Atrás" id="strBack" />
+    
+    <string value="Ningún programa coincide con los criterios de búsqueda" id="strNotFound" />
+    <string value="Ver todos los resultados" id="strSeeAllResults" />
+    <string value="Buscar..." id="strStartSearch" />
+    
+    <string value="Opciones del Programa" id="strProgramOptions" />
+
+    <string value="Activar Auto-Click" id="strEnableAutoClick" />
+    <string value="Mostrar ViStart en la zona de notificación" id="strShowTrayIcon" />
+    <string value="Iniciar con Windows" id="strStartWithWindows" />
+    <string value="Limpiar la lista de programas frecuentes" id="strClearFrequentList" />
+    <string value="Opciones de indexación" id="strIndexOptions" />
+    <string value="Iniciar ViStart con una clave de registro de Windows" id="strFilterWinKey" />
+    
+    <string value="Elegir un nuevo tema para el Menú Inicio..." id="strNewSkin" />
+    <string value="Elegir un nuevo botón de Inicio..." id="strOrbNew" />
+    <string value="Restablecer botón Orb" id="strOrbReset" />
+    <string value="Ejecutar..." id="strRun" />
+    <string value="Suspender" id="strSleep" />
+    
+    <string value="OK" id="strOK" />
+    <string value="Cancelar" id="strCancel" />
+    <string value="Explorar" id="strBrowse" />
+    
+    <string value="Abrir" id="strOpen" />
+    <string value="No mostrar las opciones en el panel de navegación" id="strHideOption" />
+    <string value="No mostrar el contenido de la carpeta" id="strDontPopOut" />
+    <string value="Mostrar el contenido de la carpeta" id="strPopOut" />
+    <string value="Renombrar" id="strRename" />
+    <string value="Propiedades" id="strProperties" />
+    
+    <string value="Colapsar" id="strCollapse" />
+    <string value="Expandir" id="strExpand" />
+    <string value="Ejecutar como administrador" id="strRunAsAdmin" />
+    <string value="Desanclar del Menú Inicio" id="strUnpinToStartMenu" />
+    <string value="Anclar al Menú Inicio" id="strPinToStartMenu" />
+
+    <string value="Documentos" id="strDocuments" />
+    <string value="Imágenes" id="strPictures" />
+    <string value="Música" id="strMusic" />
+    <string value="Vídeos" id="strVideos" />
+    <string value="Juegos" id="strGames" />
+    <string value="Equipo" id="strComputer" />
+    <string value="Reciente" id="strRecent" />
+    <string value="Red" id="strNetwork" />
+    <string value="Conectar a..." id="strConnectTo"  />
+    <string value="Panel de Control" id="strControlPanel" />
+    <string value="Ayuda y Soporte" id="strHelp" />
+
+</strings>

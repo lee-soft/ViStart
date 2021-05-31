@@ -1,0 +1,18 @@
+<languages>
+
+   <language code="enUS">
+	<strings>
+		<string id="strLogOff" value="Log Off"/>
+		<string id="strSwitchUser" value="Switch User"/>
+		<string id="strShutdown" value="Shutdown"/>
+		<string id="strRestart" value="Restart"/>
+		<string id="strStandBy" value="Stand By"/>
+		<string id="strHibernate" value="Hibernate"/>
+		<string id="strAllPrograms" value="All Programs"/>
+		<string id="strBack" value="Back"/>
+		<string id="strStartSearch" value="Search programs and files"/>
+		<string id="strAbout" value="About"/>
+	</strings>
+   </language>
+
+</languages>
