@@ -61,6 +61,7 @@ Attribute m_popoutMenu.VB_VarHelpID = -1
 Private m_windowPosition As POINTL
 Private m_window As Form
 
+Private m_RegObj As New clsRegistry
 Private WithEvents m_renameTextBox As VistaSearchBox
 Attribute m_renameTextBox.VB_VarHelpID = -1
 
@@ -138,7 +139,57 @@ Public Function ShowContextMenu(ByRef winOwner As Form)
             m_customContextMenu.Resurrect True, winOwner
         End If
     
-    End If
+		Set m_contextMenu = New frmVistaMenu
+	
+
+		If LCase(Left(m_selectedItem.Shell,8)) = ":filerun" Then
+			m_contextMenu.AddItem GetPublicString("strRun"), "RUN", True
+		Else
+		    m_contextMenu.AddItem GetPublicString("strOpen"), "EXECUTE", True
+		End If
+		
+		
+		If LCase(Left(m_selectedItem.Shell,12)) = "explorer.exe" Then
+			
+			Dim ComputerIconStatus as Variant
+			
+			ComputerIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", "{20D04FE0-3AEA-1069-A2D8-08002B30309D}")
+			
+			If ComputerIconStatus = 1 Then
+				m_contextMenu.AddItem ""
+				m_contextMenu.AddItem GetPublicString("strShowOnDesktop"), "SHOWHIDE"
+			Else
+				m_contextMenu.AddItem ""
+				m_contextMenu.AddItem GetPublicString("strHideFromDesktop"), "SHOWHIDE"
+			EndIf
+										
+		End If
+		
+        m_contextMenu.AddItem ""
+        m_contextMenu.AddItem GetPublicString("strHideOption"), "HIDE_OPTION", False
+
+        m_contextMenu.AddItem ""
+		
+		If LCase(Left(m_selectedItem.Shell,12)) = "explorer.exe" Then
+		
+			m_contextMenu.AddItem GetPublicString("strSearch"), "SEARCH"		
+			m_contextMenu.AddItem GetPublicString("strManage"), "MANAGE"
+			m_contextMenu.AddItem ""			
+
+		End If
+		
+        m_contextMenu.AddItem GetPublicString("strRename"), "RENAME_OPTION"
+        
+		If LCase(Left(m_selectedItem.Shell,12)) = "explorer.exe" Then
+		
+			m_contextMenu.AddItem ""	
+			m_contextMenu.AddItem GetPublicString("strProperties"), "SYSPROPERTIES"
+
+		End If
+		
+		m_contextMenu.Resurrect True, winOwner
+		
+	End If
 
     Exit Function
 Handler:
@@ -686,7 +737,25 @@ Private Sub m_contextMenu_onClick(theItemTag As String)
         
     Case "PROPERTIES_OPTION"
         ShellEx VarScan(m_selectedItem.Shell), "properties"
+		
+	Case "EXECUTE"
+		Shell m_selectedItem.Shell, vbNormalFocus
     
+	Case "SYSPROPERTIES"
+		RaiseEvent onCommand("sysdm.cpl")
+
+	Case "SEARCH"
+		ShowFind
+	
+	Case "MANAGE"
+		RaiseEvent onCommand("compmgmt.msc")
+
+	Case "RUN"
+		ShowRun
+
+	Case "SHOWHIDE"
+		ShowHideDesktopIcons m_selectedItem.Shell
+	
     End Select
     
     m_contextMenu_onInActive
@@ -694,6 +763,25 @@ Private Sub m_contextMenu_onClick(theItemTag As String)
 Handler:
     LogError Err.Description, "ViNavigationPane"
 End Sub
+
+
+Private Function ShowHideDesktopIcons(ShellItem as String)
+
+	If LCase(Left(ShellItem,12)) = "explorer.exe" Then
+			
+		Dim ComputerIconStatus as Variant
+
+		ComputerIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", "{20D04FE0-3AEA-1069-A2D8-08002B30309D}")
+			
+		If ComputerIconStatus = 1 Then
+			ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", "{20D04FE0-3AEA-1069-A2D8-08002B30309D}", 0)
+		Else
+			ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", "{20D04FE0-3AEA-1069-A2D8-08002B30309D}", 1)
+		EndIf
+		
+	End If
+	
+End Function
 
 Private Function RenameSelectedItem()
 

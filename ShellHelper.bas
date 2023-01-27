@@ -99,7 +99,7 @@ Function BrowseForFile(sInitDir As String, Optional ByVal sFileFilters As String
     End If
     
     'Select a filter
-    tFileBrowse.lpstrFilter = StrPtr(sFileFilters & "All Files (*.*)" & vbNullChar & "*.*" & vbNullChar)
+    tFileBrowse.lpstrFilter = StrPtr(sFileFilters & GetPublicString("strAllExtensions") & " (*.*)" & vbNullChar & "*.*" & vbNullChar)
     'create a buffer for the file
     tFileBrowse.lpstrFile = StrPtr(theBuffer)
     'set the maximum length of a returned file
