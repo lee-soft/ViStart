@@ -15,15 +15,15 @@
 
 	<programs>
 	
-		<pinned_program caption="Internet Explorer" path="%programfiles%\Internet Explorer\iexplore.exe" opened="0" icon="%programfiles%\Internet Explorer\iexplore.exe"/>
-		<pinned_program caption="Outlook Express" path="%programfiles%\Outlook Express\msimn.exe" opened="0" icon="%programfiles%\Outlook Express\msimn.exe"/>
+		<pinned_program caption="Internet Explorer" path="%programfiles%\Internet Explorer\iexplore.exe" opened="1" icon="%programfiles%\Internet Explorer\iexplore.exe"/>
+		<pinned_program caption="Outlook Express" path="%programfiles%\Outlook Express\msimn.exe" opened="1" icon="%programfiles%\Outlook Express\msimn.exe"/>
 
-		<frequent_program caption="BitLocker" path="%SystemRoot%\BitLockerDiscoveryVolumeContents\BitLockerToGo.exe" opened="0" icon="%SystemRoot%\BitLockerDiscoveryVolumeContents\BitLockerToGo.exe"/>
-		<frequent_program caption="Windows PowerShell" path="%SystemRoot%\system32\WindowsPowerShell\v1.0\powershell.exe" opened="0" icon="%SystemRoot%\system32\WindowsPowerShell\v1.0\powershell.exe"/>
-		<frequent_program caption="Windows Search" path="%programfiles%\Windows Desktop Search\WindowsSearch.exe" opened="0" icon="%programfiles%\Windows Desktop Search\WindowsSearch.exe"/>
-		<frequent_program caption="Windows Movie Maker" path="%programfiles%\Movie Maker\moviemk.exe" opened="0" icon="%programfiles%\Movie Maker\moviemk.exe"/>
-		<frequent_program caption="Windows Media Player" path="%programfiles%\Windows Media Player\wmplayer.exe" opened="0" icon="%programfiles%\Windows Media Player\wmplayer.exe"/>
-		<frequent_program caption="Pinball" path="%programfiles%\Windows NT\Pinball\PINBALL.EXE" opened="0" icon="%programfiles%\Windows NT\Pinball\PINBALL.EXE"/>
+		<frequent_program caption="BitLocker" path="%SystemRoot%\BitLockerDiscoveryVolumeContents\BitLockerToGo.exe" opened="1" icon="%SystemRoot%\BitLockerDiscoveryVolumeContents\BitLockerToGo.exe"/>
+		<frequent_program caption="Windows PowerShell" path="%SystemRoot%\system32\WindowsPowerShell\v1.0\powershell.exe" opened="1" icon="%SystemRoot%\system32\WindowsPowerShell\v1.0\powershell.exe"/>
+		<frequent_program caption="Windows Search" path="%programfiles%\Windows Desktop Search\WindowsSearch.exe" opened="1" icon="%programfiles%\Windows Desktop Search\WindowsSearch.exe"/>
+		<frequent_program caption="Windows Movie Maker" path="%programfiles%\Movie Maker\moviemk.exe" opened="1" icon="%programfiles%\Movie Maker\moviemk.exe"/>
+		<frequent_program caption="Windows Media Player" path="%programfiles%\Windows Media Player\wmplayer.exe" opened="1" icon="%programfiles%\Windows Media Player\wmplayer.exe"/>
+		<frequent_program caption="Pinball" path="%programfiles%\Windows NT\Pinball\PINBALL.EXE" opened="1" icon="%programfiles%\Windows NT\Pinball\PINBALL.EXE"/>
 
 	</programs>
 

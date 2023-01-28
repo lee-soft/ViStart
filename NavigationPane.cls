@@ -62,6 +62,9 @@ Private m_windowPosition As POINTL
 Private m_window As Form
 
 Private m_RegObj As New clsRegistry
+
+Private Declare Function SHChangeNotify Lib "Shell32.dll" (ByVal wEventID As Long, ByVal uFlags As Long, ByVal dwItem1 As Long, ByVal dwItem2 As Long) As Long
+
 Private WithEvents m_renameTextBox As VistaSearchBox
 Attribute m_renameTextBox.VB_VarHelpID = -1
 
@@ -71,8 +74,8 @@ End Property
 
 Public Function AddNewFolder(szNewFolderPath As String)
     
-Dim thisFolderOption As New NavigationPaneFolder
-Dim thisFolder As Scripting.Folder
+    Dim thisFolderOption As New NavigationPaneFolder
+    Dim thisFolder As Scripting.Folder
 
     If FSO.FolderExists(szNewFolderPath) = False Then
         Exit Function
@@ -148,30 +151,45 @@ Public Function ShowContextMenu(ByRef winOwner As Form)
 		    m_contextMenu.AddItem GetPublicString("strOpen"), "EXECUTE", True
 		End If
 		
+		Dim DesktopIconStatus as Variant
+
+		If InStr(1, m_selectedItem.Shell, "20D04FE0-3AEA-1069-A2D8-08002B30309D", 1) > 0 Then
+			' This PC
+			DesktopIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", "{20D04FE0-3AEA-1069-A2D8-08002B30309D}")
+			
+		ElseIf InStr(1, m_selectedItem.Shell, "208D2C60-3AEA-1069-A2D7-08002B30309D", 1) > 0 Then
+			' My network places
+			DesktopIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", "{208D2C60-3AEA-1069-A2D7-08002B30309D}")
 		
-		If LCase(Left(m_selectedItem.Shell,12)) = "explorer.exe" Then
-			
-			Dim ComputerIconStatus as Variant
-			
-			ComputerIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", "{20D04FE0-3AEA-1069-A2D8-08002B30309D}")
-			
-			If ComputerIconStatus = 1 Then
-				m_contextMenu.AddItem ""
-				m_contextMenu.AddItem GetPublicString("strShowOnDesktop"), "SHOWHIDE"
+		ElseIf LCase(Left(m_selectedItem.Shell,7)) = "control" Then
+			' Control Panel
+			If FSO.FolderExists(CreateObject("Scripting.FileSystemObject").GetAbsolutePathName(CreateObject("WScript.Shell").SpecialFolders("Desktop")) & "\" & GetPublicString("strControlPanel")  & ".{21EC2020-3AEA-1069-A2DD-08002B30309D}") Then
+				DesktopIconStatus = 0
 			Else
-				m_contextMenu.AddItem ""
-				m_contextMenu.AddItem GetPublicString("strHideFromDesktop"), "SHOWHIDE"
+				DesktopIconStatus = 1
 			EndIf
-										
+		Else
+			DesktopIconStatus = -2
 		End If
+		
+		' -1 REG key doesn't exist 
+		' -2 Other items
+		
+		If DesktopIconStatus = 1 Then
+			m_contextMenu.AddItem ""
+			m_contextMenu.AddItem GetPublicString("strShowOnDesktop"), "SHOWHIDE"
+		ElseIf DesktopIconStatus = 0 or DesktopIconStatus = -1 Then
+			m_contextMenu.AddItem ""
+			m_contextMenu.AddItem GetPublicString("strHideFromDesktop"), "SHOWHIDE"
+		EndIf	
 		
         m_contextMenu.AddItem ""
         m_contextMenu.AddItem GetPublicString("strHideOption"), "HIDE_OPTION", False
 
         m_contextMenu.AddItem ""
 		
-		If LCase(Left(m_selectedItem.Shell,12)) = "explorer.exe" Then
-		
+		If InStr(1, m_selectedItem.Shell, "20D04FE0-3AEA-1069-A2D8-08002B30309D", 1) > 0 Then
+			' This PC		
 			m_contextMenu.AddItem GetPublicString("strSearch"), "SEARCH"		
 			m_contextMenu.AddItem GetPublicString("strManage"), "MANAGE"
 			m_contextMenu.AddItem ""			
@@ -766,21 +784,47 @@ End Sub
 
 
 Private Function ShowHideDesktopIcons(ShellItem as String)
-
-	If LCase(Left(ShellItem,12)) = "explorer.exe" Then
+	
+	Dim DesktopIconStatus as Variant
+	DesktopIconStatus = 0
+		
+	If InStr(1, ShellItem, "20D04FE0-3AEA-1069-A2D8-08002B30309D", 1) > 0 Then
+		' This PC
+		DesktopIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", "{20D04FE0-3AEA-1069-A2D8-08002B30309D}")
 			
-		Dim ComputerIconStatus as Variant
-
-		ComputerIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", "{20D04FE0-3AEA-1069-A2D8-08002B30309D}")
-			
-		If ComputerIconStatus = 1 Then
-			ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", "{20D04FE0-3AEA-1069-A2D8-08002B30309D}", 0)
+		If DesktopIconStatus = 1 Then
+			DesktopIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", "{20D04FE0-3AEA-1069-A2D8-08002B30309D}", 0)
 		Else
-			ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", "{20D04FE0-3AEA-1069-A2D8-08002B30309D}", 1)
+			DesktopIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", "{20D04FE0-3AEA-1069-A2D8-08002B30309D}", 1)
+		EndIf
+
+	ElseIf InStr(1, ShellItem, "208D2C60-3AEA-1069-A2D7-08002B30309D", 1) > 0 Then
+		' My network places
+		DesktopIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", "{208D2C60-3AEA-1069-A2D7-08002B30309D}")
+			
+		If DesktopIconStatus = 1 Then
+			DesktopIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", "{208D2C60-3AEA-1069-A2D7-08002B30309D}", 0)
+		Else
+			DesktopIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", "{208D2C60-3AEA-1069-A2D7-08002B30309D}", 1)
+		EndIf		
+		
+	ElseIf LCase(Left(ShellItem,7)) = "control" Then
+		' Control Panel
+		If FSO.FolderExists(CreateObject("Scripting.FileSystemObject").GetAbsolutePathName(CreateObject("WScript.Shell").SpecialFolders("Desktop")) & "\" & GetPublicString("strControlPanel")  & ".{21EC2020-3AEA-1069-A2DD-08002B30309D}") Then
+			DesktopIconStatus = 1
 		EndIf
 		
+		If DesktopIconStatus = 1 Then
+			RmDir CreateObject("Scripting.FileSystemObject").GetAbsolutePathName(CreateObject("WScript.Shell").SpecialFolders("Desktop")) & "\" & GetPublicString("strControlPanel")  & ".{21EC2020-3AEA-1069-A2DD-08002B30309D}"
+		Else
+			MkDir CreateObject("Scripting.FileSystemObject").GetAbsolutePathName(CreateObject("WScript.Shell").SpecialFolders("Desktop")) & "\" & GetPublicString("strControlPanel")  & ".{21EC2020-3AEA-1069-A2DD-08002B30309D}"
+		EndIf
+	
 	End If
 	
+	' Refresh desktop
+	call SHChangeNotify(&H8000000, &H0, 0, 0)
+
 End Function
 
 Private Function RenameSelectedItem()

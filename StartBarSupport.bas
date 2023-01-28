@@ -124,7 +124,7 @@ Dim xmlLanguageFile As New DOMDocument
     UserVariable.Add "OK", "strOK"
     UserVariable.Add "Cancel", "strCancel"
     UserVariable.Add "Browse", "strBrowse"
-
+    
     UserVariable.Add "Explore", "strExplore"
     UserVariable.Add "Manage", "strManage"
     UserVariable.Add "Search", "strSearch"
@@ -357,9 +357,9 @@ Sub SetVars_IfNeeded()
 
     If Not FSO.FolderExists(sCon_AppDataPath) Then
     	If FSO.FolderExists(App.Path & "\_skins\") Then
-			' ViStart %APPDATA% folder doesn't exist _skins are present in same directory
-			sCon_AppDataPath = App.Path
-		End If
+		' ViStart %APPDATA% folder doesn't exist _skins are present in same directory
+		sCon_AppDataPath = App.Path
+	End If
     End If
 	
     If Not FSO.FolderExists(sCon_AppDataPath) Then
