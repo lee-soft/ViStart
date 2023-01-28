@@ -125,6 +125,11 @@ Dim xmlLanguageFile As New DOMDocument
     UserVariable.Add "Cancel", "strCancel"
     UserVariable.Add "Browse", "strBrowse"
     
+    UserVariable.Add "Explore", "strExplore"
+    UserVariable.Add "Manage", "strManage"
+    UserVariable.Add "Search", "strSearch"
+    UserVariable.Add "Show on Desktop", "strShowOnDesktop"
+    UserVariable.Add "Hide from Desktop", "strHideFromDesktop"
     UserVariable.Add "Open", "strOpen"
     UserVariable.Add "Don't show option in navigation pane", "strHideOption"
     UserVariable.Add "Don't pop out folder contents", "strDontPopOut"
@@ -139,6 +144,12 @@ Dim xmlLanguageFile As New DOMDocument
     UserVariable.Add "Run as administrator", "strRunAsAdmin"
     UserVariable.Add "Unpin from Start Menu", "strUnpinToStartMenu"
     UserVariable.Add "Pin To Start Menu", "strPinToStartMenu"
+    UserVariable.Add "Remove from this list", "strRemoveFromList"
+
+    UserVariable.Add "Programs", "strPrograms"
+    UserVariable.Add "Files", "strFiles"
+	
+    UserVariable.Add "All files", "strAllExtensions"
     
     UserVariable.Add "Documents", "strDocuments"
     UserVariable.Add "Pictures", "strPictures"
@@ -151,6 +162,45 @@ Dim xmlLanguageFile As New DOMDocument
     UserVariable.Add "Connect To", "strConnectTo"
     UserVariable.Add "Control Panel", "strControlPanel"
     UserVariable.Add "Help and Support", "strHelp"
+
+    UserVariable.Add "ViStart Control panel", "strViStartControlPanel"
+	
+    UserVariable.Add "Style", "strStyle"
+    UserVariable.Add "Configure", "strConfigure"
+    UserVariable.Add "Desktop", "strDesktop"
+
+    UserVariable.Add "Which Start Menu would you like?", "strWhichStartMenu"
+    UserVariable.Add "Install...", "strInstall"
+    UserVariable.Add "Select a new ViStart theme file", "strViStartTheme"
+	
+    UserVariable.Add "What Start Orb would you like?", "strWhatStarOrb"
+    UserVariable.Add "Use Skin default Orb", "strSkinDefaultOrb"
+    UserVariable.Add "Pick image...", "strPick"
+    UserVariable.Add "Choose new Start Button image", "strViStartOrb"
+
+    UserVariable.Add "What do you want to see on your start menu?", "strWhatToSee"
+    UserVariable.Add "What shortcuts would you like to see on the right hand side", "strWhatToSeeOnRight"
+
+    UserVariable.Add "Show program menu first", "strProgramsFirst"
+    UserVariable.Add "Show user picture", "strShowUserPicture"
+
+    UserVariable.Add "Don't show item", "strDontShowItem"
+    UserVariable.Add "Display item as link", "strDisplayAsLink"
+    UserVariable.Add "Display item as menu", "strDisplayAsMenu"
+
+    UserVariable.Add "What should happen when you are on the desktop?", "strDesktopSettings"
+    UserVariable.Add "Both Windows Keys show ViStart", "strBothWinKeysViStart"
+    UserVariable.Add "[Left Windows Key] shows ViStart", "strLeftWinKey"
+    UserVariable.Add "[Right Windows Key] shows ViStart", "strRightWinKey"
+    UserVariable.Add "Both Windows keys shows Windows Menu", "strBothWinKeys"
+
+    UserVariable.Add "Start button shows ViStart", "strStartViStart"
+    UserVariable.Add "Start button shows the Windows menu", "strStartWinMenu"
+
+    UserVariable.Add "Restore Windows Start Menu Shortcut", "strRestoreStartMenu"
+	
+    UserVariable.Add "(ViStart the program itself is created by Lee Matthew Chantrey)", "strCopyright"
+
     
     If g_Windows8 Then
         UserVariable.Add "Metro", "startmenu"
@@ -304,6 +354,14 @@ Sub SetVars_IfNeeded()
     If Right$(AppPath, 1) <> "\" Then AppPath = AppPath & "\"
 
     sCon_AppDataPath = Environ$("appdata") & "\ViStart\"
+
+    If Not FSO.FolderExists(sCon_AppDataPath) Then
+    	If FSO.FolderExists(App.Path & "\_skins\") Then
+		' ViStart %APPDATA% folder doesn't exist _skins are present in same directory
+		sCon_AppDataPath = App.Path
+	End If
+    End If
+	
     If Not FSO.FolderExists(sCon_AppDataPath) Then
         FSO.CreateFolder sCon_AppDataPath
         

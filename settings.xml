@@ -1,26 +1,49 @@
 <settings>
-  <programs>
-    <pinned_program opened="1" path="!default_menu" caption="Show %startmenu%"/>
-    <pinned_program opened="1" path="explorer shell:::{2559a1f8-21d7-11d4-bdaf-00c04f60b9f0}" icon="%apppath%\plugins\metroprovider.exe" caption="Show Metro Apps" winversion="6.2" />
 
-    <frequent_program caption="Notepad" path="%windir%\notepad.exe" opened="1" icon="%windir%\notepad.exe" />
-    <frequent_program caption="Calculator" path="%windir%\System32\calc.exe" opened="1" />
-    <frequent_program caption="Command Processor" path="%windir%\system32\cmd.exe" opened="1" />
-  </programs>
-  <navigation_pane>
-    <folder caption="%username%" path="%USERPROFILE%" rollover="userfolder.png" display_as_menu="False" visible="True" />
-    <folder caption="%strDocuments%" path="%CSIDL_PERSONAL%" rollover="documents.png" display_as_menu="False" visible="True" />
-    <folder caption="%strPictures%" path="%CSIDL_MYPICTURES%" rollover="pictures.png" display_as_menu="False" visible="True" />
-    <folder caption="%strMusic%" path="%CSIDL_MYMUSIC%" rollover="music.png" display_as_menu="False" visible="True" />
-    <folder caption="%strVideos%" path="%CSIDL_MYVIDEO%" rollover="videos.png" display_as_menu="False" visible="True" />
-    <folder caption="%strGames%" path="explorer &quot;/e,::{ED228FDF-9EA8-4870-83b1-96b02CFE0D52}&quot;" rollover="games.png" display_as_menu="False" visible="False" />
-    <folder caption="%strRecent%" path="%CSIDL_Recent%" rollover="recent.png" display_as_menu="True" visible="True" />
-    
-    <custom caption="%strComputer%" exec="explorer.exe /e,::{20D04FE0-3AEA-1069-A2D8-08002B30309D}" rollover="computer.png" visible="true" />
-    <custom caption="%strNetwork%" exec="explorer &quot;::{208D2C60-3AEA-1069-A2D7-08002B30309D}&quot;" rollover="network.png" visible="True" />
-    <custom caption="%strConnectTo%" exec="rundll32.exe shell32.dll,Control_RunDLL ncpa.cpl" rollover="connect.png" visible="True" />
-    <custom caption="%strControlPanel%" exec="control" rollover="control.png" visible="True" />
-    <custom caption="%strRun%" exec=":FileRun" rollover="run.png" visible="True" />
-    <custom caption="%strHelp%" exec="%windir%\HelpPane.exe -embedding" rollover="help.png" visible="True" />
-  </navigation_pane>
+	<general>
+	
+		<current_skin>Windows 7 Start Menu</current_skin>
+		<current_orb></current_orb>
+		<enable_trayicon>True</enable_trayicon>
+		<show_userpicture>True</show_userpicture>
+		<show_program_menu_first>False</show_program_menu_first>
+		<start_button_shows_windows_menu>False</start_button_shows_windows_menu>
+		<catch_left_windows_key>True</catch_left_windows_key>
+		<catch_right_windows_key>True</catch_right_windows_key>
+		
+	</general>
+
+	<programs>
+	
+		<pinned_program caption="Internet Explorer" path="%programfiles%\Internet Explorer\iexplore.exe" opened="1" icon="%programfiles%\Internet Explorer\iexplore.exe"/>
+		<pinned_program caption="Outlook Express" path="%programfiles%\Outlook Express\msimn.exe" opened="1" icon="%programfiles%\Outlook Express\msimn.exe"/>
+
+		<frequent_program caption="BitLocker" path="%SystemRoot%\BitLockerDiscoveryVolumeContents\BitLockerToGo.exe" opened="1" icon="%SystemRoot%\BitLockerDiscoveryVolumeContents\BitLockerToGo.exe"/>
+		<frequent_program caption="Windows PowerShell" path="%SystemRoot%\system32\WindowsPowerShell\v1.0\powershell.exe" opened="1" icon="%SystemRoot%\system32\WindowsPowerShell\v1.0\powershell.exe"/>
+		<frequent_program caption="Windows Search" path="%programfiles%\Windows Desktop Search\WindowsSearch.exe" opened="1" icon="%programfiles%\Windows Desktop Search\WindowsSearch.exe"/>
+		<frequent_program caption="Windows Movie Maker" path="%programfiles%\Movie Maker\moviemk.exe" opened="1" icon="%programfiles%\Movie Maker\moviemk.exe"/>
+		<frequent_program caption="Windows Media Player" path="%programfiles%\Windows Media Player\wmplayer.exe" opened="1" icon="%programfiles%\Windows Media Player\wmplayer.exe"/>
+		<frequent_program caption="Pinball" path="%programfiles%\Windows NT\Pinball\PINBALL.EXE" opened="1" icon="%programfiles%\Windows NT\Pinball\PINBALL.EXE"/>
+
+	</programs>
+
+	<navigation_pane>
+	
+		<folder caption="%username%" path="%USERPROFILE%" rollover="userfolder.png" display_as_menu="False" visible="True"/>
+		<folder caption="%strDocuments%" path="%CSIDL_PERSONAL%" rollover="documents.png" display_as_menu="False" visible="True"/>
+		<folder caption="%strPictures%" path="%CSIDL_MYPICTURES%" rollover="pictures.png" display_as_menu="False" visible="True"/>
+		<folder caption="%strMusic%" path="%CSIDL_MYMUSIC%" rollover="music.png" display_as_menu="False" visible="True"/>
+		<folder caption="%strVideos%" path="%CSIDL_MYVIDEO%" rollover="videos.png" display_as_menu="False" visible="True"/>
+		<folder caption="%strGames%" path="explorer &quot;/e,::{ED228FDF-9EA8-4870-83b1-96b02CFE0D52}&quot;" rollover="games.png" display_as_menu="False" visible="False"/>
+		<folder caption="%strRecent%" path="%CSIDL_Recent%" rollover="recent.png" display_as_menu="True" visible="True"/>
+
+		<custom caption="%strComputer%" exec="explorer.exe /e,::{20D04FE0-3AEA-1069-A2D8-08002B30309D}" rollover="computer.png" visible="True"/>
+		<custom caption="%strNetwork%" exec="explorer &quot;::{208D2C60-3AEA-1069-A2D7-08002B30309D}&quot;" rollover="network.png" visible="True"/>
+		<custom caption="%strConnectTo%" exec="rundll32.exe shell32.dll,Control_RunDLL ncpa.cpl" rollover="connect.png" visible="True"/>
+		<custom caption="%strControlPanel%" exec="control" rollover="control.png" visible="True"/>
+		<custom caption="%strRun%" exec=":FileRun" rollover="run.png" visible="True"/>
+		<custom caption="%strHelp%" exec="%windir%\HelpPane.exe -embedding" rollover="help.png" visible="True" />
+	
+	</navigation_pane>
+
 </settings>

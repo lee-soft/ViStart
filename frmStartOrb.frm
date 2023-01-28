@@ -374,7 +374,7 @@ Public Function PromptUserSelectNewOrb() As String
 Dim newStartPng As String
 Dim newStartPngName As String
 
-    newStartPng = BrowseForFile(sCon_OrbFolderPath, "Portable Network Graphics;*.png", "Choose new Start Button image", frmEvents.hWnd)
+    newStartPng = BrowseForFile(sCon_OrbFolderPath, "PNG (*.PNG);*.png", GetPublicString("strViStartOrb"), frmEvents.hWnd)
 
     If InstallOrb(newStartPng, newStartPngName) = True Then
     

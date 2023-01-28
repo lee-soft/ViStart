@@ -864,21 +864,21 @@ Private Sub picRollover_MouseUp(Button As Integer, Shift As Integer, X As Single
         If Not m_vistaMenu Is Nothing Then Unload m_vistaMenu
         Set m_vistaMenu = New frmVistaMenu
         
-        m_vistaMenu.AddItem "Open", "OPEN@" & lstItems(iCurIndex).Shell, True
+        m_vistaMenu.AddItem GetPublicString("strOpen"), "OPEN@" & lstItems(iCurIndex).Shell, True
 
         If LCase$(Right$(ResolveLink(lstItems(iCurIndex).Shell), 3)) = "exe" Then
-            m_vistaMenu.AddItem "Run as administrator", "RUNASADMIN@" & lstItems(iCurIndex).Shell
+            m_vistaMenu.AddItem GetPublicString("strRunAsAdmin"), "RUNASADMIN@" & lstItems(iCurIndex).Shell
         End If
         
         m_vistaMenu.AddItem ""
         
         If iCurIndex < Settings.Programs.PinnedPrograms.count Then
-            m_vistaMenu.AddItem "Unpin from Start Menu", "TOGGLEPIN@" & lstItems(iCurIndex).Shell
+            m_vistaMenu.AddItem GetPublicString("strUnpinToStartMenu"), "TOGGLEPIN@" & lstItems(iCurIndex).Shell
         Else
-            m_vistaMenu.AddItem "Pin To Start Menu", "TOGGLEPIN@" & lstItems(iCurIndex).Shell
+            m_vistaMenu.AddItem GetPublicString("strPinToStartMenu"), "TOGGLEPIN@" & lstItems(iCurIndex).Shell
         End If
         m_vistaMenu.AddItem ""
-        m_vistaMenu.AddItem "Remove from this list", "REMOVEITEM@" & lstItems(iCurIndex).Shell
+        m_vistaMenu.AddItem GetPublicString("strRemoveFromList"), "REMOVEITEM@" & lstItems(iCurIndex).Shell
         
         If FileExists(lstItems(iCurIndex).Shell) Then
         
@@ -892,17 +892,18 @@ Private Sub picRollover_MouseUp(Button As Integer, Shift As Integer, X As Single
             Else
                 If m_viPadInstalled Then
                     m_addToViPadCommand = GenerateViPadAddToCommand(lstItems(iCurIndex).Shell)
-                Else
-                    m_addToViPadCommand = "http://lee-soft.com/vipad"
-                End If
                 
-                m_vistaMenu.AddItem GetPublicString("strCopyToViPad"), "COPYTOVIPAD@NULL"
+	    	m_vistaMenu.AddItem GetPublicString("strCopyToViPad"), "COPYTOVIPAD@NULL"
+            '    'Else
+            '    '    m_addToViPadCommand = "http://lee-soft.com/vipad"
+                End If
+
             End If
         
             m_vistaMenu.AddItem GetPublicString("strCopyToDesktop"), "COPYTODESKTOP@" & lstItems(iCurIndex).Shell
     
             m_vistaMenu.AddItem ""
-            m_vistaMenu.AddItem "Properties", "PROPERTIES@" & lstItems(iCurIndex).Shell
+            m_vistaMenu.AddItem GetPublicString("strProperties"), "PROPERTIES@" & lstItems(iCurIndex).Shell
         End If
         
         Debug.Print "Attemping Resurrection!"

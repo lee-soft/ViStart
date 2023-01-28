@@ -32,8 +32,8 @@
     <string value="Run..." id="strRun" />
     <string value="Sleep..." id="strSleep" />
     
-    <string value="OK" id="strOK" />
-    <string value="Cancel" id="strCancel" />
+    <string value="ОК" id="strOK" />
+    <string value="Отмена" id="strCancel" />
     <string value="Browse" id="strBrowse" />
     
     <string value="Explore" id="strExplore" />
@@ -41,20 +41,20 @@
     <string value="Search" id="strSearch" />
     <string value="Show on Desktop" id="strShowOnDesktop" />
     <string value="Hide from Desktop" id="strHideFromDesktop" />
-    <string value="Open" id="strOpen" />
+    <string value="Открыть" id="strOpen" />
     <string value="Don't show option in navigation pane" id="strHideOption" />
     <string value="Don't pop out folder contents" id="strDontPopOut" />
     <string value="Pop out folder contents" id="strPopOut" />
-    <string value="Rename" id="strRename" />
+    <string value="Переименовать" id="strRename" />
     <string value="Send to Desktop" id="strCopyToDesktop" />
     <string value="Send to ViPad" id="strCopyToViPad" />
-    <string value="Properties" id="strProperties" />
+    <string value="Свойства" id="strProperties" />
     
-    <string value="Collapse" id="strCollapse" />
-    <string value="Expand" id="strExpand" />
-    <string value="Run as administrator" id="strRunAsAdmin" />
-    <string value="Unpin from Start Menu" id="strUnpinToStartMenu" />
-    <string value="Pin To Start Menu" id="strPinToStartMenu" />
+    <string value="Свернуть" id="strCollapse" />
+    <string value="Развернуть" id="strExpand" />
+    <string value="Запустить от имени администратора" id="strRunAsAdmin" />
+    <string value="Изъять из меню Пуск" id="strUnpinToStartMenu" />
+    <string value="Закрепить в меню Пуск" id="strPinToStartMenu" />
     <string value="Remove from this list" id="strRemoveFromList" />
 
     <string value="Programs" id="strPrograms" />
@@ -62,17 +62,17 @@
     
     <string value="All files" id="strAllExtensions" />
 
-    <string value="Documents" id="strDocuments" />
-    <string value="Pictures" id="strPictures" />
-    <string value="Music" id="strMusic" />
-    <string value="Videos" id="strVideos" />
-    <string value="Games" id="strGames" />
-    <string value="Computer" id="strComputer" />
-    <string value="Recent" id="strRecent" />
-    <string value="Network" id="strNetwork" />
-    <string value="Connect To" id="strConnectTo"  />
-    <string value="Control Panel" id="strControlPanel" />
-    <string value="Help and Support" id="strHelp" />
+    <string value="Документы" id="strDocuments" />
+    <string value="Изображения" id="strPictures" />
+    <string value="Музыка" id="strMusic" />
+    <string value="Видео" id="strVideos" />
+    <string value="Игры" id="strGames" />
+    <string value="Компьютер" id="strComputer" />
+    <string value="Недавние" id="strRecent" />
+    <string value="Сеть" id="strNetwork" />
+    <string value="Подключиться к" id="strConnectTo"  />
+    <string value="Панель управления" id="strControlPanel" />
+    <string value="Справка и поддержка" id="strHelp" />
 
     <string value="ViStart Control panel" id="strViStartControlPanel" />
 

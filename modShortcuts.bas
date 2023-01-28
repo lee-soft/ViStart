@@ -97,10 +97,10 @@ Handler:
            Err.Description
 End Function
 
-Public Function ExplorerRun(sPath As String)
+Public Function ExplorerRun(sPath As String, Optional sVisibility As VbAppWinStyle = vbNormalFocus)
 
     On Error GoTo Handler
-    Shell "explorer.exe " & """" & sPath & """", vbHide
+    Shell "explorer.exe " & """" & sPath & """", sVisibility
 
     Exit Function
 Handler:
@@ -207,7 +207,7 @@ Dim str
     
 End Function
 
-Sub ShowRun(ByRef lngHwnd As Long)
+Sub ShowRun(Optional ByRef lngHwnd As Long = 0)
     SHRunDialog lngHwnd
 End Sub
 

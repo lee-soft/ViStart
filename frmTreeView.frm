@@ -340,10 +340,13 @@ Function ShowContextMenu() As Boolean
     Set m_contextMenu = New frmVistaMenu
     
     If Not m_nTargetNode.IsFile Then
+	
+		m_contextMenu.AddItem GetPublicString("strExplore"), "EXPLORE", True
+		
         If m_nTargetNode.Expanded Then
             m_contextMenu.AddItem GetPublicString("strCollapse"), "COLLAPSE", True
         Else
-            m_contextMenu.AddItem GetPublicString("strExpand"), "EXPAND", True
+            m_contextMenu.AddItem GetPublicString("strExpand"), "EXPAND"
         End If
     Else
         m_contextMenu.AddItem GetPublicString("strOpen"), "OPEN", True
@@ -369,11 +372,12 @@ Function ShowContextMenu() As Boolean
         Else
             If m_viPadInstalled Then
                 m_addToViPadCommand = GenerateViPadAddToCommand(m_nTargetNode.Tag)
-            Else
-                m_addToViPadCommand = "http://lee-soft.com/vipad"
+           
+		m_contextMenu.AddItem GetPublicString("strCopyToViPad"), "COPYTOVIPAD"
+        '    'Else
+        '    '    m_addToViPadCommand = "http://lee-soft.com/vipad"
             End If
-            
-            m_contextMenu.AddItem GetPublicString("strCopyToViPad"), "COPYTOVIPAD"
+		
         End If
         
         m_contextMenu.AddItem GetPublicString("strCopyToDesktop"), "COPYTODESKTOP"
@@ -526,7 +530,7 @@ Private Sub Form_Load()
     mDx.Font = mStdFont
     
     'picList_SubClass.SubClass Me.hWnd
-    mTreeViewSearchResults.RootNode.Caption = "Programs"
+    mTreeViewSearchResults.RootNode.Caption = GetPublicString("strPrograms")
     
     m_bRestrictSearch = True
 End Sub
@@ -547,7 +551,7 @@ Dim m_TVTType As TV_Type
 
     Set m_TVTType = New TV_Type
 
-    m_TVTType.Caption = "Programs"
+    m_TVTType.Caption = GetPublicString("strPrograms")
     m_TVTType.DisplayLimit = 10
     m_TVTType.AllowQuery = True
     
@@ -560,7 +564,7 @@ Dim m_TVTType As TV_Type
     
         Set m_TVTType = New TV_Type
         
-        m_TVTType.Caption = "Files"
+        m_TVTType.Caption = GetPublicString("strFiles")
         m_TVTType.DisplayLimit = 5
         m_TVTType.AllowQuery = True
         
@@ -1013,6 +1017,7 @@ Dim lngSpareNodeSpaces2 As Long
                     
                     
                     For Each thisTV_Type In m_colTypes
+					
                         m_lastTypeCount = thisTV_Type.Children.count
                     
                         'Debug.Print "Results of: " & thisTV_Type.Caption & " @ " & mstrKeyWord
@@ -1424,6 +1429,9 @@ Dim thisProgram As clsProgram
     Case "EXPAND", "COLLAPSE", "OPEN"
         ActionTargetNode
     
+	Case "EXPLORE"
+		ExplorerRun m_nLastSelectedNode.Tag
+	
     Case "RUNASADMIN"
         RaiseEvent onRequestCloseStartMenu
         'ShellEx m_nLastSelectedNode.Tag, "runas"

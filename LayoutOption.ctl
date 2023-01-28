@@ -113,9 +113,9 @@ End Sub
 Private Sub UserControl_Initialize()
     cmbOptions.Clear
     
-    cmbOptions.AddItem "Don't show item"
-    cmbOptions.AddItem "Display item as link"
-    cmbOptions.AddItem "Display item as menu"
+    cmbOptions.AddItem GetPublicString("strDontShowItem")
+    cmbOptions.AddItem GetPublicString("strDisplayAsLink")
+    cmbOptions.AddItem GetPublicString("strDisplayAsMenu")
     
     
     m_Text = "Test"

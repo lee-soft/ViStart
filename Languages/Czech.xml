@@ -1,0 +1,115 @@
+﻿<strings>
+
+    <string value="Odhlásit se" id="strLogOff" />
+    <string value="Přepnout uživatele" id="strSwitchUser"  />
+    <string value="Vypnout" id="strShutdown" />
+    <string value="Restartovat" id="strRestart" />
+    <string value="Režim spánku" id="strStandBy" />
+    <string value="Hibernace" id="strHibernate" />
+    <string value="Ukončit" id="strExit" />
+    <string value="O programu" id="strAbout" />
+    <string value="Nastavení" id="strOptions" />
+    
+    <string value="Všechny programy" id="strAllPrograms" />
+    <string value="Zpět" id="strBack" />
+    
+    <string value="Kritériím vyhledávání neodpovídají žádné programy" id="strNotFound" />
+    <string value="Zobrazit další výsledky" id="strSeeAllResults" />
+    <string value="Prohledat programy" id="strStartSearch" />
+    
+    <string value="Nastavení" id="strProgramOptions" />
+
+    <string value="Povolit funkci Auto-Click" id="strEnableAutoClick" />
+    <string value="Zobrazit ikonu ViStart u hodin" id="strShowTrayIcon" />
+    <string value="Spustit při startu počítače" id="strStartWithWindows" />
+    <string value="Vymazat seznam často používaných programů" id="strClearFrequentList" />
+    <string value="Možnosti indexování" id="strIndexOptions" />
+    <string value="Otevřít ViStart pomocí klávesy Windows" id="strFilterWinKey" />
+    
+    <string value="Vybrat nový vzhled nabídky Start" id="strNewSkin" />
+    <string value="Vybrat nový obrázek tlačítka Start" id="strOrbNew" />
+    <string value="Resetovat tlačítko Start" id="strOrbReset" />
+    <string value="Spustit" id="strRun" />
+    <string value="Režim spánku" id="strSleep" />
+    
+    <string value="OK" id="strOK" />
+    <string value="Storno" id="strCancel" />
+    <string value="Procházet" id="strBrowse" />
+    
+    <string value="Otevřít" id="strExplore" />
+    <string value="Spravovat" id="strManage" />
+    <string value="Hledat" id="strSearch" />
+    <string value="Zobrazit na ploše" id="strShowOnDesktop" />
+    <string value="Skrýt z plochy" id="strHideFromDesktop" />
+    <string value="Otevřít" id="strOpen" />
+    <string value="Nezobrazovat v tomto seznamu" id="strHideOption" />
+    <string value="Zobrazit jako menu" id="strDontPopOut" />
+    <string value="Zobrazit jako odkaz" id="strPopOut" />
+    <string value="Přejmenovat" id="strRename" />
+    <string value="Vytvořit zástupce na ploše" id="strCopyToDesktop" />
+    <string value="Odelat do ViPad" id="strCopyToViPad" />
+    <string value="Vlastnosti" id="strProperties" />
+    
+    <string value="Sbalit" id="strCollapse" />
+    <string value="Rozbalit" id="strExpand" />
+    <string value="Spustit jako správce" id="strRunAsAdmin" />
+    <string value="Odepnout z nabídky Start" id="strUnpinToStartMenu" />
+    <string value="Připnout k nabídce Start" id="strPinToStartMenu" />
+    <string value="Odebrat z tohoto seznamu" id="strRemoveFromList" />
+
+    <string value="Programy" id="strPrograms" />
+    <string value="Soubory" id="strFiles" />
+    
+    <string value="Všechny soubory" id="strAllExtensions" />
+
+    <string value="Dokumenty" id="strDocuments" />
+    <string value="Obrázky" id="strPictures" />
+    <string value="Hudba" id="strMusic" />
+    <string value="Videa" id="strVideos" />
+    <string value="Hry" id="strGames" />
+    <string value="Počítač" id="strComputer" />
+    <string value="Poslední dokumenty" id="strRecent" />
+    <string value="Síť" id="strNetwork" />
+    <string value="Připojit k" id="strConnectTo"  />
+    <string value="Ovládací panely" id="strControlPanel" />
+    <string value="Nápověda a podpora" id="strHelp" />
+
+    <string value="Možnosti ViStart" id="strViStartControlPanel" />
+
+    <string value="Vzhled" id="strStyle" />
+    <string value="Nastavení" id="strConfigure" />
+    <string value="Plocha" id="strDesktop" />
+
+    <string value="Vzhled nabídky Start" id="strWhichStartMenu" />
+    <string value="Instalovat..." id="strInstall" />
+    <string value="Vyberte soubor vzhledu aplikace ViStart" id="strViStartTheme" />
+    
+    <string value="Vzhled tlačítka Start" id="strWhatStarOrb" />
+    <string value="Výchozí nastavení vzhledu" id="strSkinDefaultOrb" />
+    <string value="Vybrat..." id="strPick" />
+    <string value="Vyberte soubor vzhledu tlačítka Start" id="strViStartOrb" />
+
+    <string value="Nastavení viditelnosti" id="strWhatToSee" />
+    <string value="Výchozí nastavení položek nabídky Start" id="strWhatToSeeOnRight" />
+
+    <string value="Zobrazit seznam programů jako první" id="strProgramsFirst" />
+    <string value="Zobrazit obrázek uživatelského účtu" id="strShowUserPicture" />
+
+    <string value="Nezobrazovat" id="strDontShowItem" />
+    <string value="Zobrazit jako odkaz" id="strDisplayAsLink" />
+    <string value="Zobrazit jako menu" id="strDisplayAsMenu" />
+
+    <string value="Nastavení výchozích akcí plochy" id="strDesktopSettings" />
+    <string value="Obě klávesy Windows zobrazí ViStart" id="strBothWinKeysViStart" />
+    <string value="[Levá klávesa Windows] zobrazí ViStart" id="strLeftWinKey" />
+    <string value="[Pravá klávesa Windows] zobrazí ViStart" id="strRightWinKey" />
+    <string value="Obě klávesy Windows zobrazí Standardní nabídku Start" id="strBothWinKeys" />
+
+    <string value="Tlačítko Start otevře ViStart" id="strStartViStart" />
+    <string value="Tlačítko Start otevře standardní nabídku Start" id="strStartWinMenu" />
+
+    <string value="Obnovit zkratku Nabídky Start" id="strRestoreStartMenu" />
+    
+    <string value="(Aplikaci ViStart vytvořil Lee Matthew Chantrey)" id="strCopyright" />
+ 
+ </strings>

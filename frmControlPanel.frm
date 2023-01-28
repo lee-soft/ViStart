@@ -435,6 +435,7 @@ Begin VB.Form frmControlPanel
          Left            =   6360
          TabIndex        =   21
          Top             =   4800
+         Visible         =   0   'False
          Width           =   1575
       End
       Begin VB.CommandButton cmdMoreThemes 
@@ -452,6 +453,7 @@ Begin VB.Form frmControlPanel
          Left            =   6360
          TabIndex        =   20
          Top             =   2640
+         Visible         =   0   'False
          Width           =   1575
       End
       Begin VB.CommandButton cmdPickImage 
@@ -460,7 +462,7 @@ Begin VB.Form frmControlPanel
             Name            =   "Segoe Print"
             Size            =   9.75
             Charset         =   0
-            Weight          =   400
+         Height          =   420
             Underline       =   0   'False
             Italic          =   0   'False
             Strikethrough   =   0   'False
@@ -468,7 +470,7 @@ Begin VB.Form frmControlPanel
          Height          =   495
          Left            =   6360
          TabIndex        =   9
-         Top             =   4200
+         Top             =   4540
          Width           =   1575
       End
       Begin VB.CommandButton cmdInstallTheme 
@@ -477,7 +479,7 @@ Begin VB.Form frmControlPanel
             Name            =   "Segoe Print"
             Size            =   9.75
             Charset         =   0
-            Weight          =   400
+         Height          =   420
             Underline       =   0   'False
             Italic          =   0   'False
             Strikethrough   =   0   'False
@@ -485,7 +487,7 @@ Begin VB.Form frmControlPanel
          Height          =   495
          Left            =   6360
          TabIndex        =   8
-         Top             =   2040
+         Top             =   2380
          Width           =   1575
       End
       Begin VB.ComboBox cmbStartOrbs 
@@ -651,7 +653,7 @@ Begin VB.Form frmControlPanel
          Height          =   375
          Left            =   1080
          TabIndex        =   24
-         Top             =   960
+         Top             =   6750
          Width           =   6660
       End
       Begin VB.Label lblViStartTitle 
@@ -667,7 +669,7 @@ Begin VB.Form frmControlPanel
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Height          =   615
+         Height          =   1200
          Left            =   720
          TabIndex        =   23
          Top             =   480
@@ -954,7 +956,7 @@ Private Sub cmdInstallTheme_Click()
 Dim szNewThemeFile As String
 Dim szNewThemeName As String
 
-    szNewThemeFile = BrowseForFile(vbNullString, "ViStart Theme;*.vistart-theme", "Select a new ViStart theme file", Me.hWnd)
+    szNewThemeFile = BrowseForFile(vbNullString, "ViStart Theme (*.vistart-theme);*.vistart-theme", GetPublicString("strViStartTheme"), Me.hWnd)
     
     If FileExists(szNewThemeFile) Then
         If Not InstallTheme(szNewThemeFile, szNewThemeName) Then
@@ -1004,10 +1006,10 @@ Private Sub Form_Load()
     InitializeStyleFrame
     InitializeDesktopFrame
 
-    naviBar.AddItem "Style"
-    naviBar.AddItem "Configure"
-    naviBar.AddItem "Desktop"
-    naviBar.AddItem "About"
+    naviBar.AddItem GetPublicString("strStyle")
+    naviBar.AddItem GetPublicString("strConfigure")
+    naviBar.AddItem GetPublicString("strDesktop")
+    naviBar.AddItem GetPublicString("strAbout")
     
     naviBar.SelectedIndex = 1
     
@@ -1017,6 +1019,30 @@ Private Sub Form_Load()
     m_cScroll.SmallChange(efsVertical) = MenuItem(0).Height \ Screen.TwipsPerPixelY + 2
     
     InitializeAboutFrame
+
+    frmControlPanel.Caption = GetPublicString("strViStartControlPanel")
+
+    Label1.Caption = GetPublicString("strWhichStartMenu")
+    cmdInstallTheme.Caption = GetPublicString("strInstall")
+        
+    Label2.Caption = GetPublicString("strWhatStarOrb")
+    cmdPickImage.Caption = GetPublicString("strPick")
+        
+    Label3.Caption = GetPublicString("strWhatToSee")
+    Label4.Caption = GetPublicString("strWhatToSeeOnRight")
+        
+    chkProgramMenuFirst.Caption = GetPublicString("strProgramsFirst")
+    chkUserPicture.Caption = GetPublicString("strShowUserPicture")
+        
+    Label6.Caption = GetPublicString("strDesktopSettings")
+        
+    chkSystemTray.Caption = GetPublicString("strStartViStart")
+    chkStartWithWindows.Caption = GetPublicString("strStartWinMenu")
+        
+    cmdShowMetroShortcut.Caption = GetPublicString("strRestoreStartMenu")
+	
+    lblSubText.Caption = GetPublicString("strCopyright")
+        
 End Sub
 
 Sub NavigateToPanel(ByVal szPanelName As String)
@@ -1184,7 +1210,7 @@ Dim skinInfoXML As IXMLDOMElement
 Dim thisChild As IXMLDOMElement
 Dim thisObject As Object
 
-    lblViStartTitle.Caption = App.Title & " " & App.Major & "." & App.Minor & " - " & Settings.CurrentSkin
+    lblViStartTitle.Caption = App.Title & " " & App.Major & "." & App.Minor & "." & App.Revision & vbNewLine & vbNewLine & Settings.CurrentSkin
     ClearAboutText
 
     Set xmlDoc = New DOMDocument
@@ -1193,7 +1219,7 @@ Dim thisObject As Object
         Exit Sub
     End If
  
-    m_ElementY = 104
+    m_ElementY = 140
     
     Set skinInfoXML = xmlDoc.firstChild
     For Each thisObject In skinInfoXML.childNodes
@@ -1231,14 +1257,14 @@ Sub InitializeDesktopFrame()
     chkSystemTray.Value = BooleanToCheckBox(Settings.EnableTrayIcon)
     
     cmbWindowsKey.Clear
-    cmbWindowsKey.AddItem "Both Windows Keys show ViStart"
-    cmbWindowsKey.AddItem "[Left Windows Key] shows ViStart"
-    cmbWindowsKey.AddItem "[Right Windows Key] shows ViStart"
-    cmbWindowsKey.AddItem "Both Windows keys shows Windows Menu"
+    cmbWindowsKey.AddItem GetPublicString("strBothWinKeysViStart")
+    cmbWindowsKey.AddItem GetPublicString("strLeftWinKey")
+    cmbWindowsKey.AddItem GetPublicString("strRightWinKey")
+    cmbWindowsKey.AddItem GetPublicString("strBothWinKeys")
     
     cmbWindowsOrb.Clear
-    cmbWindowsOrb.AddItem "Start button shows ViStart"
-    cmbWindowsOrb.AddItem "Start button shows the Windows menu"
+    cmbWindowsOrb.AddItem GetPublicString("strStartViStart")
+    cmbWindowsOrb.AddItem GetPublicString("strStartWinMenu")
     
     If Settings.CatchLeftWindowsKey And Settings.CatchRightWindowsKey Then
         cmbWindowsKey.listIndex = 0
@@ -1354,7 +1380,7 @@ Sub ListOrbs()
     On Error GoTo Handler
 
     cmbStartOrbs.Clear
-    cmbStartOrbs.AddItem "Use Skin default Orb"
+    cmbStartOrbs.AddItem GetPublicString("strSkinDefaultOrb")
 
 'Dim thisSubFolder As Scripting.Folder
 Dim thisFolder As Scripting.Folder
