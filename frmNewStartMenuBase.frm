@@ -870,7 +870,7 @@ Private Sub InitializeShutDownText()
 
 Dim theFont As ViFont
 
-    m_ShutDownCaption = "Shutdown"
+    m_ShutDownCaption = UserVariable("strShutdown")
 
     Set m_ShutDownBrush = New GDIPBrush
     Set m_ShutDownBrush2 = New GDIPBrush
