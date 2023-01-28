@@ -1,0 +1,115 @@
+﻿<strings>
+
+    <string value="Se Déconnecter" id="strLogOff" />
+    <string value="Changer d'utilisateur" id="strSwitchUser"  />
+    <string value="Éteindre" id="strShutdown" />
+    <string value="Redémarrer" id="strRestart" />
+    <string value="Mettre en Veille" id="strStandBy" />
+    <string value="Veille Prolongée" id="strHibernate" />
+    <string value="Quitter" id="strExit" />
+    <string value="À Propos de" id="strAbout" />
+    <string value="Options" id="strOptions" />
+    
+    <string value="Tous les programmes" id="strAllPrograms" />
+    <string value="retour" id="strBack" />
+    
+    <string value="Aucun programmes ne correspond aux critères de recherche" id="strNotFound" />
+    <string value="Afficher tout les résultats" id="strSeeAllResults" />
+    <string value="Rechercher" id="strStartSearch" />
+    
+    <string value="Options du programme" id="strProgramOptions" />
+
+    <string value="Activer le clic automatique" id="strEnableAutoClick" />
+    <string value="Afficher Vistart dans la zone de notification" id="strShowTrayIcon" />
+    <string value="Démarrer avec Windows" id="strStartWithWindows" />
+    <string value="Effacer la liste des programmes fréquemment utilisés" id="strClearFrequentList" />
+    <string value="Options d'indéxation" id="strIndexOptions" />
+    <string value="Afficher ViStart avec la touche Windows" id="strFilterWinKey" />
+    
+    <string value="Choisir un nouveau thème pour le menu démarrer..." id="strNewSkin" />
+    <string value="Choisir un nouveau boutton démarrer..." id="strOrbNew" />
+    <string value="Rétablir le boutton démarrer" id="strOrbReset" />
+    <string value="Exécuter" id="strRun" />
+    <string value="Veille..." id="strSleep" />
+    
+    <string value="OK" id="strOK" />
+    <string value="Annuler" id="strCancel" />
+    <string value="Parcourir" id="strBrowse" />
+    
+    <string value="Explore" id="strExplore" />
+    <string value="Manage" id="strManage" />
+    <string value="Search" id="strSearch" />
+    <string value="Show on Desktop" id="strShowOnDesktop" />
+    <string value="Hide from Desktop" id="strHideFromDesktop" />
+    <string value="Ouvrir" id="strOpen" />
+    <string value="Ne pas afficher les options dans le panneau de navigation" id="strHideOption" />
+    <string value="Ne pas afficher le contenu du dossier" id="strDontPopOut" />
+    <string value="Afficher le contenu du dossier" id="strPopOut" />
+    <string value="Renommer" id="strRename" />
+    <string value="Send to Desktop" id="strCopyToDesktop" />
+    <string value="Send to ViPad" id="strCopyToViPad" />
+    <string value="Propriétés" id="strProperties" />
+    
+    <string value="Réduire" id="strCollapse" />
+    <string value="Dérouler" id="strExpand" />
+    <string value="Exécuter en tant qu'administrateur" id="strRunAsAdmin" />
+    <string value="Détacher du menu démarrer" id="strUnpinToStartMenu" />
+    <string value="Attacher au menu démarrer" id="strPinToStartMenu" />
+    <string value="Remove from this list" id="strRemoveFromList" />
+
+    <string value="Programs" id="strPrograms" />
+    <string value="Files" id="strFiles" />
+    
+    <string value="All files" id="strAllExtensions" />
+
+    <string value="Documents" id="strDocuments" />
+    <string value="Images" id="strPictures" />
+    <string value="Musique" id="strMusic" />
+    <string value="Vidéos" id="strVideos" />
+    <string value="Jeux" id="strGames" />
+    <string value="Ordinateur" id="strComputer" />
+    <string value="Documents Récent" id="strRecent" />
+    <string value="Réseaux" id="strNetwork" />
+    <string value="Connexion" id="strConnectTo"  />
+    <string value="Panneau de Configuration" id="strControlPanel" />
+    <string value="Aide et Support" id="strHelp" />
+
+    <string value="ViStart Control panel" id="strViStartControlPanel" />
+
+    <string value="Style" id="strStyle" />
+    <string value="Configure" id="strConfigure" />
+    <string value="Desktop" id="strDesktop" />
+
+    <string value="Which Start Menu would you like?" id="strWhichStartMenu" />
+    <string value="Install..." id="strInstall" />
+    <string value="Select a new ViStart theme file" id="strViStartTheme" />
+    
+    <string value="What Start Orb would you like?" id="strWhatStarOrb" />
+    <string value="Use Skin default Orb" id="strSkinDefaultOrb" />
+    <string value="Pick image..." id="strPick" />
+    <string value="Choose new Start Button image" id="strViStartOrb" />
+
+    <string value="What do you want to see on your start menu?" id="strWhatToSee" />
+    <string value="What shortcuts would you like to see on the right hand side" id="strWhatToSeeOnRight" />
+
+    <string value="Show program menu first" id="strProgramsFirst" />
+    <string value="Show user picture" id="strShowUserPicture" />
+
+    <string value="Don't show item" id="strDontShowItem" />
+    <string value="Display item as link" id="strDisplayAsLink" />
+    <string value="Display item as menu" id="strDisplayAsMenu" />
+
+    <string value="What should happen when you are on the desktop?" id="strDesktopSettings" />
+    <string value="Both Windows Keys show ViStart" id="strBothWinKeysViStart" />
+    <string value="[Left Windows Key] shows ViStart" id="strLeftWinKey" />
+    <string value="[Right Windows Key] shows ViStart" id="strRightWinKey" />
+    <string value="Both Windows keys shows Windows Menu" id="strBothWinKeys" />
+
+    <string value="Start button shows ViStart" id="strStartViStart" />
+    <string value="Start button shows the Windows menu" id="strStartWinMenu" />
+
+    <string value="Restore Windows Start Menu Shortcut" id="strRestoreStartMenu" />
+    
+    <string value="(ViStart the program itself is created by Lee Matthew Chantrey)" id="strCopyright" />
+ 
+ </strings>
