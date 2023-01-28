@@ -14,12 +14,12 @@
 
 - Clone the repo
 - Ensure you have Visual Basic 6.0(Service Pack 6) installed
-- Grab the WinU and GDIPlus TLB - extract the TLBs and add as a reference to the project
+- Grab the SHELLLNK, WinU and GDIPlus TLB - extract the TLBs and add as a reference to the project
 - Grab the HookMe zip - extract the files (IHookSink.cls, MHookMe.bas) over the placeholder files (IHookSink.cls, MHookMe.bas) and disregard any other files
 - Grab the release of the [GDIPlusWrapper library](https://github.com/lee-soft/GDIPlusWrapper/releases) and re-add it as a reference to this project
 - Compile and enjoy
 
-## Acknolwedgements
+## Acknowledgements
 
 I have been unable to contact the original author of the vbAccelerator GDIPlusWrapper (steve@vbaccelerator.com). Permission to include his library here is pending and until it is approved I will not be able to include it here.
 
