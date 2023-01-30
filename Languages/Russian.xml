@@ -62,10 +62,12 @@
     
     <string value="All files" id="strAllExtensions" />
 
+    <string value="Libraries" id="strLibraries" />
     <string value="Документы" id="strDocuments" />
     <string value="Изображения" id="strPictures" />
     <string value="Музыка" id="strMusic" />
     <string value="Видео" id="strVideos" />
+    <string value="Downloads" id="strDownloads"/>
     <string value="Игры" id="strGames" />
     <string value="Компьютер" id="strComputer" />
     <string value="Недавние" id="strRecent" />
@@ -73,6 +75,8 @@
     <string value="Подключиться к" id="strConnectTo"  />
     <string value="Панель управления" id="strControlPanel" />
     <string value="Справка и поддержка" id="strHelp" />
+    <string value="Help and Support" id="strHelp" />
+    <string value="Set Program Access and Defaults" id="strSetDefaults" />
 
     <string value="ViStart Control panel" id="strViStartControlPanel" />
 

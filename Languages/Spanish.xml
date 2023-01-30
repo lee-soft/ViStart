@@ -63,17 +63,21 @@
     
     <string value="All files" id="strAllExtensions" />
 
+    <string value="Libraries" id="strLibraries" />
     <string value="Documentos" id="strDocuments" />
     <string value="Imágenes" id="strPictures" />
     <string value="Música" id="strMusic" />
     <string value="Vídeos" id="strVideos" />
+    <string value="Downloads" id="strDownloads"/>
     <string value="Juegos" id="strGames" />
     <string value="Equipo" id="strComputer" />
     <string value="Reciente" id="strRecent" />
     <string value="Red" id="strNetwork" />
     <string value="Conectar a..." id="strConnectTo"  />
     <string value="Panel de Control" id="strControlPanel" />
+    <string value="Printers and Faxes" id="strPrinters" />
     <string value="Ayuda y Soporte" id="strHelp" />
+    <string value="Set Program Access and Defaults" id="strSetDefaults" />
 
     <string value="ViStart Control panel" id="strViStartControlPanel" />
 

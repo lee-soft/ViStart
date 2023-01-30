@@ -68,7 +68,7 @@ Begin VB.Form frmAbout
       EndProperty
       Height          =   705
       Left            =   120
-      Picture         =   "frmAbout.frx":058A
+      Picture         =   "frmAbout.frx":74F2
       ScaleHeight     =   705
       ScaleWidth      =   720
       TabIndex        =   0
@@ -130,7 +130,7 @@ Begin VB.Form frmAbout
       ForeColor       =   &H00FF0000&
       Height          =   255
       Left            =   1760
-      MouseIcon       =   "frmAbout.frx":203C
+      MouseIcon       =   "frmAbout.frx":8FA4
       MousePointer    =   99  'Custom
       TabIndex        =   9
       Top             =   4320
@@ -157,7 +157,7 @@ Begin VB.Form frmAbout
    End
    Begin VB.Label Label6 
       BackStyle       =   0  'Transparent
-      Caption         =   $"frmAbout.frx":2346
+      Caption         =   $"frmAbout.frx":92AE
       Height          =   1095
       Left            =   120
       TabIndex        =   4

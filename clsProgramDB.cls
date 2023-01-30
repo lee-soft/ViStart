@@ -298,24 +298,29 @@ Dim exclusiveOSVersion As Single
         'Set thisProgram.Icon = New ViIcon
         
         szIconPath = vbNullString
-        thisProgram.OpenCount = thisFrequentProgram.Attributes.getNamedItem("opened").Text
+        
         thisProgram.Path = VarScan(thisFrequentProgram.Attributes.getNamedItem("path").Text)
-        
-        thisProgram.Caption = VarScan(thisFrequentProgram.Attributes.getNamedItem("caption").Text)
+	
+		If FileExists(thisProgram.Path) Then
+	
+	        thisProgram.OpenCount = thisFrequentProgram.Attributes.getNamedItem("opened").Text
+	        thisProgram.Caption = VarScan(thisFrequentProgram.Attributes.getNamedItem("caption").Text)
                
-        If Not IsNull(thisFrequentProgram.getAttribute("icon")) Then
-            thisProgram.szIcon = thisFrequentProgram.getAttribute("icon")
-            szIconPath = VarScan(thisProgram.szIcon)
-        End If
+	        If Not IsNull(thisFrequentProgram.getAttribute("icon")) Then
+	            thisProgram.szIcon = thisFrequentProgram.getAttribute("icon")
+	            szIconPath = VarScan(thisProgram.szIcon)
+	        End If
             
-        If FileExists(szIconPath) Then
-            Set thisProgram.Icon = IconManager.GetViIcon(szIconPath, True)
-        Else
-            Set thisProgram.Icon = IconManager.GetViIcon(thisProgram.Path, True)
-            thisProgram.szIcon = vbNullString
-        End If
+	        If FileExists(szIconPath) Then
+	            Set thisProgram.Icon = IconManager.GetViIcon(szIconPath, True)
+	        Else
+	            Set thisProgram.Icon = IconManager.GetViIcon(thisProgram.Path, True)
+	            thisProgram.szIcon = vbNullString
+	        End If
         
-        m_frequentPrograms.Add thisProgram, thisProgram.Path
+			m_frequentPrograms.Add thisProgram, thisProgram.Path
+			
+		End If
     Next
 
     For Each thisFrequentProgram In programsXML.selectNodes("//programs/pinned_program")

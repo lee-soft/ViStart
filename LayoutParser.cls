@@ -105,7 +105,7 @@ Dim validLayout As Boolean
     XOffset = 0
     
     GroupOptionsSeparator = 35
-    GroupOptionsLimit = 12
+    GroupOptionsLimit = 17
     
     defaultFontFace = g_DefaultFont.FontFace
     
