@@ -62,17 +62,21 @@
     
     <string value="All files" id="strAllExtensions" />
 
+    <string value="Libraries" id="strLibraries" />
     <string value="Documenten" id="strDocuments" />
     <string value="Afbeeldingen" id="strPictures" />
     <string value="Muziek" id="strMusic" />
     <string value="Videos" id="strVideos" />
+    <string value="Downloads" id="strDownloads"/>
     <string value="Games" id="strGames" />
     <string value="Computer" id="strComputer" />
     <string value="Recent" id="strRecent" />
     <string value="Netwerk" id="strNetwork" />
     <string value="Verbinding maken" id="strConnectTo"  />
     <string value="Configuratiescherm" id="strControlPanel" />
+    <string value="Printers and Faxes" id="strPrinters" />
     <string value="Help and Ondersteuning" id="strHelp" />
+    <string value="Set Program Access and Defaults" id="strSetDefaults" />
 
     <string value="ViStart Control panel" id="strViStartControlPanel" />
 

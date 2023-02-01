@@ -162,6 +162,10 @@ Dim xmlLanguageFile As New DOMDocument
     UserVariable.Add "Connect To", "strConnectTo"
     UserVariable.Add "Control Panel", "strControlPanel"
     UserVariable.Add "Help and Support", "strHelp"
+    UserVariable.Add "Printers and Faxes", "strPrinters"
+    UserVariable.Add "Set Program Access and Defaults", "strSetDefaults"
+    UserVariable.Add "Libraries", "strLibraries"
+    UserVariable.Add "Downloads", "strDownloads"
 
     UserVariable.Add "ViStart Control panel", "strViStartControlPanel"
 	

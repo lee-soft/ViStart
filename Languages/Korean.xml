@@ -62,17 +62,21 @@
     
     <string value="All files" id="strAllExtensions" />
 
+    <string value="Libraries" id="strLibraries" />
     <string value="문서" id="strDocuments" />
     <string value="사진" id="strPictures" />
     <string value="음악" id="strMusic" />
     <string value="비디오" id="strVideos" />
+    <string value="Downloads" id="strDownloads"/>
     <string value="게임" id="strGames" />
     <string value="컴퓨터" id="strComputer" />
     <string value="최근문서" id="strRecent" />
     <string value="네트워크" id="strNetwork" />
     <string value="연결" id="strConnectTo"  />
     <string value="제어판" id="strControlPanel" />
+    <string value="Printers and Faxes" id="strPrinters" />
     <string value="도움 및 지원" id="strHelp" />
+    <string value="Set Program Access and Defaults" id="strSetDefaults" />
 
     <string value="ViStart Control panel" id="strViStartControlPanel" />
 

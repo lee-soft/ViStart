@@ -2,6 +2,7 @@
 
 	<general>
 	
+		<!--current_skin>Windows XP Luna Blue</current_skin-->
 		<current_skin>Windows 7 Start Menu</current_skin>
 		<current_orb></current_orb>
 		<enable_trayicon>True</enable_trayicon>
@@ -10,6 +11,7 @@
 		<start_button_shows_windows_menu>False</start_button_shows_windows_menu>
 		<catch_left_windows_key>True</catch_left_windows_key>
 		<catch_right_windows_key>True</catch_right_windows_key>
+		<!--language>English</language-->
 		
 	</general>
 
@@ -30,19 +32,26 @@
 	<navigation_pane>
 	
 		<folder caption="%username%" path="%USERPROFILE%" rollover="userfolder.png" display_as_menu="False" visible="True"/>
+		<!--folder caption="%strLibraries%" path="explorer &quot;/e,::{031E4825-7B94-4dc3-B131-E946B44C8DD5}&quot;" rollover="libraries.png" display_as_menu="False" visible="True"/-->
 		<folder caption="%strDocuments%" path="%CSIDL_PERSONAL%" rollover="documents.png" display_as_menu="False" visible="True"/>
 		<folder caption="%strPictures%" path="%CSIDL_MYPICTURES%" rollover="pictures.png" display_as_menu="False" visible="True"/>
 		<folder caption="%strMusic%" path="%CSIDL_MYMUSIC%" rollover="music.png" display_as_menu="False" visible="True"/>
 		<folder caption="%strVideos%" path="%CSIDL_MYVIDEO%" rollover="videos.png" display_as_menu="False" visible="True"/>
-		<folder caption="%strGames%" path="explorer &quot;/e,::{ED228FDF-9EA8-4870-83b1-96b02CFE0D52}&quot;" rollover="games.png" display_as_menu="False" visible="False"/>
+		<!--folder caption="%strDownloads%" path="explorer &quot;/e,::{088e3905-0323-4b02-9826-5d99428e115f}&quot;" rollover="downloads.png" display_as_menu="False" visible="True"/-->
+		<folder caption="%strDownloads%" path="%CSIDL_PERSONAL%\Downloads" rollover="downloads.png" display_as_menu="False" visible="False"/>
+		<!--folder caption="%strGames%" path="explorer &quot;/e,::{ED228FDF-9EA8-4870-83b1-96b02CFE0D52}&quot;" rollover="games.png" display_as_menu="False" visible="False"/-->
+		<folder caption="%strGames%" path="%ALLUSERSPROFILE%\Start Menu\Programs\Games" rollover="games.png" display_as_menu="False" visible="True"/>
 		<folder caption="%strRecent%" path="%CSIDL_Recent%" rollover="recent.png" display_as_menu="True" visible="True"/>
 
 		<custom caption="%strComputer%" exec="explorer.exe /e,::{20D04FE0-3AEA-1069-A2D8-08002B30309D}" rollover="computer.png" visible="True"/>
 		<custom caption="%strNetwork%" exec="explorer &quot;::{208D2C60-3AEA-1069-A2D7-08002B30309D}&quot;" rollover="network.png" visible="True"/>
 		<custom caption="%strConnectTo%" exec="rundll32.exe shell32.dll,Control_RunDLL ncpa.cpl" rollover="connect.png" visible="True"/>
 		<custom caption="%strControlPanel%" exec="control" rollover="control.png" visible="True"/>
+		<custom caption="%strSetDefaults%" exec="rundll32.exe shell32.dll,Control_RunDLL appwiz.cpl,,3" rollover="defaultprograms.png" visible="False"/>
+		<custom caption="%strPrinters%" exec="explorer.exe /e,::{2227A280-3AEA-1069-A2DE-08002B30309D}" rollover="printers.png" visible="False"/>
+		<!--custom caption="%strHelp%" exec="%windir%\HelpPane.exe -embedding" rollover="help.png" visible="False" /-->
+		<custom caption="%strHelp%" exec="%windir%\pchealth\helpctr\binaries\HelpCtr.exe" rollover="help.png" visible="False"/>
 		<custom caption="%strRun%" exec=":FileRun" rollover="run.png" visible="True"/>
-		<custom caption="%strHelp%" exec="%windir%\HelpPane.exe -embedding" rollover="help.png" visible="True" />
 	
 	</navigation_pane>
 

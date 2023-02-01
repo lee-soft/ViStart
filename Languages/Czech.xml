@@ -62,17 +62,21 @@
     
     <string value="Všechny soubory" id="strAllExtensions" />
 
+    <string value="Knihovny" id="strLibraries" />
     <string value="Dokumenty" id="strDocuments" />
     <string value="Obrázky" id="strPictures" />
     <string value="Hudba" id="strMusic" />
     <string value="Videa" id="strVideos" />
+    <string value="Stažené soubory" id="strDownloads"/>
     <string value="Hry" id="strGames" />
     <string value="Počítač" id="strComputer" />
     <string value="Poslední dokumenty" id="strRecent" />
     <string value="Síť" id="strNetwork" />
     <string value="Připojit k" id="strConnectTo"  />
     <string value="Ovládací panely" id="strControlPanel" />
+    <string value="Tiskárny a faxy" id="strPrinters" />
     <string value="Nápověda a podpora" id="strHelp" />
+    <string value="Přístup a výchozí nastavení programů" id="strSetDefaults" />
 
     <string value="Možnosti ViStart" id="strViStartControlPanel" />
 
