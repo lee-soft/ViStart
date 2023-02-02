@@ -32,6 +32,7 @@ Public ShowProgramsFirst As Boolean
 Public StartButtonShowsWindowsMenu As Boolean
 Public CatchLeftWindowsKey As Boolean
 Public CatchRightWindowsKey As Boolean
+Public ShowSplashScreen As Boolean
 Public LanguageFile As String
 
 'Public IndexingLimit As Boolean
@@ -66,6 +67,7 @@ Dim settingsXML As IXMLDOMElement
     Me.StartButtonShowsWindowsMenu = CBool(ExtractXMLTextElement(m_generalXML, "start_button_shows_windows_menu", CStr(False)))
     Me.CatchLeftWindowsKey = CBool(ExtractXMLTextElement(m_generalXML, "catch_left_windows_key", CStr(True)))
     Me.CatchRightWindowsKey = CBool(ExtractXMLTextElement(m_generalXML, "catch_right_windows_key", CStr(True)))
+    Me.ShowSplashScreen = CBool(ExtractXMLTextElement(m_generalXML, "show_splash_screen", CStr(True)))
     Me.LanguageFile = CStr(ExtractXMLTextElement(m_generalXML, "language", vbNullString))
     
     If Not FileExists(App.Path & "\languages\" & Me.LanguageFile & ".xml") Then
@@ -109,6 +111,7 @@ Dim generalXML As IXMLDOMElement
     CreateXMLTextElement m_settingsDoc, generalXML, "start_button_shows_windows_menu", CStr(Me.StartButtonShowsWindowsMenu)
     CreateXMLTextElement m_settingsDoc, generalXML, "catch_left_windows_key", CStr(Me.CatchLeftWindowsKey)
     CreateXMLTextElement m_settingsDoc, generalXML, "catch_right_windows_key", CStr(Me.CatchRightWindowsKey)
+    CreateXMLTextElement m_settingsDoc, generalXML, "show_splash_screen", CStr(Me.ShowSplashScreen)
     CreateXMLTextElement m_settingsDoc, generalXML, "language", CStr(Me.LanguageFile)
 
     If Not Programs.DumpPrograms(m_settingsDoc, settingsXML) Then

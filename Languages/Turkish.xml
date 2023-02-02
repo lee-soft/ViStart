@@ -1,41 +1,41 @@
 ﻿<strings>
 
-    <string value="Log uit" id="strLogOff" />
-    <string value="Andere gebruiker" id="strSwitchUser"  />
-    <string value="Afsluiten" id="strShutdown" />
-    <string value="Opnieuw Starten" id="strRestart" />
-    <string value="Stand Bij" id="strStandBy" />
-    <string value="Slaapstand" id="strHibernate" />
-    <string value="Afsluiten" id="strExit" />
-    <string value="Over Ons" id="strAbout" />
-    <string value="Opties" id="strOptions" />
+    <string value="Oturumu Kapat" id="strLogOff" />
+    <string value="Kullanıcı Değiştir" id="strSwitchUser" />
+    <string value="Bilgisayarı Kapat" id="strShutdown" />
+    <string value="Yeniden Başlat" id="strRestart" />
+    <string value="Beklemeye al" id="strStandBy" />
+    <string value="Uyku Modu" id="strHibernate" />
+    <string value="Çıkış" id="strExit" /> 
+    <string value="Hakkında" id="strAbout" />
+    <string value="Ayarlar" id="strOptions" />
     
-    <string value="Alle Programma's" id="strAllPrograms" />
-    <string value="Terug" id="strBack" />
+    <string value="Tüm Programlar" id="strAllPrograms" />
+    <string value="Geri" id="strBack" />
     
-    <string value="Geen programma's voldoen aan de zoek criteria" id="strNotFound" />
-    <string value="Bekijk alle resultaten" id="strSeeAllResults" />
-    <string value="Start Zoeken" id="strStartSearch" />
+    <string value="No programs match the search criteria" id="strNotFound" />
+    <string value="See all results" id="strSeeAllResults" />
+    <string value="Aramaya Başla" id="strStartSearch" />
     
-    <string value="Programma Opties" id="strProgramOptions" />
+    <string value="Program Ayarları" id="strProgramOptions" />
 
-    <string value="Activeer Auto-Klik optie" id="strEnableAutoClick" />
-    <string value="Laat ViStart's Tray Icoon zien" id="strShowTrayIcon" />
-    <string value="Start met Windows" id="strStartWithWindows" />
+    <string value="Otomatik Tıkla'yı etkinleştir" id="strEnableAutoClick" />
+    <string value="Görev çubuğunda göster" id="strShowTrayIcon" />
+    <string value="Başlangıçta Çalıştır" id="strStartWithWindows" />
     <string value="Show splash screen on startup" id="strSplash" />
-    <string value="Maak meest gebruikte programma lijst leeg" id="strClearFrequentList" />
-    <string value="Indexeer Opties" id="strIndexOptions" />
-    <string value="IAanroepen van ViStart met Windows Sleutel" id="strFilterWinKey" />
+    <string value="Sık kullanılan programları temizle" id="strClearFrequentList" />
+    <string value="Indexing Options" id="strIndexOptions" />
+    <string value="Invoke ViStart with Windows Key" id="strFilterWinKey" />
     
-    <string value="Kies een nieuwe Start Menu Skin..." id="strNewSkin" />
-    <string value="Kies een nieuwe Button afbeelding..." id="strOrbNew" />
+    <string value="Pick a new Start Menu Skin..." id="strNewSkin" />
+    <string value="Pick a new Start Button image..." id="strOrbNew" />
     <string value="Reset Orb image" id="strOrbReset" />
-    <string value="open programma..." id="strRun" />
-    <string value="Slaapstand..." id="strSleep" />
+    <string value="Çalıştır..." id="strRun" />
+    <string value="Sleep..." id="strSleep" />
     
-    <string value="OK" id="strOK" />
-    <string value="Annuleren" id="strCancel" />
-    <string value="Bladeren" id="strBrowse" />
+    <string value="Tamam" id="strOK" />
+    <string value="İptal" id="strCancel" >
+    <string value="Browse" id="strBrowse" />
     
     <string value="Explore" id="strExplore" />
     <string value="Manage" id="strManage" />
@@ -43,19 +43,19 @@
     <string value="Show on Desktop" id="strShowOnDesktop" />
     <string value="Hide from Desktop" id="strHideFromDesktop" />
     <string value="Open" id="strOpen" />
-    <string value="Laat -optie- niet zien in navigatie panel" id="strHideOption" />
-    <string value="Geen pop out folder inhoud" id="strDontPopOut" />
-    <string value="Pop out folder inhoud" id="strPopOut" />
-    <string value="Hernoemen" id="strRename" />
+    <string value="Don't show option in navigation pane" id="strHideOption" />
+    <string value="Don't pop out folder contents" id="strDontPopOut" />
+    <string value="Pop out folder contents" id="strPopOut" />
+    <string value="Rename" id="strRename" />
     <string value="Send to Desktop" id="strCopyToDesktop" />
     <string value="Send to ViPad" id="strCopyToViPad" />
-    <string value="Eigenschappen" id="strProperties" />
+    <string value="Properties" id="strProperties" />
     
-    <string value="Inklappen" id="strCollapse" />
-    <string value="Uitklappen" id="strExpand" />
-    <string value="Run als administrator" id="strRunAsAdmin" />
-    <string value="Unpin van Start Menu" id="strUnpinToStartMenu" />
-    <string value="Pin naar Start Menu" id="strPinToStartMenu" />
+    <string value="Collapse" id="strCollapse" />
+    <string value="Expand" id="strExpand" />
+    <string value="Run as administrator" id="strRunAsAdmin" />
+    <string value="Unpin from Start Menu" id="strUnpinToStartMenu" />
+    <string value="Pin To Start Menu" id="strPinToStartMenu" />
     <string value="Remove from this list" id="strRemoveFromList" />
 
     <string value="Programs" id="strPrograms" />
@@ -64,19 +64,19 @@
     <string value="All files" id="strAllExtensions" />
 
     <string value="Libraries" id="strLibraries" />
-    <string value="Documenten" id="strDocuments" />
-    <string value="Afbeeldingen" id="strPictures" />
-    <string value="Muziek" id="strMusic" />
-    <string value="Videos" id="strVideos" />
+    <string value="Belgelerim" id="strDocuments" />
+    <string value="Resimlerim" id="strPictures" />
+    <string value="Müziklerim" id="strMusic" />
+    <string value="Videolarım" id="strVideos" />
     <string value="Downloads" id="strDownloads"/>
     <string value="Games" id="strGames" />
-    <string value="Computer" id="strComputer" />
-    <string value="Recent" id="strRecent" />
-    <string value="Netwerk" id="strNetwork" />
-    <string value="Verbinding maken" id="strConnectTo"  />
-    <string value="Configuratiescherm" id="strControlPanel" />
+    <string value="Bilgisayarım" id="strComputer" />
+    <string value="Geçmiş Öğeler" id="strRecent" />
+    <string value="Ağ Bağlantılarım" id="strNetwork" />
+    <string value="Bağlan" id="strConnectTo"/>
+    <string value="Denetim Masası" id="strControlPanel" />
     <string value="Printers and Faxes" id="strPrinters" />
-    <string value="Help and Ondersteuning" id="strHelp" />
+    <string value="Yardım ve Destek" id="strHelp" />
     <string value="Set Program Defaults" id="strSetDefaults" />
 
     <string value="ViStart Control panel" id="strViStartControlPanel" />

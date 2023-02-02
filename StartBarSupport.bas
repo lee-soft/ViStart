@@ -111,6 +111,7 @@ Dim xmlLanguageFile As New DOMDocument
     UserVariable.Add "Enable Auto-Click feature", "strEnableAutoClick"
     UserVariable.Add "Show ViStart's Tray Icon", "strShowTrayIcon"
     UserVariable.Add "Start with Windows", "strStartWithWindows"
+    UserVariable.Add "Show splash screen on startup", "strSplash"
     UserVariable.Add "Clear frequently used program list", "strClearFrequentList"
     UserVariable.Add "Indexing Options", "strIndexOptions"
     UserVariable.Add "Invoke ViStart with Windows Key", "strFilterWinKey"
@@ -173,17 +174,17 @@ Dim xmlLanguageFile As New DOMDocument
     UserVariable.Add "Configure", "strConfigure"
     UserVariable.Add "Desktop", "strDesktop"
 
-    UserVariable.Add "Which Start Menu would you like?", "strWhichStartMenu"
+    UserVariable.Add "Start Menu Appearence", "strWhichStartMenu"
     UserVariable.Add "Install...", "strInstall"
     UserVariable.Add "Select a new ViStart theme file", "strViStartTheme"
 	
-    UserVariable.Add "What Start Orb would you like?", "strWhatStarOrb"
+    UserVariable.Add "Start Orb Skin", "strWhatStarOrb"
     UserVariable.Add "Use Skin default Orb", "strSkinDefaultOrb"
     UserVariable.Add "Pick image...", "strPick"
     UserVariable.Add "Choose new Start Button image", "strViStartOrb"
 
-    UserVariable.Add "What do you want to see on your start menu?", "strWhatToSee"
-    UserVariable.Add "What shortcuts would you like to see on the right hand side", "strWhatToSeeOnRight"
+    UserVariable.Add "Visibility settings", "strWhatToSee"
+    UserVariable.Add "Default settings for Start menu items", "strWhatToSeeOnRight"
 
     UserVariable.Add "Show program menu first", "strProgramsFirst"
     UserVariable.Add "Show user picture", "strShowUserPicture"
@@ -192,7 +193,7 @@ Dim xmlLanguageFile As New DOMDocument
     UserVariable.Add "Display item as link", "strDisplayAsLink"
     UserVariable.Add "Display item as menu", "strDisplayAsMenu"
 
-    UserVariable.Add "What should happen when you are on the desktop?", "strDesktopSettings"
+    UserVariable.Add "Set default desktop actions", "strDesktopSettings"
     UserVariable.Add "Both Windows Keys show ViStart", "strBothWinKeysViStart"
     UserVariable.Add "[Left Windows Key] shows ViStart", "strLeftWinKey"
     UserVariable.Add "[Right Windows Key] shows ViStart", "strRightWinKey"

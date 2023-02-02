@@ -449,14 +449,20 @@ Sub Main()
     End If
 
     
-    ShowLoadingForm
-    SetLoadingCaption "LOADING"
+	If Settings.ShowSplashScreen = True Then
+		ShowLoadingForm
+		SetLoadingCaption "LOADING"
+	End If
+	 
+
     DoEvents
     
     InitForms
-
-    g_winLoading.timSplashMin.Enabled = True
-    
+	
+	If Settings.ShowSplashScreen = True Then
+		g_winLoading.timSplashMin.Enabled = True
+    End If
+	
     If Not g_WDSInitialized Then Index_MyDirectory
     
     If App.CompanyName <> "Lee-Soft.com" Then

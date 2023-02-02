@@ -334,28 +334,33 @@ Dim exclusiveOSVersion As Single
         If exclusiveOSVersion = 0 Or WindowsVersion >= exclusiveOSVersion Then
         
             szIconPath = vbNullString
-            thisProgram.OpenCount = thisFrequentProgram.Attributes.getNamedItem("opened").Text
-            thisProgram.Path = VarScan(thisFrequentProgram.Attributes.getNamedItem("path").Text)
-            thisProgram.Caption = thisFrequentProgram.Attributes.getNamedItem("caption").Text
             
-            If Not IsNull(thisFrequentProgram.getAttribute("icon")) Then
-                thisProgram.szIcon = thisFrequentProgram.getAttribute("icon")
-                szIconPath = VarScan(thisProgram.szIcon)
-            End If
-    
-            If FileExists(szIconPath) Then
-                Set thisProgram.Icon = IconManager.GetViIcon(szIconPath, True)
-            Else
-                thisProgram.szIcon = vbNullString
-            
-                If thisProgram.Path = "!default_menu" Then
-                    Set thisProgram.Icon = IconManager.GetViIcon(AppPath & "plugins\metroprovider.exe", True)
-                Else
-                    Set thisProgram.Icon = IconManager.GetViIcon(thisProgram.Path, True)
-                End If
-            End If
-    
-            m_pinnedPrograms.Add thisProgram, thisProgram.Path
+			thisProgram.Path = VarScan(thisFrequentProgram.Attributes.getNamedItem("path").Text)
+			
+			If FileExists(thisProgram.Path) Then
+				
+				thisProgram.OpenCount = thisFrequentProgram.Attributes.getNamedItem("opened").Text
+				thisProgram.Caption = thisFrequentProgram.Attributes.getNamedItem("caption").Text
+				
+				If Not IsNull(thisFrequentProgram.getAttribute("icon")) Then
+					thisProgram.szIcon = thisFrequentProgram.getAttribute("icon")
+					szIconPath = VarScan(thisProgram.szIcon)
+				End If
+		
+				If FileExists(szIconPath) Then
+					Set thisProgram.Icon = IconManager.GetViIcon(szIconPath, True)
+				Else
+					thisProgram.szIcon = vbNullString
+				
+					If thisProgram.Path = "!default_menu" Then
+						Set thisProgram.Icon = IconManager.GetViIcon(AppPath & "plugins\metroprovider.exe", True)
+					Else
+						Set thisProgram.Icon = IconManager.GetViIcon(thisProgram.Path, True)
+					End If
+				End If
+		
+				m_pinnedPrograms.Add thisProgram, thisProgram.Path
+			End If
         End If
     Next
     

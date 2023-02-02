@@ -70,10 +70,10 @@ Begin VB.Form frmControlPanel
                Strikethrough   =   0   'False
             EndProperty
             Height          =   375
-            Left            =   1560
+            Left            =   0
             TabIndex        =   15
-            Top             =   1680
-            Width           =   4335
+            Top             =   960
+            Width           =   3615
          End
          Begin VB.CheckBox chkProgramMenuFirst 
             BackColor       =   &H00FFFFFF&
@@ -88,17 +88,17 @@ Begin VB.Form frmControlPanel
                Strikethrough   =   0   'False
             EndProperty
             Height          =   375
-            Left            =   1560
+            Left            =   3840
             TabIndex        =   14
-            Top             =   1200
-            Width           =   4335
+            Top             =   960
+            Width           =   3855
          End
          Begin ViStart.SettingsOption MenuItem 
             Height          =   615
             Index           =   0
-            Left            =   480
+            Left            =   0
             TabIndex        =   16
-            Top             =   3240
+            Top             =   1680
             Visible         =   0   'False
             Width           =   6975
             _ExtentX        =   7223
@@ -106,7 +106,7 @@ Begin VB.Form frmControlPanel
          End
          Begin VB.Label Label4 
             BackStyle       =   0  'Transparent
-            Caption         =   "What shortcuts would you like to see on the right hand side ?"
+            Caption         =   "Default settings for Start menu items"
             BeginProperty Font 
                Name            =   "Segoe Print"
                Size            =   14.25
@@ -116,10 +116,10 @@ Begin VB.Form frmControlPanel
                Italic          =   0   'False
                Strikethrough   =   0   'False
             EndProperty
-            Height          =   975
-            Left            =   240
-            TabIndex        =   18
-            Top             =   2520
+            Height          =   495
+            Left            =   0
+            TabIndex        =   45
+            Top             =   1680
             Width           =   7215
          End
          Begin VB.Label Label3 
@@ -135,7 +135,7 @@ Begin VB.Form frmControlPanel
                Strikethrough   =   0   'False
             EndProperty
             Height          =   615
-            Left            =   240
+            Left            =   0
             TabIndex        =   17
             Top             =   240
             Width           =   7215
@@ -156,19 +156,28 @@ Begin VB.Form frmControlPanel
       EndProperty
       Height          =   8175
       Index           =   2
-      Left            =   6600
+      Left            =   2520
       ScaleHeight     =   8175
       ScaleWidth      =   8655
       TabIndex        =   0
-      Top             =   2640
+      Top             =   7080
       Visible         =   0   'False
       Width           =   8655
+      Begin VB.CheckBox chkShowSplashScreen 
+         BackColor       =   &H00FFFFFF&
+         Caption         =   "Show splash screen on startup"
+         Height          =   400
+         Left            =   720
+         TabIndex        =   42
+         Top             =   3240
+         Width           =   5055
+      End
       Begin VB.CommandButton cmdShowMetroShortcut 
          Caption         =   "Restore Windows Start Menu Shortcut"
-         Height          =   495
-         Left            =   1440
-         TabIndex        =   40
-         Top             =   3720
+         Height          =   400
+         Left            =   720
+         TabIndex        =   39
+         Top             =   3840
          Width           =   4935
       End
       Begin VB.PictureBox picWindows8 
@@ -178,7 +187,7 @@ Begin VB.Form frmControlPanel
          Left            =   480
          ScaleHeight     =   4455
          ScaleWidth      =   8055
-         TabIndex        =   32
+         TabIndex        =   31
          Top             =   4320
          Visible         =   0   'False
          Width           =   8055
@@ -195,9 +204,9 @@ Begin VB.Form frmControlPanel
                Strikethrough   =   0   'False
             EndProperty
             Height          =   375
-            Left            =   960
-            TabIndex        =   37
-            Top             =   2760
+            Left            =   240
+            TabIndex        =   36
+            Top             =   2520
             Width           =   5055
          End
          Begin VB.CheckBox chkDisableBottomLeftCorner 
@@ -213,8 +222,8 @@ Begin VB.Form frmControlPanel
                Strikethrough   =   0   'False
             EndProperty
             Height          =   375
-            Left            =   1560
-            TabIndex        =   36
+            Left            =   240
+            TabIndex        =   35
             Top             =   2040
             Width           =   5055
          End
@@ -231,8 +240,8 @@ Begin VB.Form frmControlPanel
                Strikethrough   =   0   'False
             EndProperty
             Height          =   375
-            Left            =   1560
-            TabIndex        =   35
+            Left            =   240
+            TabIndex        =   34
             Top             =   1560
             Width           =   5055
          End
@@ -249,8 +258,8 @@ Begin VB.Form frmControlPanel
                Strikethrough   =   0   'False
             EndProperty
             Height          =   375
-            Left            =   1560
-            TabIndex        =   34
+            Left            =   240
+            TabIndex        =   33
             Top             =   1080
             Width           =   5055
          End
@@ -267,8 +276,8 @@ Begin VB.Form frmControlPanel
                Strikethrough   =   0   'False
             EndProperty
             Height          =   375
-            Left            =   960
-            TabIndex        =   33
+            Left            =   240
+            TabIndex        =   32
             Top             =   600
             Width           =   5055
          End
@@ -278,7 +287,7 @@ Begin VB.Form frmControlPanel
             ForeColor       =   &H00000080&
             Height          =   375
             Left            =   840
-            TabIndex        =   39
+            TabIndex        =   38
             Top             =   3360
             Width           =   6735
          End
@@ -295,8 +304,8 @@ Begin VB.Form frmControlPanel
                Strikethrough   =   0   'False
             EndProperty
             Height          =   615
-            Left            =   0
-            TabIndex        =   38
+            Left            =   240
+            TabIndex        =   37
             Top             =   0
             Width           =   7695
          End
@@ -313,10 +322,10 @@ Begin VB.Form frmControlPanel
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Height          =   375
-         Left            =   1440
-         TabIndex        =   31
-         Top             =   3120
+         Height          =   400
+         Left            =   720
+         TabIndex        =   30
+         Top             =   2835
          Width           =   5055
       End
       Begin VB.Timer timDelayUnload 
@@ -337,10 +346,10 @@ Begin VB.Form frmControlPanel
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Height          =   375
-         Left            =   1440
-         TabIndex        =   19
-         Top             =   2640
+         Height          =   400
+         Left            =   720
+         TabIndex        =   18
+         Top             =   2445
          Width           =   5055
       End
       Begin VB.ComboBox cmbWindowsOrb 
@@ -353,13 +362,13 @@ Begin VB.Form frmControlPanel
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Height          =   465
+         Height          =   360
          ItemData        =   "frmControlPanel.frx":058A
-         Left            =   1440
+         Left            =   720
          List            =   "frmControlPanel.frx":0591
          Style           =   2  'Dropdown List
          TabIndex        =   2
-         Top             =   1440
+         Top             =   1200
          Width           =   4935
       End
       Begin VB.ComboBox cmbWindowsKey 
@@ -372,18 +381,18 @@ Begin VB.Form frmControlPanel
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Height          =   465
+         Height          =   360
          ItemData        =   "frmControlPanel.frx":05A4
-         Left            =   1440
+         Left            =   720
          List            =   "frmControlPanel.frx":05AB
          Style           =   2  'Dropdown List
          TabIndex        =   1
-         Top             =   2040
+         Top             =   1800
          Width           =   4935
       End
       Begin VB.Label Label6 
          BackStyle       =   0  'Transparent
-         Caption         =   "What should happen when you are on the desktop?"
+         Caption         =   "Default settings for Start menu items"
          BeginProperty Font 
             Name            =   "Segoe Print"
             Size            =   14.25
@@ -394,9 +403,9 @@ Begin VB.Form frmControlPanel
             Strikethrough   =   0   'False
          EndProperty
          Height          =   615
-         Left            =   480
+         Left            =   720
          TabIndex        =   3
-         Top             =   720
+         Top             =   480
          Width           =   7695
       End
    End
@@ -414,12 +423,21 @@ Begin VB.Form frmControlPanel
       EndProperty
       Height          =   8175
       Index           =   0
-      Left            =   3375
+      Left            =   3360
       ScaleHeight     =   8175
       ScaleWidth      =   8655
       TabIndex        =   5
       Top             =   0
       Width           =   8655
+      Begin VB.ComboBox cmbRollover 
+         Height          =   360
+         Left            =   720
+         Style           =   2  'Dropdown List
+         TabIndex        =   44
+         Top             =   5280
+         Visible         =   0   'False
+         Width           =   4935
+      End
       Begin VB.CommandButton cmdMoreOrbs 
          Caption         =   "More ..."
          BeginProperty Font 
@@ -432,9 +450,9 @@ Begin VB.Form frmControlPanel
             Strikethrough   =   0   'False
          EndProperty
          Height          =   495
-         Left            =   6360
-         TabIndex        =   21
-         Top             =   4800
+         Left            =   5880
+         TabIndex        =   20
+         Top             =   600
          Visible         =   0   'False
          Width           =   1575
       End
@@ -450,9 +468,9 @@ Begin VB.Form frmControlPanel
             Strikethrough   =   0   'False
          EndProperty
          Height          =   495
-         Left            =   6360
-         TabIndex        =   20
-         Top             =   2640
+         Left            =   5880
+         TabIndex        =   19
+         Top             =   2760
          Visible         =   0   'False
          Width           =   1575
       End
@@ -467,10 +485,10 @@ Begin VB.Form frmControlPanel
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Height          =   495
-         Left            =   6360
+         Height          =   400
+         Left            =   5880
          TabIndex        =   9
-         Top             =   4540
+         Top             =   3345
          Width           =   1575
       End
       Begin VB.CommandButton cmdInstallTheme 
@@ -484,10 +502,10 @@ Begin VB.Form frmControlPanel
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Height          =   495
-         Left            =   6360
+         Height          =   400
+         Left            =   5880
          TabIndex        =   8
-         Top             =   2380
+         Top             =   1185
          Width           =   1575
       End
       Begin VB.ComboBox cmbStartOrbs 
@@ -500,13 +518,13 @@ Begin VB.Form frmControlPanel
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Height          =   465
+         Height          =   360
          ItemData        =   "frmControlPanel.frx":05BE
-         Left            =   1200
+         Left            =   720
          List            =   "frmControlPanel.frx":05C0
          Style           =   2  'Dropdown List
          TabIndex        =   7
-         Top             =   4560
+         Top             =   3360
          Width           =   4935
       End
       Begin VB.ComboBox cmbThemes 
@@ -519,14 +537,33 @@ Begin VB.Form frmControlPanel
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Height          =   465
+         Height          =   360
          ItemData        =   "frmControlPanel.frx":05C2
-         Left            =   1200
+         Left            =   720
          List            =   "frmControlPanel.frx":05C4
          Style           =   2  'Dropdown List
          TabIndex        =   6
-         Top             =   2400
+         Top             =   1200
          Width           =   4935
+      End
+      Begin VB.Label Label7 
+         BackStyle       =   0  'Transparent
+         Caption         =   "What rollover would you like?"
+         BeginProperty Font 
+            Name            =   "Arial"
+            Size            =   14.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   615
+         Left            =   720
+         TabIndex        =   43
+         Top             =   4560
+         Visible         =   0   'False
+         Width           =   4575
       End
       Begin VB.Label Label2 
          BackStyle       =   0  'Transparent
@@ -541,14 +578,14 @@ Begin VB.Form frmControlPanel
             Strikethrough   =   0   'False
          EndProperty
          Height          =   615
-         Left            =   360
+         Left            =   720
          TabIndex        =   11
-         Top             =   3840
+         Top             =   2640
          Width           =   4575
       End
       Begin VB.Label Label1 
          BackStyle       =   0  'Transparent
-         Caption         =   "Which start menu would you like?"
+         Caption         =   "Start Menu Appearence"
          BeginProperty Font 
             Name            =   "Segoe Print"
             Size            =   14.25
@@ -559,9 +596,9 @@ Begin VB.Form frmControlPanel
             Strikethrough   =   0   'False
          EndProperty
          Height          =   615
-         Left            =   360
+         Left            =   720
          TabIndex        =   10
-         Top             =   1680
+         Top             =   480
          Width           =   5295
       End
    End
@@ -588,7 +625,7 @@ Begin VB.Form frmControlPanel
       ScaleHeight     =   545
       ScaleMode       =   3  'Pixel
       ScaleWidth      =   577
-      TabIndex        =   22
+      TabIndex        =   21
       Top             =   1440
       Visible         =   0   'False
       Width           =   8655
@@ -609,7 +646,7 @@ Begin VB.Form frmControlPanel
          Left            =   1080
          MouseIcon       =   "frmControlPanel.frx":05C6
          MousePointer    =   99  'Custom
-         TabIndex        =   42
+         TabIndex        =   41
          Top             =   1560
          Visible         =   0   'False
          Width           =   6660
@@ -632,7 +669,7 @@ Begin VB.Form frmControlPanel
          Left            =   1080
          MouseIcon       =   "frmControlPanel.frx":0718
          MousePointer    =   99  'Custom
-         TabIndex        =   41
+         TabIndex        =   40
          Tag             =   "http://lee-soft.com"
          Top             =   7440
          Width           =   6660
@@ -652,7 +689,7 @@ Begin VB.Form frmControlPanel
          EndProperty
          Height          =   375
          Left            =   1080
-         TabIndex        =   24
+         TabIndex        =   23
          Top             =   6750
          Width           =   6660
       End
@@ -671,7 +708,7 @@ Begin VB.Form frmControlPanel
          EndProperty
          Height          =   1200
          Left            =   720
-         TabIndex        =   23
+         TabIndex        =   22
          Top             =   480
          Width           =   7455
       End
@@ -693,7 +730,7 @@ Begin VB.Form frmControlPanel
       Left            =   13320
       ScaleHeight     =   8175
       ScaleWidth      =   8655
-      TabIndex        =   25
+      TabIndex        =   24
       Top             =   7200
       Visible         =   0   'False
       Width           =   8655
@@ -701,7 +738,7 @@ Begin VB.Form frmControlPanel
          Caption         =   "&Start Service"
          Height          =   495
          Left            =   4800
-         TabIndex        =   29
+         TabIndex        =   28
          Top             =   5040
          Width           =   2055
       End
@@ -709,7 +746,7 @@ Begin VB.Form frmControlPanel
          Caption         =   "&Install Service"
          Height          =   495
          Left            =   2400
-         TabIndex        =   28
+         TabIndex        =   27
          Top             =   5040
          Width           =   2055
       End
@@ -728,7 +765,7 @@ Begin VB.Form frmControlPanel
          EndProperty
          Height          =   495
          Left            =   2040
-         TabIndex        =   30
+         TabIndex        =   29
          Tag             =   "Service status: "
          Top             =   4200
          Width           =   5055
@@ -747,7 +784,7 @@ Begin VB.Form frmControlPanel
          EndProperty
          Height          =   1455
          Left            =   840
-         TabIndex        =   27
+         TabIndex        =   26
          Top             =   1320
          Width           =   7215
       End
@@ -766,7 +803,7 @@ Begin VB.Form frmControlPanel
          EndProperty
          Height          =   615
          Left            =   840
-         TabIndex        =   26
+         TabIndex        =   25
          Top             =   480
          Width           =   7215
       End
@@ -871,6 +908,10 @@ Private Sub chkStartWithWindows_Click()
     Else
         Registry.Delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Run\ViStart"
     End If
+End Sub
+
+Private Sub chkShowSplashScreen_Click()
+    Settings.ShowSplashScreen = CheckBoxToBoolean(chkShowSplashScreen.Value)
 End Sub
 
 Private Sub Ensure_NukeMetro()
@@ -1036,8 +1077,9 @@ Private Sub Form_Load()
         
     Label6.Caption = GetPublicString("strDesktopSettings")
         
-    chkSystemTray.Caption = GetPublicString("strStartViStart")
-    chkStartWithWindows.Caption = GetPublicString("strStartWinMenu")
+    chkSystemTray.Caption = GetPublicString("strShowTrayIcon")
+    chkStartWithWindows.Caption = GetPublicString("strStartWithWindows")
+    chkShowSplashScreen.Caption = GetPublicString("strSplash")
         
     cmdShowMetroShortcut.Caption = GetPublicString("strRestoreStartMenu")
 	
@@ -1255,6 +1297,7 @@ End Sub
 
 Sub InitializeDesktopFrame()
     chkSystemTray.Value = BooleanToCheckBox(Settings.EnableTrayIcon)
+    chkShowSplashScreen.Value = BooleanToCheckBox(Settings.ShowSplashScreen)
     
     cmbWindowsKey.Clear
     cmbWindowsKey.AddItem GetPublicString("strBothWinKeysViStart")

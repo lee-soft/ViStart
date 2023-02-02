@@ -11,6 +11,7 @@
 		<start_button_shows_windows_menu>False</start_button_shows_windows_menu>
 		<catch_left_windows_key>True</catch_left_windows_key>
 		<catch_right_windows_key>True</catch_right_windows_key>
+		<show_splash_screen>True</show_splash_screen>
 		<!--language>English</language-->
 		
 	</general>

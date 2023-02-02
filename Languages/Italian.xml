@@ -22,6 +22,7 @@
     <string value="Attiva funzione Auto-Click" id="strEnableAutoClick" />
     <string value="Mostra Icona di ViStart nell'area di notifica" id="strShowTrayIcon" />
     <string value="Carica all'avvio di Windows" id="strStartWithWindows" />
+    <string value="Show splash screen on startup" id="strSplash" />
     <string value="Cancella spesso la lista dei programmi usati frequentemente" id="strClearFrequentList" />
     <string value="Opzioni indicizzazione" id="strIndexOptions" />
     <string value="Richiama ViStart con il tasto Windows" id="strFilterWinKey" />
@@ -76,7 +77,7 @@
     <string value="Pannello di controllo" id="strControlPanel" />
     <string value="Printers and Faxes" id="strPrinters" />
     <string value="Aiuto" id="strHelp" />
-    <string value="Set Program Access and Defaults" id="strSetDefaults" />
+    <string value="Set Program Defaults" id="strSetDefaults" />
 
     <string value="ViStart Control panel" id="strViStartControlPanel" />
 
@@ -84,17 +85,17 @@
     <string value="Configure" id="strConfigure" />
     <string value="Desktop" id="strDesktop" />
 
-    <string value="Which Start Menu would you like?" id="strWhichStartMenu" />
+    <string value="Start Menu Appearence" id="strWhichStartMenu" />
     <string value="Install..." id="strInstall" />
     <string value="Select a new ViStart theme file" id="strViStartTheme" />
     
-    <string value="What Start Orb would you like?" id="strWhatStarOrb" />
+    <string value="Start Orb Skin" id="strWhatStarOrb" />
     <string value="Use Skin default Orb" id="strSkinDefaultOrb" />
     <string value="Pick image..." id="strPick" />
     <string value="Choose new Start Button image" id="strViStartOrb" />
 
-    <string value="What do you want to see on your start menu?" id="strWhatToSee" />
-    <string value="What shortcuts would you like to see on the right hand side" id="strWhatToSeeOnRight" />
+    <string value="Visibility settings" id="strWhatToSee" />
+    <string value="Default settings for Start menu items" id="strWhatToSeeOnRight" />
 
     <string value="Show program menu first" id="strProgramsFirst" />
     <string value="Show user picture" id="strShowUserPicture" />
@@ -103,7 +104,7 @@
     <string value="Display item as link" id="strDisplayAsLink" />
     <string value="Display item as menu" id="strDisplayAsMenu" />
 
-    <string value="What should happen when you are on the desktop?" id="strDesktopSettings" />
+    <string value="Set default desktop actions" id="strDesktopSettings" />
     <string value="Both Windows Keys show ViStart" id="strBothWinKeysViStart" />
     <string value="[Left Windows Key] shows ViStart" id="strLeftWinKey" />
     <string value="[Right Windows Key] shows ViStart" id="strRightWinKey" />

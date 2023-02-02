@@ -43,6 +43,8 @@ Public XOffset As Long
 
 Public ProgramsMenuSeperatorColour As Long
 Public GroupOptionsLimit As Long
+Public GroupOptionsVisibilityLimit As Long
+Public EnableVisibilityLimit As Boolean
 Public ForceClearType As Boolean
 
 Public ErrorParsing As Boolean
@@ -212,8 +214,11 @@ Dim validLayout As Boolean
     
     Set subElement = xmlLayout.selectSingleNode("startmenu_base//groupoptions")
     If Not IsNull(subElement.getAttribute("separator")) Then GroupOptionsSeparator = CLng(subElement.getAttribute("separator"))
-    If Not IsNull(subElement.getAttribute("limit")) Then GroupOptionsLimit = CLng(subElement.getAttribute("limit"))
-    
+	
+	GroupOptionsVisibilityLimit = GroupOptionsLimit
+    If Not IsNull(subElement.getAttribute("limit")) Then GroupOptionsVisibilityLimit = CLng(subElement.getAttribute("limit"))
+    If Not IsNull(subElement.getAttribute("enabled")) Then EnableVisibilityLimit = CBool(getAttribute_IgnoreError(subElement, "enabled", False))
+	
     Set subElement = xmlLayout.selectSingleNode("startmenu_base//searchbox")
     SearchBoxFocusColour = HEXCOL2RGB(getAttribute_IgnoreError(subElement, "focuscolour", "#000000"))
     SearchBoxForeColour = HEXCOL2RGB(getAttribute_IgnoreError(subElement, "forecolour", "#6D6D6D"))
