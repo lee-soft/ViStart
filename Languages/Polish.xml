@@ -85,7 +85,7 @@
     <string value="Configure" id="strConfigure" />
     <string value="Desktop" id="strDesktop" />
 
-    <string value="Start Menu Appearence" id="strWhichStartMenu" />
+    <string value="Start Menu Skin" id="strWhichStartMenu" />
     <string value="Install..." id="strInstall" />
     <string value="Select a new ViStart theme file" id="strViStartTheme" />
     
@@ -94,6 +94,9 @@
     <string value="Pick image..." id="strPick" />
     <string value="Choose new Start Button image" id="strViStartOrb" />
 
+    <string value="Rollover Skin" id="strWhatRollover" />
+    <string value="Use Skin default Rollover" id="strSkinDefaultRollover" />
+   
     <string value="Visibility settings" id="strWhatToSee" />
     <string value="Default settings for Start menu items" id="strWhatToSeeOnRight" />
 

@@ -94,8 +94,11 @@
     <string value="Vybrat..." id="strPick" />
     <string value="Vyberte soubor vzhledu tlačítka Start" id="strViStartOrb" />
 
-    <string value="Nastavení viditelnosti" id="strWhatToSee" />
-    <string value="Výchozí nastavení položek nabídky Start" id="strWhatToSeeOnRight" />
+    <string value="Vzhled ikon" id="strWhatRollover" />
+    <string value="Výchozí nastavení vzhledu" id="strSkinDefaultRollover" />
+   
+    <string value="Visibility settings" id="strWhatToSee" />
+    <string value="Default settings for Start menu items" id="strWhatToSeeOnRight" />
 
     <string value="Zobrazit seznam programů jako první" id="strProgramsFirst" />
     <string value="Zobrazit obrázek uživatelského účtu" id="strShowUserPicture" />
