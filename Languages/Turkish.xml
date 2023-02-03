@@ -1,0 +1,123 @@
+﻿<strings>
+
+    <string value="Oturumu Kapat" id="strLogOff" />
+    <string value="Kullanıcı Değiştir" id="strSwitchUser" />
+    <string value="Bilgisayarı Kapat" id="strShutdown" />
+    <string value="Yeniden Başlat" id="strRestart" />
+    <string value="Beklemeye al" id="strStandBy" />
+    <string value="Uyku Modu" id="strHibernate" />
+    <string value="Çıkış" id="strExit" /> 
+    <string value="Hakkında" id="strAbout" />
+    <string value="Ayarlar" id="strOptions" />
+    
+    <string value="Tüm Programlar" id="strAllPrograms" />
+    <string value="Geri" id="strBack" />
+    
+    <string value="No programs match the search criteria" id="strNotFound" />
+    <string value="See all results" id="strSeeAllResults" />
+    <string value="Aramaya Başla" id="strStartSearch" />
+    
+    <string value="Program Ayarları" id="strProgramOptions" />
+
+    <string value="Otomatik Tıkla'yı etkinleştir" id="strEnableAutoClick" />
+    <string value="Görev çubuğunda göster" id="strShowTrayIcon" />
+    <string value="Başlangıçta Çalıştır" id="strStartWithWindows" />
+    <string value="Show splash screen on startup" id="strSplash" />
+    <string value="Sık kullanılan programları temizle" id="strClearFrequentList" />
+    <string value="Indexing Options" id="strIndexOptions" />
+    <string value="Invoke ViStart with Windows Key" id="strFilterWinKey" />
+    
+    <string value="Pick a new Start Menu Skin..." id="strNewSkin" />
+    <string value="Pick a new Start Button image..." id="strOrbNew" />
+    <string value="Reset Orb image" id="strOrbReset" />
+    <string value="Çalıştır..." id="strRun" />
+    <string value="Sleep..." id="strSleep" />
+    
+    <string value="Tamam" id="strOK" />
+    <string value="İptal" id="strCancel" >
+    <string value="Browse" id="strBrowse" />
+    
+    <string value="Explore" id="strExplore" />
+    <string value="Manage" id="strManage" />
+    <string value="Search" id="strSearch" />
+    <string value="Show on Desktop" id="strShowOnDesktop" />
+    <string value="Hide from Desktop" id="strHideFromDesktop" />
+    <string value="Open" id="strOpen" />
+    <string value="Don't show option in navigation pane" id="strHideOption" />
+    <string value="Don't pop out folder contents" id="strDontPopOut" />
+    <string value="Pop out folder contents" id="strPopOut" />
+    <string value="Rename" id="strRename" />
+    <string value="Send to Desktop" id="strCopyToDesktop" />
+    <string value="Send to ViPad" id="strCopyToViPad" />
+    <string value="Properties" id="strProperties" />
+    
+    <string value="Collapse" id="strCollapse" />
+    <string value="Expand" id="strExpand" />
+    <string value="Run as administrator" id="strRunAsAdmin" />
+    <string value="Unpin from Start Menu" id="strUnpinToStartMenu" />
+    <string value="Pin To Start Menu" id="strPinToStartMenu" />
+    <string value="Remove from this list" id="strRemoveFromList" />
+
+    <string value="Programs" id="strPrograms" />
+    <string value="Files" id="strFiles" />
+    
+    <string value="All files" id="strAllExtensions" />
+
+    <string value="Libraries" id="strLibraries" />
+    <string value="Belgelerim" id="strDocuments" />
+    <string value="Resimlerim" id="strPictures" />
+    <string value="Müziklerim" id="strMusic" />
+    <string value="Videolarım" id="strVideos" />
+    <string value="Downloads" id="strDownloads"/>
+    <string value="Games" id="strGames" />
+    <string value="Bilgisayarım" id="strComputer" />
+    <string value="Geçmiş Öğeler" id="strRecent" />
+    <string value="Ağ Bağlantılarım" id="strNetwork" />
+    <string value="Bağlan" id="strConnectTo"/>
+    <string value="Denetim Masası" id="strControlPanel" />
+    <string value="Printers and Faxes" id="strPrinters" />
+    <string value="Yardım ve Destek" id="strHelp" />
+    <string value="Set Program Defaults" id="strSetDefaults" />
+
+    <string value="ViStart Control panel" id="strViStartControlPanel" />
+
+    <string value="Style" id="strStyle" />
+    <string value="Configure" id="strConfigure" />
+    <string value="Desktop" id="strDesktop" />
+
+    <string value="Start Menu Skin" id="strWhichStartMenu" />
+    <string value="Install..." id="strInstall" />
+    <string value="Select a new ViStart theme file" id="strViStartTheme" />
+    
+    <string value="Start Orb Skin" id="strWhatStarOrb" />
+    <string value="Use Skin default Orb" id="strSkinDefaultOrb" />
+    <string value="Pick image..." id="strPick" />
+    <string value="Choose new Start Button image" id="strViStartOrb" />
+
+    <string value="Rollover Skin" id="strWhatRollover" />
+    <string value="Use Skin default Rollover" id="strSkinDefaultRollover" />
+   
+    <string value="Visibility settings" id="strWhatToSee" />
+    <string value="Default settings for Start menu items" id="strWhatToSeeOnRight" />
+
+    <string value="Show program menu first" id="strProgramsFirst" />
+    <string value="Show user picture" id="strShowUserPicture" />
+
+    <string value="Don't show item" id="strDontShowItem" />
+    <string value="Display item as link" id="strDisplayAsLink" />
+    <string value="Display item as menu" id="strDisplayAsMenu" />
+
+    <string value="Set default desktop actions" id="strDesktopSettings" />
+    <string value="Both Windows Keys show ViStart" id="strBothWinKeysViStart" />
+    <string value="[Left Windows Key] shows ViStart" id="strLeftWinKey" />
+    <string value="[Right Windows Key] shows ViStart" id="strRightWinKey" />
+    <string value="Both Windows keys shows Windows Menu" id="strBothWinKeys" />
+
+    <string value="Start button shows ViStart" id="strStartViStart" />
+    <string value="Start button shows the Windows menu" id="strStartWinMenu" />
+
+    <string value="Restore Windows Start Menu Shortcut" id="strRestoreStartMenu" />
+    
+    <string value="(ViStart the program itself is created by Lee Matthew Chantrey)" id="strCopyright" />
+ 
+ </strings>

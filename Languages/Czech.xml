@@ -22,6 +22,7 @@
     <string value="Povolit funkci Auto-Click" id="strEnableAutoClick" />
     <string value="Zobrazit ikonu ViStart u hodin" id="strShowTrayIcon" />
     <string value="Spustit při startu počítače" id="strStartWithWindows" />
+    <string value="Zobrazit úvodní obrazovku při spuštění" id="strSplash" />
     <string value="Vymazat seznam často používaných programů" id="strClearFrequentList" />
     <string value="Možnosti indexování" id="strIndexOptions" />
     <string value="Otevřít ViStart pomocí klávesy Windows" id="strFilterWinKey" />
@@ -76,7 +77,7 @@
     <string value="Ovládací panely" id="strControlPanel" />
     <string value="Tiskárny a faxy" id="strPrinters" />
     <string value="Nápověda a podpora" id="strHelp" />
-    <string value="Přístup a výchozí nastavení programů" id="strSetDefaults" />
+    <string value="Výchozí nastavení programů" id="strSetDefaults" />
 
     <string value="Možnosti ViStart" id="strViStartControlPanel" />
 
@@ -93,8 +94,11 @@
     <string value="Vybrat..." id="strPick" />
     <string value="Vyberte soubor vzhledu tlačítka Start" id="strViStartOrb" />
 
-    <string value="Nastavení viditelnosti" id="strWhatToSee" />
-    <string value="Výchozí nastavení položek nabídky Start" id="strWhatToSeeOnRight" />
+    <string value="Vzhled ikon" id="strWhatRollover" />
+    <string value="Výchozí nastavení vzhledu" id="strSkinDefaultRollover" />
+   
+    <string value="Visibility settings" id="strWhatToSee" />
+    <string value="Default settings for Start menu items" id="strWhatToSeeOnRight" />
 
     <string value="Zobrazit seznam programů jako první" id="strProgramsFirst" />
     <string value="Zobrazit obrázek uživatelského účtu" id="strShowUserPicture" />

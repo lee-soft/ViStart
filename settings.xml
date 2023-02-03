@@ -5,12 +5,14 @@
 		<!--current_skin>Windows XP Luna Blue</current_skin-->
 		<current_skin>Windows 7 Start Menu</current_skin>
 		<current_orb></current_orb>
+		<current_rollover></current_rollover>
 		<enable_trayicon>True</enable_trayicon>
 		<show_userpicture>True</show_userpicture>
 		<show_program_menu_first>False</show_program_menu_first>
 		<start_button_shows_windows_menu>False</start_button_shows_windows_menu>
 		<catch_left_windows_key>True</catch_left_windows_key>
 		<catch_right_windows_key>True</catch_right_windows_key>
+		<show_splash_screen>True</show_splash_screen>
 		<!--language>English</language-->
 		
 	</general>
@@ -51,6 +53,7 @@
 		<custom caption="%strPrinters%" exec="explorer.exe /e,::{2227A280-3AEA-1069-A2DE-08002B30309D}" rollover="printers.png" visible="False"/>
 		<!--custom caption="%strHelp%" exec="%windir%\HelpPane.exe -embedding" rollover="help.png" visible="False" /-->
 		<custom caption="%strHelp%" exec="%windir%\pchealth\helpctr\binaries\HelpCtr.exe" rollover="help.png" visible="False"/>
+		<custom caption="%strSearch%" exec="Explorer /N,::{E17D4FC0-5564-11D1-83F2-00A0C90DC849}" rollover="search.png" visible="False"/>
 		<custom caption="%strRun%" exec=":FileRun" rollover="run.png" visible="True"/>
 	
 	</navigation_pane>

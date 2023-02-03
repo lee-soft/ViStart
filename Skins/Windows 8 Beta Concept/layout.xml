@@ -1,0 +1,25 @@
+<startmenu_base x_offset="0" y_offset="0">
+
+     <vielement id="searchbox" x="24" y="445" width="200" height="15" />
+     <vielement id="programmenu" x="10" y="11" width="248" height="376" />
+     <vielement id="frequentprogramsmenu" x="10" y="11" width="248" height="376" />
+     
+     <vielement id="allprograms_rollover" x="11" y="403" />
+     <vielement id="allprograms_arrow" x="13" y="406" />
+     <vielement id="allprograms_text" x="46" y="407" />
+     <vielement id="groupoptions" x="268" y="42" font="default_font"/>
+     <vielement id="rolloverplaceholder" x="300" y="-31" />
+
+     <vielement id="shutdown_button" x="266" y="439" visible="true" />
+     <vielement id="logoff_button" x="319" y="433" visible="false" />
+     <vielement id="arrow_button" x="338" y="440" />
+     <vielement id="jumplist_viewer" x="275" y="20" width="205" height="418" font="jumplistfont_font" />
+     <vielement id="shutdown_text" x="271" y="444" font="default_font" visible="true" />
+
+     <vifont id="default_font" face="Tahoma" size="10" colour="#000000" />
+     <vifont id="jumplistfont_font" face="Tahoma" size="13" colour="#000000" />
+
+     <frequentprogramsmenu separatorcolour="#ffffff" />
+     <groupoptions limit="11" enabled="true" />
+    
+</startmenu_base>

@@ -311,7 +311,9 @@ Public Property Let Filter(new_strKeyWord As String)
         mSearchProvider_onNewItem
         
         'If m_bKeyboardMode Then
+		'If m_bSearchResultsEmpty Then
             SelectFirstItem
+		'End If
         'Else
             'm_pCursor.X = -1
             'm_lngNodeIndex = -1
@@ -1017,56 +1019,70 @@ Dim lngSpareNodeSpaces2 As Long
                     
                     
                     For Each thisTV_Type In m_colTypes
+						
+						If thisTV_Type.Children.count > 0 Then
+							
+							m_lastTypeCount = thisTV_Type.Children.count
+						
+							'Debug.Print "Results of: " & thisTV_Type.Caption & " @ " & mstrKeyWord & " @ " & thisTV_Type.Children.count
+						
+							mTreeViewSearchResults.RootNode.copyNode thisTV_Type.Node
+							
+							'm_seperator_max = 0
+							
+							If thisTV_Type.AllowQuery Then
+								recQuery = mTreeViewData.QueryCollection(mstrKeyWord, thisTV_Type.Children, m_nodeDisplayLimit, m_bExceedsLimits, lngSpareNodeSpaces)
+								m_programCount = recQuery.Bottom / m_cNodeSpace
+							
+							Else
+								recQuery = mTreeViewData.ShowAll(thisTV_Type.Children, m_nodeDisplayLimit, m_bExceedsLimits)
+							End If
+							
+							lngSpareNodeSpaces2 = lngSpareNodeSpaces
+							
+							m_rrolloverSize.Bottom = m_rrolloverSize.Bottom + recQuery.Bottom + (m_cNodeSpace + M_SEPARATOR_GAP)
+							
+							If m_rrolloverSize.Right < recQuery.Right Then
+								m_rrolloverSize.Right = recQuery.Right
+							End If
+						
+						Else
+							m_bSearchResultsEmpty = False
+						
+						End If
+					Next
 					
-                        m_lastTypeCount = thisTV_Type.Children.count
-                    
-                        'Debug.Print "Results of: " & thisTV_Type.Caption & " @ " & mstrKeyWord
-                    
-                        mTreeViewSearchResults.RootNode.copyNode thisTV_Type.Node
-                        
-                        'm_seperator_max = 0
-                        
-                        If thisTV_Type.AllowQuery Then
-                            recQuery = mTreeViewData.QueryCollection(mstrKeyWord, thisTV_Type.Children, m_nodeDisplayLimit, m_bExceedsLimits, lngSpareNodeSpaces)
-                            m_programCount = recQuery.Bottom / m_cNodeSpace
-                        
-                        Else
-                            recQuery = mTreeViewData.ShowAll(thisTV_Type.Children, m_nodeDisplayLimit, m_bExceedsLimits)
-                        End If
-                        
-                        lngSpareNodeSpaces2 = lngSpareNodeSpaces
-                        
-                        m_rrolloverSize.Bottom = m_rrolloverSize.Bottom + recQuery.Bottom + (m_cNodeSpace + M_SEPARATOR_GAP)
-                        
-                        If m_rrolloverSize.Right < recQuery.Right Then
-                            m_rrolloverSize.Right = recQuery.Right
-                        End If
-                    Next
+					
                 Else
+				
                     For Each thisTV_Type In m_colTypes
-                        m_lastTypeCount = thisTV_Type.Children.count
-                    
-                        'Debug.Print "Results of: " & thisTV_Type.Caption
-                    
-                        mTreeViewSearchResults.RootNode.copyNode thisTV_Type.Node
-                        
-                        'm_seperator_max = 0
-                        
-                        If thisTV_Type.AllowQuery Then
-                            recQuery = mTreeViewData.QueryCollection(mstrKeyWord, thisTV_Type.Children)
-                        Else
-                            recQuery = mTreeViewData.ShowAll(thisTV_Type.Children)
-                        End If
-                        
-                        m_rrolloverSize.Bottom = m_rrolloverSize.Bottom + recQuery.Bottom + (m_cNodeSpace + M_SEPARATOR_GAP)
-                        
-                        If m_rrolloverSize.Right < recQuery.Right Then
-                            m_rrolloverSize.Right = recQuery.Right
-                        End If
+						If thisTV_Type.Children.count > 0 Then
+							m_lastTypeCount = thisTV_Type.Children.count
+						
+							'Debug.Print "Results of: " & thisTV_Type.Caption
+						
+							mTreeViewSearchResults.RootNode.copyNode thisTV_Type.Node
+							
+							'm_seperator_max = 0
+							
+							If thisTV_Type.AllowQuery Then
+								recQuery = mTreeViewData.QueryCollection(mstrKeyWord, thisTV_Type.Children)
+							Else
+								recQuery = mTreeViewData.ShowAll(thisTV_Type.Children)
+							End If
+							
+							m_rrolloverSize.Bottom = m_rrolloverSize.Bottom + recQuery.Bottom + (m_cNodeSpace + M_SEPARATOR_GAP)
+							
+							If m_rrolloverSize.Right < recQuery.Right Then
+								m_rrolloverSize.Right = recQuery.Right
+							End If
+						Else
+							m_bSearchResultsEmpty = False
+							
+						End If
                     Next
                 End If
-                
-                m_bSearchResultsEmpty = False
+
                 m_bSearchMode = False
                     
                 SetScrollbarValues recSize, lngVerticleMax, lngClipVerticle
@@ -1490,7 +1506,7 @@ Dim desiredPosition As Long
         desiredPosition = 2
     End If
     
-    m_TVTType.Caption = theSearchObject.SearchType
+    m_TVTType.Caption = GetPublicString("strFiles")
     m_TVTType.DisplayLimit = 5
     m_TVTType.AllowQuery = False
     

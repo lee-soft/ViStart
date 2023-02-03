@@ -228,7 +228,7 @@ Dim sP() As String
     Case "REGISTER"
         If UBound(sP) = 1 Then
             If IsWindow(sourcehWnd) = APITRUE Then
-                RegisterSearchSlave sourcehWnd, URLDecode(CStr(sP(1)))
+                RegisterSearchSlave sourcehWnd, URLDecode(CStr(GetPublicString("strFiles")))
             End If
         End If
     
