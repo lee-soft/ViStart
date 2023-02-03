@@ -53,6 +53,7 @@
 		<custom caption="%strPrinters%" exec="explorer.exe /e,::{2227A280-3AEA-1069-A2DE-08002B30309D}" rollover="printers.png" visible="False"/>
 		<!--custom caption="%strHelp%" exec="%windir%\HelpPane.exe -embedding" rollover="help.png" visible="False" /-->
 		<custom caption="%strHelp%" exec="%windir%\pchealth\helpctr\binaries\HelpCtr.exe" rollover="help.png" visible="False"/>
+		<custom caption="%strSearch%" exec="Explorer /N,::{E17D4FC0-5564-11D1-83F2-00A0C90DC849}" rollover="search.png" visible="False"/>
 		<custom caption="%strRun%" exec=":FileRun" rollover="run.png" visible="True"/>
 	
 	</navigation_pane>
