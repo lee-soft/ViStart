@@ -575,6 +575,7 @@ Dim recOrb As RECT
 
 Dim lngTop As Long
 Dim lngLeft As Long
+Dim topSet As Boolean: topSet = False
 
 Dim taskbarEdge As AbeBarEnum
 Dim taskBarHeight As Long
@@ -585,7 +586,7 @@ Dim buttonMaxHeight As Long
 
     taskbarEdge = GetTaskBarEdge()
 
-    GetWindowRect g_hwndReBarWindow32, recReBar32
+    GetWindowRect IIf(g_Windows11, g_lnghwndTaskBar, g_hwndReBarWindow32), recReBar32
     GetWindowRect m_startButton.hWnd, recOrb
     
     taskBarHeight = (recReBar32.Bottom - recReBar32.Top)
@@ -648,12 +649,17 @@ Dim buttonMaxHeight As Long
             
     ElseIf taskbarEdge = abe_bottom Then
     
+        'MsgBox "abe_bottom"
+    
         If m_startButton.MaxHeight <> GetHeightWithRegardsToFix(taskBarHeight) Then
             m_startButton.MaxHeight = GetHeightWithRegardsToFix(taskBarHeight)
             m_ORB_HEIGHT = m_startButton.ScaleHeight
         End If
         
+        'MsgBox "taskbarheight " & taskBarHeight
+        
         lngTop = (((m_ORB_HEIGHT) / 2) - (taskBarHeight) / 2) * -1
+
         'Windows taskbar has a border of 2 pixels
         If Not MainHelper.g_viOrb_fullHeight Then
             lngTop = lngTop + 2
@@ -668,21 +674,22 @@ Dim buttonMaxHeight As Long
                 lngTop = 0
             End If
         End If
+        
+        topSet = True
     End If
 
-    If lngTop <> -1 Then
+    If topSet Then
         'TO BE FIXED!
         
         If m_startButton.mode = 1 Then
-            'Windows XP and Vista
+            'Windows XP and Vista and 11?
             
-            If ((recStartButton.Left) <> (recOrb.Left) Or _
-                (recReBar32.Top + lngTop) <> recOrb.Top) Then
+            'If ((recStartButton.Left) <> (recOrb.Left) Or _
+            '    (recReBar32.Top + lngTop) <> recOrb.Top) Then
         
                 Debug.Print "MOVING; " & (recStartButton.Top) & "<>" & (recOrb.Top)
-                
-                MoveWindow m_startButton.hWnd, recStartButton.Left, recReBar32.Top + lngTop, m_startButton.ScaleWidth, m_startButton.ScaleHeight, True
-            End If
+                MoveWindow m_startButton.hWnd, recStartButton.Left + 2, recReBar32.Top + lngTop, m_startButton.ScaleWidth, m_startButton.ScaleHeight, True
+            'End If
         Else
             'Windows 7 and 8
             

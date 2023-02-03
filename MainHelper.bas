@@ -291,6 +291,8 @@ Dim cmdLineArguements() As String
     If CmdLine.Arguments > 0 Then
         Select Case LCase$(CmdLine.Argument(1))
         
+            Case "/show"
+        
             Case "/ignorepreviousinstance"
                 m_IgnorePreviousInstance = True
         
@@ -444,7 +446,7 @@ Sub Main()
     'Else
     If IsWindow(ShellHelper.g_hwndStartButton) = APIFALSE Then
         If IsWindow(ShellHelper.g_lngHwndViOrbToolbar) = APIFALSE Then
-            frmInstall.Show vbModal
+            If Not g_Windows11 Then frmInstall.Show vbModal
         End If
     End If
 

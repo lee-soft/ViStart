@@ -4,12 +4,12 @@ Option Explicit
 Private Declare Sub CoTaskMemFree Lib "ole32.dll" (ByVal hMem As Long)
 Private Declare Function SHGetPathFromIDListW Lib "shell32" (ByVal pidList As Long, ByVal lpBuffer As Long) As Long
 Private Declare Function GetNextWindow Lib "user32.dll" Alias "GetWindow" (ByVal hWnd As Long, ByVal wFlag As Long) As Long
-Private Declare Function SHAppBarMessage Lib "shell32.dll" (ByVal dwMessage As Long, ByRef pData As appBarData) As Long
+Private Declare Function SHAppBarMessage Lib "Shell32.dll" (ByVal dwMessage As Long, ByRef pData As appBarData) As Long
 
-Private Declare Function SHGetSpecialFolderLocation Lib "shell32.dll" _
+Private Declare Function SHGetSpecialFolderLocation Lib "Shell32.dll" _
                     (ByVal hwndOwner As Long, ByVal nFolder As Long, _
                      pidl As ITEMIDLIST) As Long
-Private Declare Function SHGetPathFromIDList Lib "shell32.dll" Alias "SHGetPathFromIDListA" _
+Private Declare Function SHGetPathFromIDList Lib "Shell32.dll" Alias "SHGetPathFromIDListA" _
                     (ByVal pidl As Long, ByVal pszPath As String) As Long
                         
 Private Declare Function SHGetFolderPath Lib "shfolder" Alias "SHGetFolderPathA" (ByVal hwndOwner As Long, _
@@ -43,6 +43,7 @@ Public g_WindowsVista As Boolean
 Public g_Windows7 As Boolean
 Public g_Windows8 As Boolean
 Public g_Windows81 As Boolean
+Public g_Windows11 As Boolean
 
 Public Type appBarData
     cbSize As Long
@@ -159,6 +160,8 @@ Dim winRegistryVersion As String
     g_Windows7 = False
     g_Windows8 = False
     g_Windows81 = False
+    g_Windows11 = True
+    Exit Function
     
     winRegistryVersion = Registry.Read("HKLM\Software\Microsoft\Windows NT\CurrentVersion\CurrentVersion")
     
