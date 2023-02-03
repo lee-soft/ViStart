@@ -124,7 +124,7 @@ Begin VB.Form frmControlPanel
          End
          Begin VB.Label Label3 
             BackStyle       =   0  'Transparent
-            Caption         =   "What do you want to see on your start menu ?"
+            Caption         =   "Visibility settings"
             BeginProperty Font 
                Name            =   "Segoe Print"
                Size            =   14.25
@@ -435,7 +435,6 @@ Begin VB.Form frmControlPanel
          Style           =   2  'Dropdown List
          TabIndex        =   44
          Top             =   5280
-         Visible         =   0   'False
          Width           =   4935
       End
       Begin VB.CommandButton cmdMoreOrbs 
@@ -548,9 +547,9 @@ Begin VB.Form frmControlPanel
       End
       Begin VB.Label Label7 
          BackStyle       =   0  'Transparent
-         Caption         =   "What rollover would you like?"
+         Caption         =   "Rollover Skin"
          BeginProperty Font 
-            Name            =   "Arial"
+            Name            =   "Segoe Print"
             Size            =   14.25
             Charset         =   0
             Weight          =   400
@@ -562,12 +561,11 @@ Begin VB.Form frmControlPanel
          Left            =   720
          TabIndex        =   43
          Top             =   4560
-         Visible         =   0   'False
          Width           =   4575
       End
       Begin VB.Label Label2 
          BackStyle       =   0  'Transparent
-         Caption         =   "What start orb would you like?"
+         Caption         =   "Start Orb Skin"
          BeginProperty Font 
             Name            =   "Segoe Print"
             Size            =   14.25
@@ -585,7 +583,7 @@ Begin VB.Form frmControlPanel
       End
       Begin VB.Label Label1 
          BackStyle       =   0  'Transparent
-         Caption         =   "Start Menu Appearence"
+         Caption         =   "Start Menu Skin"
          BeginProperty Font 
             Name            =   "Segoe Print"
             Size            =   14.25
@@ -827,11 +825,13 @@ Option Explicit
 
 Public Event onChangeSkin(szNewSkin As String)
 Public Event onChangeOrb(szNewOrb As String)
+Public Event onChangeRollover(szNewRollover As String)
 Public Event onNavigationPanelChange()
 Public Event onRequestAddMetroShortcut()
 
 Private m_skinDir As String
 Private m_orbDir As String
+Private m_rolloverDir As String
 'Private m_serviceInstalled As Boolean
 
 Private m_navigationPane As ViNavigationPane
@@ -954,6 +954,26 @@ Private Sub cmbStartOrbs_Click()
     End If
 End Sub
 
+Private Sub cmbRollover_Change()
+    cmbRollover_Click
+End Sub
+
+Private Sub cmbRollover_Click()
+    
+    If cmbRollover.listIndex = 0 Then
+		Settings.CurrentRollover = vbNullString
+		g_rolloverPath = sCon_AppDataPath & "_skins\" & Settings.CurrentSkin & "\rollover\"
+
+		RaiseEvent onChangeRollover(vbNullString)
+    Else
+		Settings.CurrentRollover = cmbRollover.Text
+        g_rolloverPath = sCon_AppDataPath & "_rollover\" & Settings.CurrentRollover & "\"
+
+        RaiseEvent onChangeRollover(cmbRollover.Text)
+    End If
+
+End Sub
+
 Private Sub cmbThemes_Click()
     ValidateSkin cmbThemes.Text
 End Sub
@@ -1068,7 +1088,9 @@ Private Sub Form_Load()
         
     Label2.Caption = GetPublicString("strWhatStarOrb")
     cmdPickImage.Caption = GetPublicString("strPick")
-        
+ 
+    Label7.Caption = GetPublicString("strWhatRollover")
+ 
     Label3.Caption = GetPublicString("strWhatToSee")
     Label4.Caption = GetPublicString("strWhatToSeeOnRight")
         
@@ -1354,9 +1376,21 @@ End Sub
 Sub InitializeStyleFrame()
     m_skinDir = sCon_AppDataPath & "_skins\"
     m_orbDir = sCon_AppDataPath & "_orbs\"
+    m_rolloverDir = sCon_AppDataPath & "_rollover\"
     
     ListSkins
     ListOrbs
+    ListRollovers
+	
+	' Hide rollover option when no _rollover folder exist
+	If cmbRollover.ListCount > 1 Then
+		Label7.Visible = True
+		cmbRollover.Visible = True
+	Else
+		Label7.Visible = False
+		cmbRollover.Visible = False
+	End If
+	
 End Sub
 
 Sub InititalizeConfigureFrame()
@@ -1452,6 +1486,43 @@ Dim foundOrb As Boolean
         cmbStartOrbs.listIndex = 0
     End If
 
+    Exit Sub
+Handler:
+    MsgBox Err.Description, vbCritical
+End Sub
+
+Sub ListRollovers()
+
+    On Error GoTo Handler
+
+    cmbRollover.Clear
+    cmbRollover.AddItem GetPublicString("strSkinDefaultRollover")
+        
+Dim thisSubFolder As Scripting.Folder
+Dim thisFolder As Scripting.Folder
+
+    If FSO.FolderExists(m_rolloverDir) = False Then
+        Exit Sub
+    End If
+
+    Set thisFolder = FSO.GetFolder(m_rolloverDir)
+    
+    For Each thisSubFolder In thisFolder.SubFolders
+        
+        If FSO.FileExists(m_rolloverDir & thisSubFolder.Name & "\computer.png") Then
+            cmbRollover.AddItem thisSubFolder.Name
+
+            If LCase$(thisSubFolder.Name) = LCase$(Settings.CurrentRollover) Then
+                cmbRollover.listIndex = cmbRollover.ListCount - 1
+            End If
+
+        End If
+    Next
+	
+	If Settings.CurrentRollover = vbNullString Then
+		cmbRollover.listIndex = 0
+	End If
+	
     Exit Sub
 Handler:
     MsgBox Err.Description, vbCritical

@@ -1963,7 +1963,7 @@ Private Sub m_navigationDraw_onChanged()
     ReDraw
     
     If Not m_navigationDraw.SelectedItem Is Nothing Then
-        m_RolloverToShow = g_resourcesPath & "rollover\" & m_navigationDraw.SelectedItem.Rollover
+        m_RolloverToShow = g_rolloverPath & m_navigationDraw.SelectedItem.Rollover
         If FileExists(m_RolloverToShow) Then
             timRolloverDelay.Enabled = False
             timRolloverDelay.Enabled = True

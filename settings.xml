@@ -5,6 +5,7 @@
 		<!--current_skin>Windows XP Luna Blue</current_skin-->
 		<current_skin>Windows 7 Start Menu</current_skin>
 		<current_orb></current_orb>
+		<current_rollover></current_rollover>
 		<enable_trayicon>True</enable_trayicon>
 		<show_userpicture>True</show_userpicture>
 		<show_program_menu_first>False</show_program_menu_first>

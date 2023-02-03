@@ -28,6 +28,7 @@ Public g_rolloverImage As GDIPImage
 Public g_viOrb_fullHeight As Boolean
 Public g_WDSInitialized As Boolean
 Public g_resourcesPath As String
+Public g_rolloverPath As String
 Public g_startButtonFindAttempts As Long
 
 Private Const EXIT_PROGRAM As Long = 1
@@ -77,7 +78,6 @@ End Function
 Public Function FileCheck(szSourcePath As String) As Boolean
 
     If Not FileExists(szSourcePath & "startmenu.png") Or _
-       Not FileExists(szSourcePath & "start_button.png") Or _
        Not FileExists(szSourcePath & "userframe.png") Or _
        Not FileExists(szSourcePath & "bottombuttons_arrow.png") Or _
        Not FileExists(szSourcePath & "bottombuttons_shutdown.png") Or _
@@ -400,6 +400,12 @@ Sub Main()
         g_resourcesPath = sCon_AppDataPath & "_skins\" & Settings.CurrentSkin & "\"
     End If
     
+    If Settings.CurrentRollover <> vbNullString Then
+        g_rolloverPath = sCon_AppDataPath & "_rollover\" & Settings.CurrentRollover & "\"
+	Else
+		g_rolloverPath = sCon_AppDataPath & "_skins\" & Settings.CurrentSkin & "\rollover\"
+    End If
+	
     If ValidateOptions = False Then
         End
     End If

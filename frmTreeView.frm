@@ -311,9 +311,9 @@ Public Property Let Filter(new_strKeyWord As String)
         mSearchProvider_onNewItem
         
         'If m_bKeyboardMode Then
-		If m_bSearchResultsEmpty Then
+		'If m_bSearchResultsEmpty Then
             SelectFirstItem
-		End If
+		'End If
         'Else
             'm_pCursor.X = -1
             'm_lngNodeIndex = -1

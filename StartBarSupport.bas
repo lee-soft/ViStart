@@ -174,7 +174,7 @@ Dim xmlLanguageFile As New DOMDocument
     UserVariable.Add "Configure", "strConfigure"
     UserVariable.Add "Desktop", "strDesktop"
 
-    UserVariable.Add "Start Menu Appearence", "strWhichStartMenu"
+    UserVariable.Add "Start Menu Skin", "strWhichStartMenu"
     UserVariable.Add "Install...", "strInstall"
     UserVariable.Add "Select a new ViStart theme file", "strViStartTheme"
 	
@@ -182,6 +182,9 @@ Dim xmlLanguageFile As New DOMDocument
     UserVariable.Add "Use Skin default Orb", "strSkinDefaultOrb"
     UserVariable.Add "Pick image...", "strPick"
     UserVariable.Add "Choose new Start Button image", "strViStartOrb"
+
+    UserVariable.Add "Rollover Skin", "strWhatRollover"
+    UserVariable.Add "Use Skin default Rollover", "strSkinDefaultRollover"
 
     UserVariable.Add "Visibility settings", "strWhatToSee"
     UserVariable.Add "Default settings for Start menu items", "strWhatToSeeOnRight"
