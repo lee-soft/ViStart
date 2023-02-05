@@ -1,0 +1,123 @@
+﻿<strings>
+
+    <string value="יציאה" id="strLogOff" />
+    <string value="החלף משתמש" id="strSwitchUser"  />
+    <string value="כיבוי" id="strShutdown" />
+    <string value="הפעלה מחדש" id="strRestart" />
+    <string value="מצב המתנה" id="strStandBy" />
+    <string value="מצב שינה" id="strHibernate" />
+    <string value="יציאה" id="strExit" />
+    <string value="אודות" id="strAbout" />
+    <string value="אפשרויות" id="strOptions" />
+    
+    <string value="כלל התוכניות" id="strAllPrograms" />
+    <string value="חזור" id="strBack" />
+    
+    <string value="אין תוכנות תואמות את החיפוש שלך" id="strNotFound" />
+    <string value="הראה תוצאות" id="strSeeAllResults" />
+    <string value="התחל חיפוש" id="strStartSearch" />
+    
+    <string value="הגדרות תוכנה" id="strProgramOptions" />
+
+    <string value="הפעל תכונת לחיצה אוטומטית" id="strEnableAutoClick" />
+    <string value="הראה סמל ממוזער" id="strShowTrayIcon" />
+    <string value="הפעל כאשר המערכת עולה" id="strStartWithWindows" />
+    <string value="הראה לוגו בעת טעינה תוכנה" id="strSplash" />
+    <string value="נקה רשימת תוכנות בשימוש ברירת מחדל" id="strClearFrequentList" />
+    <string value="אופציות מיון" id="strIndexOptions" />
+    <string value="הפעל תוכנה בעת לחיצה על מקש מערכת הפעלה" id="strFilterWinKey" />
+    
+    <string value="בחר מעטפת חדשה עבור תפריט התחל..." id="strNewSkin" />
+    <string value="בחר תמונה חדשה עבור סמל התחל..." id="strOrbNew" />
+    <string value="אפס תמונת ORB" id="strOrbReset" />
+    <string value="הפעל..." id="strRun" />
+    <string value="שינה..." id="strSleep" />
+    
+    <string value="בסדר" id="strOK" />
+    <string value="בטל" id="strCancel" />
+    <string value="בחירת קבצים" id="strBrowse" />
+    
+    <string value="סייר" id="strExplore" />
+    <string value="נהל" id="strManage" />
+    <string value="חפש" id="strSearch" />
+    <string value="הראה על שולחן עבודה" id="strShowOnDesktop" />
+    <string value="הסתר משולחן עבודה" id="strHideFromDesktop" />
+    <string value="פתח" id="strOpen" />
+    <string value="אל תציג אפשרות בחלונית הניווט" id="strHideOption" />
+    <string value="הסתר תוכן תיקייה" id="strDontPopOut" />
+    <string value="הראה תוכן תיקייה" id="strPopOut" />
+    <string value="שנה" id="strRename" />
+    <string value="שלח לשולחן עבודה" id="strCopyToDesktop" />
+    <string value="שלח ל ViPad" id="strCopyToViPad" />
+    <string value="מאפיינים" id="strProperties" />
+    
+    <string value="מזער" id="strCollapse" />
+    <string value="הרחב" id="strExpand" />
+    <string value="הפעל כמנהל" id="strRunAsAdmin" />
+    <string value="בטל שיוך מתפריט התחל" id="strUnpinToStartMenu" />
+    <string value="הצמד לתפריט התחל" id="strPinToStartMenu" />
+    <string value="מחק מהרשימה" id="strRemoveFromList" />
+
+    <string value="תוכניות" id="strPrograms" />
+    <string value="קבצים" id="strFiles" />
+    
+    <string value="כל הקבצים" id="strAllExtensions" />
+
+    <string value="תיקיות" id="strLibraries" />
+    <string value="מסמכים" id="strDocuments" />
+    <string value="תמונות" id="strPictures" />
+    <string value="מוזיקה" id="strMusic" />
+    <string value="סרטים" id="strVideos" />
+    <string value="הורדות" id="strDownloads"/>
+    <string value="משחקים" id="strGames" />
+    <string value="מחשב" id="strComputer" />
+    <string value="לאחרונה" id="strRecent" />
+    <string value="רשת" id="strNetwork" />
+    <string value="התחבר ל" id="strConnectTo"  />
+    <string value="לוח בקרה" id="strControlPanel" />
+    <string value="מדפסות ופקסים" id="strPrinters" />
+    <string value="עזרה ותמיכה" id="strHelp" />
+    <string value="שנה הגדרות ברירות מחדל" id="strSetDefaults" />
+
+    <string value="ViStart לוח בקרה" id="strViStartControlPanel" />
+
+    <string value="סגנון" id="strStyle" />
+    <string value="הגדרה" id="strConfigure" />
+    <string value="שולחן עבודה" id="strDesktop" />
+
+    <string value="הפעל מעטפת תפריט" id="strWhichStartMenu" />
+    <string value="התקן..." id="strInstall" />
+    <string value="בחר קובץ מעטפת חדש" id="strViStartTheme" />
+    
+    <string value="הפעל מעטפת ORB" id="strWhatStarOrb" />
+    <string value="השתמש במעטפת ORB ברירת מחדל" id="strSkinDefaultOrb" />
+    <string value="בחר תמונה..." id="strPick" />
+    <string value="בחר תמונה חדשה עבור כפתור התחל" id="strViStartOrb" />
+
+    <string value="מעטפת משתנה" id="strWhatRollover" />
+    <string value="השתמש במעטפת משתנה ברירת מחדל" id="strSkinDefaultRollover" />
+   
+    <string value="הגדרות תצוגה" id="strWhatToSee" />
+    <string value="הגדרות ברירות מחדל עבור פריטי תפריט התחל" id="strWhatToSeeOnRight" />
+
+    <string value="הצג תחילה את תפריט התוכנית" id="strProgramsFirst" />
+    <string value="הצג תמונת משתמש" id="strShowUserPicture" />
+
+    <string value="אל תראה פריט" id="strDontShowItem" />
+    <string value="הצג פריט כקישור" id="strDisplayAsLink" />
+    <string value="הצג פריט כתפריט" id="strDisplayAsMenu" />
+
+    <string value="הגדרת פעולות ברירת מחדל של שולחן עבודה" id="strDesktopSettings" />
+    <string value="כל מקשי מערכת יפעילו את התוכנה" id="strBothWinKeysViStart" />
+    <string value="רק מקש מערכת שמאל יפעיל את התוכנה" id="strLeftWinKey" />
+    <string value="רק מקש מערכת ימין יפעיל את התוכנה" id="strRightWinKey" />
+    <string value="כל מקשי מערכת יפעילו את תפריט מערכת" id="strBothWinKeys" />
+
+    <string value="כפתור התחל פותח את התוכנה" id="strStartViStart" />
+    <string value="כפתור התחל פותח את תפריט מערכת" id="strStartWinMenu" />
+
+    <string value="שחזר  קיצור דרך של תפריט התחל" id="strRestoreStartMenu" />
+    
+    <string value="(התוכנה המקורית נבנתה עי מטיו שלנדרי)" id="strCopyright" />
+ 
+ </strings>

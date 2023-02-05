@@ -24,6 +24,7 @@ Private m_generalXML As IXMLDOMElement
 
 Public CurrentSkin As String
 Public CurrentOrb As String
+Public CurrentRollover As String
 
 Public EnableAutoClick As Boolean
 Public EnableTrayIcon As Boolean
@@ -61,6 +62,7 @@ Dim settingsXML As IXMLDOMElement
     
     Me.CurrentSkin = CStr(ExtractXMLTextElement(m_generalXML, "current_skin", ""))
     Me.CurrentOrb = CStr(ExtractXMLTextElement(m_generalXML, "current_orb", ""))
+    Me.CurrentRollover = CStr(ExtractXMLTextElement(m_generalXML, "current_rollover", ""))
     Me.EnableTrayIcon = CBool(ExtractXMLTextElement(m_generalXML, "enable_trayicon", CStr(True)))
     Me.ShowUserPicture = CBool(ExtractXMLTextElement(m_generalXML, "show_userpicture", CStr(True)))
     Me.ShowProgramsFirst = CBool(ExtractXMLTextElement(m_generalXML, "show_program_menu_first", CStr(False)))
@@ -105,6 +107,7 @@ Dim generalXML As IXMLDOMElement
 
     CreateXMLTextElement m_settingsDoc, generalXML, "current_skin", Me.CurrentSkin
     CreateXMLTextElement m_settingsDoc, generalXML, "current_orb", Me.CurrentOrb
+    CreateXMLTextElement m_settingsDoc, generalXML, "current_rollover", Me.CurrentRollover
     CreateXMLTextElement m_settingsDoc, generalXML, "enable_trayicon", CStr(Me.EnableTrayIcon)
     CreateXMLTextElement m_settingsDoc, generalXML, "show_userpicture", CStr(Me.ShowUserPicture)
     CreateXMLTextElement m_settingsDoc, generalXML, "show_program_menu_first", CStr(Me.ShowProgramsFirst)
