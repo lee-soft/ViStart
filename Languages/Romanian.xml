@@ -1,0 +1,123 @@
+﻿<strings>
+
+    <string value="Delogare" id="strLogOff" />
+    <string value="Comuta utilizator" id="strSwitchUser"  />
+    <string value="Oprire" id="strShutdown" />
+    <string value="Repornire" id="strRestart" />
+    <string value="Pauza" id="strStandBy" />
+    <string value="Hibernare" id="strHibernate" />
+    <string value="Iesire" id="strExit" />
+    <string value="Despre" id="strAbout" />
+    <string value="Optiuni" id="strOptions" />
+  
+    <string value="Toate programele" id="strAllPrograms" />
+    <string value="Inapoi" id="strBack" />
+  
+    <string value="Nu sunt programe care intrunesc criteriile de cautare" id="strNotFound" />
+    <string value="Vezi toate rezultatele" id="strSeeAllResults" />
+    <string value="Start Cautare" id="strStartSearch" />
+  
+    <string value="Optiuni Program" id="strProgramOptions" />
+
+    <string value="Activare functie Auto-Click" id="strEnableAutoClick" />
+    <string value="Arata Icoana ViStart's pe bara" id="strShowTrayIcon" />
+    <string value="Start cu Windows" id="strStartWithWindows" />
+    <string value="Arata ecran intampinare la pornire" id="strSplash" />
+    <string value="Sterge lista cu programe frecvente" id="strClearFrequentList" />
+    <string value="Optiuni Indexare" id="strIndexOptions" />
+    <string value="Invoca ViStart cu tasta Windows" id="strFilterWinKey" />
+  
+    <string value="Alege un model pt Meniu Start..." id="strNewSkin" />
+    <string value="Alege imagine pt Butonul Start..." id="strOrbNew" />
+    <string value="Resetare imagine Orb" id="strOrbReset" />
+    <string value="Ruleaza..." id="strRun" />
+    <string value="Somn..." id="strSleep" />
+  
+    <string value="OK" id="strOK" />
+    <string value="Anulare" id="strCancel" />
+    <string value="Arata" id="strBrowse" />
+  
+    <string value="Explorare" id="strExplore" />
+    <string value="Manage" id="strManage" />
+    <string value="Cautare" id="strSearch" />
+    <string value="Arata pe Desktop" id="strShowOnDesktop" />
+    <string value="Ascunde de pe Desktop" id="strHideFromDesktop" />
+    <string value="Deschide" id="strOpen" />
+    <string value="Nu afisa optiuni in panoul navigare" id="strHideOption" />
+    <string value="Nu afisa continut dosar" id="strDontPopOut" />
+    <string value="Arata continut dosar" id="strPopOut" />
+    <string value="Redenumire" id="strRename" />
+    <string value="Trimite pe Desktop" id="strCopyToDesktop" />
+    <string value="Trimite la ViPad" id="strCopyToViPad" />
+    <string value="Proprietati" id="strProperties" />
+  
+    <string value="Comprima" id="strCollapse" />
+    <string value="Extinde" id="strExpand" />
+    <string value="Ruleaza ca Administrator" id="strRunAsAdmin" />
+    <string value="Sterge din Meniul Start" id="strUnpinToStartMenu" />
+    <string value="Adauga la Meniul Start" id="strPinToStartMenu" />
+    <string value="Sterge din aceasta lista" id="strRemoveFromList" />
+
+    <string value="Programe" id="strPrograms" />
+    <string value="Fisiere" id="strFiles" />
+  
+    <string value="Toate fisierele" id="strAllExtensions" />
+
+    <string value="Librarii" id="strLibraries" />
+    <string value="Documente" id="strDocuments" />
+    <string value="Imagini" id="strPictures" />
+    <string value="Muzica" id="strMusic" />
+    <string value="Video" id="strVideos" />
+    <string value="Descarcari" id="strDownloads"/>
+    <string value="Jocuri" id="strGames" />
+    <string value="Computer" id="strComputer" />
+    <string value="Recente" id="strRecent" />
+    <string value="Retea" id="strNetwork" />
+    <string value="Conectare la" id="strConnectTo"  />
+    <string value="Panou Control" id="strControlPanel" />
+    <string value="Imprimante si Fax" id="strPrinters" />
+    <string value="Ajutor si Sprijin" id="strHelp" />
+    <string value="Alegere Programe Implicite" id="strSetDefaults" />
+
+    <string value="Panou Control ViStart" id="strViStartControlPanel" />
+
+    <string value="Stil" id="strStyle" />
+    <string value="Configurare" id="strConfigure" />
+    <string value="Desktop" id="strDesktop" />
+
+    <string value="Model Meniu Start" id="strWhichStartMenu" />
+    <string value="Instalare..." id="strInstall" />
+    <string value="Selectati o noua tema ViStart" id="strViStartTheme" />
+  
+    <string value="Start Model Orb" id="strWhatStarOrb" />
+    <string value="Model implicit Orb" id="strSkinDefaultOrb" />
+    <string value="Alege imagine..." id="strPick" />
+    <string value="Alege imagine noua Buton Start" id="strViStartOrb" />
+
+    <string value="Model Rollover" id="strWhatRollover" />
+    <string value="Model implicit Rollover" id="strSkinDefaultRollover" />
+ 
+    <string value="Setari Vizibilitate" id="strWhatToSee" />
+    <string value="Setari implicite obiecte meniu Start" id="strWhatToSeeOnRight" />
+
+    <string value="Arata meniul program primul" id="strProgramsFirst" />
+    <string value="Arata imagine utilizator" id="strShowUserPicture" />
+
+    <string value="Nu afisa obiectul" id="strDontShowItem" />
+    <string value="Afisare legatura obiect" id="strDisplayAsLink" />
+    <string value=""Afisare obiect ca menu" id="strDisplayAsMenu" />
+
+    <string value="Stabilire actiuni implicite desktop" id="strDesktopSettings" />
+    <string value="Ambele taste Windows arata ViStart" id="strBothWinKeysViStart" />
+    <string value="[Tasta  Windows Stanga] arata ViStart" id="strLeftWinKey" />
+    <string value="[Tasta  Windows Dreapta] arata ViStart" id="strRightWinKey" />
+    <string value="Ambele taste Windows arata meniul Windows" id="strBothWinKeys" />
+
+    <string value="Butonul Start arata meniul ViStart" id="strStartViStart" />
+    <string value="Butonul Start arata meniul Windows" id="strStartWinMenu" />
+
+    <string value="Restaurare Scurtaturi Meniu Start Windows" id="strRestoreStartMenu" />
+  
+    <string value="(Programul ViStart a fost creat de Lee Matthew Chantrey)" id="strCopyright" />
+ 
+ </strings>
