@@ -56,6 +56,7 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
+Private ChildSkinID As String
 Private m_OptionsGap As Single
 
 Private m_groupMenuFontSize As Single
@@ -259,8 +260,8 @@ Dim r As RECTL
     Set m_layeredData = Nothing
     
     Set Layout = New LayoutParser
-    
-    If Not Layout.ParseLayout(g_resourcesPath & "layout.xml") Then
+
+    If Not Layout.ParseStartMenu(g_resourcesPath & "layout.xml", ChildSkinID) Then
         LogError "Failed to parse layout file", "StartMenuBase"
         Exit Function
     End If
@@ -308,6 +309,10 @@ Dim r As RECTL
     m_originalBackground.FromFile g_resourcesPath & "startmenu.png"
     
     Set m_background = ReconstructBackgroundImage(m_originalBackground, r)
+    If m_background Is Nothing Then
+        MsgBox "Background failed! Is the PNG valid?"
+        Exit Function
+    End If
         
     m_shutDownButton.Image.FromFile g_resourcesPath & "bottombuttons_shutdown.png"
     m_logOffButton.Image.FromFile g_resourcesPath & "bottombuttons_logoff.png"
@@ -396,12 +401,18 @@ Dim r As RECTL
 End Function
 
 Public Property Let Skin(ByVal szNewSkin As String)
+
+    If Not m_initalized Then
+        Exit Property
+    End If
     
-    If m_initalized And LCase$(szNewSkin) = LCase$(Settings.CurrentSkin) Then
+    If LCase$(ChildSkinID) = LCase$(Settings.CurrentChildSkin) And LCase$(szNewSkin) = LCase$(Settings.CurrentSkin) Then
         Exit Property
     End If
     
     Settings.CurrentSkin = szNewSkin
+    Settings.CurrentChildSkin = ChildSkinID
+    
     g_resourcesPath = sCon_AppDataPath & "_skins\" & szNewSkin & "\"
 
     InitializeCurrentSkin
@@ -1298,7 +1309,7 @@ Private Sub UpdateProgramMenu(Optional refreshIconCache As Boolean = False)
 
     ProgramIndexingHelper.Initialize
     
-    CleanCollection m_programMenu.RootNode.Children
+    CleanCollection m_programMenu.RootNode.children
     CleanCollection m_programMenu.RootPrograms
     
     'PopulateNode m_programMenu.RootNode, FSO.GetFolder("E:\StarTrek TNG")
@@ -2043,8 +2054,11 @@ Private Sub m_powerMenu_onCommand(commandCode As PowerMenuCommands)
     
 End Sub
 
-Private Sub m_optionDialog_onChangeSkin(szNewSkin As String)
-    Me.Skin = szNewSkin
+Private Sub m_optionDialog_onChangeSkin(skinName As CollectionItem)
+
+    ChildSkinID = skinName.Key
+    Me.Skin = skinName.Value
+
 End Sub
 
 Private Sub m_optionDialog_onNavigationPanelChange()

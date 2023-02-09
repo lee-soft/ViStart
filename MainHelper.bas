@@ -118,7 +118,7 @@ Function InitClasses_IfNeeded() As Boolean
     Set MetroUtility = New Windows8Utility
     Set IconManager = New CIconManager
     
-    If Not Layout.ParseLayout(ResourcesPath & "layout.xml") Then
+    If Not Layout.ParseStartMenu(ResourcesPath & "layout.xml") Then
         Exit Function
     End If
     
@@ -368,7 +368,6 @@ End Function
 
 Sub Main()
 
- 
     If Not InitClasses_IfNeeded Then
         Exit Sub
     End If
@@ -402,10 +401,10 @@ Sub Main()
     
     If Settings.CurrentRollover <> vbNullString Then
         g_rolloverPath = sCon_AppDataPath & "_rollover\" & Settings.CurrentRollover & "\"
-	Else
-		g_rolloverPath = sCon_AppDataPath & "_skins\" & Settings.CurrentSkin & "\rollover\"
+        Else
+                g_rolloverPath = sCon_AppDataPath & "_skins\" & Settings.CurrentSkin & "\rollover\"
     End If
-	
+        
     If ValidateOptions = False Then
         End
     End If
@@ -455,20 +454,20 @@ Sub Main()
     End If
 
     
-	If Settings.ShowSplashScreen = True Then
-		ShowLoadingForm
-		SetLoadingCaption "LOADING"
-	End If
-	 
+        If Settings.ShowSplashScreen = True Then
+                ShowLoadingForm
+                SetLoadingCaption "LOADING"
+        End If
+         
 
     DoEvents
     
     InitForms
-	
-	If Settings.ShowSplashScreen = True Then
-		g_winLoading.timSplashMin.Enabled = True
+        
+        If Settings.ShowSplashScreen = True Then
+                g_winLoading.timSplashMin.Enabled = True
     End If
-	
+        
     If Not g_WDSInitialized Then Index_MyDirectory
     
     If App.CompanyName <> "Lee-Soft.com" Then

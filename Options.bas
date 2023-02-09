@@ -85,6 +85,37 @@ Dim lngKeyIndex As Long
     lngIndexingLimit = Registry.GetAppSettingLong("Settings\IndexingLimit", 4096)
 End Function
 
+Function GetChildSkins(strPath As String) As Collection
+
+Dim xmlLayout As New DOMDocument
+Dim startMenuElement As IXMLDOMElement
+Dim childSkins As Collection: Set childSkins = New Collection
+Dim child As IXMLDOMElement
+Dim startMenuName As String
+Dim startMenuID As String
+Dim nextStartMenu As CollectionItem
+
+    Set GetChildSkins = childSkins
+
+    If Not FileExists(strPath) Then
+        Exit Function
+    End If
+    
+    If Not xmlLayout.Load(strPath) Then
+        Exit Function
+    End If
+    
+    For Each child In xmlLayout.selectNodes("startmenus//startmenu_base")
+        Set nextStartMenu = New CollectionItem
+        nextStartMenu.Value = getAttribute_IgnoreError(child, "name", vbNullString)
+        nextStartMenu.Key = getAttribute_IgnoreError(child, "id", vbNullString)
+
+        If nextStartMenu.Value <> vbNullString And nextStartMenu.Key <> vbNullString Then
+            childSkins.Add nextStartMenu, nextStartMenu.Key
+        End If
+    Next
+End Function
+
 Private Sub IndexingPath()
 
     If (strNewIndexingPath <> strIndexingPath) Or _

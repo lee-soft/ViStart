@@ -429,8 +429,27 @@ Begin VB.Form frmControlPanel
       TabIndex        =   5
       Top             =   0
       Width           =   8655
+      Begin VB.ComboBox cmbChildThemes 
+         BeginProperty Font 
+            Name            =   "Segoe Print"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   465
+         ItemData        =   "frmControlPanel.frx":05BE
+         Left            =   720
+         List            =   "frmControlPanel.frx":05C0
+         Style           =   2  'Dropdown List
+         TabIndex        =   46
+         Top             =   1920
+         Width           =   4935
+      End
       Begin VB.ComboBox cmbRollover 
-         Height          =   360
+         Height          =   420
          Left            =   720
          Style           =   2  'Dropdown List
          TabIndex        =   44
@@ -479,7 +498,7 @@ Begin VB.Form frmControlPanel
             Name            =   "Segoe Print"
             Size            =   9.75
             Charset         =   0
-         Height          =   420
+            Weight          =   400
             Underline       =   0   'False
             Italic          =   0   'False
             Strikethrough   =   0   'False
@@ -496,7 +515,7 @@ Begin VB.Form frmControlPanel
             Name            =   "Segoe Print"
             Size            =   9.75
             Charset         =   0
-         Height          =   420
+            Weight          =   400
             Underline       =   0   'False
             Italic          =   0   'False
             Strikethrough   =   0   'False
@@ -517,10 +536,10 @@ Begin VB.Form frmControlPanel
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Height          =   360
-         ItemData        =   "frmControlPanel.frx":05BE
+         Height          =   465
+         ItemData        =   "frmControlPanel.frx":05C2
          Left            =   720
-         List            =   "frmControlPanel.frx":05C0
+         List            =   "frmControlPanel.frx":05C4
          Style           =   2  'Dropdown List
          TabIndex        =   7
          Top             =   3360
@@ -537,9 +556,9 @@ Begin VB.Form frmControlPanel
             Strikethrough   =   0   'False
          EndProperty
          Height          =   360
-         ItemData        =   "frmControlPanel.frx":05C2
+         ItemData        =   "frmControlPanel.frx":05C6
          Left            =   720
-         List            =   "frmControlPanel.frx":05C4
+         List            =   "frmControlPanel.frx":05C8
          Style           =   2  'Dropdown List
          TabIndex        =   6
          Top             =   1200
@@ -642,7 +661,7 @@ Begin VB.Form frmControlPanel
          Height          =   375
          Index           =   0
          Left            =   1080
-         MouseIcon       =   "frmControlPanel.frx":05C6
+         MouseIcon       =   "frmControlPanel.frx":05CA
          MousePointer    =   99  'Custom
          TabIndex        =   41
          Top             =   1560
@@ -665,7 +684,7 @@ Begin VB.Form frmControlPanel
          ForeColor       =   &H00C00000&
          Height          =   375
          Left            =   1080
-         MouseIcon       =   "frmControlPanel.frx":0718
+         MouseIcon       =   "frmControlPanel.frx":071C
          MousePointer    =   99  'Custom
          TabIndex        =   40
          Tag             =   "http://lee-soft.com"
@@ -770,7 +789,7 @@ Begin VB.Form frmControlPanel
       End
       Begin VB.Label Label10 
          BackStyle       =   0  'Transparent
-         Caption         =   $"frmControlPanel.frx":086A
+         Caption         =   $"frmControlPanel.frx":086E
          BeginProperty Font 
             Name            =   "Segoe Print"
             Size            =   9.75
@@ -823,7 +842,7 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
-Public Event onChangeSkin(szNewSkin As String)
+Public Event onChangeSkin(skinName As CollectionItem)
 Public Event onChangeOrb(szNewOrb As String)
 Public Event onChangeRollover(szNewRollover As String)
 Public Event onNavigationPanelChange()
@@ -836,6 +855,8 @@ Private m_rolloverDir As String
 
 Private m_navigationPane As ViNavigationPane
 'Private m_serviceState As SERVICE_STATE
+
+Private m_childSkinNameStrings As Collection
 
 Private m_ElementY As Long
 
@@ -850,10 +871,17 @@ End Property
 Sub ValidateSkin(ByVal szNewSkin As String)
 
     If FileCheck(m_skinDir & szNewSkin & "\") Then
+        Set m_childSkinNameStrings = OptionsHelper.GetChildSkins(m_skinDir & szNewSkin & "\layout.xml")
+        PopulateChildSkins
+    
         If Settings.CurrentSkin = vbNullString Or FileCheck(m_skinDir & Settings.CurrentSkin & "\") = False Then
             Settings.CurrentSkin = szNewSkin
         Else
-            RaiseEvent onChangeSkin(szNewSkin)
+            Dim newSkinCollectionItem As CollectionItem
+            Set newSkinCollectionItem = New CollectionItem
+            newSkinCollectionItem.Value = szNewSkin
+            
+            RaiseEvent onChangeSkin(newSkinCollectionItem)
         End If
     Else
         MsgBox "This skin is broken!", vbCritical
@@ -941,6 +969,16 @@ Private Sub chkUserPicture_Click()
     Settings.ShowUserPicture = CheckBoxToBoolean(chkUserPicture.Value)
 End Sub
 
+Private Sub cmbChildThemes_Click()
+    Dim newSkinCollectionItem As CollectionItem
+    Set newSkinCollectionItem = New CollectionItem
+    
+    newSkinCollectionItem.Key = m_childSkinNameStrings(cmbChildThemes.listIndex + 1).Key
+    newSkinCollectionItem.Value = cmbThemes.Text
+    
+    RaiseEvent onChangeSkin(newSkinCollectionItem)
+End Sub
+
 Private Sub cmbStartOrbs_Change()
     cmbStartOrbs_Click
 End Sub
@@ -961,12 +999,12 @@ End Sub
 Private Sub cmbRollover_Click()
     
     If cmbRollover.listIndex = 0 Then
-		Settings.CurrentRollover = vbNullString
-		g_rolloverPath = sCon_AppDataPath & "_skins\" & Settings.CurrentSkin & "\rollover\"
+                Settings.CurrentRollover = vbNullString
+                g_rolloverPath = sCon_AppDataPath & "_skins\" & Settings.CurrentSkin & "\rollover\"
 
-		RaiseEvent onChangeRollover(vbNullString)
+                RaiseEvent onChangeRollover(vbNullString)
     Else
-		Settings.CurrentRollover = cmbRollover.Text
+                Settings.CurrentRollover = cmbRollover.Text
         g_rolloverPath = sCon_AppDataPath & "_rollover\" & Settings.CurrentRollover & "\"
 
         RaiseEvent onChangeRollover(cmbRollover.Text)
@@ -1058,6 +1096,10 @@ Private Sub cmdShowMetroShortcut_Click()
     
 End Sub
 
+Private Sub Form_Initialize()
+    Set m_childSkinNameStrings = New Collection
+End Sub
+
 Private Sub Form_Load()
     
 
@@ -1104,7 +1146,7 @@ Private Sub Form_Load()
     chkShowSplashScreen.Caption = GetPublicString("strSplash")
         
     cmdShowMetroShortcut.Caption = GetPublicString("strRestoreStartMenu")
-	
+        
     lblSubText.Caption = GetPublicString("strCopyright")
         
 End Sub
@@ -1381,16 +1423,16 @@ Sub InitializeStyleFrame()
     ListSkins
     ListOrbs
     ListRollovers
-	
-	' Hide rollover option when no _rollover folder exist
-	If cmbRollover.ListCount > 1 Then
-		Label7.Visible = True
-		cmbRollover.Visible = True
-	Else
-		Label7.Visible = False
-		cmbRollover.Visible = False
-	End If
-	
+        
+        ' Hide rollover option when no _rollover folder exist
+        If cmbRollover.ListCount > 1 Then
+                Label7.Visible = True
+                cmbRollover.Visible = True
+        Else
+                Label7.Visible = False
+                cmbRollover.Visible = False
+        End If
+        
 End Sub
 
 Sub InititalizeConfigureFrame()
@@ -1518,11 +1560,11 @@ Dim thisFolder As Scripting.Folder
 
         End If
     Next
-	
-	If Settings.CurrentRollover = vbNullString Then
-		cmbRollover.listIndex = 0
-	End If
-	
+        
+        If Settings.CurrentRollover = vbNullString Then
+                cmbRollover.listIndex = 0
+        End If
+        
     Exit Sub
 Handler:
     MsgBox Err.Description, vbCritical
@@ -1538,6 +1580,20 @@ Dim listIndex As Long
         End If
     Next
 
+End Sub
+
+Sub PopulateChildSkins()
+
+    cmbChildThemes.Clear
+
+Dim sourceItem As CollectionItem
+    For Each sourceItem In m_childSkinNameStrings
+        cmbChildThemes.AddItem sourceItem.Value
+    Next
+
+    If cmbChildThemes.ListCount > 0 Then
+        cmbChildThemes.listIndex = 0
+    End If
 End Sub
 
 Sub ListSkins()
@@ -1570,6 +1626,7 @@ Handler:
 End Sub
 
 Private Sub picClient_1_Resize()
+On Error Resume Next
 
        Dim lHeight As Long
        Dim lWidth As Long
@@ -1591,6 +1648,8 @@ Private Sub picClient_1_Resize()
 End Sub
 
 Private Sub m_cScroll_Change(eBar As EFSScrollBarConstants)
+On Error Resume Next
+
    If (m_cScroll.Visible(eBar)) Then
       If (eBar = efsVertical) Then
          picClient_1.Top = -m_cScroll.Value(eBar) * Screen.TwipsPerPixelY
