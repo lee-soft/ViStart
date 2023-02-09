@@ -280,8 +280,8 @@ Dim currentSkinStartMenuParseResult As StartMenuParseResult
     
     g_viOrb_fullHeight = Layout.ViOrb_FullHeight
     m_ShutDownTextEnabled = Not Layout.ShutDownTextSchema Is Nothing
-    BlurEnabled = FileExists(g_resourcesPath & "startmenu_mask.bmp")
-    m_JumpListEnabled = FileExists(g_resourcesPath & "startmenu_expanded.png")
+    BlurEnabled = FileExists(g_resourcesPath & currentSkinStartMenuParseResult.StartMenuMaskPath)
+    m_JumpListEnabled = FileExists(g_resourcesPath & currentSkinStartMenuParseResult.StartMenuExpandedPath)
     
     If m_JumpListEnabled Then
         If Layout.JumpListViewerSchema Is Nothing Then
@@ -361,14 +361,14 @@ Dim currentSkinStartMenuParseResult As StartMenuParseResult
     If Not BlurEnabled Then Set m_layeredData = MakeLayerdWindow(Me)
     
     If BlurEnabled Then
-        SetupBlur g_resourcesPath
+        SetupBlur g_resourcesPath, currentSkinStartMenuParseResult.StartMenuMaskPath
     Else
         m_layeredMode = True
     End If
     
     If m_JumpListEnabled Then
         SetupJumplistViewer
-        m_BackGroundPinned.FromFile g_resourcesPath & "startmenu_expanded.png"
+        m_BackGroundPinned.FromFile g_resourcesPath & currentSkinStartMenuParseResult.StartMenuExpandedPath
     End If
     
     SetupNavigationViewer m_originalBackground
@@ -420,13 +420,13 @@ Public Property Let Skin(ByVal szNewSkin As String)
     InitializeCurrentSkin
 End Property
 
-Private Function SetupBlur(szResourcesPath As String)
+Private Function SetupBlur(szResourcesPath As String, szStartMenuMaskPath As String)
 
     Set m_StartMenuMaskBitmap = New GDIBitmap
     Set m_StartMenuMaskDC = New GDIDC
     Set m_StartMenuMaskInvertedDC = New pcMemDC
 
-    m_StartMenuMaskBitmap.LoadImageFromFile szResourcesPath & "startmenu_mask.bmp"
+    m_StartMenuMaskBitmap.LoadImageFromFile szResourcesPath & szStartMenuMaskPath
     m_StartMenuMaskDC.SelectBitmap m_StartMenuMaskBitmap
     
     m_StartMenuMaskInvertedDC.Height = m_StartMenuMaskBitmap.Height

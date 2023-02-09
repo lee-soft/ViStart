@@ -24,6 +24,39 @@ Private mvarAllProgramsPath As String 'local copy
 Private mvarButtonPath As String 'local copy
 Private mvarProgramsArrowPath As String 'local copy
 Private mvarErrorCode As Integer 'local copy
+'local variable(s) to hold property value(s)
+Private mvarStartMenuMaskPath As String 'local copy
+Private mvarStartMenuExpandedPath As String 'local copy
+Public Property Let StartMenuExpandedPath(ByVal vData As String)
+'used when assigning a value to the property, on the left side of an assignment.
+'Syntax: X.StartMenuExpandedPath = 5
+    mvarStartMenuExpandedPath = vData
+End Property
+
+
+Public Property Get StartMenuExpandedPath() As String
+'used when retrieving value of a property, on the right side of an assignment.
+'Syntax: Debug.Print X.StartMenuExpandedPath
+    StartMenuExpandedPath = mvarStartMenuExpandedPath
+End Property
+
+
+
+Public Property Let StartMenuMaskPath(ByVal vData As String)
+'used when assigning a value to the property, on the left side of an assignment.
+'Syntax: X.StartMenuMaskPath = 5
+    mvarStartMenuMaskPath = vData
+End Property
+
+
+Public Property Get StartMenuMaskPath() As String
+'used when retrieving value of a property, on the right side of an assignment.
+'Syntax: Debug.Print X.StartMenuMaskPath
+    StartMenuMaskPath = mvarStartMenuMaskPath
+End Property
+
+
+
 Public Property Let ErrorCode(ByVal vData As Integer)
 'used when assigning a value to the property, on the left side of an assignment.
 'Syntax: X.ErrorCode = 5

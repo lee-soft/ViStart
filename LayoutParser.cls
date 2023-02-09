@@ -239,6 +239,9 @@ Dim multiLayout As Boolean
     result.UserFramePath = getAttribute_IgnoreError(subElement, "userframe", "userframe.png")
     result.BottomButtonsShutdownPath = getAttribute_IgnoreError(subElement, "bottombuttons_shutdown", "bottombuttons_shutdown.png")
     
+    result.StartMenuExpandedPath = getAttribute_IgnoreError(subElement, "background_expanded", "startmenu_expanded.png")
+    result.StartMenuMaskPath = getAttribute_IgnoreError(subElement, "background_masked", "startmenu_mask.bmp")
+    
     If Not IsNull(subElement.getAttribute("force_clear_type")) Then ForceClearType = CBool(subElement.getAttribute("force_clear_type"))
     If Not IsNull(subElement.getAttribute("y_offset")) Then YOffset = CLng(subElement.getAttribute("y_offset"))
     If Not IsNull(subElement.getAttribute("x_offset")) Then XOffset = CLng(subElement.getAttribute("x_offset"))
