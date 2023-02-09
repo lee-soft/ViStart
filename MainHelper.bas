@@ -118,7 +118,7 @@ Function InitClasses_IfNeeded() As Boolean
     Set MetroUtility = New Windows8Utility
     Set IconManager = New CIconManager
     
-    If Not Layout.ParseStartMenu(ResourcesPath & "layout.xml") Then
+    If Not Layout.ParseStartMenu(ResourcesPath & "layout.xml").ErrorCode = 0 Then
         Exit Function
     End If
     

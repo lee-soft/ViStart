@@ -68,9 +68,12 @@ Dim defaultLayout As String
     LoadFromResources = True
 End Function
 
-Function ParseStartMenu(strPath As String, Optional strStartMenuID As String = "") As Boolean
+Function ParseStartMenu(strPath As String, Optional strStartMenuID As String = "") As StartMenuParseResult
     On Error Resume Next
-    
+
+Dim result As StartMenuParseResult: Set result = New StartMenuParseResult
+Set ParseStartMenu = result
+
 Dim xmlLayout As New DOMDocument
 
 Dim startMenuElement As IXMLDOMElement
@@ -85,6 +88,8 @@ Dim defaultFontFace As String
     
 Dim validLayout As Boolean
 Dim multiLayout As Boolean
+
+    result.ErrorCode = 300
     
     If FileExists(strPath) Then
         If xmlLayout.Load(strPath) = False Then
@@ -226,6 +231,14 @@ Dim multiLayout As Boolean
     
     Set subElement = startMenuElement.selectSingleNode("startmenu_base")
     
+    result.StartMenuPath = getAttribute_IgnoreError(subElement, "background", "startmenu.png")
+    result.AllProgramsPath = getAttribute_IgnoreError(subElement, "allprograms", "allprograms.png")
+    result.BottomButtonsArrowPath = getAttribute_IgnoreError(subElement, "bottombuttons_arrow", "bottombuttons_arrow.png")
+    result.ButtonPath = getAttribute_IgnoreError(subElement, "bottombuttons_logoff", "bottombuttons_logoff.png")
+    result.ProgramsArrowPath = getAttribute_IgnoreError(subElement, "programs_arrow", "programs_arrow.png")
+    result.UserFramePath = getAttribute_IgnoreError(subElement, "userframe", "userframe.png")
+    result.BottomButtonsShutdownPath = getAttribute_IgnoreError(subElement, "bottombuttons_shutdown", "bottombuttons_shutdown.png")
+    
     If Not IsNull(subElement.getAttribute("force_clear_type")) Then ForceClearType = CBool(subElement.getAttribute("force_clear_type"))
     If Not IsNull(subElement.getAttribute("y_offset")) Then YOffset = CLng(subElement.getAttribute("y_offset"))
     If Not IsNull(subElement.getAttribute("x_offset")) Then XOffset = CLng(subElement.getAttribute("x_offset"))
@@ -269,6 +282,7 @@ Dim multiLayout As Boolean
     End If
     
     ParseStartMenu = validLayout
+    result.ErrorCode = 0
 End Function
 
 Private Function ValidateElement(ByVal theElementId As String, ByRef theElement As GenericViElement) As Boolean

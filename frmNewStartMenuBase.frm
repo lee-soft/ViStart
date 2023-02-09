@@ -228,6 +228,7 @@ End Function
 Public Function InitializeCurrentSkin()
 
 Dim r As RECTL
+Dim currentSkinStartMenuParseResult As StartMenuParseResult
 
     CloseMe
     RaiseEvent onRequestNewResize
@@ -260,8 +261,9 @@ Dim r As RECTL
     Set m_layeredData = Nothing
     
     Set Layout = New LayoutParser
+    Set currentSkinStartMenuParseResult = Layout.ParseStartMenu(g_resourcesPath & "layout.xml", ChildSkinID)
 
-    If Not Layout.ParseStartMenu(g_resourcesPath & "layout.xml", ChildSkinID) Then
+    If Not currentSkinStartMenuParseResult.ErrorCode = 0 Then
         LogError "Failed to parse layout file", "StartMenuBase"
         Exit Function
     End If
@@ -306,19 +308,19 @@ Dim r As RECTL
     r.Right = r.Left + Layout.GroupMenuSchema.Width
     
     Set m_originalBackground = New GDIPImage
-    m_originalBackground.FromFile g_resourcesPath & "startmenu.png"
+    m_originalBackground.FromFile g_resourcesPath & currentSkinStartMenuParseResult.StartMenuPath
     
     Set m_background = ReconstructBackgroundImage(m_originalBackground, r)
     If m_background Is Nothing Then
-        MsgBox "Background failed! Is the PNG valid?"
+        MsgBox "Background failed! Is the background PNG valid?"
         Exit Function
     End If
         
-    m_shutDownButton.Image.FromFile g_resourcesPath & "bottombuttons_shutdown.png"
-    m_logOffButton.Image.FromFile g_resourcesPath & "bottombuttons_logoff.png"
-    m_arrowButton.Image.FromFile g_resourcesPath & "bottombuttons_arrow.png"
-    m_AllPrograms.Image.FromFile g_resourcesPath & "allprograms.png"
-    m_ArrowAllPrograms.Image.FromFile g_resourcesPath & "programs_arrow.png"
+    m_shutDownButton.Image.FromFile g_resourcesPath & currentSkinStartMenuParseResult.BottomButtonsShutdownPath
+    m_logOffButton.Image.FromFile g_resourcesPath & currentSkinStartMenuParseResult.ButtonPath
+    m_arrowButton.Image.FromFile g_resourcesPath & currentSkinStartMenuParseResult.BottomButtonsArrowPath
+    m_AllPrograms.Image.FromFile g_resourcesPath & currentSkinStartMenuParseResult.AllProgramsPath
+    m_ArrowAllPrograms.Image.FromFile g_resourcesPath & currentSkinStartMenuParseResult.ProgramsArrowPath
     
     'm_graphics.Dispose
     'm_BitmapGraphics.Dispose
