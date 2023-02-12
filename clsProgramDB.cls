@@ -52,7 +52,7 @@ Dim Program As clsProgram
 
     Set Program = New clsProgram
     
-    If g_Windows8 Then
+    If g_Windows8 or g_Windows81 Then
         Program.Caption = "Show Metro"
     Else
         Program.Caption = "Show Windows Start Menu"
@@ -286,6 +286,8 @@ Public Function ReadPrograms(ByRef programsXML As IXMLDOMElement)
 Dim thisFrequentProgram As IXMLDOMElement
 Dim thisProgram As clsProgram
 Dim szIconPath As String
+Dim MinOSVersion As Single
+Dim MaxOSVersion As Single
 Dim exclusiveOSVersion As Single
 
     Set m_pinnedPrograms = New Collection
@@ -296,71 +298,100 @@ Dim exclusiveOSVersion As Single
     For Each thisFrequentProgram In programsXML.selectNodes("//programs/frequent_program")
         Set thisProgram = New clsProgram
         'Set thisProgram.Icon = New ViIcon
+		
+        MinOSVersion = 0 
+        MaxOSVersion = 0
+		
+        If Not IsNull(thisFrequentProgram.getAttribute("minwinversion")) Then
+            MinOSVersion = CSng(thisFrequentProgram.getAttribute("minwinversion"))
+		Else
+            MinOSVersion = WindowsVersion
+        End If
+		
+        If Not IsNull(thisFrequentProgram.getAttribute("maxwinversion")) Then
+            MaxOSVersion = CSng(thisFrequentProgram.getAttribute("maxwinversion"))
+		Else
+            MaxOSVersion = MinOSVersion
+        End If
         
-        szIconPath = vbNullString
+        If WindowsVersion >= MinOSVersion and WindowsVersion <= MaxOSVersion Then
+            szIconPath = vbNullString
         
-        thisProgram.Path = VarScan(thisFrequentProgram.Attributes.getNamedItem("path").Text)
+            thisProgram.Path = VarScan(thisFrequentProgram.Attributes.getNamedItem("path").Text)
 	
-		If FileExists(thisProgram.Path) Then
+            If FileExists(thisProgram.Path) Then
 	
-	        thisProgram.OpenCount = thisFrequentProgram.Attributes.getNamedItem("opened").Text
-	        thisProgram.Caption = VarScan(thisFrequentProgram.Attributes.getNamedItem("caption").Text)
+                thisProgram.OpenCount = thisFrequentProgram.Attributes.getNamedItem("opened").Text
+                thisProgram.Caption = VarScan(thisFrequentProgram.Attributes.getNamedItem("caption").Text)
                
-	        If Not IsNull(thisFrequentProgram.getAttribute("icon")) Then
-	            thisProgram.szIcon = thisFrequentProgram.getAttribute("icon")
-	            szIconPath = VarScan(thisProgram.szIcon)
-	        End If
+                If Not IsNull(thisFrequentProgram.getAttribute("icon")) Then
+                    thisProgram.szIcon = thisFrequentProgram.getAttribute("icon")
+                    szIconPath = VarScan(thisProgram.szIcon)
+                End If
             
-	        If FileExists(szIconPath) Then
-	            Set thisProgram.Icon = IconManager.GetViIcon(szIconPath, True)
-	        Else
-	            Set thisProgram.Icon = IconManager.GetViIcon(thisProgram.Path, True)
-	            thisProgram.szIcon = vbNullString
-	        End If
+                If FileExists(szIconPath) Then
+                    Set thisProgram.Icon = IconManager.GetViIcon(szIconPath, True)
+                Else
+                    Set thisProgram.Icon = IconManager.GetViIcon(thisProgram.Path, True)
+                    thisProgram.szIcon = vbNullString
+                End If
         
-			m_frequentPrograms.Add thisProgram, thisProgram.Path
+                m_frequentPrograms.Add thisProgram, thisProgram.Path
 			
-		End If
+	    End If
+	End If
+		
     Next
 
     For Each thisFrequentProgram In programsXML.selectNodes("//programs/pinned_program")
         Set thisProgram = New clsProgram
         
-        exclusiveOSVersion = 0
-        If Not IsNull(thisFrequentProgram.getAttribute("winversion")) Then
-            exclusiveOSVersion = CSng(thisFrequentProgram.getAttribute("winversion"))
+        MinOSVersion = 0 
+        MaxOSVersion = 0
+		
+        If Not IsNull(thisFrequentProgram.getAttribute("minwinversion")) Then
+            MinOSVersion = CSng(thisFrequentProgram.getAttribute("minwinversion"))
+        	Else
+            MinOSVersion = WindowsVersion
+        End If
+		
+        If Not IsNull(thisFrequentProgram.getAttribute("maxwinversion")) Then
+            MaxOSVersion = CSng(thisFrequentProgram.getAttribute("maxwinversion"))
+		Else
+    	    MaxOSVersion = MinOSVersion
         End If
         
-        If exclusiveOSVersion = 0 Or WindowsVersion >= exclusiveOSVersion Then
+        If WindowsVersion >= MinOSVersion and WindowsVersion <= MaxOSVersion Then
         
             szIconPath = vbNullString
             
-			thisProgram.Path = VarScan(thisFrequentProgram.Attributes.getNamedItem("path").Text)
+	    thisProgram.Path = VarScan(thisFrequentProgram.Attributes.getNamedItem("path").Text)
 			
-			If FileExists(thisProgram.Path) Then
+        If FileExists(thisProgram.Path) Then
 				
-				thisProgram.OpenCount = thisFrequentProgram.Attributes.getNamedItem("opened").Text
-				thisProgram.Caption = thisFrequentProgram.Attributes.getNamedItem("caption").Text
-				
-				If Not IsNull(thisFrequentProgram.getAttribute("icon")) Then
-					thisProgram.szIcon = thisFrequentProgram.getAttribute("icon")
-					szIconPath = VarScan(thisProgram.szIcon)
-				End If
-		
-				If FileExists(szIconPath) Then
-					Set thisProgram.Icon = IconManager.GetViIcon(szIconPath, True)
-				Else
-					thisProgram.szIcon = vbNullString
-				
-					If thisProgram.Path = "!default_menu" Then
-						Set thisProgram.Icon = IconManager.GetViIcon(AppPath & "plugins\metroprovider.exe", True)
-					Else
-						Set thisProgram.Icon = IconManager.GetViIcon(thisProgram.Path, True)
-					End If
-				End If
-		
-				m_pinnedPrograms.Add thisProgram, thisProgram.Path
+            thisProgram.OpenCount = thisFrequentProgram.Attributes.getNamedItem("opened").Text
+            thisProgram.Caption = thisFrequentProgram.Attributes.getNamedItem("caption").Text
+					
+			If Not IsNull(thisFrequentProgram.getAttribute("icon")) Then
+				thisProgram.szIcon = thisFrequentProgram.getAttribute("icon")
+				szIconPath = VarScan(thisProgram.szIcon)
 			End If
+			
+			If FileExists(szIconPath) Then
+				Set thisProgram.Icon = IconManager.GetViIcon(szIconPath, True)
+			Else
+				thisProgram.szIcon = vbNullString
+			End If
+			
+			If thisProgram.Path = "!default_menu" Then
+				Set thisProgram.Icon = IconManager.GetViIcon(AppPath & "plugins\metroprovider.exe", True)
+			Else
+				Set thisProgram.Icon = IconManager.GetViIcon(thisProgram.Path, True)
+				End If
+			End If
+			
+			m_pinnedPrograms.Add thisProgram, thisProgram.Path
+			
         End If
     Next
     

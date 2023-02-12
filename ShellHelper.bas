@@ -37,13 +37,30 @@ Public g_lngHwndViOrbToolbar As Long
 
 Public g_ViGlanceOpen As Boolean
 
-Public g_WindowsVersion As OSVERSIONINFO
+Public g_WinVer() as String
 Public g_WindowsXP As Boolean
 Public g_WindowsVista As Boolean
 Public g_Windows7 As Boolean
 Public g_Windows8 As Boolean
 Public g_Windows81 As Boolean
+Public g_Windows10 As Boolean
+Public g_Windows11 As Boolean
+Public g_Windows12 As Boolean
 
+Public g_CLSID_MYDOCS as String
+Public g_CLSID_MYPIC as String
+Public g_CLSID_MYMUS as String
+Public g_CLSID_MYVID as String
+Public g_CLSID_DOWNLOADS as String
+Public g_CLSID_3DOBJECTS as String
+Public g_CLSID_DESKTOP as String
+Public g_CLSID_NETWORK as String
+Public g_CLSID_USERPROFILE as String
+Public g_CLSID_LIBRARIES as String
+Public g_CLSID_COMPUTER as String
+Public g_CLSID_GAMES as String
+Public g_CLSID_CONTROLPANEL as String
+	
 Public Type appBarData
     cbSize As Long
     hWnd As Long
@@ -141,57 +158,116 @@ End Function
 
 Function WindowsVersion() As Single
     DetermineWindowsVersion_IfNeeded
-    WindowsVersion = g_WindowsVersion.dwMajorVersion & "." & g_WindowsVersion.dwMinorVersion
+	
+	WindowsVersion = g_WinVer(0) & "." & g_WinVer(1)
+
+	If g_WinVer(0) & "." & g_WinVer(1) = "10.0" And g_WinVer(2) >= 22000 Then
+		WindowsVersion = 11.0
+	End If
+	
 End Function
 
 Function DetermineWindowsVersion_IfNeeded()
-
-Dim winRegistryVersion As String
-
-    If g_WindowsVersion.dwBuildNumber <> 0 Then
-        Exit Function
-    End If
-
-    g_WindowsVersion = GetWindowsOSVersion()
-
+	
+	If g_WindowsXP Or g_WindowsVista Or g_Windows7 Or g_Windows8 Or g_Windows81 Or g_Windows10 Or g_Windows11 Or g_Windows12 Then
+		Exit Function
+	End If
+	
     g_WindowsXP = False
     g_WindowsVista = False
     g_Windows7 = False
     g_Windows8 = False
     g_Windows81 = False
+    g_Windows10 = False
+    g_Windows11 = False
+    g_Windows12 = False
+	
+	' Returns max 6.2
+	g_WinVer = Split(FSO.GetFileVersion(Environ("windir") & "\system32\kernel32.dll"), ".")
+	
+	If g_WinVer(0) > 5 Then
+	
+		Dim VersionFolder As Variant
+		For Each VersionFolder In FSO.GetFolder(Environ("windir") & "\servicing\version").SubFolders
+			g_WinVer = Split(Replace(UCase(VersionFolder.Path), UCase(Environ("windir") & "\servicing\version\"), ""), ".")
+		Next
+	End If
+
+
+	debug.print "Windows version: " & g_WinVer(0) & "." & g_WinVer(1) & "." & g_WinVer(2) & "." & g_WinVer(3)
+	'msgbox "Windows version: " & g_WinVer(0) & "." & g_WinVer(1) & "." & g_WinVer(2) & "." & g_WinVer(3)
+
+    If g_WinVer(0) = 5 Then
+        g_WindowsXP = True
+
+    ElseIf g_WinVer(0) & "." & g_WinVer(1) = "6.0" Then
+		g_WindowsVista = True
+
+    ElseIf g_WinVer(0) & "." & g_WinVer(1) = "6.1" Then
+		g_Windows7= True
+
+    ElseIf g_WinVer(0) & "." & g_WinVer(1) = "6.2" Then
+		g_Windows8 = True
+
+    ElseIf g_WinVer(0) & "." & g_WinVer(1) = "6.3" Then
+		g_WindowsVista = True
+		
+    ElseIf g_WinVer(0) & "." & g_WinVer(1) = "10.0" Then
+		g_Windows10 = True
     
-    winRegistryVersion = Registry.Read("HKLM\Software\Microsoft\Windows NT\CurrentVersion\CurrentVersion")
-    
-    If g_WindowsVersion.dwMajorVersion = 5 Then
-        If g_WindowsVersion.dwMinorVersion = 1 Or g_WindowsVersion.dwMinorVersion = 2 Then
-            g_WindowsXP = True
-        End If
-    ElseIf g_WindowsVersion.dwMajorVersion = 6 Then
-        If g_WindowsVersion.dwMinorVersion = 0 Then
-            g_WindowsVista = True
-        ElseIf g_WindowsVersion.dwMinorVersion = 1 Then
-            g_Windows7 = True
-        ElseIf g_WindowsVersion.dwMinorVersion = 2 Then
-            'Determine Windows 8 Version
-            g_Windows8 = True
-            
-            If winRegistryVersion = "6.2" Then
-                
-            ElseIf winRegistryVersion = "6.3" Then
-                g_Windows81 = True
-            Else
-                MsgBox "This version of Windows is unknown.. ViStart may not behave as expected!", vbCritical
-                g_Windows8 = True
-            End If
-        Else
-            MsgBox "This version of Windows is unknown.. ViStart may not behave as expected!", vbCritical
-            g_Windows8 = True
-        End If
-    Else
+	ElseIf g_WinVer(0) & "." & g_WinVer(1) = "10.0" And g_WinVer(2) >= 22000 Then
+		g_Windows11 = True
+		
+	ElseIf g_WinVer(0) & "." & g_WinVer(1) = "12.0" Then 
+		g_Windows12 = True
+		
+	Else
         MsgBox "This version of Windows is unknown.. ViStart may not behave as expected!", vbCritical
-        g_Windows8 = True
+        'g_Windows8 = True
     End If
     
+
+	g_CLSID_3DOBJECTS = "{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}"
+	g_CLSID_DESKTOP = "{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}"
+	
+	g_CLSID_USERPROFILE = "{59031A47-3F72-44A7-89C5-5595FE6B30EE}"
+
+	g_CLSID_LIBRARIES = "{031E4825-7B94-4dc3-B131-E946B44C8DD5}"
+		
+	g_CLSID_COMPUTER = "{20D04FE0-3AEA-1069-A2D8-08002B30309D}"
+	g_CLSID_GAMES = "{ED228FDF-9EA8-4870-83b1-96b02CFE0D52}"
+	
+	g_CLSID_CONTROLPANEL = "{5399E694-6CE5-4D6C-8FCE-1D8870FDCBA0}"
+	
+	If g_WinVer(0) < 6 Then
+		g_CLSID_CONTROLPANEL = "{21EC2020-3AEA-1069-A2DD-08002B30309D}"
+	End If
+	
+	If g_WinVer(0) >= 10 Then
+		' Windows 10 +
+		g_CLSID_MYDOCS = "{D3162B92-9365-467A-956B-92703ACA08AF}"
+		g_CLSID_MYPIC = "{24AD3AD4-A569-4530-98E1-AB02F9417AA8}"
+		g_CLSID_MYMUS = "{3DFDF296-DBEC-4FB4-81D1-6A3438BCF4DE}"
+		g_CLSID_MYVID = "{F86FA3AB-70D2-4FC7-9C99-FCBF05467F3A}"
+		g_CLSID_DOWNLOADS = "{088E3905-0323-4B02-9826-5D99428E115F}"
+		
+		g_CLSID_NETWORK = "{F02C1A0D-BE21-4350-88B0-7367FC96EF3C}"
+	
+	Else
+	
+		' XP - 8.1
+		g_CLSID_MYDOCS = "{A8CDFF1C-4878-43BE-B5FD-F8091C1C60D0}"
+		g_CLSID_MYPIC = "{3ADD1653-EB32-4CB0-BBD7-DFA0ABB5ACCA}"
+		g_CLSID_MYMUS = "{1CF1260C-4DD0-4EBB-811F-33C572699FDE}"
+		g_CLSID_MYVID = "{A0953C92-50DC-43BF-BE83-3742FED03C9C}"
+		g_CLSID_DOWNLOADS = "{374DE290-123F-4565-9164-39C4925E467B}"
+		
+		g_CLSID_NETWORK = "{208D2C60-3AEA-1069-A2D7-08002B30309D}"
+		
+
+	End If
+
+	
 End Function
 
 Function WaitUntilDesktopIsAvailable()
@@ -441,16 +517,15 @@ Public Function GetFolderPathVB(ByVal lFolder As Long) As String
 End Function
 
 Private Function IsVistaOrHigher() As Boolean
-Dim bVista As Boolean
 
     DetermineWindowsVersion_IfNeeded
     
-    If g_WindowsVersion.dwPlatformId = 2 Then
-        If g_WindowsVersion.dwMajorVersion >= 6 Then
-            bVista = True
-        End If
+    If WindowsVersion >= 6 Then
+	
+		IsVistaOrHigher = True
+	
     End If
-    IsVistaOrHigher = bVista
+    
 End Function
 
 Public Function GetIconLocationAndIndex(ByVal szPath As String, ByRef iconIndex As Long, ByRef szIconLocation As String) As Boolean

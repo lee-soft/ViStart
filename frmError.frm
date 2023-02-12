@@ -17,7 +17,7 @@ Begin VB.Form frmError
    StartUpPosition =   3  'Windows Default
    Begin VB.TextBox txtFunction 
       BeginProperty Font 
-         Name            =   "Arial"
+         Name            =   "Segoe UI"
          Size            =   9.75
          Charset         =   0
          Weight          =   400
@@ -37,7 +37,7 @@ Begin VB.Form frmError
       Caption         =   "&Ignore"
       Default         =   -1  'True
       BeginProperty Font 
-         Name            =   "Arial"
+         Name            =   "Segoe UI"
          Size            =   9.75
          Charset         =   0
          Weight          =   400
@@ -55,7 +55,7 @@ Begin VB.Form frmError
       Caption         =   "&Terminate"
       Enabled         =   0   'False
       BeginProperty Font 
-         Name            =   "Arial"
+         Name            =   "Segoe UI"
          Size            =   9.75
          Charset         =   0
          Weight          =   400
@@ -71,7 +71,7 @@ Begin VB.Form frmError
    End
    Begin VB.TextBox txtReason 
       BeginProperty Font 
-         Name            =   "Arial"
+         Name            =   "Segoe UI"
          Size            =   9.75
          Charset         =   0
          Weight          =   400
@@ -89,7 +89,7 @@ Begin VB.Form frmError
    End
    Begin VB.TextBox txtModule 
       BeginProperty Font 
-         Name            =   "Arial"
+         Name            =   "Segoe UI"
          Size            =   9.75
          Charset         =   0
          Weight          =   400
@@ -108,7 +108,7 @@ Begin VB.Form frmError
    Begin VB.Label Label2 
       Caption         =   "Function"
       BeginProperty Font 
-         Name            =   "Arial"
+         Name            =   "Segoe UI"
          Size            =   9.75
          Charset         =   0
          Weight          =   400
@@ -131,7 +131,7 @@ Begin VB.Form frmError
    Begin VB.Label Label3 
       Caption         =   "Reason"
       BeginProperty Font 
-         Name            =   "Arial"
+         Name            =   "Segoe UI"
          Size            =   9.75
          Charset         =   0
          Weight          =   400
@@ -148,7 +148,7 @@ Begin VB.Form frmError
    Begin VB.Label Label1 
       Caption         =   "Module/Class Name"
       BeginProperty Font 
-         Name            =   "Arial"
+         Name            =   "Segoe UI"
          Size            =   9.75
          Charset         =   0
          Weight          =   400

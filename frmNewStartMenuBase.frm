@@ -2054,7 +2054,7 @@ End Sub
 
 Private Sub m_optionDialog_onRequestAddMetroShortcut()
     Settings.Programs.AddMetroShortcut_ToPinned
-    If g_Windows8 Then Settings.Programs.AddMetroAppsShortcut_ToPinned
+    If g_Windows8 or g_Windows81 Then Settings.Programs.AddMetroAppsShortcut_ToPinned
 End Sub
 
 Private Sub m_powerMenu_onClick(theItemTag As String)

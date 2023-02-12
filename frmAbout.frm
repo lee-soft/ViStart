@@ -58,7 +58,7 @@ Begin VB.Form frmAbout
       AutoSize        =   -1  'True
       BorderStyle     =   0  'None
       BeginProperty Font 
-         Name            =   "Arial"
+         Name            =   "Segoe UI"
          Size            =   9.75
          Charset         =   0
          Weight          =   400
