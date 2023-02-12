@@ -11,7 +11,7 @@ Begin VB.Form frmFreq
    ClipControls    =   0   'False
    FillColor       =   &H0080FFFF&
    BeginProperty Font 
-      Name            =   "Arial"
+      Name            =   "Segoe UI"
       Size            =   11.25
       Charset         =   0
       Weight          =   400
@@ -893,7 +893,7 @@ Private Sub picRollover_MouseUp(Button As Integer, Shift As Integer, X As Single
                 If m_viPadInstalled Then
                     m_addToViPadCommand = GenerateViPadAddToCommand(lstItems(iCurIndex).Shell)
                 
-                m_vistaMenu.AddItem GetPublicString("strCopyToViPad"), "COPYTOVIPAD@NULL"
+	    	m_vistaMenu.AddItem GetPublicString("strCopyToViPad"), "COPYTOVIPAD@NULL"
             '    'Else
             '    '    m_addToViPadCommand = "http://lee-soft.com/vipad"
                 End If

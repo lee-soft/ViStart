@@ -7,7 +7,7 @@ Begin VB.Form frmZOrderKeeper
    ClientTop       =   0
    ClientWidth     =   210
    BeginProperty Font 
-      Name            =   "Lucida Console"
+      Name            =   "Segoe UI"
       Size            =   8.25
       Charset         =   0
       Weight          =   400

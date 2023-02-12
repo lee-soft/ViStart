@@ -19,7 +19,7 @@ Begin VB.UserControl LinkList
       BackColor       =   &H00F0F0F0&
       Caption         =   "Item 1"
       BeginProperty Font 
-         Name            =   "Trebuchet MS"
+         Name            =   "Segoe UI"
          Size            =   20.25
          Charset         =   0
          Weight          =   400

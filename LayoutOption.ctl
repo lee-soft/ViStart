@@ -6,7 +6,7 @@ Begin VB.UserControl SettingsOption
    ClientTop       =   0
    ClientWidth     =   4605
    BeginProperty Font 
-      Name            =   "Tahoma"
+      Name            =   "Segoe UI"
       Size            =   12
       Charset         =   0
       Weight          =   400

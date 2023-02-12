@@ -131,6 +131,8 @@ Dim xmlLanguageFile As New DOMDocument
     UserVariable.Add "Search", "strSearch"
     UserVariable.Add "Show on Desktop", "strShowOnDesktop"
     UserVariable.Add "Hide from Desktop", "strHideFromDesktop"
+    UserVariable.Add "Show in Computer", "strShowInComputer"
+    UserVariable.Add "Hide from Computer", "strHideFromComputer"
     UserVariable.Add "Open", "strOpen"
     UserVariable.Add "Don't show option in navigation pane", "strHideOption"
     UserVariable.Add "Don't pop out folder contents", "strDontPopOut"
@@ -207,10 +209,19 @@ Dim xmlLanguageFile As New DOMDocument
 
     UserVariable.Add "Restore Windows Start Menu Shortcut", "strRestoreStartMenu"
 	
+    UserVariable.Add "Windows 8 exclusive features defaults", "strW8Features"
+	
+    UserVariable.Add "Disable all Windows 8 hot corners", "strHotCorners"
+    UserVariable.Add "Disable CharmsBar", "strDisableCharmsBar"
+    UserVariable.Add "Disable Drag to close", "strDisableDragToClose"
+    UserVariable.Add "Disable bottom left (Start) hot corner", "strDisableBottomLeftCorner"
+    UserVariable.Add "Automatically go to desktop when I log in", "strSkipMetroScreen"
+    UserVariable.Add "Windows 8 related features require a restart to take effect", "strW8FeaturesWarning"
+	
     UserVariable.Add "(ViStart the program itself is created by Lee Matthew Chantrey)", "strCopyright"
 
     
-    If g_Windows8 Then
+    If g_Windows8 or g_Windows81 Then
         UserVariable.Add "Metro", "startmenu"
     Else
         UserVariable.Add "Start Menu", "startmenu"
