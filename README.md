@@ -2,7 +2,6 @@
 
 - [Windows Unicode API TypeLib](https://github.com/badcodes/vb6/blob/master/%5BInclude%5D/TypeLib/winu.tlb) - Windows API, stores all the API declarations
 - [dseaman@uol.com.br GDI+ Type Library 1.05](http://www.vbaccelerator.com/home/VB/Type_Libraries/GDIPlus_Type_Library/article.asp)
-- [Karl E. Peterson's - HookMe](http://vb.mvps.org/samples/HookMe/) - A clean and elegant means of subclassing 
 - [Extended GDIPlusWrapper](https://github.com/lee-soft/GDIPlusWrapper) - Extended GDIPlusWrapper used for OOP GDIPlus
 
 ## Installation
@@ -15,7 +14,6 @@
 - Clone the repo
 - Ensure you have Visual Basic 6.0(Service Pack 6) installed
 - Grab the SHELLLNK, WinU and GDIPlus TLB - extract the TLBs and add as a reference to the project
-- Grab the HookMe zip - extract the files (IHookSink.cls, MHookMe.bas) over the placeholder files (IHookSink.cls, MHookMe.bas) and disregard any other files
 - Grab the release of the [GDIPlusWrapper library](https://github.com/lee-soft/GDIPlusWrapper/releases) and re-add it as a reference to this project
 - Compile and enjoy
 
@@ -27,5 +25,4 @@ I have been unable to contact the original author of the vbAccelerator GDIPlusWr
 
 - [Windows Unicode API TypeLib](https://github.com/badcodes/vb6/blob/master/%5BInclude%5D/TypeLib/winu.tlb) - Windows API, stores all the API declarations
 - [dseaman@uol.com.br GDI+ Type Library 1.05](http://www.vbaccelerator.com/home/VB/Type_Libraries/GDIPlus_Type_Library/article.asp)
-- [Karl E. Peterson's - HookMe](http://vb.mvps.org/samples/HookMe/) - A clean and elegant means of subclassing 
 - [Extended GDIPlusWrapper](https://github.com/lee-soft/GDIPlusWrapper) - Extended GDIPlusWrapper used for OOP GDIPlus
