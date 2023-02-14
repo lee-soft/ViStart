@@ -340,7 +340,7 @@ Private Function IHookSink_WindowProc(hWnd As Long, uMsg As Long, wParam As Long
        Case Else
            ' Just allow default processing for everything else.
            IHookSink_WindowProc = _
-              InvokeWindowProc(hWnd, uMsg, wParam, lParam)
+              CallOldWindowProcessor(hWnd, uMsg, wParam, lParam)
                                           
            Exit Function
        

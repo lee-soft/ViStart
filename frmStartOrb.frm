@@ -67,6 +67,8 @@ Public Windows81LeftDifference As Long
 
 Implements IHookSink
 
+
+
 Public Function SetContextMenu(ByRef newContextMenu As frmVistaMenu)
     Set m_startOptions = newContextMenu
 End Function
@@ -344,7 +346,7 @@ Private Function IHookSink_WindowProc(hWnd As Long, msg As Long, wp As Long, lp 
     Else
         ' Just allow default processing for everything else.
         IHookSink_WindowProc = _
-           InvokeWindowProc(hWnd, msg, wp, lp)
+           CallOldWindowProcessor(hWnd, msg, wp, lp)
     End If
     
     Exit Function
@@ -353,7 +355,7 @@ Handler:
 
     ' Just allow default processing for everything else.
     IHookSink_WindowProc = _
-       InvokeWindowProc(hWnd, msg, wp, lp)
+       CallOldWindowProcessor(hWnd, msg, wp, lp)
 End Function
 
 Private Sub m_changeSkin_onChangeSkin(szNewSkin As String)

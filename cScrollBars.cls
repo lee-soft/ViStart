@@ -782,7 +782,7 @@ Dim bConsume As Boolean
     If Not bConsume Then
         ' Just allow default processing for everything else.
         IHookSink_WindowProc = _
-           InvokeWindowProc(hWnd, iMsg, wParam, lParam)
+           CallOldWindowProcessor(hWnd, iMsg, wParam, lParam)
     End If
 
 End Function

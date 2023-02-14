@@ -483,7 +483,7 @@ Private Function IHookSink_WindowProc(hWnd As Long, msg As Long, wp As Long, lp 
     Else
         ' Just allow default processing for everything else.
         IHookSink_WindowProc = _
-           InvokeWindowProc(hWnd, msg, wp, lp)
+           CallOldWindowProcessor(hWnd, msg, wp, lp)
     End If
     
     Exit Function
@@ -492,7 +492,7 @@ Handler:
 
     ' Just allow default processing for everything else.
     IHookSink_WindowProc = _
-       InvokeWindowProc(hWnd, msg, wp, lp)
+       CallOldWindowProcessor(hWnd, msg, wp, lp)
 End Function
 
 Private Sub Form_KeyDown(lngKeyCode As Integer, Shift As Integer)
@@ -893,7 +893,7 @@ Private Sub picRollover_MouseUp(Button As Integer, Shift As Integer, X As Single
                 If m_viPadInstalled Then
                     m_addToViPadCommand = GenerateViPadAddToCommand(lstItems(iCurIndex).Shell)
                 
-	    	m_vistaMenu.AddItem GetPublicString("strCopyToViPad"), "COPYTOVIPAD@NULL"
+                m_vistaMenu.AddItem GetPublicString("strCopyToViPad"), "COPYTOVIPAD@NULL"
             '    'Else
             '    '    m_addToViPadCommand = "http://lee-soft.com/vipad"
                 End If

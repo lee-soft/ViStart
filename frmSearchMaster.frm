@@ -322,12 +322,12 @@ Dim b() As Byte
 
     ' Just allow default processing for everything else.
     IHookSink_WindowProc = _
-       InvokeWindowProc(hWnd, msg, wp, lp)
+       CallOldWindowProcessor(hWnd, msg, wp, lp)
        
     Exit Function
 Handler:
     ' Just allow default processing for everything else.
     IHookSink_WindowProc = _
-       InvokeWindowProc(hWnd, msg, wp, lp)
+       CallOldWindowProcessor(hWnd, msg, wp, lp)
 End Function
 

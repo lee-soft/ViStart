@@ -11,18 +11,12 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-' *********************************************************************
-'  Copyright ©2002-08 Karl E. Peterson, All Rights Reserved
-'  http://www.mvps.org/vb
-' *********************************************************************
-'  You are free to use this code within your own applications, but you
-'  are expressly forbidden from selling or otherwise distributing this
-'  source code without prior written consent.
-' *********************************************************************
 Option Explicit
 
+' Credit to Karl E. Peterson for the idea to put this into a class
+' Credit to vbaccelerator: Subclassing Without The Crashes
+
 Public Function WindowProc(hWnd As Long, msg As Long, wp As Long, lp As Long) As Long
-   ' Stub to be used with MHookMe.bas
 End Function
 
 

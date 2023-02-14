@@ -1846,7 +1846,7 @@ Private Function IHookSink_WindowProc(hWnd As Long, msg As Long, wp As Long, lp 
         Else
             ' Just allow default processing for everything else.
             IHookSink_WindowProc = _
-                InvokeWindowProc(hWnd, msg, wp, lp)
+                CallOldWindowProcessor(hWnd, msg, wp, lp)
         End If
     
     ElseIf msg = WM_MOUSEWHEEL Then
@@ -1896,7 +1896,7 @@ Private Function IHookSink_WindowProc(hWnd As Long, msg As Long, wp As Long, lp 
     Else
         ' Just allow default processing for everything else.
         IHookSink_WindowProc = _
-           InvokeWindowProc(hWnd, msg, wp, lp)
+           CallOldWindowProcessor(hWnd, msg, wp, lp)
     End If
     
     Exit Function
@@ -1905,7 +1905,7 @@ Handler:
 
     ' Just allow default processing for everything else.
     IHookSink_WindowProc = _
-       InvokeWindowProc(hWnd, msg, wp, lp)
+       CallOldWindowProcessor(hWnd, msg, wp, lp)
 
 End Function
 
