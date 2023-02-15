@@ -64,20 +64,20 @@
     <string value="Todos os arquivos" id="strAllExtensions" />
 
     <string value="Biblioteca" id="strLibraries" />
-    <string value="Meus Documentos" id="strDocuments" />
-    <string value="Minhas Imagens" id="strPictures" />
-    <string value="Minhas Músicas" id="strMusic" />
-    <string value="Meus Videos" id="strVideos" />
+    <string value="Documentos" id="strDocuments" />
+    <string value="Imagens" id="strPictures" />
+    <string value="Músicas" id="strMusic" />
+    <string value="Videos" id="strVideos" />
     <string value="Downloads" id="strDownloads"/>
-    <string value="Meus Jogos" id="strGames" />
-    <string value="Meu Computador" id="strComputer" />
+    <string value="Jogos" id="strGames" />
+    <string value="Computador" id="strComputer" />
     <string value="Itens Recentes" id="strRecent" />
-    <string value="Network" id="strNetwork" />
-    <string value="Conectar à" id="strConnectTo"  />
+    <string value="Rede" id="strNetwork" />
+    <string value="Conectar a" id="strConnectTo"  />
     <string value="Painel de Controle" id="strControlPanel" />
-    <string value="Printers and Faxes" id="strPrinters" />
+    <string value="Impressoras" id="strPrinters" />
     <string value="Ajuda e Suporte" id="strHelp" />
-    <string value="Set Program Defaults" id="strSetDefaults" />
+    <string value="Programas Padrão" id="strSetDefaults" />
 
     <string value="Painel de controle do ViStart" id="strViStartControlPanel" />
 
