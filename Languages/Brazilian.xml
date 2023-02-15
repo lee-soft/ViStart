@@ -75,7 +75,7 @@
     <string value="Rede" id="strNetwork" />
     <string value="Conectar a" id="strConnectTo"  />
     <string value="Painel de Controle" id="strControlPanel" />
-    <string value="Impressoras" id="strPrinters" />
+    <string value="Dispositivos e Impressoras" id="strPrinters" />
     <string value="Ajuda e Suporte" id="strHelp" />
     <string value="Programas Padrão" id="strSetDefaults" />
 
