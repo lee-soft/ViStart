@@ -173,6 +173,11 @@ Public Function ShowContextMenu(ByRef winOwner As Form)
 			' Downloads
 			DesktopIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_DOWNLOADS)
 			ComputerIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_DOWNLOADS)
+		
+		ElseIf InStr(1, UCase(m_selectedItem.Shell), g_CLSID_3DOBJECTS, 1) > 0 Then
+			' 3D Objects
+			DesktopIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_3DOBJECTS)
+			ComputerIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_3DOBJECTS)
 						
 		ElseIf InStr(1, UCase(m_selectedItem.Shell), g_CLSID_GAMES, 1) > 0 Then
 			' Games Explorer
@@ -773,54 +778,54 @@ MaxOSVersion = 0
     For Each thisObject In navigationPaneXML.childNodes
         If TypeName(thisObject) = "IXMLDOMElement" Then
             Set thisObjectXML = thisObject
-                        
-                        If Not IsNull(thisObject.getAttribute("minwinversion")) Then
-                                MinOSVersion = CSng(thisObject.getAttribute("minwinversion"))
-                        Else
-                                MinOSVersion = WindowsVersion
-                        End If
-                        
-                        If Not IsNull(thisObject.getAttribute("maxwinversion")) Then
-                                MaxOSVersion = CSng(thisObject.getAttribute("maxwinversion"))
-                        Else
-                                MaxOSVersion = MinOSVersion
-                        End If
-                        
-                        If WindowsVersion >= MinOSVersion And WindowsVersion <= MaxOSVersion Then
-                        
-            If thisObjectXML.tagName = "folder" Then
-                Set thisFolderOption = New NavigationPaneFolder
-                m_navigationPaneOptions.Add thisFolderOption
-                
-                thisFolderOption.Visible = True
 
-                If Not IsNull(thisObjectXML.getAttribute("visible")) Then thisFolderOption.Visible = CBool(thisObjectXML.getAttribute("visible"))
-                If thisFolderOption.Visible = True Then GroupOptionsVisibileCount = GroupOptionsVisibileCount + 1
-                If GroupOptionsVisibileCount > Layout.GroupOptionsVisibilityLimit And Layout.EnableVisibilityLimit Then thisFolderOption.Visible = False
-                
-                If Not IsNull(thisObjectXML.getAttribute("display_as_menu")) Then thisFolderOption.OpenAsMenu = CBool(thisObjectXML.getAttribute("display_as_menu"))
-                If Not IsNull(thisObjectXML.getAttribute("caption")) Then thisFolderOption.Caption = thisObjectXML.getAttribute("caption")
-                If Not IsNull(thisObjectXML.getAttribute("path")) Then thisFolderOption.Shell = thisObjectXML.getAttribute("path")
-                If Not IsNull(thisObjectXML.getAttribute("rollover")) Then thisFolderOption.Rollover = thisObjectXML.getAttribute("rollover")
- 
-            ElseIf thisObjectXML.tagName = "custom" Then
-                Set thisCustomOption = New NavigationPaneCustom
-                m_navigationPaneOptions.Add thisCustomOption
-                
-                thisCustomOption.Visible = True
-                
-                If Not IsNull(thisObjectXML.getAttribute("visible")) Then thisCustomOption.Visible = CBool(thisObjectXML.getAttribute("visible"))
-                If thisCustomOption.Visible = True Then GroupOptionsVisibileCount = GroupOptionsVisibileCount + 1
-                If GroupOptionsVisibileCount > Layout.GroupOptionsVisibilityLimit And Layout.EnableVisibilityLimit Then thisCustomOption.Visible = False
-                                
-                If Not IsNull(thisObjectXML.getAttribute("caption")) Then thisCustomOption.Caption = thisObjectXML.getAttribute("caption")
-                If Not IsNull(thisObjectXML.getAttribute("rollover")) Then thisCustomOption.Rollover = thisObjectXML.getAttribute("rollover")
-                If Not IsNull(thisObjectXML.getAttribute("exec")) Then thisCustomOption.Shell = thisObjectXML.getAttribute("exec")
-                                
-                thisCustomOption.Populate thisObjectXML
+			If Not IsNull(thisObject.getAttribute("minwinversion")) Then
+				MinOSVersion = CSng(thisObject.getAttribute("minwinversion"))
+			Else
+				MinOSVersion = WindowsVersion
+			End If
+			
+			If Not IsNull(thisObject.getAttribute("maxwinversion")) Then
+				MaxOSVersion = CSng(thisObject.getAttribute("maxwinversion"))
+			Else
+				MaxOSVersion = MinOSVersion
+			End If
+
+			If WindowsVersion >= MinOSVersion And WindowsVersion <= MaxOSVersion Then
+							
+				If thisObjectXML.tagName = "folder" Then
+					Set thisFolderOption = New NavigationPaneFolder
+					m_navigationPaneOptions.Add thisFolderOption
+					
+					thisFolderOption.Visible = True
+
+					If Not IsNull(thisObjectXML.getAttribute("visible")) Then thisFolderOption.Visible = CBool(thisObjectXML.getAttribute("visible"))
+					If thisFolderOption.Visible = True Then GroupOptionsVisibileCount = GroupOptionsVisibileCount + 1
+					If GroupOptionsVisibileCount > Layout.GroupOptionsVisibilityLimit And Layout.EnableVisibilityLimit Then thisFolderOption.Visible = False
+					
+					If Not IsNull(thisObjectXML.getAttribute("display_as_menu")) Then thisFolderOption.OpenAsMenu = CBool(thisObjectXML.getAttribute("display_as_menu"))
+					If Not IsNull(thisObjectXML.getAttribute("caption")) Then thisFolderOption.Caption = thisObjectXML.getAttribute("caption")
+					If Not IsNull(thisObjectXML.getAttribute("path")) Then thisFolderOption.Shell = thisObjectXML.getAttribute("path")
+					If Not IsNull(thisObjectXML.getAttribute("rollover")) Then thisFolderOption.Rollover = thisObjectXML.getAttribute("rollover")
+	 
+				ElseIf thisObjectXML.tagName = "custom" Then
+					Set thisCustomOption = New NavigationPaneCustom
+					m_navigationPaneOptions.Add thisCustomOption
+					
+					thisCustomOption.Visible = True
+					
+					If Not IsNull(thisObjectXML.getAttribute("visible")) Then thisCustomOption.Visible = CBool(thisObjectXML.getAttribute("visible"))
+					If thisCustomOption.Visible = True Then GroupOptionsVisibileCount = GroupOptionsVisibileCount + 1
+					If GroupOptionsVisibileCount > Layout.GroupOptionsVisibilityLimit And Layout.EnableVisibilityLimit Then thisCustomOption.Visible = False
+									
+					If Not IsNull(thisObjectXML.getAttribute("caption")) Then thisCustomOption.Caption = thisObjectXML.getAttribute("caption")
+					If Not IsNull(thisObjectXML.getAttribute("rollover")) Then thisCustomOption.Rollover = thisObjectXML.getAttribute("rollover")
+					If Not IsNull(thisObjectXML.getAttribute("exec")) Then thisCustomOption.Shell = thisObjectXML.getAttribute("exec")
+									
+					thisCustomOption.Populate thisObjectXML
+				End If
+							
             End If
-                        
-                        End If
 
             If m_navigationPaneOptions.count = Layout.GroupOptionsLimit Then Exit For
         End If
@@ -1010,6 +1015,16 @@ Private Function ShowHideDesktopIcons(ShellItem As String)
 			Else
 				DesktopIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_DOWNLOADS, 1)
 			End If
+			
+		ElseIf InStr(1, UCase(ShellItem), g_CLSID_3DOBJECTS, 1) > 0 Then
+			' 3D Objects
+			DesktopIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_3DOBJECTS)
+					
+			If DesktopIconStatus = 1 Then
+				DesktopIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_3DOBJECTS, 0)
+			Else
+				DesktopIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_3DOBJECTS, 1)
+			End If
 		   
 		ElseIf InStr(1, UCase(ShellItem), g_CLSID_GAMES, 1) > 0 Then
 			' Games Explorer
@@ -1129,7 +1144,24 @@ Private Function ShowHideComputerIcons(ShellItem As String)
 			Else
 				ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_DOWNLOADS, 1)
 			End If
-		   
+		ElseIf InStr(1, UCase(ShellItem), g_CLSID_3DOBJECTS, 1) > 0 Then
+			' 3D Objects
+			ComputerIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_3DOBJECTS)
+					
+			If ComputerIconStatus = 1 Then
+				ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_3DOBJECTS, 0)
+			Else
+				ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_3DOBJECTS, 1)
+			End If
+		ElseIf InStr(1, UCase(ShellItem), g_CLSID_DESKTOP, 1) > 0 Then
+			' Desktop
+			ComputerIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_DESKTOP)
+					
+			If ComputerIconStatus = 1 Then
+				ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_DESKTOP, 0)
+			Else
+				ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_DESKTOP, 1)
+			End If
 		ElseIf InStr(1, UCase(ShellItem), g_CLSID_GAMES, 1) > 0 Then
 			' Games Explorer
 			ComputerIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_GAMES)

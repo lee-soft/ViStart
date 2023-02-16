@@ -56,6 +56,7 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Option Explicit
 
+Private ChildSkinID As String
 Private m_OptionsGap As Single
 
 Private m_groupMenuFontSize As Single
@@ -227,6 +228,7 @@ End Function
 Public Function InitializeCurrentSkin()
 
 Dim r As RECTL
+Dim currentSkinStartMenuParseResult As StartMenuParseResult
 
     CloseMe
     RaiseEvent onRequestNewResize
@@ -259,8 +261,9 @@ Dim r As RECTL
     Set m_layeredData = Nothing
     
     Set Layout = New LayoutParser
-    
-    If Not Layout.ParseLayout(g_resourcesPath & "layout.xml") Then
+    Set currentSkinStartMenuParseResult = Layout.ParseStartMenu(g_resourcesPath & "layout.xml", ChildSkinID)
+
+    If Not currentSkinStartMenuParseResult.ErrorCode = 0 Then
         LogError "Failed to parse layout file", "StartMenuBase"
         Exit Function
     End If
@@ -277,8 +280,8 @@ Dim r As RECTL
     
     g_viOrb_fullHeight = Layout.ViOrb_FullHeight
     m_ShutDownTextEnabled = Not Layout.ShutDownTextSchema Is Nothing
-    BlurEnabled = FileExists(g_resourcesPath & "startmenu_mask.bmp")
-    m_JumpListEnabled = FileExists(g_resourcesPath & "startmenu_expanded.png")
+    BlurEnabled = FileExists(g_resourcesPath & currentSkinStartMenuParseResult.StartMenuMaskPath)
+    m_JumpListEnabled = FileExists(g_resourcesPath & currentSkinStartMenuParseResult.StartMenuExpandedPath)
     
     If m_JumpListEnabled Then
         If Layout.JumpListViewerSchema Is Nothing Then
@@ -305,15 +308,19 @@ Dim r As RECTL
     r.Right = r.Left + Layout.GroupMenuSchema.Width
     
     Set m_originalBackground = New GDIPImage
-    m_originalBackground.FromFile g_resourcesPath & "startmenu.png"
+    m_originalBackground.FromFile g_resourcesPath & currentSkinStartMenuParseResult.StartMenuPath
     
     Set m_background = ReconstructBackgroundImage(m_originalBackground, r)
+    If m_background Is Nothing Then
+        MsgBox "Background failed! Is the background PNG valid?"
+        Exit Function
+    End If
         
-    m_shutDownButton.Image.FromFile g_resourcesPath & "bottombuttons_shutdown.png"
-    m_logOffButton.Image.FromFile g_resourcesPath & "bottombuttons_logoff.png"
-    m_arrowButton.Image.FromFile g_resourcesPath & "bottombuttons_arrow.png"
-    m_AllPrograms.Image.FromFile g_resourcesPath & "allprograms.png"
-    m_ArrowAllPrograms.Image.FromFile g_resourcesPath & "programs_arrow.png"
+    m_shutDownButton.Image.FromFile g_resourcesPath & currentSkinStartMenuParseResult.BottomButtonsShutdownPath
+    m_logOffButton.Image.FromFile g_resourcesPath & currentSkinStartMenuParseResult.ButtonPath
+    m_arrowButton.Image.FromFile g_resourcesPath & currentSkinStartMenuParseResult.BottomButtonsArrowPath
+    m_AllPrograms.Image.FromFile g_resourcesPath & currentSkinStartMenuParseResult.AllProgramsPath
+    m_ArrowAllPrograms.Image.FromFile g_resourcesPath & currentSkinStartMenuParseResult.ProgramsArrowPath
     
     'm_graphics.Dispose
     'm_BitmapGraphics.Dispose
@@ -354,14 +361,14 @@ Dim r As RECTL
     If Not BlurEnabled Then Set m_layeredData = MakeLayerdWindow(Me)
     
     If BlurEnabled Then
-        SetupBlur g_resourcesPath
+        SetupBlur g_resourcesPath, currentSkinStartMenuParseResult.StartMenuMaskPath
     Else
         m_layeredMode = True
     End If
     
     If m_JumpListEnabled Then
         SetupJumplistViewer
-        m_BackGroundPinned.FromFile g_resourcesPath & "startmenu_expanded.png"
+        m_BackGroundPinned.FromFile g_resourcesPath & currentSkinStartMenuParseResult.StartMenuExpandedPath
     End If
     
     SetupNavigationViewer m_originalBackground
@@ -396,24 +403,30 @@ Dim r As RECTL
 End Function
 
 Public Property Let Skin(ByVal szNewSkin As String)
+
+    If Not m_initalized Then
+        Exit Property
+    End If
     
-    If m_initalized And LCase$(szNewSkin) = LCase$(Settings.CurrentSkin) Then
+    If LCase$(ChildSkinID) = LCase$(Settings.CurrentChildSkin) And LCase$(szNewSkin) = LCase$(Settings.CurrentSkin) Then
         Exit Property
     End If
     
     Settings.CurrentSkin = szNewSkin
+    Settings.CurrentChildSkin = ChildSkinID
+    
     g_resourcesPath = sCon_AppDataPath & "_skins\" & szNewSkin & "\"
 
     InitializeCurrentSkin
 End Property
 
-Private Function SetupBlur(szResourcesPath As String)
+Private Function SetupBlur(szResourcesPath As String, szStartMenuMaskPath As String)
 
     Set m_StartMenuMaskBitmap = New GDIBitmap
     Set m_StartMenuMaskDC = New GDIDC
     Set m_StartMenuMaskInvertedDC = New pcMemDC
 
-    m_StartMenuMaskBitmap.LoadImageFromFile szResourcesPath & "startmenu_mask.bmp"
+    m_StartMenuMaskBitmap.LoadImageFromFile szResourcesPath & szStartMenuMaskPath
     m_StartMenuMaskDC.SelectBitmap m_StartMenuMaskBitmap
     
     m_StartMenuMaskInvertedDC.Height = m_StartMenuMaskBitmap.Height
@@ -1905,7 +1918,7 @@ Handler:
 
     ' Just allow default processing for everything else.
     IHookSink_WindowProc = _
-        CallOldWindowProcessor(hWnd, msg, wp, lp)
+       CallOldWindowProcessor(hWnd, msg, wp, lp)
 
 End Function
 
@@ -2043,8 +2056,11 @@ Private Sub m_powerMenu_onCommand(commandCode As PowerMenuCommands)
     
 End Sub
 
-Private Sub m_optionDialog_onChangeSkin(szNewSkin As String)
-    Me.Skin = szNewSkin
+Private Sub m_optionDialog_onChangeSkin(skinName As CollectionItem)
+
+    ChildSkinID = skinName.Key
+    Me.Skin = skinName.Value
+
 End Sub
 
 Private Sub m_optionDialog_onNavigationPanelChange()

@@ -182,17 +182,26 @@ Function DetermineWindowsVersion_IfNeeded()
     g_Windows11 = False
     g_Windows12 = False
 	
-	' Returns max 6.2
-	g_WinVer = Split(FSO.GetFileVersion(Environ("windir") & "\system32\kernel32.dll"), ".")
+
 	
-	If g_WinVer(0) > 5 Then
+	If FSO.FolderExists(Environ("windir") & "\servicing\version") Then
 	
 		Dim VersionFolder As Variant
+		
 		For Each VersionFolder In FSO.GetFolder(Environ("windir") & "\servicing\version").SubFolders
-			g_WinVer = Split(Replace(UCase(VersionFolder.Path), UCase(Environ("windir") & "\servicing\version\"), ""), ".")
+			If Len(Replace(UCase(VersionFolder.Path), UCase(Environ("windir") & "\servicing\version\"), "")) > 1 Then
+				g_WinVer = Split(Replace(UCase(VersionFolder.Path), UCase(Environ("windir") & "\servicing\version\"), ""), ".")
+				Exit For
+			End If
 		Next
+		
+	Else
+		' Returns max 6.2
+		g_WinVer = Split(FSO.GetFileVersion(Environ("windir") & "\system32\kernel32.dll"), ".")	
 	End If
 
+
+	'msgbox "Windows version: " & g_WinVer(0) & "." & g_WinVer(1) & "." & g_WinVer(2) & "." & g_WinVer(3)
 
 	debug.print "Windows version: " & g_WinVer(0) & "." & g_WinVer(1) & "." & g_WinVer(2) & "." & g_WinVer(3)
 	'msgbox "Windows version: " & g_WinVer(0) & "." & g_WinVer(1) & "." & g_WinVer(2) & "." & g_WinVer(3)

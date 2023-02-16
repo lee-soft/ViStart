@@ -24,6 +24,7 @@ Private m_generalXML As IXMLDOMElement
 
 Public CurrentSkin As String
 Public CurrentOrb As String
+Public CurrentChildSkin As String
 Public CurrentRollover As String
 
 Public EnableAutoClick As Boolean

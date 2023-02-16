@@ -338,8 +338,8 @@ Dim exclusiveOSVersion As Single
         
                 m_frequentPrograms.Add thisProgram, thisProgram.Path
 			
-	    End If
-	End If
+			End If
+		End If
 		
     Next
 
@@ -387,11 +387,12 @@ Dim exclusiveOSVersion As Single
 				Set thisProgram.Icon = IconManager.GetViIcon(AppPath & "plugins\metroprovider.exe", True)
 			Else
 				Set thisProgram.Icon = IconManager.GetViIcon(thisProgram.Path, True)
-				End If
 			End If
-			
+
 			m_pinnedPrograms.Add thisProgram, thisProgram.Path
 			
+			End If
+		
         End If
     Next
     

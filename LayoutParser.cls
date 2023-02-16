@@ -11,6 +11,8 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+Attribute VB_Ext_KEY = "SavedWithClassBuilder6" ,"Yes"
+Attribute VB_Ext_KEY = "Top_Level" ,"Yes"
 Public SearchBoxSchema As GenericViElement
 Public ProgramMenuSchema As GenericViElement
 Public FrequentProgramsMenuSchema As GenericViElement
@@ -66,10 +68,15 @@ Dim defaultLayout As String
     LoadFromResources = True
 End Function
 
-Function ParseLayout(strPath As String) As Boolean
+Function ParseStartMenu(strPath As String, Optional strStartMenuID As String = "") As StartMenuParseResult
     On Error Resume Next
-    
+
+Dim result As StartMenuParseResult: Set result = New StartMenuParseResult
+Set ParseStartMenu = result
+
 Dim xmlLayout As New DOMDocument
+
+Dim startMenuElement As IXMLDOMElement
 Dim subElement As IXMLDOMElement
 Dim nullElement As IXMLDOMElement
 
@@ -80,17 +87,20 @@ Dim thisFont As ViFont
 Dim defaultFontFace As String
     
 Dim validLayout As Boolean
+Dim multiLayout As Boolean
+
+    result.ErrorCode = 300
     
     If FileExists(strPath) Then
         If xmlLayout.Load(strPath) = False Then
-            CreateError "LayoutParser", "ParseLayout", "Couldn't parse layout.xml file within resources"
+            CreateError "LayoutParser", "ParseStartMenu", "Couldn't parse layout.xml file within resources"
             MsgBox "Couldn't parse layout.xml file within resources folder", vbCritical, "XML Syntax Error"
-            ParseLayout = False
+            ParseStartMenu = False
             Exit Function
         End If
     Else
         If Not LoadFromResources(xmlLayout) Then
-            ParseLayout = False
+            ParseStartMenu = False
             Exit Function
         End If
     End If
@@ -107,15 +117,36 @@ Dim validLayout As Boolean
     XOffset = 0
     
     GroupOptionsSeparator = 35
-    GroupOptionsLimit = 18
+    GroupOptionsLimit = 20
     
     defaultFontFace = g_DefaultFont.FontFace
     
     validLayout = True
     
-    For Each subElement In xmlLayout.selectNodes("startmenu_base//vifont")
+    If Not xmlLayout.selectSingleNode("startmenus") Is Nothing Then
+        multiLayout = True
+    End If
+    
+    If multiLayout Then
+        If strStartMenuID <> vbNullString Then
+            Set startMenuElement = xmlLayout.selectSingleNode("startmenus//startmenu_base[@id='" & strStartMenuID & "']")
+        Else
+            Set allStartMenuBases = xmlLayout.selectNodes("startmenus//startmenu_base")
+            Set startMenuElement = allStartMenuBases.nextNode
+        End If
+    Else
+        Set startMenuElement = xmlLayout.selectSingleNode("startmenu_base")
+    End If
+    
+    If startMenuElement Is Nothing Then
+        MsgBox "Unable to select a start menu from layout", vbCritical
+        Exit Function
+    End If
+
+    For Each subElement In startMenuElement.selectNodes("vifont")
+
         Set thisFont = New ViFont
-        
+
         'Defaults
         thisFont.Colour = vbBlack
         
@@ -134,7 +165,7 @@ Dim validLayout As Boolean
         Fonts.Add thisFont, getAttribute_IgnoreError(subElement, "id", "fnt_" & Fonts.count)
     Next
     
-    For Each subElement In xmlLayout.selectNodes("startmenu_base//vielement")
+    For Each subElement In startMenuElement.selectNodes("vielement")
         
         Select Case subElement.getAttribute("id")
         
@@ -198,50 +229,63 @@ Dim validLayout As Boolean
         Set UserPictureSchema = RolloverPlaceHolder
     End If
     
-    Set subElement = xmlLayout.selectSingleNode("startmenu_base")
+    Set subElement = startMenuElement.selectSingleNode("startmenu_base")
+    
+    result.StartMenuPath = getAttribute_IgnoreError(subElement, "background", "startmenu.png")
+    result.AllProgramsPath = getAttribute_IgnoreError(subElement, "allprograms", "allprograms.png")
+    result.BottomButtonsArrowPath = getAttribute_IgnoreError(subElement, "bottombuttons_arrow", "bottombuttons_arrow.png")
+    result.ButtonPath = getAttribute_IgnoreError(subElement, "bottombuttons_logoff", "bottombuttons_logoff.png")
+    result.ProgramsArrowPath = getAttribute_IgnoreError(subElement, "programs_arrow", "programs_arrow.png")
+    result.UserFramePath = getAttribute_IgnoreError(subElement, "userframe", "userframe.png")
+    result.BottomButtonsShutdownPath = getAttribute_IgnoreError(subElement, "bottombuttons_shutdown", "bottombuttons_shutdown.png")
+    
+    result.StartMenuExpandedPath = getAttribute_IgnoreError(subElement, "background_expanded", "startmenu_expanded.png")
+    result.StartMenuMaskPath = getAttribute_IgnoreError(subElement, "background_masked", "startmenu_mask.bmp")
+    
     If Not IsNull(subElement.getAttribute("force_clear_type")) Then ForceClearType = CBool(subElement.getAttribute("force_clear_type"))
     If Not IsNull(subElement.getAttribute("y_offset")) Then YOffset = CLng(subElement.getAttribute("y_offset"))
     If Not IsNull(subElement.getAttribute("x_offset")) Then XOffset = CLng(subElement.getAttribute("x_offset"))
     
-    Set subElement = xmlLayout.selectSingleNode("startmenu_base//viorb")
+    Set subElement = startMenuElement.selectSingleNode("viorb")
     ViOrb_FullHeight = CBool(getAttribute_IgnoreError(subElement, "fullheight_superbar", False))
 
-    Set subElement = xmlLayout.selectSingleNode("startmenu_base//vielement[@id='programmenu']")
+    Set subElement = startMenuElement.selectSingleNode("vielement[@id='programmenu']")
     ProgramMenuColour = HEXCOL2RGB(getAttribute_IgnoreError(subElement, "backcolour", "#ffffff"))
     
-    Set subElement = xmlLayout.selectSingleNode("startmenu_base//vielement[@id='frequentprogramsmenu']")
+    Set subElement = startMenuElement.selectSingleNode("vielement[@id='frequentprogramsmenu']")
     FrequentProgramsMenuColour = HEXCOL2RGB(getAttribute_IgnoreError(subElement, "backcolour", "#ffffff"))
     
-    Set subElement = xmlLayout.selectSingleNode("startmenu_base//groupoptions")
+    Set subElement = startMenuElement.selectSingleNode("groupoptions")
     If Not IsNull(subElement.getAttribute("separator")) Then GroupOptionsSeparator = CLng(subElement.getAttribute("separator"))
-	
-	GroupOptionsVisibilityLimit = GroupOptionsLimit
+        
+        GroupOptionsVisibilityLimit = GroupOptionsLimit
     If Not IsNull(subElement.getAttribute("limit")) Then GroupOptionsVisibilityLimit = CLng(subElement.getAttribute("limit"))
     If Not IsNull(subElement.getAttribute("enabled")) Then EnableVisibilityLimit = CBool(getAttribute_IgnoreError(subElement, "enabled", False))
-	
-    Set subElement = xmlLayout.selectSingleNode("startmenu_base//searchbox")
+        
+    Set subElement = startMenuElement.selectSingleNode("searchbox")
     SearchBoxFocusColour = HEXCOL2RGB(getAttribute_IgnoreError(subElement, "focuscolour", "#000000"))
     SearchBoxForeColour = HEXCOL2RGB(getAttribute_IgnoreError(subElement, "forecolour", "#6D6D6D"))
     
-    Set subElement = xmlLayout.selectSingleNode("startmenu_base//programmenu")
+    Set subElement = startMenuElement.selectSingleNode("programmenu")
     ProgramsMenuSeperatorColour = HEXCOL2RGB(getAttribute_IgnoreError(subElement, "separatorfontcolour", "#1e3287"))
 
-    Set subElement = xmlLayout.selectSingleNode("startmenu_base//frequentprogramsmenu")
+    Set subElement = startMenuElement.selectSingleNode("frequentprogramsmenu")
     If Not IsNull(subElement.getAttribute("separatorcolour")) Then
         FrequentProgramsSeperatorColour = HEXCOL2RGB(subElement.getAttribute("separatorcolour"))
     End If
 
-    Set subElement = xmlLayout.selectSingleNode("startmenu_base//shutdowntext")
+    Set subElement = startMenuElement.selectSingleNode("shutdowntext")
     
     If getAttribute_IgnoreError(subElement, "jumplistcolour", "empty") <> "empty" Then
         ShutDownTextJumpListColourSet = True
         ShutDownTextJumpListColour = HEXCOL2RGB(subElement.getAttribute("jumplistcolour"))
     Else
-        Set subElement = xmlLayout.selectSingleNode("startmenu_base//vielement[@id='shutdown_text']")
+        Set subElement = startMenuElement.selectSingleNode("vielement[@id='shutdown_text']")
         ShutDownTextJumpListColour = HEXCOL2RGB(getAttribute_IgnoreError(subElement, "jumplistcolour", "#000000"))
     End If
     
-    ParseLayout = validLayout
+    ParseStartMenu = validLayout
+    result.ErrorCode = 0
 End Function
 
 Private Function ValidateElement(ByVal theElementId As String, ByRef theElement As GenericViElement) As Boolean
@@ -268,5 +312,5 @@ End Function
 
 Private Sub Class_Initialize()
     Set Fonts = New Collection
-    'ErrorParsing = ParseLayout(ResourcesPath & "layout.xml")
+    'ErrorParsing = ParseStartMenu(ResourcesPath & "layout.xml")
 End Sub
