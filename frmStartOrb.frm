@@ -67,15 +67,21 @@ Public Windows81LeftDifference As Long
 
 Implements IHookSink
 
-
-
 Public Function SetContextMenu(ByRef newContextMenu As frmVistaMenu)
     Set m_startOptions = newContextMenu
 End Function
 
 Public Function ResetOrb()
 
+	If FileExists(ResourcesPath & "start_button.png") Then
     Me.Path = ResourcesPath & "start_button.png"
+	ElseIf FileExists(ResourcesPath & "_orbs\default.png") Then
+		Me.Path = sCon_AppDataPath & "_orbs\default.png"
+	ElseIf FileExists(ResourcesPath & "_orbs\Windows 7.png") Then
+		Me.Path = sCon_AppDataPath & "_orbs\Windows 7.png"
+	ElseIf FileExists(ResourcesPath & "_orbs\start_button.png") Then
+		Me.Path = sCon_AppDataPath & "_orbs\start_button.png"
+	End If
     Settings.CurrentOrb = vbNullString
     
 End Function
@@ -346,7 +352,7 @@ Private Function IHookSink_WindowProc(hWnd As Long, msg As Long, wp As Long, lp 
     Else
         ' Just allow default processing for everything else.
         IHookSink_WindowProc = _
-           CallOldWindowProcessor(hWnd, msg, wp, lp)
+            CallOldWindowProcessor(hWnd, msg, wp, lp)
     End If
     
     Exit Function
@@ -355,7 +361,7 @@ Handler:
 
     ' Just allow default processing for everything else.
     IHookSink_WindowProc = _
-       CallOldWindowProcessor(hWnd, msg, wp, lp)
+        CallOldWindowProcessor(hWnd, msg, wp, lp)
 End Function
 
 Private Sub m_changeSkin_onChangeSkin(szNewSkin As String)

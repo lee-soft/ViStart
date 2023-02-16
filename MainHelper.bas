@@ -266,7 +266,7 @@ Private Function HandleWindows8Utility() As Long
     HandleWindows8Utility = EXIT_PROGRAM
     DetermineWindowsVersion_IfNeeded
     
-    If g_Windows8 Then
+    If g_Windows8 or g_Windows81 Then
         
         Set MetroUtility = New Windows8Utility
         MetroUtility.ActionSettings
