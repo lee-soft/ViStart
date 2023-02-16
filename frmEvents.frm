@@ -147,7 +147,7 @@ Private Sub InitializeMenu()
     m_startOptions.AddItem ""
     m_startOptions.AddItem UserVariable("strSleep"), "STANDBY"
     
-    If g_Windows8 Then
+    If g_Windows8 or g_Windows81 Then
         m_startOptions.AddItem ""
         m_startOptions.AddItem "Show Metro", "SHOW_METRO", False
     End If

@@ -20,7 +20,7 @@ Option Explicit
 ' Requires: SSUBTMR.DLL
 '
 ' ---------------------------------------------------------------------------
-' Copyright ® 1998 Steve McMahon (steve@vbaccelerator.com)
+' Copyright ï¿½ 1998 Steve McMahon (steve@vbaccelerator.com)
 ' Visit vbAccelerator - free, advanced source code for VB programmers.
 '     http://vbaccelerator.com
 ' ---------------------------------------------------------------------------

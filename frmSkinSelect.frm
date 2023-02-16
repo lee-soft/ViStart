@@ -24,7 +24,7 @@ Begin VB.Form frmSkinSelect
       Begin VB.CommandButton cmdClose 
          Caption         =   "&OK"
          BeginProperty Font 
-            Name            =   "MS Sans Serif"
+            Name            =   "Segoe UI"
             Size            =   9.75
             Charset         =   0
             Weight          =   400
@@ -41,7 +41,7 @@ Begin VB.Form frmSkinSelect
       Begin VB.CommandButton cmdDelete 
          Caption         =   "&Delete"
          BeginProperty Font 
-            Name            =   "MS Sans Serif"
+            Name            =   "Segoe UI"
             Size            =   9.75
             Charset         =   0
             Weight          =   400
@@ -59,7 +59,7 @@ Begin VB.Form frmSkinSelect
          Caption         =   "&Get More..."
          Default         =   -1  'True
          BeginProperty Font 
-            Name            =   "MS Sans Serif"
+            Name            =   "Segoe UI"
             Size            =   9.75
             Charset         =   0
             Weight          =   400
@@ -76,7 +76,7 @@ Begin VB.Form frmSkinSelect
    End
    Begin VB.ListBox lstSkins 
       BeginProperty Font 
-         Name            =   "MS Sans Serif"
+         Name            =   "Segoe UI"
          Size            =   13.5
          Charset         =   0
          Weight          =   400
@@ -94,7 +94,7 @@ Begin VB.Form frmSkinSelect
    Begin VB.Label lbltitle 
       Caption         =   "Select a new skin from the list and then select an option below."
       BeginProperty Font 
-         Name            =   "MS Sans Serif"
+         Name            =   "Segoe UI"
          Size            =   9.75
          Charset         =   0
          Weight          =   400

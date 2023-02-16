@@ -19,7 +19,7 @@ Begin VB.UserControl NavigationBar
       _ExtentY        =   1296
       Caption         =   "Dummy Item"
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
-         Name            =   "Segoe Print"
+         Name            =   "Segoe UI"
          Size            =   14.25
          Charset         =   0
          Weight          =   400

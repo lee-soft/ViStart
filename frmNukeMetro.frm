@@ -18,7 +18,7 @@ Begin VB.Form frmNukeMetro
       Alignment       =   2  'Center
       Caption         =   "Nuking Metro...."
       BeginProperty Font 
-         Name            =   "Tahoma"
+         Name            =   "Segoe UI"
          Size            =   11.25
          Charset         =   0
          Weight          =   400

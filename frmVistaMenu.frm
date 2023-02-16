@@ -54,7 +54,7 @@ Begin VB.Form frmVistaMenu
       BackStyle       =   0  'Transparent
       Caption         =   "Label1"
       BeginProperty Font 
-         Name            =   "Arial"
+         Name            =   "Segoe UI"
          Size            =   8.25
          Charset         =   0
          Weight          =   400
