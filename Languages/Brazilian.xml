@@ -42,6 +42,8 @@
     <string value="Pesquisar" id="strSearch" />
     <string value="Mostrar na Área de Trabalho" id="strShowOnDesktop" />
     <string value="Esconder da Área de Trabalho" id="strHideFromDesktop" />
+    <string value="Mostrar em Este Computador " id="strShowInComputer" />
+    <string value="Esconder de Este Computador" id="strHideFromComputer" />
     <string value="Abrir" id="strOpen" />
     <string value="Não mostrar opção no painel de navegação" id="strHideOption" />
     <string value="Não mostrar o conteúdo da pasta" id="strDontPopOut" />
@@ -63,21 +65,21 @@
     
     <string value="Todos os arquivos" id="strAllExtensions" />
 
-    <string value="Biblioteca" id="strLibraries" />
     <string value="Documentos" id="strDocuments" />
     <string value="Imagens" id="strPictures" />
     <string value="Músicas" id="strMusic" />
     <string value="Videos" id="strVideos" />
-    <string value="Downloads" id="strDownloads"/>
     <string value="Jogos" id="strGames" />
-    <string value="Computador" id="strComputer" />
     <string value="Itens Recentes" id="strRecent" />
+    <string value="Computador" id="strComputer" />
     <string value="Rede" id="strNetwork" />
     <string value="Conectar a" id="strConnectTo"  />
     <string value="Painel de Controle" id="strControlPanel" />
-    <string value="Dispositivos e Impressoras" id="strPrinters" />
     <string value="Ajuda e Suporte" id="strHelp" />
+    <string value="Impressoras e aparelhos de fax" id="strPrinters" />
     <string value="Programas Padrão" id="strSetDefaults" />
+    <string value="Biblioteca" id="strLibraries" />
+    <string value="Downloads" id="strDownloads"/>
 
     <string value="Painel de controle do ViStart" id="strViStartControlPanel" />
 
@@ -117,6 +119,15 @@
     <string value="Botão Iniciar invoca o menu padrão do Windows" id="strStartWinMenu" />
 
     <string value="Restaurar atalho do menu Iniciar do Windows" id="strRestoreStartMenu" />
+
+    <string value="Recursos exclusivos padrões do Windows 8" id="strW8Features" />
+
+    <string value="Desativar todos os cantos quentes" id="strHotCorners" />
+    <string value="Desativar CharmsBar" id="strDisableCharmsBar" />
+    <string value="Desativar arrastar para fechar" id="strDisableDragToClose" />
+    <string value="Desativar o canto quente inferior esquerdo (Iniciar)" id="strDisableBottomLeftCorner" />
+    <string value="Ir automaticamente para a área de trabalho quando fizer login" id="strSkipMetroScreen" />
+    <string value="Os recursos relacionados ao Windows 8 exigem uma reinicialização para entrarem em efeito" id="strW8FeaturesWarning" />
     
     <string value="(O programa ViStart é criado por Lee Matthew Chantrey)" id="strCopyright" />
  
