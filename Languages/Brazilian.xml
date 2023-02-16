@@ -94,8 +94,8 @@
     <string value="Escolher imagem..." id="strPick" />
     <string value="Escolha uma nova imagem do botão Iniciar" id="strViStartOrb" />
 
-    <string value="Rollover Skin" id="strWhatRollover" />
-    <string value="Use Skin default Rollover" id="strSkinDefaultRollover" />
+    <string value="Tema Rollover" id="strWhatRollover" />
+    <string value="Usar o tema padrão Rolllover" id="strSkinDefaultRollover" />
    
     <string value="Configurações de visibilidade" id="strWhatToSee" />
     <string value="Configurações padrão para itens do menu Iniciar" id="strWhatToSeeOnRight" />
