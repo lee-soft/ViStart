@@ -19,17 +19,17 @@
     
     <string value="Opções do Programa" id="strProgramOptions" />
 
-    <string value="Ativar o Auto-Click característica" id="strEnableAutoClick" />
+    <string value="Ativar a característica de clique autoático" id="strEnableAutoClick" />
     <string value="Mostrar ícone ViStart na bandeja do sistema" id="strShowTrayIcon" />
     <string value="Iniciar com o Windows" id="strStartWithWindows" />
     <string value="Mostrar a tela de abertura na inicialização" id="strSplash" />
     <string value="Limpar lista de programas frequentemente usados" id="strClearFrequentList" />
     <string value="Opções de Indexação" id="strIndexOptions" />
-    <string value="Abrir o menu ViStart com a tecla Windows" id="strFilterWinKey" />
+    <string value="Abrir o menu do ViStart com a tecla do Windows" id="strFilterWinKey" />
     
     <string value="Escolher uma nova skin para o ViStart..." id="strNewSkin" />
     <string value="Escolher uma imagem do botão para o ViStart..." id="strOrbNew" />
-    <string value="Reiniciar a imagem do botão iniciar" id="strOrbReset" />
+    <string value="Reiniciar a imagem do botão Iniciar" id="strOrbReset" />
     <string value="Executar..." id="strRun" />
     <string value="Entrar em Espera..." id="strSleep" />
     
@@ -56,7 +56,7 @@
     <string value="Executar como Administrador" id="strRunAsAdmin" />
     <string value="Desafixar do Menu Iniciar" id="strUnpinToStartMenu" />
     <string value="Fixar no menu Iniciar" id="strPinToStartMenu" />
-    <string value="Remove from this list" id="strRemoveFromList" />
+    <string value="Remove desta lista" id="strRemoveFromList" />
 
     <string value="Programas" id="strPrograms" />
     <string value="Arquivos" id="strFiles" />
@@ -85,39 +85,39 @@
     <string value="Configurar" id="strConfigure" />
     <string value="Área de Trabalho" id="strDesktop" />
 
-    <string value="Start Menu Skin" id="strWhichStartMenu" />
+    <string value="Tema do Menu Iniciar" id="strWhichStartMenu" />
     <string value="Instalar..." id="strInstall" />
-    <string value="Select a new ViStart theme file" id="strViStartTheme" />
+    <string value="Escolha um novo arquivo de tema do ViStart" id="strViStartTheme" />
     
-    <string value="Start Orb Skin" id="strWhatStarOrb" />
-    <string value="Use Skin default Orb" id="strSkinDefaultOrb" />
+    <string value="Tema do botão Iniciar" id="strWhatStarOrb" />
+    <string value="Usar o botão Iniciar padrão do tema" id="strSkinDefaultOrb" />
     <string value="Escolher imagem..." id="strPick" />
-    <string value="Choose new Start Button image" id="strViStartOrb" />
+    <string value="Escolha uma nova imagem do botão Iniciar" id="strViStartOrb" />
 
     <string value="Rollover Skin" id="strWhatRollover" />
     <string value="Use Skin default Rollover" id="strSkinDefaultRollover" />
    
-    <string value="Visibility settings" id="strWhatToSee" />
-    <string value="Default settings for Start menu items" id="strWhatToSeeOnRight" />
+    <string value="Configurações de visibilidade" id="strWhatToSee" />
+    <string value="Configurações padrão para itens do menu Iniciar" id="strWhatToSeeOnRight" />
 
-    <string value="Show program menu first" id="strProgramsFirst" />
-    <string value="Show user picture" id="strShowUserPicture" />
+    <string value="Exibir o menu de programas primeiro" id="strProgramsFirst" />
+    <string value="Exibir imagem de usuário" id="strShowUserPicture" />
 
     <string value="Não exibir este item" id="strDontShowItem" />
     <string value="Exibir como um link" id="strDisplayAsLink" />
     <string value="Exibir como um menu" id="strDisplayAsMenu" />
 
-    <string value="Set default desktop actions" id="strDesktopSettings" />
-    <string value="Both Windows Keys show ViStart" id="strBothWinKeysViStart" />
-    <string value="[Left Windows Key] shows ViStart" id="strLeftWinKey" />
-    <string value="[Right Windows Key] shows ViStart" id="strRightWinKey" />
-    <string value="Both Windows keys shows Windows Menu" id="strBothWinKeys" />
+    <string value="Definir ações padrão da área de trabalho" id="strDesktopSettings" />
+    <string value="Ambas as teclas do Windows invocam o menu do ViStart" id="strBothWinKeysViStart" />
+    <string value="[Tecla Esquerda do Windows] invoca o menu do ViStart" id="strLeftWinKey" />
+    <string value="[Tecla Direita do Windows] invoca o menu do ViStart" id="strRightWinKey" />
+    <string value="Ambas as teclas do Windows invocam o menu padrão do Windows" id="strBothWinKeys" />
 
-    <string value="Start button shows ViStart" id="strStartViStart" />
-    <string value="Start button shows the Windows menu" id="strStartWinMenu" />
+    <string value="Botão Iniciar invoca o menu do ViStart" id="strStartViStart" />
+    <string value="Botão Iniciar invoca o menu padrão do Windows" id="strStartWinMenu" />
 
-    <string value="Restore Windows Start Menu Shortcut" id="strRestoreStartMenu" />
+    <string value="Restaurar atalho do menu Iniciar do Windows" id="strRestoreStartMenu" />
     
-    <string value="(ViStart the program itself is created by Lee Matthew Chantrey)" id="strCopyright" />
+    <string value="(O programa ViStart é criado por Lee Matthew Chantrey)" id="strCopyright" />
  
  </strings>
