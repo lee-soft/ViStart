@@ -65,21 +65,23 @@
     
     <string value="Todos os arquivos" id="strAllExtensions" />
 
+    <string value="Biblioteca" id="strLibraries" />
     <string value="Documentos" id="strDocuments" />
     <string value="Imagens" id="strPictures" />
     <string value="Músicas" id="strMusic" />
     <string value="Videos" id="strVideos" />
+    <string value="Downloads" id="strDownloads"/>
     <string value="Jogos" id="strGames" />
-    <string value="Itens Recentes" id="strRecent" />
+    <string value="3D Objects" id="strObjects" />
+        
     <string value="Computador" id="strComputer" />
+    <string value="Itens Recentes" id="strRecent" />
     <string value="Rede" id="strNetwork" />
     <string value="Conectar a" id="strConnectTo"  />
     <string value="Painel de Controle" id="strControlPanel" />
-    <string value="Ajuda e Suporte" id="strHelp" />
     <string value="Impressoras e aparelhos de fax" id="strPrinters" />
+    <string value="Ajuda e Suporte" id="strHelp" />
     <string value="Programas Padrão" id="strSetDefaults" />
-    <string value="Biblioteca" id="strLibraries" />
-    <string value="Downloads" id="strDownloads"/>
 
     <string value="Painel de controle do ViStart" id="strViStartControlPanel" />
 
@@ -119,9 +121,9 @@
     <string value="Botão Iniciar invoca o menu padrão do Windows" id="strStartWinMenu" />
 
     <string value="Restaurar atalho do menu Iniciar do Windows" id="strRestoreStartMenu" />
-
+    
     <string value="Recursos exclusivos padrões do Windows 8" id="strW8Features" />
-
+    
     <string value="Desativar todos os cantos quentes" id="strHotCorners" />
     <string value="Desativar CharmsBar" id="strDisableCharmsBar" />
     <string value="Desativar arrastar para fechar" id="strDisableDragToClose" />

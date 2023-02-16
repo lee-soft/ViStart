@@ -9,14 +9,14 @@
     <string value="Iesire" id="strExit" />
     <string value="Despre" id="strAbout" />
     <string value="Optiuni" id="strOptions" />
-  
+    
     <string value="Toate programele" id="strAllPrograms" />
     <string value="Inapoi" id="strBack" />
-  
+    
     <string value="Nu sunt programe care intrunesc criteriile de cautare" id="strNotFound" />
     <string value="Vezi toate rezultatele" id="strSeeAllResults" />
     <string value="Start Cautare" id="strStartSearch" />
-  
+    
     <string value="Optiuni Program" id="strProgramOptions" />
 
     <string value="Activare functie Auto-Click" id="strEnableAutoClick" />
@@ -26,22 +26,24 @@
     <string value="Sterge lista cu programe frecvente" id="strClearFrequentList" />
     <string value="Optiuni Indexare" id="strIndexOptions" />
     <string value="Invoca ViStart cu tasta Windows" id="strFilterWinKey" />
-  
+    
     <string value="Alege un model pt Meniu Start..." id="strNewSkin" />
     <string value="Alege imagine pt Butonul Start..." id="strOrbNew" />
     <string value="Resetare imagine Orb" id="strOrbReset" />
     <string value="Ruleaza..." id="strRun" />
     <string value="Somn..." id="strSleep" />
-  
+    
     <string value="OK" id="strOK" />
     <string value="Anulare" id="strCancel" />
     <string value="Arata" id="strBrowse" />
-  
+    
     <string value="Explorare" id="strExplore" />
     <string value="Manage" id="strManage" />
     <string value="Cautare" id="strSearch" />
     <string value="Arata pe Desktop" id="strShowOnDesktop" />
     <string value="Ascunde de pe Desktop" id="strHideFromDesktop" />
+    <string value="Show in Computer" id="strShowInComputer" />
+    <string value="Hide from Computer" id="strHideFromComputer" />   
     <string value="Deschide" id="strOpen" />
     <string value="Nu afisa optiuni in panoul navigare" id="strHideOption" />
     <string value="Nu afisa continut dosar" id="strDontPopOut" />
@@ -50,7 +52,7 @@
     <string value="Trimite pe Desktop" id="strCopyToDesktop" />
     <string value="Trimite la ViPad" id="strCopyToViPad" />
     <string value="Proprietati" id="strProperties" />
-  
+    
     <string value="Comprima" id="strCollapse" />
     <string value="Extinde" id="strExpand" />
     <string value="Ruleaza ca Administrator" id="strRunAsAdmin" />
@@ -60,7 +62,7 @@
 
     <string value="Programe" id="strPrograms" />
     <string value="Fisiere" id="strFiles" />
-  
+    
     <string value="Toate fisierele" id="strAllExtensions" />
 
     <string value="Librarii" id="strLibraries" />
@@ -70,6 +72,8 @@
     <string value="Video" id="strVideos" />
     <string value="Descarcari" id="strDownloads"/>
     <string value="Jocuri" id="strGames" />
+    <string value="3D Objects" id="strObjects" />
+        
     <string value="Computer" id="strComputer" />
     <string value="Recente" id="strRecent" />
     <string value="Retea" id="strNetwork" />
@@ -88,7 +92,7 @@
     <string value="Model Meniu Start" id="strWhichStartMenu" />
     <string value="Instalare..." id="strInstall" />
     <string value="Selectati o noua tema ViStart" id="strViStartTheme" />
-  
+    
     <string value="Start Model Orb" id="strWhatStarOrb" />
     <string value="Model implicit Orb" id="strSkinDefaultOrb" />
     <string value="Alege imagine..." id="strPick" />
@@ -96,7 +100,7 @@
 
     <string value="Model Rollover" id="strWhatRollover" />
     <string value="Model implicit Rollover" id="strSkinDefaultRollover" />
- 
+   
     <string value="Setari Vizibilitate" id="strWhatToSee" />
     <string value="Setari implicite obiecte meniu Start" id="strWhatToSeeOnRight" />
 
@@ -117,7 +121,16 @@
     <string value="Butonul Start arata meniul Windows" id="strStartWinMenu" />
 
     <string value="Restaurare Scurtaturi Meniu Start Windows" id="strRestoreStartMenu" />
-  
+    
+    <string value="Windows 8 exclusive features defaults" id="strW8Features" />
+    
+    <string value="Disable all Windows 8 hot corners" id="strHotCorners" />
+    <string value="Disable CharmsBar" id="strDisableCharmsBar" />
+    <string value="Disable Drag to close" id="strDisableDragToClose" />
+    <string value="Disable bottom left (Start) hot corner" id="strDisableBottomLeftCorner" />
+    <string value="Automatically go to desktop when I log in" id="strSkipMetroScreen" />
+    <string value="Windows 8 related features require a restart to take effect" id="strW8FeaturesWarning" />
+    
     <string value="(Programul ViStart a fost creat de Lee Matthew Chantrey)" id="strCopyright" />
  
  </strings>
