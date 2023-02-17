@@ -191,9 +191,18 @@ Dim startOrbPath As String
     
     If FileExists(startOrbPath) Then
         m_startButton.Path = startOrbPath
-    Else
+    ElseIf FileExists(ResourcesPath & "start_button.png") Then
         m_startButton.Path = ResourcesPath & "start_button.png"
+    ElseIf FileExists(sCon_AppDataPath & "_orbs\default.png") Then
+		m_startButton.Path = sCon_AppDataPath & "_orbs\default.png"
+	ElseIf FileExists(sCon_AppDataPath & "_orbs\Windows 7.png") Then
+		m_startButton.Path = sCon_AppDataPath & "_orbs\Windows 7.png"
+	ElseIf FileExists(sCon_AppDataPath & "_orbs\start_button.png") Then
+		m_startButton.Path = sCon_AppDataPath & "_orbs\start_button.png"
+	ElseIf FileExists(sCon_AppDataPath & "start_button.png") Then
+		m_startButton.Path = sCon_AppDataPath & "start_button.png"
     End If
+ 
     
     m_ORB_HEIGHT = m_startButton.ScaleHeight
         

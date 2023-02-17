@@ -74,14 +74,19 @@ End Function
 Public Function ResetOrb()
 
 	If FileExists(ResourcesPath & "start_button.png") Then
-    Me.Path = ResourcesPath & "start_button.png"
-	ElseIf FileExists(ResourcesPath & "_orbs\default.png") Then
+		Me.Path = ResourcesPath & "start_button.png"
+	ElseIf FileExists(sCon_AppDataPath & "_orbs\" & Settings.CurrentOrb) Then
+		Me.Path = sCon_AppDataPath & "_orbs\" & Settings.CurrentOrb
+	ElseIf FileExists(sCon_AppDataPath & "_orbs\default.png") Then
 		Me.Path = sCon_AppDataPath & "_orbs\default.png"
-	ElseIf FileExists(ResourcesPath & "_orbs\Windows 7.png") Then
+	ElseIf FileExists(sCon_AppDataPath & "_orbs\Windows 7.png") Then
 		Me.Path = sCon_AppDataPath & "_orbs\Windows 7.png"
-	ElseIf FileExists(ResourcesPath & "_orbs\start_button.png") Then
+	ElseIf FileExists(sCon_AppDataPath & "_orbs\start_button.png") Then
 		Me.Path = sCon_AppDataPath & "_orbs\start_button.png"
+	ElseIf FileExists(sCon_AppDataPath & "start_button.png") Then
+		Me.Path = sCon_AppDataPath & "start_button.png"
 	End If
+
     Settings.CurrentOrb = vbNullString
     
 End Function
