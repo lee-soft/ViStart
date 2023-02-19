@@ -23,5 +23,6 @@
 *.bin binary
 *.aps binary
 *.ncb binary
+*.png binary
 *.exe.compat binary
 *.ocx.compat binary
