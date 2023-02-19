@@ -118,7 +118,7 @@ Function InitClasses_IfNeeded() As Boolean
     Set MetroUtility = New Windows8Utility
     Set IconManager = New CIconManager
     
-    If Not Layout.ParseLayout(ResourcesPath & "layout.xml") Then
+    If Not Layout.ParseStartMenu(ResourcesPath & "layout.xml").ErrorCode = 0 Then
         Exit Function
     End If
     
@@ -291,6 +291,8 @@ Dim cmdLineArguements() As String
     If CmdLine.Arguments > 0 Then
         Select Case LCase$(CmdLine.Argument(1))
         
+            'Case "/show"
+        
             Case "/ignorepreviousinstance"
                 m_IgnorePreviousInstance = True
         
@@ -368,7 +370,6 @@ End Function
 
 Sub Main()
 
- 
     If Not InitClasses_IfNeeded Then
         Exit Sub
     End If
@@ -402,10 +403,10 @@ Sub Main()
     
     If Settings.CurrentRollover <> vbNullString Then
         g_rolloverPath = sCon_AppDataPath & "_rollover\" & Settings.CurrentRollover & "\"
-	Else
-		g_rolloverPath = sCon_AppDataPath & "_skins\" & Settings.CurrentSkin & "\rollover\"
+        Else
+                g_rolloverPath = sCon_AppDataPath & "_skins\" & Settings.CurrentSkin & "\rollover\"
     End If
-	
+        
     If ValidateOptions = False Then
         End
     End If
@@ -451,24 +452,25 @@ Sub Main()
     If IsWindow(ShellHelper.g_hwndStartButton) = APIFALSE Then
         If IsWindow(ShellHelper.g_lngHwndViOrbToolbar) = APIFALSE Then
             frmInstall.Show vbModal
+	    'If Not g_Windows11 Then frmInstall.Show vbModal
         End If
     End If
 
     
-	If Settings.ShowSplashScreen = True Then
-		ShowLoadingForm
-		SetLoadingCaption "LOADING"
-	End If
-	 
+        If Settings.ShowSplashScreen = True Then
+                ShowLoadingForm
+                SetLoadingCaption "LOADING"
+        End If
+         
 
     DoEvents
     
     InitForms
-	
-	If Settings.ShowSplashScreen = True Then
-		g_winLoading.timSplashMin.Enabled = True
+        
+        If Settings.ShowSplashScreen = True Then
+                g_winLoading.timSplashMin.Enabled = True
     End If
-	
+        
     If Not g_WDSInitialized Then Index_MyDirectory
     
     If App.CompanyName <> "Lee-Soft.com" Then

@@ -1,0 +1,136 @@
+﻿<strings>
+
+    <string value="Kirjaudu ulos" id="strLogOff" />
+    <string value="Vaihda käyttäjä" id="strSwitchUser"  />
+    <string value="Sammuta" id="strShutdown" />
+    <string value="Käynnistä uudelleen" id="strRestart" />
+    <string value="Valmiustila" id="strStandBy" />
+    <string value="Horrostila" id="strHibernate" />
+    <string value="Poistu" id="strExit" />
+    <string value="Ohjelmatiedot" id="strAbout" />
+    <string value="Asetukset" id="strOptions" />
+    
+    <string value="Kaikki ohjelmat" id="strAllPrograms" />
+    <string value="Takaisin" id="strBack" />
+    
+    <string value="Etsimääsi ohjelmaa ei löydy" id="strNotFound" />
+    <string value="Näytä kaikki hakutulokset" id="strSeeAllResults" />
+    <string value="Aloita haku" id="strStartSearch" />
+    
+    <string value="Ohjelma-asetukset" id="strProgramOptions" />
+
+    <string value="Salli automaatti-klikkaus ominaisuus" id="strEnableAutoClick" />
+    <string value="Näytä ViStart:in ilmoitusalueen kuvake" id="strShowTrayIcon" />
+    <string value="Käynnistä Windowsin käynnistyessä" id="strStartWithWindows" />
+    <string value="Näytä ohjelman käynnistymisruutu ohjelman käynnistyessä" id="strSplash" />
+    <string value="Siivoa useasti käytettyjen ohjelmien lista" id="strClearFrequentList" />
+    <string value="Indeksointi asetukset" id="strIndexOptions" />
+    <string value="Kutsu ViStart esiin Windows-napilla" id="strFilterWinKey" />
+    
+    <string value="Valitse uusi Käynnistävalikon ulkoasu..." id="strNewSkin" />
+    <string value="Valitse uusi Käynnistäpainikkeen kuvake..." id="strOrbNew" />
+    <string value="Palauta oletus Käynnistäpainikkeen Kuvake" id="strOrbReset" />
+    <string value="Suorita..." id="strRun" />
+    <string value="Unitila..." id="strSleep" />
+    
+    <string value="OK" id="strOK" />
+    <string value="Peruuta" id="strCancel" />
+    <string value="Selaa" id="strBrowse" />
+    
+    <string value="Tutki" id="strExplore" />
+    <string value="Hallitse" id="strManage" />
+    <string value="Hae" id="strSearch" />
+    <string value="Näytä työpöydällä" id="strShowOnDesktop" />
+    <string value="Piiloita työpöydällä" id="strHideFromDesktop" />
+    <string value="Show in Computer" id="strShowInComputer" />
+    <string value="Hide from Computer" id="strHideFromComputer" />   
+    <string value="Avaa" id="strOpen" />
+    <string value="Älä näytä asetusta navikaatioruudussa" id="strHideOption" />
+    <string value="Älä ponnauta kansion sisältöä" id="strDontPopOut" />
+    <string value="Ponnauta kansion sisältö" id="strPopOut" />
+    <string value="Uudelleen nimeä" id="strRename" />
+    <string value="Lähetä työpöydälle" id="strCopyToDesktop" />
+    <string value="Lähetä ViPad:n" id="strCopyToViPad" />
+    <string value="Ominaisuudet" id="strProperties" />
+    
+    <string value="Supista" id="strCollapse" />
+    <string value="Laajenna" id="strExpand" />
+    <string value="Suorita Järjestelmänvalvojana" id="strRunAsAdmin" />
+    <string value="Poista Käynnistävalikosta" id="strUnpinToStartMenu" />
+    <string value="Lisää Käynnistävalikkoon" id="strPinToStartMenu" />
+    <string value="Poista tästä listauksesta" id="strRemoveFromList" />
+
+    <string value="Ohjelmat" id="strPrograms" />
+    <string value="Tiedostot" id="strFiles" />
+    
+    <string value="Kaikki tiedostot" id="strAllExtensions" />
+
+    <string value="Kirjastot" id="strLibraries" />
+    <string value="Dokumentit" id="strDocuments" />
+    <string value="Kuvat" id="strPictures" />
+    <string value="Musiikki" id="strMusic" />
+    <string value="Videot" id="strVideos" />
+    <string value="Lataukset" id="strDownloads"/>
+    <string value="Pelit" id="strGames" />
+    <string value="3D Objects" id="strObjects" />
+        
+    <string value="Tietokone" id="strComputer" />
+    <string value="Viimeisimmät" id="strRecent" />
+    <string value="Verkko" id="strNetwork" />
+    <string value="Yhdistä" id="strConnectTo"  />
+    <string value="Ohjauspaneeli" id="strControlPanel" />
+    <string value="Tulostimet ja Faksit" id="strPrinters" />
+    <string value="Apu ja tuki" id="strHelp" />
+    <string value="Aseta ohjelman oletusasetukset" id="strSetDefaults" />
+
+    <string value="ViStart Ohjauspaneeli" id="strViStartControlPanel" />
+
+    <string value="Tyyli" id="strStyle" />
+    <string value="Konfiguroi" id="strConfigure" />
+    <string value="Työpöytä" id="strDesktop" />
+
+    <string value="Käynnistävalikon ulkoasu" id="strWhichStartMenu" />
+    <string value="Asenna..." id="strInstall" />
+    <string value="Valitse uusi ViStart:in tyyli tiedosto" id="strViStartTheme" />
+    
+    <string value="Käynnistä ympyrän ulkoasu" id="strWhatStarOrb" />
+    <string value="Käytä ulkoasun oletus ympyrää" id="strSkinDefaultOrb" />
+    <string value="Valitse kuva..." id="strPick" />
+    <string value="Valitse uusi Käynnistävalikon kuva" id="strViStartOrb" />
+
+    <string value="Vierityksen ulkoasu" id="strWhatRollover" />
+    <string value="Käytä ulkoasun oletus vieritystä" id="strSkinDefaultRollover" />
+   
+    <string value="Näkyvyysasetukset" id="strWhatToSee" />
+    <string value="Käynnistävalikon kohtien oletusasetukset" id="strWhatToSeeOnRight" />
+
+    <string value="Näytä ohjelmat-valikko ensin" id="strProgramsFirst" />
+    <string value="Näytä käyttäjän kuva" id="strShowUserPicture" />
+
+    <string value="Älä näytä kohdetta" id="strDontShowItem" />
+    <string value="Näytä kohde linkkinä" id="strDisplayAsLink" />
+    <string value="Näytä kohde valikkona" id="strDisplayAsMenu" />
+
+    <string value="Aseta oletus työpöytätoiminnot" id="strDesktopSettings" />
+    <string value="Kumpikin Windows nappi näyttää ViStart:n" id="strBothWinKeysViStart" />
+    <string value="[Vasen Windows nappi] näyttää ViStart:n" id="strLeftWinKey" />
+    <string value="[Oikea Windows nappi] näytää ViStart:n" id="strRightWinKey" />
+    <string value="Kumpikin Windows nappi näyttää Windows valikon" id="strBothWinKeys" />
+
+    <string value="Käynnistäpainike näyttää ViStart:n" id="strStartViStart" />
+    <string value="Käynnistäpainike näyttää Windows valikon" id="strStartWinMenu" />
+
+    <string value="Palauta Windows-käynnistävalikon pikakuvake" id="strRestoreStartMenu" />
+    
+    <string value="Windows 8 exclusive features defaults" id="strW8Features" />
+    
+    <string value="Disable all Windows 8 hot corners" id="strHotCorners" />
+    <string value="Disable CharmsBar" id="strDisableCharmsBar" />
+    <string value="Disable Drag to close" id="strDisableDragToClose" />
+    <string value="Disable bottom left (Start) hot corner" id="strDisableBottomLeftCorner" />
+    <string value="Automatically go to desktop when I log in" id="strSkipMetroScreen" />
+    <string value="Windows 8 related features require a restart to take effect" id="strW8FeaturesWarning" />
+    
+    <string value="(ViStart-ohjelman on luonut Lee Matthew Chantrey)" id="strCopyright" />
+ 
+ </strings>

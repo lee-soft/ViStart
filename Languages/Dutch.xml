@@ -42,6 +42,8 @@
     <string value="Search" id="strSearch" />
     <string value="Show on Desktop" id="strShowOnDesktop" />
     <string value="Hide from Desktop" id="strHideFromDesktop" />
+    <string value="Show in Computer" id="strShowInComputer" />
+    <string value="Hide from Computer" id="strHideFromComputer" />   
     <string value="Open" id="strOpen" />
     <string value="Laat -optie- niet zien in navigatie panel" id="strHideOption" />
     <string value="Geen pop out folder inhoud" id="strDontPopOut" />
@@ -70,6 +72,8 @@
     <string value="Videos" id="strVideos" />
     <string value="Downloads" id="strDownloads"/>
     <string value="Games" id="strGames" />
+    <string value="3D Objects" id="strObjects" />
+        
     <string value="Computer" id="strComputer" />
     <string value="Recent" id="strRecent" />
     <string value="Netwerk" id="strNetwork" />
@@ -117,6 +121,15 @@
     <string value="Start button shows the Windows menu" id="strStartWinMenu" />
 
     <string value="Restore Windows Start Menu Shortcut" id="strRestoreStartMenu" />
+    
+    <string value="Windows 8 exclusive features defaults" id="strW8Features" />
+    
+    <string value="Disable all Windows 8 hot corners" id="strHotCorners" />
+    <string value="Disable CharmsBar" id="strDisableCharmsBar" />
+    <string value="Disable Drag to close" id="strDisableDragToClose" />
+    <string value="Disable bottom left (Start) hot corner" id="strDisableBottomLeftCorner" />
+    <string value="Automatically go to desktop when I log in" id="strSkipMetroScreen" />
+    <string value="Windows 8 related features require a restart to take effect" id="strW8FeaturesWarning" />
     
     <string value="(ViStart the program itself is created by Lee Matthew Chantrey)" id="strCopyright" />
  

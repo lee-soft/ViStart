@@ -191,9 +191,18 @@ Dim startOrbPath As String
     
     If FileExists(startOrbPath) Then
         m_startButton.Path = startOrbPath
-    Else
+    ElseIf FileExists(ResourcesPath & "start_button.png") Then
         m_startButton.Path = ResourcesPath & "start_button.png"
+    ElseIf FileExists(sCon_AppDataPath & "_orbs\default.png") Then
+		m_startButton.Path = sCon_AppDataPath & "_orbs\default.png"
+	ElseIf FileExists(sCon_AppDataPath & "_orbs\Windows 7.png") Then
+		m_startButton.Path = sCon_AppDataPath & "_orbs\Windows 7.png"
+	ElseIf FileExists(sCon_AppDataPath & "_orbs\start_button.png") Then
+		m_startButton.Path = sCon_AppDataPath & "_orbs\start_button.png"
+	ElseIf FileExists(sCon_AppDataPath & "start_button.png") Then
+		m_startButton.Path = sCon_AppDataPath & "start_button.png"
     End If
+ 
     
     m_ORB_HEIGHT = m_startButton.ScaleHeight
         
@@ -585,7 +594,8 @@ Dim buttonMaxHeight As Long
 
     taskbarEdge = GetTaskBarEdge()
 
-    GetWindowRect g_hwndReBarWindow32, recReBar32
+    GetWindowRect IIf(g_Windows11, g_lnghwndTaskBar, g_hwndReBarWindow32), recReBar32
+    'GetWindowRect g_hwndReBarWindow32, recReBar32
     GetWindowRect m_startButton.hWnd, recOrb
     
     taskBarHeight = (recReBar32.Bottom - recReBar32.Top)
@@ -648,12 +658,17 @@ Dim buttonMaxHeight As Long
             
     ElseIf taskbarEdge = abe_bottom Then
     
+        'MsgBox "abe_bottom"
+    
         If m_startButton.MaxHeight <> GetHeightWithRegardsToFix(taskBarHeight) Then
             m_startButton.MaxHeight = GetHeightWithRegardsToFix(taskBarHeight)
             m_ORB_HEIGHT = m_startButton.ScaleHeight
         End If
         
+        'MsgBox "taskbarheight " & taskBarHeight
+        
         lngTop = (((m_ORB_HEIGHT) / 2) - (taskBarHeight) / 2) * -1
+
         'Windows taskbar has a border of 2 pixels
         If Not MainHelper.g_viOrb_fullHeight Then
             lngTop = lngTop + 2
@@ -683,7 +698,13 @@ Dim buttonMaxHeight As Long
                 
                 MoveWindow m_startButton.hWnd, recStartButton.Left, recReBar32.Top + lngTop, m_startButton.ScaleWidth, m_startButton.ScaleHeight, True
             End If
-        Else
+			
+		ElseIf g_Windows11 Then
+			' Windows 11+
+			Debug.Print "MOVING; " & (recStartButton.Top) & "<>" & (recOrb.Top)
+            MoveWindow m_startButton.hWnd, recStartButton.Left + 2, recReBar32.Top + lngTop, m_startButton.ScaleWidth, m_startButton.ScaleHeight, True
+
+		Else
             'Windows 7 and 8
             
             If IsWindow(g_lngHwndViOrbToolbar) = APITRUE Then

@@ -38,6 +38,8 @@ Public g_lngHwndViOrbToolbar As Long
 Public g_ViGlanceOpen As Boolean
 
 Public g_WinVer() as String
+Public g_WindowsVersion as Double
+Public g_WindowsVersionFull as String
 Public g_WindowsXP As Boolean
 Public g_WindowsVista As Boolean
 Public g_Windows7 As Boolean
@@ -156,10 +158,10 @@ Dim osv As OSVERSIONINFO
 
 End Function
 
-Function WindowsVersion() As Single
+Function WindowsVersion() As Double
     DetermineWindowsVersion_IfNeeded
 	
-	WindowsVersion = g_WinVer(0) & "." & g_WinVer(1)
+	WindowsVersion = g_WindowsVersion
 
 	If g_WinVer(0) & "." & g_WinVer(1) = "10.0" And g_WinVer(2) >= 22000 Then
 		WindowsVersion = 11.0
@@ -181,44 +183,54 @@ Function DetermineWindowsVersion_IfNeeded()
     g_Windows10 = False
     g_Windows11 = False
     g_Windows12 = False
+
 	
-	' Returns max 6.2
-	g_WinVer = Split(FSO.GetFileVersion(Environ("windir") & "\system32\kernel32.dll"), ".")
-	
-	If g_WinVer(0) > 5 Then
+	If FSO.FolderExists(Environ("windir") & "\servicing\version\") Then
 	
 		Dim VersionFolder As Variant
-		For Each VersionFolder In FSO.GetFolder(Environ("windir") & "\servicing\version").SubFolders
-			g_WinVer = Split(Replace(UCase(VersionFolder.Path), UCase(Environ("windir") & "\servicing\version\"), ""), ".")
+		
+		For Each VersionFolder In FSO.GetFolder(Environ("windir") & "\servicing\version\").SubFolders
+			If Len(Replace(UCase(VersionFolder.Path), UCase(Environ("windir") & "\servicing\version\"), "")) > 1 Then
+				g_WinVer = Split(Replace(UCase(VersionFolder.Path), UCase(Environ("windir") & "\servicing\version\"), ""), ".")
+				Exit For
+			End If
 		Next
+		
+	Else
+		' Returns max 6.2
+		' msgbox "XP - 2003"
+		g_WinVer = Split(FSO.GetFileVersion(Environ("windir") & "\system32\kernel32.dll"), ".")	
 	End If
 
+	g_WindowsVersion = g_WinVer(0) & "." & g_WinVer(1)
+	g_WindowsVersionFull = g_WinVer(0) & "." & g_WinVer(1) & "." & g_WinVer(2) & "." & g_WinVer(3)
 
-	debug.print "Windows version: " & g_WinVer(0) & "." & g_WinVer(1) & "." & g_WinVer(2) & "." & g_WinVer(3)
-	'msgbox "Windows version: " & g_WinVer(0) & "." & g_WinVer(1) & "." & g_WinVer(2) & "." & g_WinVer(3)
+	'msgbox "Windows version: " & g_WindowsVersionFull
+	debug.print "Windows version: " & g_WindowsVersionFull
 
-    If g_WinVer(0) = 5 Then
+
+    If g_WindowsVersion < 6 Then
         g_WindowsXP = True
 
-    ElseIf g_WinVer(0) & "." & g_WinVer(1) = "6.0" Then
+    ElseIf g_WindowsVersion = "6.0" Then
 		g_WindowsVista = True
 
-    ElseIf g_WinVer(0) & "." & g_WinVer(1) = "6.1" Then
+    ElseIf g_WindowsVersion = "6.1" Then
 		g_Windows7= True
 
-    ElseIf g_WinVer(0) & "." & g_WinVer(1) = "6.2" Then
+    ElseIf g_WindowsVersion = "6.2" Then
 		g_Windows8 = True
 
-    ElseIf g_WinVer(0) & "." & g_WinVer(1) = "6.3" Then
+    ElseIf g_WindowsVersion = "6.3" Then
 		g_WindowsVista = True
 		
-    ElseIf g_WinVer(0) & "." & g_WinVer(1) = "10.0" Then
+    ElseIf g_WindowsVersion = "10.0" Then
 		g_Windows10 = True
     
-	ElseIf g_WinVer(0) & "." & g_WinVer(1) = "10.0" And g_WinVer(2) >= 22000 Then
+	ElseIf g_WindowsVersion = "10.0" And g_WinVer(2) >= 22000 Then
 		g_Windows11 = True
 		
-	ElseIf g_WinVer(0) & "." & g_WinVer(1) = "12.0" Then 
+	ElseIf g_WindowsVersion = "12.0" Then 
 		g_Windows12 = True
 		
 	Else

@@ -169,6 +169,7 @@ Dim xmlLanguageFile As New DOMDocument
     UserVariable.Add "Set Program Access and Defaults", "strSetDefaults"
     UserVariable.Add "Libraries", "strLibraries"
     UserVariable.Add "Downloads", "strDownloads"
+    UserVariable.Add "3D Objects", "strObjects"
 
     UserVariable.Add "ViStart Control panel", "strViStartControlPanel"
 	

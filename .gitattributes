@@ -9,6 +9,7 @@
 *.dsr text eol=crlf
 *.ini text eol=crlf
 *.ctl text eol=crlf
+*.xml text eol=crlf
 *.res binary
 *.RES binary
 *.frx binary
