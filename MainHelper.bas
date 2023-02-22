@@ -266,7 +266,7 @@ Private Function HandleWindows8Utility() As Long
     HandleWindows8Utility = EXIT_PROGRAM
     DetermineWindowsVersion_IfNeeded
     
-    If g_Windows8 or g_Windows81 Then
+    If g_Windows8 Or g_Windows81 Then
         
         Set MetroUtility = New Windows8Utility
         MetroUtility.ActionSettings
@@ -369,7 +369,6 @@ Dim cmdLineArguements() As String
 End Function
 
 Sub Main()
-
     If Not InitClasses_IfNeeded Then
         Exit Sub
     End If
@@ -403,8 +402,8 @@ Sub Main()
     
     If Settings.CurrentRollover <> vbNullString Then
         g_rolloverPath = sCon_AppDataPath & "_rollover\" & Settings.CurrentRollover & "\"
-        Else
-                g_rolloverPath = sCon_AppDataPath & "_skins\" & Settings.CurrentSkin & "\rollover\"
+    Else
+        g_rolloverPath = sCon_AppDataPath & "_skins\" & Settings.CurrentSkin & "\rollover\"
     End If
         
     If ValidateOptions = False Then
@@ -451,8 +450,7 @@ Sub Main()
     'Else
     If IsWindow(ShellHelper.g_hwndStartButton) = APIFALSE Then
         If IsWindow(ShellHelper.g_lngHwndViOrbToolbar) = APIFALSE Then
-            frmInstall.Show vbModal
-	    'If Not g_Windows11 Then frmInstall.Show vbModal
+            If g_Windows8 And Not g_Windows81 Then frmInstall.Show vbModal
         End If
     End If
 

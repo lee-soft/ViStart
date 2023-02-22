@@ -147,7 +147,7 @@ Private Sub InitializeMenu()
     m_startOptions.AddItem ""
     m_startOptions.AddItem UserVariable("strSleep"), "STANDBY"
     
-    If g_Windows8 or g_Windows81 Then
+    If g_Windows8 Or g_Windows81 Then
         m_startOptions.AddItem ""
         m_startOptions.AddItem "Show Metro", "SHOW_METRO", False
     End If
@@ -194,13 +194,13 @@ Dim startOrbPath As String
     ElseIf FileExists(ResourcesPath & "start_button.png") Then
         m_startButton.Path = ResourcesPath & "start_button.png"
     ElseIf FileExists(sCon_AppDataPath & "_orbs\default.png") Then
-		m_startButton.Path = sCon_AppDataPath & "_orbs\default.png"
-	ElseIf FileExists(sCon_AppDataPath & "_orbs\Windows 7.png") Then
-		m_startButton.Path = sCon_AppDataPath & "_orbs\Windows 7.png"
-	ElseIf FileExists(sCon_AppDataPath & "_orbs\start_button.png") Then
-		m_startButton.Path = sCon_AppDataPath & "_orbs\start_button.png"
-	ElseIf FileExists(sCon_AppDataPath & "start_button.png") Then
-		m_startButton.Path = sCon_AppDataPath & "start_button.png"
+                m_startButton.Path = sCon_AppDataPath & "_orbs\default.png"
+        ElseIf FileExists(sCon_AppDataPath & "_orbs\Windows 7.png") Then
+                m_startButton.Path = sCon_AppDataPath & "_orbs\Windows 7.png"
+        ElseIf FileExists(sCon_AppDataPath & "_orbs\start_button.png") Then
+                m_startButton.Path = sCon_AppDataPath & "_orbs\start_button.png"
+        ElseIf FileExists(sCon_AppDataPath & "start_button.png") Then
+                m_startButton.Path = sCon_AppDataPath & "start_button.png"
     End If
  
     
@@ -591,6 +591,7 @@ Dim taskBarWidth As Long
 
 Dim recStartButton As RECT
 Dim buttonMaxHeight As Long
+Dim topValueSet As Boolean: topValueSet = False
 
     taskbarEdge = GetTaskBarEdge()
 
@@ -602,12 +603,13 @@ Dim buttonMaxHeight As Long
     taskBarWidth = (recReBar32.Right - recReBar32.Left)
 
     If taskbarEdge = ABE_LEFT Then
-        lngTop = -1
-        
+
         If Not g_Windows81 Then
             buttonMaxHeight = 60
         Else
+            topValueSet = True
             lngTop = 0
+            
             buttonMaxHeight = 39
             lngLeft = (taskBarWidth / 2) - (m_startButton.ScaleWidth / 2)
         End If
@@ -618,12 +620,13 @@ Dim buttonMaxHeight As Long
         End If
          
     ElseIf taskbarEdge = ABE_RIGHT Then
-        lngTop = -1
-    
+
         If Not g_Windows81 Then
             buttonMaxHeight = 60
         Else
+            topValueSet = True
             lngTop = 0
+            
             buttonMaxHeight = 39
             lngLeft = (taskBarWidth / 2) - (m_startButton.ScaleWidth / 2)
         End If
@@ -640,6 +643,7 @@ Dim buttonMaxHeight As Long
             m_ORB_HEIGHT = m_startButton.ScaleHeight
         End If
     
+        topValueSet = True
         lngTop = (((m_ORB_HEIGHT) / 2) - (taskBarHeight) / 2) * -1
         'Windows taskbar has a border of 2 pixels
         If Not MainHelper.g_viOrb_fullHeight Then
@@ -648,6 +652,8 @@ Dim buttonMaxHeight As Long
 
         If g_Windows81 Then
             lngLeft = m_startButton.Windows81LeftDifference
+            
+            topValueSet = True
             lngTop = lngTop - 1
             
             'Prevent weird bug of windows 8 placing orb in middle of taskbar
@@ -667,6 +673,7 @@ Dim buttonMaxHeight As Long
         
         'MsgBox "taskbarheight " & taskBarHeight
         
+        topValueSet = True
         lngTop = (((m_ORB_HEIGHT) / 2) - (taskBarHeight) / 2) * -1
 
         'Windows taskbar has a border of 2 pixels
@@ -683,13 +690,14 @@ Dim buttonMaxHeight As Long
                 lngTop = 0
             End If
         End If
+
     End If
 
-    If lngTop <> -1 Then
+    If topValueSet Then
         'TO BE FIXED!
         
-        If m_startButton.mode = 1 Then
-            'Windows XP and Vista
+        If m_startButton.mode = 1 And Not g_Windows11 Then
+            'Windows XP and Vista and 11?
             
             If ((recStartButton.Left) <> (recOrb.Left) Or _
                 (recReBar32.Top + lngTop) <> recOrb.Top) Then
@@ -698,15 +706,17 @@ Dim buttonMaxHeight As Long
                 
                 MoveWindow m_startButton.hWnd, recStartButton.Left, recReBar32.Top + lngTop, m_startButton.ScaleWidth, m_startButton.ScaleHeight, True
             End If
-			
-		ElseIf g_Windows11 Then
-			' Windows 11+
-			Debug.Print "MOVING; " & (recStartButton.Top) & "<>" & (recOrb.Top)
+                        
+        ElseIf g_Windows11 Then
+            ' Windows 11+
+            
+            Debug.Print "MOVING; " & (recStartButton.Top) & "<>" & (recOrb.Top)
             MoveWindow m_startButton.hWnd, recStartButton.Left + 2, recReBar32.Top + lngTop, m_startButton.ScaleWidth, m_startButton.ScaleHeight, True
 
-		Else
+        Else
+        
+                
             'Windows 7 and 8
-            
             If IsWindow(g_lngHwndViOrbToolbar) = APITRUE Then
                 
                 Dim newPoint As POINTL
@@ -767,7 +777,7 @@ Private Sub timHookCheck_Timer()
             bViOrbOpen = True
             
             m_startButton.Caption = "##VISTART_MODE##"
-            m_startButton.Show
+            ShowWindow m_startButton.hWnd, SW_SHOWNOACTIVATE
         End If
     End If
 
@@ -842,7 +852,7 @@ Static m_NotTopMost As Boolean
                     m_NotTopMost = False
                     
                     Debug.Print "m_startButton::Show"
-                    m_startButton.Show
+                    ShowWindow m_startButton.hWnd, SW_SHOWNOACTIVATE
                 End If
             End If
         End If
