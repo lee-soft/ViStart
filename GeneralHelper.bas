@@ -292,7 +292,7 @@ Dim regionLeft As gdiplus.RECTL
 Dim encoder As New GDIPImageEncoderList
 
 
-    newBackground.CreateFromSizeFormat backgroundImage.Width, backgroundImage.Height, GDIPlusWrapper.Format32bppArgb
+    newBackground.CreateFromSizeFormat backgroundImage.Width, backgroundImage.Height, PixelFormat.Format32bppArgb
     graphics.FromImage newBackground.Image
     
     regionLeft.Left = 0
