@@ -266,7 +266,7 @@ Private Sub pInitialize()
         m_Brush.Colour.SetColourByHex "2e2e2e"
     End If
     
-    m_surface.CreateFromSizeFormat m_Width, m_Height, GDIPlusWrapper.Format32bppArgb
+    m_surface.CreateFromSizeFormat m_Width, m_Height, PixelFormat.Format32bppArgb
     m_graphics.FromImage m_surface.Image
     
     'm_graphics.SmoothingMode = SmoothingModeHighQuality

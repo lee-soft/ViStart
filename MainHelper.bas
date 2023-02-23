@@ -197,7 +197,7 @@ Dim UserFrame As New GDIPImage
 Dim encoder As New GDIPImageEncoderList
 Dim sBmpUserPath As String
 Dim ProgramDataPath As String
-Dim thisCLSID As clsid
+Dim thisCLSID As CLSID
 Dim theImageFace As New GDIPImage
 
     ProgramDataPath = Registry.Read("HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders\Common AppData")
@@ -230,7 +230,7 @@ Dim theImageFace As New GDIPImage
     UserPic.FromFile sBmpUserPath
     
     UserFrame.FromFile szResourcesPath & "userframe.png"
-    BITMAP.CreateFromSizeFormat UserFrame.Width, UserFrame.Height, GDIPlusWrapper.Format32bppArgb
+    BITMAP.CreateFromSizeFormat UserFrame.Width, UserFrame.Height, PixelFormat.Format32bppArgb
     
     
     BitmapGraphics.FromImage BITMAP.Image

@@ -504,8 +504,8 @@ Sub UpdateDesktopImage(newPosition As POINTL)
     hdcSrc = GetWindowDC(GetDesktopWindow()) ' Get device context for entire
                                           ' window.
 
-    m_DesktopBitmapTemp.CreateFromSizeFormat Me.ScaleWidth, Me.ScaleHeight, GDIPlusWrapper.Format32bppArgb
-    m_DesktopBitmap.CreateFromSizeFormat newWidth, newHeight, GDIPlusWrapper.Format32bppArgb
+    m_DesktopBitmapTemp.CreateFromSizeFormat Me.ScaleWidth, Me.ScaleHeight, PixelFormat.Format32bppArgb
+    m_DesktopBitmap.CreateFromSizeFormat newWidth, newHeight, PixelFormat.Format32bppArgb
     
     theGrahipcsTemp.FromImage m_DesktopBitmapTemp.Image
     theGrahipcs.FromImage m_DesktopBitmap.Image
@@ -526,7 +526,7 @@ Sub UpdateDesktopImage(newPosition As POINTL)
     desktopCopyBitmap.hBitmap = m_DesktopBitmap.hBitmap(0)
     desktopCopySmallDC.SelectBitmap desktopCopyBitmap
 
-    m_DesktopBitmap.CreateFromSizeFormat Me.ScaleWidth, Me.ScaleHeight, GDIPlusWrapper.Format32bppArgb
+    m_DesktopBitmap.CreateFromSizeFormat Me.ScaleWidth, Me.ScaleHeight, PixelFormat.Format32bppArgb
     theGrahipcs.FromImage m_DesktopBitmap.Image
     
     Dim tempImage As New GDIPBitmap
@@ -1008,7 +1008,7 @@ Function ReInitSurface() As Boolean
     m_Bitmap.Dispose
     m_BitmapGraphics.Dispose
 
-    m_Bitmap.CreateFromSizeFormat Me.ScaleWidth, Me.ScaleHeight, GDIPlusWrapper.Format32bppArgb
+    m_Bitmap.CreateFromSizeFormat Me.ScaleWidth, Me.ScaleHeight, PixelFormat.Format32bppArgb
     m_BitmapGraphics.FromImage m_Bitmap.Image
     
     m_BitmapGraphics.TextRenderingHint = TextRenderingHintSingleBitPerPixelGridFit
@@ -1420,7 +1420,7 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, XSng As Single, 
     If m_recentPrograms Is Nothing Then Exit Sub
     If g_Exiting Then Exit Sub
 
-Static lastPosition As POINTS
+Static lastPosition As points
 Static lastButton As Integer
 
 Dim clientMousePos As POINTL
@@ -2070,7 +2070,7 @@ End Sub
 
 Private Sub m_optionDialog_onRequestAddMetroShortcut()
     Settings.Programs.AddMetroShortcut_ToPinned
-    If g_Windows8 or g_Windows81 Then Settings.Programs.AddMetroAppsShortcut_ToPinned
+    If g_Windows8 Or g_Windows81 Then Settings.Programs.AddMetroAppsShortcut_ToPinned
 End Sub
 
 Private Sub m_powerMenu_onClick(theItemTag As String)
