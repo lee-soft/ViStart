@@ -10,12 +10,11 @@ Since it is becoming increasingly more difficult to find the libraries required 
 - Extract ViStart zip contents to any directory
 - Copy the "Skins" directory to %AppData%/ViStart (create the directory if it doesn't already exist) and rename it "_skins". If done correctly the following directory should exist %appdata%\ViStart\_skins\Windows 7 Start Menu
 
-## Getting Started
+## Setting up the development environment
 
 - Clone the repo
 - Ensure you have Visual Basic 6.0(Service Pack 6) installed
-- Grab the SHELLLNK, WinU and GDIPlus TLB - extract the TLBs and add as a reference to the project
-- Grab the release of the [GDIPlusWrapper library](https://github.com/lee-soft/GDIPlusWrapper/releases) and re-add it as a reference to this project
+- Grab the SHELLLNK, WinU and GDIPlus TLBs - extract the TLBs and re-add as a reference to the project
 - Compile and enjoy
 
 ## Acknowledgements
