@@ -1,15 +1,14 @@
-Since it is becoming increasingly more difficult to find the TLBs required to compile ViStart I have attached them here. Find "All TLBs" to grab them all in one convenient package. 
+Since it is becoming increasingly more difficult to find the libraries required to compile ViStart I have attached them here. Find "All TLBs" to grab them all in one convenient package. 
 
 ## Libraries
 - [Windows Unicode API TypeLib](https://github.com/badcodes/vb6/blob/master/%5BInclude%5D/TypeLib/winu.tlb) - Windows API, stores all the API declarations
 - [dseaman@uol.com.br GDI+ Type Library 1.05](http://www.vbaccelerator.com/home/VB/Type_Libraries/GDIPlus_Type_Library/article.asp)
-- [Extended GDIPlusWrapper](https://github.com/lee-soft/GDIPlusWrapper) - Extended GDIPlusWrapper used for OOP GDIPlus
 - [All TLBs](https://lee-soft.com/bin/TLB.zip)
 
 ## Installation
 
-- Install [GDIPlusWrapper library](https://github.com/lee-soft/GDIPlusWrapper/releases) extract contents of GDIPlusWrapper to any permanent directory and run install script
-- Extract ViStart contents to any directory and run ViStart executable
+- Extract ViStart zip contents to any directory
+- Copy the "Skins" directory to %AppData%/ViStart (create the directory if it doesn't already exist) and rename it "_skins". If done correctly the following directory should exist %appdata%\ViStart\_skins\Windows 7 Start Menu
 
 ## Getting Started
 
