@@ -15,10 +15,10 @@ Attribute VB_Ext_KEY = "SavedWithClassBuilder6" ,"Yes"
 Attribute VB_Ext_KEY = "Top_Level" ,"Yes"
 Option Explicit
 
-Private m_RegObj As New clsRegistry
+Private m_RegObj As New RegistryKey
 Private WshShell As Object
 
-Public Property Get RegObj() As clsRegistry
+Public Property Get RegObj() As RegistryKey
     Set RegObj = m_RegObj
 End Property
 

@@ -153,13 +153,13 @@ Dim sP() As String
     
     m_paRolloverPosition.Y = -m_hdcRollover.Height
     
-    sPath = "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs\"
-    sMRUListEx = Registry.RegReadBinaryW(sPath & "MRUListEx")
+    sPath = "Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs"
+    sMRUListEx = Registry.CurrentUser.GetValue(sPath, "MRUListEx")
 
     While (Len(sMRUListEx) > 4) And (cItems.count < 15)
         lngRegIndex = GetDWord(ExtractBytes(sMRUListEx, 4))
         
-        sMRU = Registry.RegReadBinaryW(sPath & lngRegIndex)
+        sMRU = Registry.CurrentUser.GetValue(sPath, lngRegIndex)
         
                                 '14 00    00 00
         GetStringByString sMRU, Chr$(&H14) & Chr$(0)

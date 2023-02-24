@@ -190,7 +190,7 @@ Function DetermineWindowsVersion_IfNeeded()
         
     Dim kernalPath As String: kernalPath = Environ("windir") & "\System32\kernel32.dll"
     Dim kernalFileInfo As FileVersionInfo: Set kernalFileInfo = FileVersionInfoHelper.GetVersionInfo(kernalPath)
-    Dim winRegistryVersion As String: winRegistryVersion = Registry.Read("HKLM\Software\Microsoft\Windows NT\CurrentVersion\CurrentVersion")
+    Dim winRegistryVersion As String: winRegistryVersion = Registry.LocalMachine.GetValue("Software\Microsoft\Windows NT\CurrentVersion", "CurrentVersion")
     
     g_WindowsVersion = kernalFileInfo.ProductMajorPart & "." & kernalFileInfo.ProductMinorPart
     

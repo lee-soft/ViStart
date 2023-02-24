@@ -11,6 +11,8 @@ Attribute VB_GlobalNameSpace = True
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+Attribute VB_Ext_KEY = "SavedWithClassBuilder6" ,"Yes"
+Attribute VB_Ext_KEY = "Top_Level" ,"Yes"
 Option Explicit
 
 Public Enum PixelFormat
@@ -32,7 +34,7 @@ Public Enum PixelFormat
    Format64bppArgb = 3424269
    Format64bppPArgb = 1851406
    Format8bppIndexed = 198659
-   Gdi = 131072
+   GDI = 131072
    Indexed = 65536
    Max = 15
    PAlpha = 524288

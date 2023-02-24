@@ -11,13 +11,15 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+Attribute VB_Ext_KEY = "SavedWithClassBuilder6" ,"Yes"
+Attribute VB_Ext_KEY = "Top_Level" ,"Yes"
 Option Explicit
 
 Public ImageName As String
 
 Private m_mruKey As Collection
 
-Public Function AddMRURegKey(thisMRUKey As ViRegistryKey)
+Public Function AddMRURegKey(thisMRUKey As RegistryKey)
     m_mruKey.Add thisMRUKey
 End Function
 

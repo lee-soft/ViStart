@@ -11,6 +11,8 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+Attribute VB_Ext_KEY = "SavedWithClassBuilder6" ,"Yes"
+Attribute VB_Ext_KEY = "Top_Level" ,"Yes"
 Option Explicit
 
 Private m_gfx As Long
@@ -666,7 +668,7 @@ Public Function MeasureStringWidth(ByVal szText As String, _
     ' // Layout rectangle used for drawing string
     layoutRect.Left = 0: layoutRect.Top = 0: layoutRect.Width = 0: layoutRect.Height = 0
 
-    charRanges(0).First = 0: charRanges(0).Length = Len(szText)
+    charRanges(0).First = 0: charRanges(0).length = Len(szText)
    
     ' // Other variables
     Dim rgCharRangeRegions() As Long

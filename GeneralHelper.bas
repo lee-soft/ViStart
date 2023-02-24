@@ -432,7 +432,7 @@ Function SetOwner(ByVal HwndtoUse, ByVal HwndofOwner) As Long
 End Function
 
 Property Get CurrentDPI() As Long
-    CurrentDPI = Registry.Read("HKCU\Control Panel\Desktop\WindowMetrics\AppliedDPI")
+    CurrentDPI = Registry.CurrentUser.GetValue("Control Panel\Desktop\WindowMetrics\AppliedDPI")
 End Property
 
 Public Function MAKELPARAM(wLow As Long, wHigh As Long) As Long

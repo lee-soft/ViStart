@@ -2,7 +2,6 @@ Attribute VB_Name = "MainHelper"
 Option Explicit
 
 Public Layout As LayoutParser
-Public Registry As clsShellReg
 Public g_winLoading As frmAbout
 Public Settings As ViSettings
 Public CmdLine As CommandLine
@@ -113,7 +112,6 @@ Function InitClasses_IfNeeded() As Boolean
 
     InitCommonControlsVB
     
-    Set Registry = New clsShellReg
     Set Layout = New LayoutParser
     Set MetroUtility = New Windows8Utility
     Set IconManager = New CIconManager
@@ -200,7 +198,7 @@ Dim ProgramDataPath As String
 Dim thisCLSID As CLSID
 Dim theImageFace As New GDIPImage
 
-    ProgramDataPath = Registry.Read("HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders\Common AppData")
+    ProgramDataPath = Registry.LocalMachine.GetValue("SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders", "Common AppData")
     sBmpUserPath = ProgramDataPath & "\Microsoft\User Account Pictures\" & Environ$("USERNAME") & ".bmp"
     If FileExists(sBmpUserPath) = False Then
         'sBmpUserPath = ProgramDataPath & "\Microsoft\User Account Pictures\user.bmp"
@@ -369,6 +367,23 @@ Dim cmdLineArguements() As String
 End Function
 
 Sub Main()
+    Dim regvalue: regvalue = Registry.CurrentUser.GetValue("Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs", "MRUListEx")
+    Dim sPath, sMRUListEx, lngRegIndex, sMRU, sSeekFile
+    
+    sPath = "Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs"
+    sMRUListEx = Registry.CurrentUser.GetValue(sPath, "MRUListEx")
+
+    While (Len(sMRUListEx) > 4)
+        lngRegIndex = GetDWord(ExtractBytes(sMRUListEx, 4))
+        sMRU = Registry.CurrentUser.GetValue(sPath, lngRegIndex)
+        GetStringByString CStr(sMRU), Chr$(&H14) & Chr$(0)
+                                '00 00    00
+        sSeekFile = GetStringByString(CStr(sMRU), Chr$(0) & ChrB$(0))
+        Debug.Print sSeekFile
+    Wend
+    
+    Exit Sub
+    
     If Not InitClasses_IfNeeded Then
         Exit Sub
     End If
@@ -394,7 +409,6 @@ Sub Main()
     g_WDSInitialized = WDSAvailable
 
     If Settings Is Nothing Then Set Settings = New ViSettings
-    OptionsHelper.GetOptions
 
     If Settings.CurrentSkin <> vbNullString Then
         g_resourcesPath = sCon_AppDataPath & "_skins\" & Settings.CurrentSkin & "\"
@@ -488,7 +502,7 @@ Dim strTemp As String
     On Error GoTo Handler
 
     'Get this system's Icon size
-    strTemp = Registry.Read("HKCU\Control Panel\Desktop\WindowMetrics\Shell Icon Size", "32")
+    strTemp = Registry.CurrentUser.GetValue("Control Panel\Desktop\WindowMetrics\Shell Icon Size", "32")
     GetSystemLargeIconSize = CInt(strTemp)
     
     Exit Function

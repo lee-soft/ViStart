@@ -10,7 +10,7 @@ Private EXPLORER_OPENSAVEDOCS As String
 
 Function SetOpenSaveDocs()
 
-Dim thisType As New ViRegistryKey
+Dim thisType As New RegistryKey
 
     thisType.RootKeyType = HKEY_CURRENT_USER
     EXPLORER_OPENSAVEDOCS = EXPLORER_OPENSAVEDOCS_XP
@@ -23,7 +23,7 @@ Dim thisType As New ViRegistryKey
 
 End Function
 
-Public Function GetMRUListForKey(ByRef srcMRURoot As ViRegistryKey) As String()
+Public Function GetMRUListForKey(ByRef srcMRURoot As RegistryKey) As String()
     On Error Resume Next
     
     Debug.Print srcMRURoot.Path

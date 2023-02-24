@@ -11,6 +11,8 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+Attribute VB_Ext_KEY = "SavedWithClassBuilder6" ,"Yes"
+Attribute VB_Ext_KEY = "Top_Level" ,"Yes"
 'Public NavigationPaneOptions As Collection
 Option Explicit
 
@@ -61,7 +63,7 @@ Attribute m_popoutMenu.VB_VarHelpID = -1
 Private m_windowPosition As POINTL
 Private m_window As Form
 
-Private m_RegObj As New clsRegistry
+Private m_RegObj As New RegistryKey
 
 Private GroupOptionsVisibileCount As Long
 Private MinOSVersion As Double
