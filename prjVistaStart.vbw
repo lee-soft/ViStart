@@ -27,7 +27,7 @@ StartBarSupport = 0, 0, 0, 0, C
 Variables = 0, 0, 0, 0, C
 KeyBoard = 0, 0, 0, 0, C
 StringHelper = 0, 0, 0, 0, C
-MainHelper = 204, 27, 1240, 678, Z
+MainHelper = 204, 27, 1240, 678, 
 AppLauncherHelper = 0, 0, 0, 0, C
 frmStartOrb = 208, 208, 719, 797, , 44, 58, 1072, 701, C
 IconHelper = 0, 0, 0, 0, C
@@ -118,10 +118,6 @@ GDIDC = 0, 0, 0, 0, C
 GDIPlusHelper = 0, 0, 0, 0, C
 CollectionItem = 0, 0, 0, 0, C
 StartMenuParseResult = 0, 0, 0, 0, C
-<<<<<<< HEAD
-DWordHelper = 0, 0, 0, 0, C
+DWordHelper = 26, 26, 661, 615, 
 FileVersionInfoHelper = 0, 0, 0, 0, C
 FileVersionInfo = 0, 0, 0, 0, C
-=======
-DWordHelper = 26, 26, 661, 615, Z
->>>>>>> 388b843 (embed gdipluswrapper with vistart)

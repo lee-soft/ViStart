@@ -286,9 +286,9 @@ Public Function ReadPrograms(ByRef programsXML As IXMLDOMElement)
 Dim thisFrequentProgram As IXMLDOMElement
 Dim thisProgram As clsProgram
 Dim szIconPath As String
-Dim MinOSVersion As Single
-Dim MaxOSVersion As Single
-Dim exclusiveOSVersion As Single
+Dim MinOSVersion As Double
+Dim MaxOSVersion As Double
+'Dim exclusiveOSVersion As Single
 
     Set m_pinnedPrograms = New Collection
     Set m_frequentPrograms = New Collection
@@ -303,17 +303,17 @@ Dim exclusiveOSVersion As Single
         MaxOSVersion = 0
 		
         If Not IsNull(thisFrequentProgram.getAttribute("minwinversion")) Then
-            MinOSVersion = CSng(thisFrequentProgram.getAttribute("minwinversion"))
+            MinOSVersion = thisFrequentProgram.getAttribute("minwinversion")
 		Else
             MinOSVersion = WindowsVersion
         End If
 		
         If Not IsNull(thisFrequentProgram.getAttribute("maxwinversion")) Then
-            MaxOSVersion = CSng(thisFrequentProgram.getAttribute("maxwinversion"))
+            MaxOSVersion = thisFrequentProgram.getAttribute("maxwinversion")
 		Else
             MaxOSVersion = MinOSVersion
         End If
-        
+
         If WindowsVersion >= MinOSVersion and WindowsVersion <= MaxOSVersion Then
             szIconPath = vbNullString
         
@@ -350,13 +350,13 @@ Dim exclusiveOSVersion As Single
         MaxOSVersion = 0
 		
         If Not IsNull(thisFrequentProgram.getAttribute("minwinversion")) Then
-            MinOSVersion = CSng(thisFrequentProgram.getAttribute("minwinversion"))
+            MinOSVersion = thisFrequentProgram.getAttribute("minwinversion")
         	Else
             MinOSVersion = WindowsVersion
         End If
 		
         If Not IsNull(thisFrequentProgram.getAttribute("maxwinversion")) Then
-            MaxOSVersion = CSng(thisFrequentProgram.getAttribute("maxwinversion"))
+            MaxOSVersion = thisFrequentProgram.getAttribute("maxwinversion")
 		Else
     	    MaxOSVersion = MinOSVersion
         End If

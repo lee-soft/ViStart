@@ -64,8 +64,8 @@ Private m_window As Form
 Private m_RegObj As New clsRegistry
 
 Private GroupOptionsVisibileCount As Long
-Private MinOSVersion As Single
-Private MaxOSVersion As Single
+Private MinOSVersion As Double
+Private MaxOSVersion As Double
 
 Private Declare Function SHChangeNotify Lib "shell32.dll" (ByVal wEventID As Long, ByVal uFlags As Long, ByVal dwItem1 As Long, ByVal dwItem2 As Long) As Long
 
@@ -776,54 +776,58 @@ MaxOSVersion = 0
     End If
         
     For Each thisObject In navigationPaneXML.childNodes
+	
         If TypeName(thisObject) = "IXMLDOMElement" Then
+		
             Set thisObjectXML = thisObject
 
-                        If Not IsNull(thisObject.getAttribute("minwinversion")) Then
-                                MinOSVersion = CSng(thisObject.getAttribute("minwinversion"))
-                        Else
-                                MinOSVersion = WindowsVersion
-                        End If
-                        
-                        If Not IsNull(thisObject.getAttribute("maxwinversion")) Then
-                                MaxOSVersion = CSng(thisObject.getAttribute("maxwinversion"))
-                        Else
-                                MaxOSVersion = MinOSVersion
-                        End If
+			If Not IsNull(thisObject.getAttribute("minwinversion")) Then
+				MinOSVersion = thisObject.getAttribute("minwinversion")
+			Else
+				MinOSVersion = WindowsVersion
+			End If
+			
+			If Not IsNull(thisObject.getAttribute("maxwinversion")) Then
+				MaxOSVersion = thisObject.getAttribute("maxwinversion")
+			Else
+				MaxOSVersion = MinOSVersion
+			End If
 
-                        If WindowsVersion >= MinOSVersion And WindowsVersion <= MaxOSVersion Then
+
+			If WindowsVersion >= MinOSVersion and WindowsVersion <= MaxOSVersion Then
+
                                                         
-                                If thisObjectXML.tagName = "folder" Then
-                                        Set thisFolderOption = New NavigationPaneFolder
-                                        m_navigationPaneOptions.Add thisFolderOption
-                                        
-                                        thisFolderOption.Visible = True
+				If thisObjectXML.tagName = "folder" Then
+						Set thisFolderOption = New NavigationPaneFolder
+						m_navigationPaneOptions.Add thisFolderOption
+						
+						thisFolderOption.Visible = True
 
-                                        If Not IsNull(thisObjectXML.getAttribute("visible")) Then thisFolderOption.Visible = CBool(thisObjectXML.getAttribute("visible"))
-                                        If thisFolderOption.Visible = True Then GroupOptionsVisibileCount = GroupOptionsVisibileCount + 1
-                                        If GroupOptionsVisibileCount > Layout.GroupOptionsVisibilityLimit And Layout.EnableVisibilityLimit Then thisFolderOption.Visible = False
-                                        
-                                        If Not IsNull(thisObjectXML.getAttribute("display_as_menu")) Then thisFolderOption.OpenAsMenu = CBool(thisObjectXML.getAttribute("display_as_menu"))
-                                        If Not IsNull(thisObjectXML.getAttribute("caption")) Then thisFolderOption.Caption = thisObjectXML.getAttribute("caption")
-                                        If Not IsNull(thisObjectXML.getAttribute("path")) Then thisFolderOption.Shell = thisObjectXML.getAttribute("path")
-                                        If Not IsNull(thisObjectXML.getAttribute("rollover")) Then thisFolderOption.Rollover = thisObjectXML.getAttribute("rollover")
-         
-                                ElseIf thisObjectXML.tagName = "custom" Then
-                                        Set thisCustomOption = New NavigationPaneCustom
-                                        m_navigationPaneOptions.Add thisCustomOption
-                                        
-                                        thisCustomOption.Visible = True
-                                        
-                                        If Not IsNull(thisObjectXML.getAttribute("visible")) Then thisCustomOption.Visible = CBool(thisObjectXML.getAttribute("visible"))
-                                        If thisCustomOption.Visible = True Then GroupOptionsVisibileCount = GroupOptionsVisibileCount + 1
-                                        If GroupOptionsVisibileCount > Layout.GroupOptionsVisibilityLimit And Layout.EnableVisibilityLimit Then thisCustomOption.Visible = False
-                                                                        
-                                        If Not IsNull(thisObjectXML.getAttribute("caption")) Then thisCustomOption.Caption = thisObjectXML.getAttribute("caption")
-                                        If Not IsNull(thisObjectXML.getAttribute("rollover")) Then thisCustomOption.Rollover = thisObjectXML.getAttribute("rollover")
-                                        If Not IsNull(thisObjectXML.getAttribute("exec")) Then thisCustomOption.Shell = thisObjectXML.getAttribute("exec")
-                                                                        
-                                        thisCustomOption.Populate thisObjectXML
-                                End If
+						If Not IsNull(thisObjectXML.getAttribute("visible")) Then thisFolderOption.Visible = CBool(thisObjectXML.getAttribute("visible"))
+						If thisFolderOption.Visible = True Then GroupOptionsVisibileCount = GroupOptionsVisibileCount + 1
+						If GroupOptionsVisibileCount > Layout.GroupOptionsVisibilityLimit And Layout.EnableVisibilityLimit Then thisFolderOption.Visible = False
+						
+						If Not IsNull(thisObjectXML.getAttribute("display_as_menu")) Then thisFolderOption.OpenAsMenu = CBool(thisObjectXML.getAttribute("display_as_menu"))
+						If Not IsNull(thisObjectXML.getAttribute("caption")) Then thisFolderOption.Caption = thisObjectXML.getAttribute("caption")
+						If Not IsNull(thisObjectXML.getAttribute("path")) Then thisFolderOption.Shell = thisObjectXML.getAttribute("path")
+						If Not IsNull(thisObjectXML.getAttribute("rollover")) Then thisFolderOption.Rollover = thisObjectXML.getAttribute("rollover")
+
+				ElseIf thisObjectXML.tagName = "custom" Then
+						Set thisCustomOption = New NavigationPaneCustom
+						m_navigationPaneOptions.Add thisCustomOption
+						
+						thisCustomOption.Visible = True
+						
+						If Not IsNull(thisObjectXML.getAttribute("visible")) Then thisCustomOption.Visible = CBool(thisObjectXML.getAttribute("visible"))
+						If thisCustomOption.Visible = True Then GroupOptionsVisibileCount = GroupOptionsVisibileCount + 1
+						If GroupOptionsVisibileCount > Layout.GroupOptionsVisibilityLimit And Layout.EnableVisibilityLimit Then thisCustomOption.Visible = False
+														
+						If Not IsNull(thisObjectXML.getAttribute("caption")) Then thisCustomOption.Caption = thisObjectXML.getAttribute("caption")
+						If Not IsNull(thisObjectXML.getAttribute("rollover")) Then thisCustomOption.Rollover = thisObjectXML.getAttribute("rollover")
+						If Not IsNull(thisObjectXML.getAttribute("exec")) Then thisCustomOption.Shell = thisObjectXML.getAttribute("exec")
+														
+						thisCustomOption.Populate thisObjectXML
+				End If
                                                         
             End If
 
