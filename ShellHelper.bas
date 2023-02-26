@@ -15,9 +15,19 @@ Private Declare Function SHGetPathFromIDList Lib "shell32.dll" Alias "SHGetPathF
 Private Declare Function SHGetFolderPath Lib "shfolder" Alias "SHGetFolderPathA" (ByVal hwndOwner As Long, _
                     ByVal nFolder As Long, ByVal hToken As Long, ByVal dwFlags As Long, ByVal pszPath As String) As Long
 
-Private Declare Function GetLocaleInfo Lib "kernel32" Alias "GetLocaleInfoA" (ByVal Locale As Long, ByVal lCType As Long, ByVal lpLCData As String, ByVal cchData As Long) As Long
+Private Declare Function GetLocaleInfo Lib "kernel32" Alias "GetLocaleInfoW" (ByVal Locale As Long, ByVal lCType As Long, ByVal lpLCData As String, ByVal cchData As Long) As Long
 
 Private Declare Function GetUserDefaultLCID Lib "kernel32" () As Long
+
+Private Declare Function LoadLibrary Lib "kernel32" Alias "LoadLibraryW" (ByVal lpLibFileName As Long) As Long
+Private Declare Function FreeLibrary Lib "kernel32" (ByVal hLibModule As Long) As Long
+Private Declare Function FindResourceEx Lib "kernel32" Alias "FindResourceExW" (ByVal hModule As Long, ByVal lpType As Long, ByVal lpName As Long, ByVal wLanguage As Integer) As Long
+Private Declare Function LoadResource Lib "kernel32" (ByVal hInstance As Long, ByVal hResInfo As Long) As Long
+Private Declare Function LockResource Lib "kernel32" (ByVal hResData As Long) As Long
+Private Declare Function SysReAllocStringLen Lib "oleaut32" (ByVal pBSTR As Long, ByVal psz As Long, ByVal Length As Long) As Long
+Private Declare Function GetMem2 Lib "msvbvm60" (Src As Any, Dst As Any) As Long
+
+'Declare Function GetThreadLocale Lib "kernel32" Alias "GetThreadLocale" () As Long
 
 Private m_wScriptShellObject As Object
 
@@ -47,6 +57,8 @@ Public g_WinDecimalSeparator As String
 
 Public g_WindowsVersion As Double
 Public g_WindowsVersionFull As String
+
+Public g_WindowsLanguageLCID as Long
 
 Public g_WindowsXP As Boolean
 Public g_WindowsVista As Boolean
@@ -103,6 +115,73 @@ Private Const LOCALE_STHOUSAND = &HF        '  thousand separator
 
 Public Const ABM_GETTASKBARPOS As Long = &H5
 Private Const SHGFP_Type_CURRENT = &H0
+
+
+
+
+Private Function PtrAdd(ByVal Address As Long, ByVal Offset As Long) As Long
+' unsigned pointer arithmetic, moves overflow by toggling the sign bit
+' required when using /LARGEADDRESSAWARE on 64bit windows
+    Const SIGN_BIT As Long = &H80000000
+    PtrAdd = (Address Xor SIGN_BIT) + Offset Xor SIGN_BIT
+End Function
+
+Private Property Get DUInt(ByVal Address As Long) As Long
+' Compensate for VB's lack of unsigned types
+' Copies a 16bit Unsigned Integer from a pointer into a Long
+    GetMem2 ByVal Address, DUInt
+End Property
+' https://blogs.msdn.microsoft.com/oldnewthing/20040130-00/?p=40813/
+Function FindStringResourceEx(ByVal hInstance As Long, ByVal uId As Long, ByVal langId As Long) As String
+
+    Const STRINGS_PER_BUCKET As Long = 16&
+    Const RT_STRING As Long = 6&
+    Const WCHARSIZE As Long = 2
+
+    Dim hResource As Long
+    Dim hGlobal As Long
+    Dim Ptr As Long, i As Long
+
+    hResource = FindResourceEx(hInstance, RT_STRING, uId \ STRINGS_PER_BUCKET + 1, langId)
+	
+    If hResource Then
+        hGlobal = LoadResource(hInstance, hResource)
+        If hGlobal Then
+            Ptr = LockResource(hGlobal)
+            If Ptr Then
+                For i = 1 To uId And (STRINGS_PER_BUCKET - 1)
+                    Ptr = PtrAdd(Ptr, (1 + DUInt(Ptr)) * WCHARSIZE)
+                Next
+                SysReAllocStringLen VarPtr(FindStringResourceEx), PtrAdd(Ptr, 2), DUInt(Ptr)
+            End If
+        End If
+    End If
+End Function
+
+
+Public Function GetStringFromFile(ByVal RESOURCE_FILE As String, ByVal RESOURCE_LANG As Long, ByVal STRING_ID As Long)
+
+    'Const RESOURCE_FILE = "c:\windows\system32\shell32.dll"
+    'Const RESOURCE_LANG = 1029
+    'Const STRING_ID = 4148
+
+    Dim hModule As Long
+    hModule = LoadLibrary(StrPtr(RESOURCE_FILE))
+	
+	Dim ExtractedString as String
+	
+    If hModule Then
+	
+		ExtractedString = FindStringResourceEx(hModule, STRING_ID, RESOURCE_LANG)
+		
+		'debug.print ExtractedString
+		GetStringFromFile = ExtractedString
+		
+        FreeLibrary hModule
+    End If
+	
+End Function
+
 
 'Purpose     :  Allows the user to select a file name from a local or network directory.
 'Inputs      :  sInitDir            The initial directory of the file dialog.
@@ -170,7 +249,8 @@ Private Function LoadLocaleValue(ByVal lType As Long) As String
     Dim i As Long
     
     ' Get local user locale
-    lLocale = GetUserDefaultLCID
+    'lLocale = GetUserDefaultLCID
+    lLocale = g_WindowsLanguageLCID
     ' Initilize Return String
     sCData = String(100, " ")
     lchData = Len(sCData)
@@ -206,10 +286,10 @@ Function DetermineWindowsVersion_IfNeeded()
     If g_WindowsXP Or g_WindowsVista Or g_Windows7 Or g_Windows8 Or g_Windows81 Or g_Windows10 Or g_Windows11 Or g_Windows12 Then
         Exit Function
     End If
-    
 
+	g_WindowsLanguageLCID = GetUserDefaultLCID
 	g_WinDecimalSeparator = LoadLocaleValue(LOCALE_SDECIMAL)
-  
+	
     g_WindowsXP = False
     g_WindowsVista = False
     g_Windows7 = False
