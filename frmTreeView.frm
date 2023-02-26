@@ -6,15 +6,15 @@ Begin VB.Form frmTreeView
    ClientHeight    =   6120
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   3680
+   ClientWidth     =   3675
    ClipControls    =   0   'False
    ControlBox      =   0   'False
    FillColor       =   &H0000FF00&
    ForeColor       =   &H0000C0C0&
    LinkTopic       =   "Form1"
-   ScaleHeight     =   612
+   ScaleHeight     =   408
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   368
+   ScaleWidth      =   245
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
    Begin VB.CommandButton cmdFocusGrab 
@@ -366,11 +366,9 @@ Function ShowContextMenu() As Boolean
     If FileExists(m_nTargetNode.Tag) Then
         m_contextMenu.AddItem ""
         
-        On Error GoTo FailedToReadViPad
-        
         Dim lnkFileRegKey As RegistryKey: Set lnkFileRegKey = Registry.ClassesRoot.OpenSubKey("lnkfile\shell")
         
-        If lnkFileRegKey.GetValue("Add to ViPad") Then
+        If Not lnkFileRegKey.OpenSubKey("Add to ViPad") Is Nothing Then
             m_addToViPadCommand = lnkFileRegKey.OpenSubKey("Add to ViPad").GetValue("command", vbNullString)
             m_addToViPadCommand = Replace(m_addToViPadCommand, "%1", m_nTargetNode.Tag)
             
@@ -392,11 +390,10 @@ Function ShowContextMenu() As Boolean
         m_contextMenu.AddItem GetPublicString("strProperties"), "PROPERTIES"
     End If
     
-    Debug.Print "Attemping Resurrection!"
     m_contextMenu.Resurrect True, Me
-
     Exit Function
-FailedToReadViPad:
+    
+Handler:
     LogError Err.Description, "frmTreeView"
 End Function
 

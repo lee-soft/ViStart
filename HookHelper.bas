@@ -41,6 +41,8 @@ Dim oldWindowProcedure As Long: oldWindowProcedure = GetProp(sourcehWnd, OLD_WIN
 End Sub
 
 Public Function HookWindow(ByVal sourcehWnd As Long, hookObj As IHookSink) As Long
+'Exit Function
+    
     'set the property, 'HOOK_OBJ' to the pointer of the hookObj on the source hWnd
     Call SetProp(sourcehWnd, HOOK_OBJECT_REFERENCE, PtrFromObject(hookObj))
     

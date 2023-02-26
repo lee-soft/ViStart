@@ -55,6 +55,7 @@ Private m_hive As RegistryHive
 Private m_hKey As Long
 Private m_hKeySet As Boolean
 Private m_Path As String
+Private m_supressErrors As Boolean
 
 Property Let Hive(ByVal newHive As RegistryHive)
     m_hive = newHive
@@ -136,7 +137,7 @@ Public Function CreateSubKey(ByVal subKeyName As String) As RegistryKey
     ' Check for success
     If Not result = ERROR_SUCCESS Then
         ' Failed to create subkey
-        Err.Raise result, "RegistryKey", "Unable to create subkey"
+        If Not m_supressErrors Then Err.Raise result, "RegistryKey", "Unable to create subkey"
         Exit Function
     End If
     
@@ -167,7 +168,7 @@ Public Function OpenSubKey(ByVal subKeyName As String, Optional ByVal writable A
     
     ' Open the subkey
     If Not result = ERROR_SUCCESS Then
-        Err.Raise result, "RegistryKey", "Unable to open Registry sub key: " & subKeyName
+        If Not m_supressErrors Then Err.Raise result, "RegistryKey", "Unable to open Registry sub key: " & subKeyName
         Exit Function
     End If
     
@@ -247,7 +248,7 @@ Public Function GetValue(ByVal ValueName As String, Optional ByVal DefaultValue 
         RegCloseKey hKey
         GetValue = DefaultValue
         
-        Err.Raise result, "RegistryKey", "Unable to read key: " & ValueName
+        If Not m_supressErrors Then Err.Raise result, "RegistryKey", "Unable to read key: " & ValueName
         Exit Function
     End If
     
@@ -271,3 +272,6 @@ Public Function GetValue(ByVal ValueName As String, Optional ByVal DefaultValue 
     RegCloseKey hKey
 End Function
 
+Private Sub Class_Initialize()
+    m_supressErrors = True
+End Sub

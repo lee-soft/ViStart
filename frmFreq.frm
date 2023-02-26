@@ -838,83 +838,83 @@ End Sub
 
 Private Sub picRollover_MouseUp(Button As Integer, Shift As Integer, X As Single, Y As Single)
 
-10        On Error GoTo Handler
+    On Error GoTo Handler
 
-20        If Button = vbLeftButton Then
+    If Button = vbLeftButton Then
 
-30            If ValidCurIndex Then
-40                If X > (picRollover.ScaleWidth - (m_jumpListButton.Width / 2)) And _
-                      Not lstItems(iCurIndex).MRUList.IsEmpty Then 'Error not set
-          
-50                    ShowSelectJumpList
-60                Else
-70                    m_lastSelectedFile = GetSelectedPath()
-                  
-80                    RaiseEvent onRequestCloseStartMenu
-90                    ExecuteSelected
-100               End If
-110           End If
-              
-120       ElseIf Button = vbRightButton Then
+        If ValidCurIndex Then
+            If X > (picRollover.ScaleWidth - (m_jumpListButton.Width / 2)) And _
+                Not lstItems(iCurIndex).MRUList.IsEmpty Then 'Error not set
+    
+                ShowSelectJumpList
+            Else
+                m_lastSelectedFile = GetSelectedPath()
+            
+                RaiseEvent onRequestCloseStartMenu
+                ExecuteSelected
+            End If
+        End If
+        
+    ElseIf Button = vbRightButton Then
 
-130           If iCurIndex < LBound(lstItems) Or iCurIndex > UBound(lstItems) Then
-140               Exit Sub
-150           End If
+        If iCurIndex < LBound(lstItems) Or iCurIndex > UBound(lstItems) Then
+            Exit Sub
+        End If
 
-160           If Not m_vistaMenu Is Nothing Then Unload m_vistaMenu
-170           Set m_vistaMenu = New frmVistaMenu
-              
-180           m_vistaMenu.AddItem GetPublicString("strOpen"), "OPEN@" & lstItems(iCurIndex).Shell, True
+        If Not m_vistaMenu Is Nothing Then Unload m_vistaMenu
+        Set m_vistaMenu = New frmVistaMenu
+        
+        m_vistaMenu.AddItem GetPublicString("strOpen"), "OPEN@" & lstItems(iCurIndex).Shell, True
 
-190           If LCase$(Right$(ResolveLink(lstItems(iCurIndex).Shell), 3)) = "exe" Then
-200               m_vistaMenu.AddItem GetPublicString("strRunAsAdmin"), "RUNASADMIN@" & lstItems(iCurIndex).Shell
-210           End If
-              
-220           m_vistaMenu.AddItem ""
-              
-230           If iCurIndex < Settings.Programs.PinnedPrograms.count Then
-240               m_vistaMenu.AddItem GetPublicString("strUnpinToStartMenu"), "TOGGLEPIN@" & lstItems(iCurIndex).Shell
-250           Else
-260               m_vistaMenu.AddItem GetPublicString("strPinToStartMenu"), "TOGGLEPIN@" & lstItems(iCurIndex).Shell
-270           End If
-280           m_vistaMenu.AddItem ""
-290           m_vistaMenu.AddItem GetPublicString("strRemoveFromList"), "REMOVEITEM@" & lstItems(iCurIndex).Shell
-              
-300           If FileExists(lstItems(iCurIndex).Shell) Then
-              
-310               m_vistaMenu.AddItem ""
-              
-320               Dim lnkFileShellRegKey As RegistryKey: lnkFileShellRegKey = Registry.ClassesRoot.OpenSubKey("lnkfile\shell")
-              
-330               If lnkFileShellRegKey.GetValue("Add to ViPad") Then
-340                   m_addToViPadCommand = lnkFileShellRegKey.OpenSubKey("Add to ViPad").GetValue("command", vbNullString)
-350                   m_addToViPadCommand = Replace(m_addToViPadCommand, "%1", lstItems(iCurIndex).Shell)
-                      
-360                   m_vistaMenu.AddItem GetPublicString("strCopyToViPad"), "COPYTOVIPAD@NULL"
-370               Else
-380                   If m_viPadInstalled Then
-390                       m_addToViPadCommand = GenerateViPadAddToCommand(lstItems(iCurIndex).Shell)
-                      
-400                   m_vistaMenu.AddItem GetPublicString("strCopyToViPad"), "COPYTOVIPAD@NULL"
-                  '    'Else
-                  '    '    m_addToViPadCommand = "http://lee-soft.com/vipad"
-410                   End If
+        If LCase$(Right$(ResolveLink(lstItems(iCurIndex).Shell), 3)) = "exe" Then
+            m_vistaMenu.AddItem GetPublicString("strRunAsAdmin"), "RUNASADMIN@" & lstItems(iCurIndex).Shell
+        End If
+        
+        m_vistaMenu.AddItem ""
+        
+        If iCurIndex < Settings.Programs.PinnedPrograms.count Then
+            m_vistaMenu.AddItem GetPublicString("strUnpinToStartMenu"), "TOGGLEPIN@" & lstItems(iCurIndex).Shell
+        Else
+            m_vistaMenu.AddItem GetPublicString("strPinToStartMenu"), "TOGGLEPIN@" & lstItems(iCurIndex).Shell
+        End If
+        m_vistaMenu.AddItem ""
+        m_vistaMenu.AddItem GetPublicString("strRemoveFromList"), "REMOVEITEM@" & lstItems(iCurIndex).Shell
+        
+        If FileExists(lstItems(iCurIndex).Shell) Then
+        
+            m_vistaMenu.AddItem ""
+        
+            Dim lnkFileShellRegKey As RegistryKey: Set lnkFileShellRegKey = Registry.ClassesRoot.OpenSubKey("lnkfile\shell")
 
-420               End If
-              
-430               m_vistaMenu.AddItem GetPublicString("strCopyToDesktop"), "COPYTODESKTOP@" & lstItems(iCurIndex).Shell
-          
-440               m_vistaMenu.AddItem ""
-450               m_vistaMenu.AddItem GetPublicString("strProperties"), "PROPERTIES@" & lstItems(iCurIndex).Shell
-460           End If
-              
-470           Debug.Print "Attemping Resurrection!"
-480           m_vistaMenu.Resurrect True
-490       End If
+            If Not lnkFileShellRegKey.OpenSubKey("Add to ViPad") Is Nothing Then
+                m_addToViPadCommand = lnkFileShellRegKey.OpenSubKey("Add to ViPad").GetValue("command", vbNullString)
+                m_addToViPadCommand = Replace(m_addToViPadCommand, "%1", lstItems(iCurIndex).Shell)
+                
+                m_vistaMenu.AddItem GetPublicString("strCopyToViPad"), "COPYTOVIPAD@NULL"
+            Else
+                If m_viPadInstalled Then
+                    m_addToViPadCommand = GenerateViPadAddToCommand(lstItems(iCurIndex).Shell)
+                
+                m_vistaMenu.AddItem GetPublicString("strCopyToViPad"), "COPYTOVIPAD@NULL"
+            '    'Else
+            '    '    m_addToViPadCommand = "http://lee-soft.com/vipad"
+                End If
 
-500       Exit Sub
+            End If
+        
+            m_vistaMenu.AddItem GetPublicString("strCopyToDesktop"), "COPYTODESKTOP@" & lstItems(iCurIndex).Shell
+    
+            m_vistaMenu.AddItem ""
+            m_vistaMenu.AddItem GetPublicString("strProperties"), "PROPERTIES@" & lstItems(iCurIndex).Shell
+        End If
+        
+        Debug.Print "Attemping Resurrection!"
+        m_vistaMenu.Resurrect True
+    End If
+
+    Exit Sub
 Handler:
-510       LogError Err.Description, "frmFreq"
+    LogError Err.Description, "frmFreq"
 End Sub
 
 Sub MoveSeperator(theY As Long)
