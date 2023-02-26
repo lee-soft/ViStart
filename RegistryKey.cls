@@ -21,6 +21,18 @@ Private Declare Function RegQueryValueEx Lib "advapi32.dll" Alias "RegQueryValue
 Private Declare Function RegSetValueEx Lib "advapi32.dll" Alias "RegSetValueExA" (ByVal hKey As Long, ByVal lpValueName As String, ByVal Reserved As Long, ByVal dwType As Long, lpData As Any, ByVal cbData As Long) As Long
 Private Declare Function RegCloseKey Lib "advapi32.dll" (ByVal hKey As Long) As Long
 Private Declare Function RegDeleteValue Lib "advapi32.dll" Alias "RegDeleteValueA" (ByVal hKey As Long, ByVal lpValueName As String) As Long
+Private Declare Function RegEnumKeyEx Lib "advapi32.dll" Alias "RegEnumKeyExA" (ByVal hKey As Long, ByVal dwIndex As Long, ByVal lpName As String, lpcbName As Long, ByVal lpReserved As Long, ByVal lpClass As String, lpcbClass As Long, lpftLastWriteTime As Any) As Long
+Private Declare Function RegEnumKey Lib "advapi32.dll" Alias "RegEnumKeyA" (ByVal hKey As Long, ByVal dwIndex As Long, ByVal lpName As String, ByVal cbName As Long) As Long
+
+Private Const KEY_QUERY_VALUE As Long = &H1
+Private Const KEY_SET_VALUE As Long = &H2
+Private Const KEY_CREATE_SUB_KEY As Long = &H4
+Private Const KEY_ENUMERATE_SUB_KEYS As Long = &H8
+Private Const KEY_NOTIFY As Long = &H10
+Private Const KEY_CREATE_LINK As Long = &H20
+Private Const KEY_READ As Long = &H20019
+Private Const KEY_WRITE As Long = &H20006
+Private Const KEY_ALL_ACCESS As Long = &HF003F
 
 Public Enum RegistryHive
     HKEY_CLASSES_ROOT = &H80000000
@@ -40,39 +52,179 @@ End Enum
 
 Private m_hive As RegistryHive
 
+Private m_hKey As Long
+Private m_hKeySet As Boolean
+Private m_Path As String
+
 Property Let Hive(ByVal newHive As RegistryHive)
     m_hive = newHive
 End Property
 
-Public Function SetValue(ByVal KeyName As String, ByVal ValueName As String, ByVal Value As Variant, Optional ByVal ValueType As RegistryValueKind = REG_SZ) As Boolean
+Property Let Key(ByVal NewKey As Long)
+    m_hKey = NewKey
+    m_hKeySet = True
+End Property
+
+Property Get Key() As Long
+    If m_hKeySet Then
+        Key = m_hKey
+    Else
+        Key = m_hive
+    End If
+End Property
+
+Property Let Path(ByVal newPath As String)
+    m_Path = newPath
+End Property
+
+Property Get Path() As String
+    Path = m_Path
+End Property
+
+Public Sub DeleteValue(ByVal Name As String)
+    RegDeleteValue Me.Key, Name
+End Sub
+
+Public Function GetSubKeyNames() As Collection
+
+Dim subkey_num As Integer
+Dim subkey_name As String
+
+Dim Length As Long
+
+    Dim SubKeysNames As Collection
+    Set SubKeysNames = New Collection
+    Set GetSubKeyNames = SubKeysNames
+
+    ' Enumerate the subkeys.
+    subkey_num = 0
+
+    Do
+        ' Enumerate subkeys until we get an error.
+        Length = 1024
+        subkey_name = Space$(Length)
+        If RegEnumKey(Me.Key, subkey_num, _
+            subkey_name, Length) _
+                <> ERROR_SUCCESS Then Exit Do
+                
+        subkey_num = subkey_num + 1
+        subkey_name = Left$(subkey_name, InStr(subkey_name, Chr$(0)) - 1)
+        
+        SubKeysNames.Add subkey_name
+    Loop
+
+End Function
+
+Public Function CreateSubKey(ByVal subKeyName As String) As RegistryKey
     Dim hKey As Long
-    Dim Result As Long
+    Dim disposition As Long
+    Dim subKeyPath As String
+    Dim returnObject As RegistryKey
     
-    Result = RegCreateKeyEx(m_hive, KeyName, 0&, vbNullString, REG_OPTION_NON_VOLATILE, KEY_WRITE, 0&, hKey, 0&)
-    If Result = ERROR_SUCCESS Then
+    ' Combine the key path and subkey name to create the full subkey path
+    
+    If Me.Path <> vbNullString Then
+        subKeyPath = Me.Path & "\" & subKeyName
+    Else
+        subKeyPath = subKeyName
+    End If
+    
+    ' Attempt to create the subkey
+    Dim result As Long
+    result = RegCreateKeyEx(m_hive, subKeyPath, 0, vbNullString, 0, KEY_ALL_ACCESS, 0, hKey, ByVal 0&)
+
+    ' Check for success
+    If Not result = ERROR_SUCCESS Then
+        ' Failed to create subkey
+        Err.Raise result, "RegistryKey", "Unable to create subkey"
+        Exit Function
+    End If
+    
+    ' Subkey was created successfully
+    RegCloseKey hKey
+    
+    Set returnObject = Me.OpenSubKey(subKeyName, True)
+    Set CreateSubKey = returnObject
+End Function
+
+Public Function OpenSubKey(ByVal subKeyName As String, Optional ByVal writable As Boolean = False) As RegistryKey
+    Dim regKey As RegistryKey: Set regKey = New RegistryKey
+    regKey.Hive = m_hive
+    
+    Dim access As Long
+    Dim hSubKey As Long
+    Dim parentKey As Long
+    Dim result As Long
+    
+    ' Determine the access level
+    If writable Then
+        access = KEY_READ Or KEY_WRITE
+    Else
+        access = KEY_READ
+    End If
+    
+    result = RegOpenKeyEx(Me.Key, subKeyName, 0, access, hSubKey)
+    
+    ' Open the subkey
+    If Not result = ERROR_SUCCESS Then
+        Err.Raise result, "RegistryKey", "Unable to open Registry sub key: " & subKeyName
+        Exit Function
+    End If
+    
+    regKey.Key = hSubKey
+    regKey.Path = subKeyName
+    
+    Set OpenSubKey = regKey
+End Function
+
+Public Function SetValue(ByVal ValueName As String, ByVal Value As Variant) As Boolean
+    Dim hKey As Long
+    Dim result As Long
+    Dim valueAsBytes() As Byte
+    
+    Dim ValueType As RegistryValueKind
+    Dim vbValueType As Long: vbValueType = VarType(Value)
+    
+    If vbValueType = vbString Then
+        ValueType = REG_SZ
+    ElseIf vbValueType = vbLong Or vbValueType = vbInteger Then
+        ValueType = REG_DWORD
+    Else
+        Err.Raise 0, "RegistryKey", "Unimplmented type!"
+    End If
+    
+    result = RegOpenKeyEx(Me.Key, "", 0, KEY_ALL_ACCESS, hKey)
+    If result = ERROR_SUCCESS Then
+    
         Select Case ValueType
             Case REG_SZ, REG_EXPAND_SZ
-                Result = RegSetValueEx(hKey, ValueName, 0&, ValueType, Value, Len(Value) + 1)
+                valueAsBytes = StrConv(Value, vbFromUnicode)
+                
             Case REG_BINARY, REG_DWORD, REG_QWORD
-                Result = RegSetValueEx(hKey, ValueName, 0&, ValueType, Value, LenB(Value))
-            Case REG_MULTI_SZ
-                Dim MultiValue() As String
-                MultiValue = Split(Value, vbNullChar)
-                Result = RegSetValueEx(hKey, ValueName, 0&, ValueType, MultiValue(0), Len(Value) + 2)
+                valueAsBytes = LongToDWordByteArray(Value)
+                
+            'Case REG_MULTI_SZ
+            '    Dim MultiValue() As String
+            '    MultiValue = Split(value, vbNullChar)
+            '    result = RegSetValueEx(Me.Key, ValueName, 0&, ValueType, MultiValue(0), Len(value) + 2)
+                
         End Select
+        
+        result = RegSetValueEx(Me.Key, ValueName, 0&, ValueType, valueAsBytes(0), UBound(valueAsBytes) + 1)
         RegCloseKey hKey
     End If
     
-    SetValue = (Result = ERROR_SUCCESS)
+    SetValue = (result = ERROR_SUCCESS)
 End Function
 
-Public Function GetValue(ByVal KeyName As String, ByVal ValueName As String, Optional ByVal DefaultValue As Variant = vbNull) As Variant
+Public Function GetValue(ByVal ValueName As String, Optional ByVal DefaultValue As Variant = vbNull) As Variant
 
     Dim hKey As Long
-    Dim Result As Long
+    Dim result As Long
         
-    Result = RegOpenKeyEx(m_hive, KeyName, 0&, KEY_READ, hKey)
-    If Result <> ERROR_SUCCESS Then
+    result = RegOpenKeyEx(Me.Key, "", 0&, KEY_READ, hKey)
+    If result <> ERROR_SUCCESS Then
+        Err.Raise result, "RegistryKey", "Unable to open key!"
         ' Failed to open key
         GetValue = DefaultValue
         Exit Function
@@ -84,16 +236,18 @@ Public Function GetValue(ByVal KeyName As String, ByVal ValueName As String, Opt
     Dim ValueSize As Long
     
     ReDim ValueDataBuffer(0)
-    Result = RegQueryValueEx(hKey, ValueName, 0&, ValueType, ValueDataBuffer(0), ValueSize)
+    result = RegQueryValueEx(hKey, ValueName, 0&, ValueType, ValueDataBuffer(0), ValueSize)
     
     ReDim ValueDataBuffer(0 To ValueSize)
-    Result = RegQueryValueEx(hKey, ValueName, 0&, ValueType, ValueDataBuffer(0), ValueSize)
+    result = RegQueryValueEx(hKey, ValueName, 0&, ValueType, ValueDataBuffer(0), ValueSize)
     
     ValueData = StrConv(ValueDataBuffer, vbUnicode)
     
-    If Result <> ERROR_SUCCESS Then
+    If result <> ERROR_SUCCESS Then
         RegCloseKey hKey
         GetValue = DefaultValue
+        
+        Err.Raise result, "RegistryKey", "Unable to read key: " & ValueName
         Exit Function
     End If
     
@@ -113,3 +267,4 @@ Public Function GetValue(ByVal KeyName As String, ByVal ValueName As String, Opt
     
     RegCloseKey hKey
 End Function
+

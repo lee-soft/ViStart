@@ -9,17 +9,14 @@ Private Const EXPLORER_OPENSAVEDOCS_VISTA As String = "Software\Microsoft\Window
 Private EXPLORER_OPENSAVEDOCS As String
 
 Function SetOpenSaveDocs()
-
-Dim thisType As New RegistryKey
-
-    thisType.RootKeyType = HKEY_CURRENT_USER
+    On Error GoTo RegistryError
+    
     EXPLORER_OPENSAVEDOCS = EXPLORER_OPENSAVEDOCS_XP
-    
-    thisType.Path = EXPLORER_OPENSAVEDOCS
-    
-    If thisType.GetLastError <> 0 Then
-        EXPLORER_OPENSAVEDOCS = EXPLORER_OPENSAVEDOCS_VISTA
-    End If
+    Registry.CurrentUser.OpenSubKey EXPLORER_OPENSAVEDOCS
+
+    Exit Function
+RegistryError:
+    EXPLORER_OPENSAVEDOCS = EXPLORER_OPENSAVEDOCS_VISTA
 
 End Function
 
@@ -33,31 +30,75 @@ Dim thisMRU
 Dim thisMRUValue As String
 Dim thisLnkName As String
 
-Dim thisKey As ViRegistryKey
 Dim endFileNamePos As Long
 Dim MRUList() As String
 Dim lnkFileName As String
 Dim MRUArrayIndex As Long
 
     If srcMRURoot Is Nothing Then Exit Function
-    s_mruList = srcMRURoot.GetValueAsString("MRUList")
+    s_mruList = srcMRURoot.GetValue("MRUList")
     
+    While LenB(s_mruList) > 0
+        thisMRU = MidB$(s_mruList, 1, 2)
+        s_mruList = MidB$(s_mruList, LenB(thisMRU) + 1)
+        
+        If LenB(thisMRU) = 2 Then
+        
+            'Debug.Print "Reading:: " & CStr(thisMRU)
+            
+            thisMRUValue = srcMRURoot.GetValue(CStr(thisMRU))
+            lnkFileName = thisMRUValue
+            
+            Debug.Print "lnkFileName:: " & lnkFileName & "'"
+
+            If FileExists(lnkFileName) Then
+                ReDim Preserve MRUList(MRUArrayIndex)
+                MRUList(MRUArrayIndex) = lnkFileName
+                
+                MRUArrayIndex = MRUArrayIndex + 1
+            End If
+        End If
+    Wend
     
+    s_mruList = srcMRURoot.GetValue("MRUListEx")
 
-    If srcMRURoot.GetLastError = 0 Then
-        While LenB(s_mruList) > 0
-            thisMRU = MidB$(s_mruList, 1, 2)
-            s_mruList = MidB$(s_mruList, LenB(thisMRU) + 1)
-            
-            If LenB(thisMRU) = 2 Then
-            
-                'Debug.Print "Reading:: " & CStr(thisMRU)
-                
-                thisMRUValue = srcMRURoot.GetValueAsString(CStr(thisMRU))
-                lnkFileName = thisMRUValue
-                
-                Debug.Print "lnkFileName:: " & lnkFileName & "'"
+    While LenB(s_mruList) > 0
 
+        thisMRU = MidB$(s_mruList, 1, 4)
+        s_mruList = MidB$(s_mruList, 5)
+        
+        thisMRU = GetDWord(CStr(thisMRU))
+
+        If thisMRU > -1 Then
+        
+            thisMRUValue = srcMRURoot.GetValue(CStr(thisMRU))
+            endFileNamePos = 1
+            
+            'Debug.Print thisMRUValue
+            
+            'Chr$(0) is actually a double byte ZERO ChrB(0) is a single byte
+            'Remember strings are double-byte in VB6
+            endFileNamePos = InStrB(thisMRUValue, Chr$(0))
+
+            If endFileNamePos > 1 Then
+                thisLnkName = MidB$(thisMRUValue, 1, endFileNamePos)
+                
+                If Len(thisLnkName) > 3 Then
+                
+                    If Not (Right$(thisLnkName, 4) = ".lnk") And InStr(thisLnkName, ".") > 0 Then
+                        
+                        'Debug.Print "thisLnkName:: " & thisLnkName
+                        
+                        If FileExists(Environ$("userprofile") & "\Recent\" & Left$(thisLnkName, InStrRev(thisLnkName, ".") - 1) & ".lnk") Then
+                            thisLnkName = Left$(thisLnkName, InStrRev(thisLnkName, ".") - 1) & ".lnk"
+                        Else
+                            thisLnkName = thisLnkName & ".lnk"
+                        End If
+                    End If
+                End If
+                
+                lnkFileName = ResolveLink(Environ$("userprofile") & "\Recent\" & thisLnkName)
+                
                 If FileExists(lnkFileName) Then
                     ReDim Preserve MRUList(MRUArrayIndex)
                     MRUList(MRUArrayIndex) = lnkFileName
@@ -65,73 +106,26 @@ Dim MRUArrayIndex As Long
                     MRUArrayIndex = MRUArrayIndex + 1
                 End If
             End If
-        Wend
-    Else
-    
-        s_mruList = srcMRURoot.GetValueAsString("MRUListEx")
+        End If
+    Wend
 
-        While LenB(s_mruList) > 0
-
-            thisMRU = MidB$(s_mruList, 1, 4)
-            s_mruList = MidB$(s_mruList, 5)
-            
-            thisMRU = GetDWord(CStr(thisMRU))
-
-            If thisMRU > -1 Then
-            
-                thisMRUValue = srcMRURoot.GetValueAsString(CStr(thisMRU))
-                endFileNamePos = 1
-                
-                'Debug.Print thisMRUValue
-                
-                'Chr$(0) is actually a double byte ZERO ChrB(0) is a single byte
-                'Remember strings are double-byte in VB6
-                endFileNamePos = InStrB(thisMRUValue, Chr$(0))
-
-                If endFileNamePos > 1 Then
-                    thisLnkName = MidB$(thisMRUValue, 1, endFileNamePos)
-                    
-                    If Len(thisLnkName) > 3 Then
-                    
-                        If Not (Right$(thisLnkName, 4) = ".lnk") And InStr(thisLnkName, ".") > 0 Then
-                            
-                            'Debug.Print "thisLnkName:: " & thisLnkName
-                            
-                            If FileExists(Environ$("userprofile") & "\Recent\" & Left$(thisLnkName, InStrRev(thisLnkName, ".") - 1) & ".lnk") Then
-                                thisLnkName = Left$(thisLnkName, InStrRev(thisLnkName, ".") - 1) & ".lnk"
-                            Else
-                                thisLnkName = thisLnkName & ".lnk"
-                            End If
-                        End If
-                    End If
-                    
-                    lnkFileName = ResolveLink(Environ$("userprofile") & "\Recent\" & thisLnkName)
-                    
-                    If FileExists(lnkFileName) Then
-                        ReDim Preserve MRUList(MRUArrayIndex)
-                        MRUList(MRUArrayIndex) = lnkFileName
-                        
-                        MRUArrayIndex = MRUArrayIndex + 1
-                    End If
-                End If
-            End If
-        Wend
-    End If
-    
+    Err.Clear
     GetMRUListForKey = MRUList
     
+Handler:
+    Err.Clear
+    LogError "GetMRUListForKey", ""
 End Function
 
-Public Function GetImageJumpList(ByVal srcImagePath As String)
-
-    'Debug.Print "GetImageJumpList:: " & srcImagePath
-
+Public Function GetImageJumpList(ByVal srcImagePath As String) As JumpList
     On Error GoTo Handler
 
-Dim r_recentDocs As New ViRegistryKey
-Dim r_openSaveDocs As New ViRegistryKey
+Dim r_recentDocs As RegistryKey
+Dim r_openSaveDocs As RegistryKey
 
-Dim thisType As ViRegistryKey
+Dim thisTypeNameColItem As Variant
+Dim thisTypeName As String
+
 Dim thisImagePath As String
 Dim setJumpList As Boolean
 Dim thisJumpList As New JumpList
@@ -140,42 +134,30 @@ Dim thisJumpList As New JumpList
     srcImagePath = UCase$(StrEnd(srcImagePath, "\"))
     
     If Len(srcImagePath) = 0 Then Exit Function
-
-    r_openSaveDocs.RootKeyType = HKEY_CURRENT_USER
-    r_openSaveDocs.Path = EXPLORER_OPENSAVEDOCS
-
-    r_recentDocs.RootKeyType = HKEY_CURRENT_USER
-    r_recentDocs.Path = EXPLORER_RECENTDOCS
+    
+    Set r_openSaveDocs = Registry.CurrentUser.OpenSubKey(EXPLORER_OPENSAVEDOCS)
+    Set r_recentDocs = Registry.CurrentUser.OpenSubKey(EXPLORER_RECENTDOCS)
 
     thisJumpList.ImageName = srcImagePath
     srcImagePath = UCase$(srcImagePath)
 
-    If isset(r_recentDocs.SubKeys) Then
-        For Each thisType In r_recentDocs.SubKeys
-            'thisImagePath = Ucase$(StrEnd(Trim$(GetEXEPathFromQuote(GetAbsolutePath(GetTypeHandlerPath(thisType.Name)))), "\"))
+    For Each thisTypeNameColItem In r_recentDocs.GetSubKeyNames
+        thisTypeName = CStr(thisTypeNameColItem)
 
-            Debug.Print thisType.Name & ":" & GetTypeHandlerPath(thisType.Name)
-            
-            If ExistInStringArray(GetTypeHandlersImageName(thisType.Name), srcImagePath) Then
-                thisJumpList.AddMRURegKey thisType
-                'GetMRUListForKey thisType
-                
-                setJumpList = True
-            End If
-        Next
-    End If
+        If ExistInStringArray(GetTypeHandlersImageName(thisTypeName), srcImagePath) Then
+            thisJumpList.AddMRURegKey r_recentDocs.OpenSubKey(thisTypeName)
+            setJumpList = True
+        End If
+    Next
     
-    If isset(r_openSaveDocs.SubKeys) Then
-        For Each thisType In r_openSaveDocs.SubKeys
-            'thisImagePath = Ucase$(StrEnd(Trim$(GetEXEPathFromQuote(GetAbsolutePath(GetTypeHandlerPath("." & thisType.Name)))), "\"))
-    
-            If ExistInStringArray(GetTypeHandlersImageName(thisType.Name), srcImagePath) Then
-            'If thisImagePath = srcImagePath Then
-                thisJumpList.AddMRURegKey thisType
-                setJumpList = True
-            End If
-        Next
-    End If
+    For Each thisTypeNameColItem In r_openSaveDocs.GetSubKeyNames
+        thisTypeName = CStr(thisTypeNameColItem)
+
+        If ExistInStringArray(GetTypeHandlersImageName(thisTypeName), srcImagePath) Then
+            thisJumpList.AddMRURegKey r_openSaveDocs.OpenSubKey(thisTypeName)
+            setJumpList = True
+        End If
+    Next
     
     Exit Function
 Handler:
@@ -184,7 +166,7 @@ End Function
 
 Public Function GetTypeHandlersImageName(srcType As String) As String()
 
-Dim thisKey As New ViRegistryKey
+Dim thisKey As RegistryKey
 Dim primaryCommand As String
 Dim theChars() As Byte
 Dim theCharIndex As Long
@@ -192,40 +174,45 @@ Dim returnHandlers() As String
 
     If Left$(srcType, 1) <> "." Then srcType = "." & srcType
     
-    thisKey.RootKeyType = HKEY_CURRENT_USER
-    thisKey.Path = "Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\" & srcType & "\OpenWithList"
+    On Error GoTo CannotOpenSubKeyError
+    Set thisKey = Registry.CurrentUser.OpenSubKey("Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\" & srcType & "\OpenWithList")
     
-    theChars = StrConv(thisKey.GetValueAsString("MRUList"), vbFromUnicode)
+    theChars = StrConv(thisKey.GetValue("MRUList"), vbFromUnicode)
     For theCharIndex = LBound(theChars) To UBound(theChars)
         ReDim Preserve returnHandlers(theCharIndex)
-        returnHandlers(theCharIndex) = thisKey.GetValueAsString(Chr$(theChars(theCharIndex)))
+        returnHandlers(theCharIndex) = thisKey.GetValue(Chr$(theChars(theCharIndex)))
     Next
     
     GetTypeHandlersImageName = returnHandlers
     'typeFullName = thisKey.GetValueAsString()
 
+    Exit Function
+CannotOpenSubKeyError:
+    LogError Err.Description, "GetTypeHandlersImageName"
 End Function
 
-Public Function GetTypeHandlerPath(srcType As String)
+Public Function GetTypeHandlerPath(ByVal srcType As String) As String
 
-Dim thisKey As New ViRegistryKey
+    
+Dim thisKey As RegistryKey
 Dim typeFullName As String
 Dim primaryCommand As String
     
-    thisKey.RootKeyType = HKEY_CLASSES_ROOT
-    thisKey.Path = srcType
+    On Error GoTo HandleInvalidSubKey
     
-    typeFullName = thisKey.GetValueAsString()
+    Set thisKey = Registry.ClassesRoot.OpenSubKey(srcType)
+    typeFullName = thisKey.GetValue("")
     
-    thisKey.Path = typeFullName & "\shell"
-    primaryCommand = thisKey.GetValueAsString()
+    Set thisKey = Registry.ClassesRoot.OpenSubKey(typeFullName & "\shell")
+    primaryCommand = thisKey.GetValue("")
+    
     If primaryCommand = "" Then primaryCommand = "open"
     
-    thisKey.Path = typeFullName & "\shell\" & primaryCommand & "\command"
-    GetTypeHandlerPath = thisKey.GetValueAsString
-
-    'Debug.Print srcType & "::" & GetTypeHandlerPath
-
+    Set thisKey = Registry.ClassesRoot.OpenSubKey(typeFullName & "\shell\" & primaryCommand & "\command")
+    GetTypeHandlerPath = thisKey.GetValue("")
+    
+    Exit Function
+HandleInvalidSubKey:
 End Function
 
 Public Function GetEXEPathFromQuote(ByVal srcPath As String)

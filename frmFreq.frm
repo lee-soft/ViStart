@@ -221,7 +221,7 @@ Exit Sub
 Handler:
     MsgBox Err.Description
 
-    LogError "PopulateItemsFromCollection:: " & Err.Description, Me.Name
+    LogError "PopulateItemsFromCollection:: " & Err.Description, Me.name
 End Sub
 
 Sub PopulateItems()
@@ -345,7 +345,7 @@ Dim rSize As RECT
 
     Exit Sub
 Handler:
-    LogError Err.Description, Me.Name & "::DrawTextMe"
+    LogError Err.Description, Me.name & "::DrawTextMe"
 
 End Sub
 
@@ -884,8 +884,10 @@ Private Sub picRollover_MouseUp(Button As Integer, Shift As Integer, X As Single
         
             m_vistaMenu.AddItem ""
         
-            If Not Registry.ClassesRoot.GetValue("lnkfile\shell", "Add to ViPad", vbNull) = vbNull Then
-                m_addToViPadCommand = Registry.ClassesRoot.GetValue("lnkfile\shell\Add to ViPad", "command", vbNullString)
+            Dim lnkFileShellRegKey As RegistryKey: lnkFileShellRegKey = Registry.ClassesRoot.GetValue("lnkfile\shell")
+        
+            If lnkFileShellRegKey.GetValue("Add to ViPad") Then
+                m_addToViPadCommand = lnkFileShellRegKey.OpenSubKey("Add to ViPad").GetValue("command", vbNullString)
                 m_addToViPadCommand = Replace(m_addToViPadCommand, "%1", lstItems(iCurIndex).Shell)
                 
                 m_vistaMenu.AddItem GetPublicString("strCopyToViPad"), "COPYTOVIPAD@NULL"

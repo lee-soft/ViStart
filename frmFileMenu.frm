@@ -147,6 +147,7 @@ Dim sSeekPath As String
 
 Dim cItems As New Collection
 Dim sP() As String
+Dim recentDocsRegKey As RegistryKey
 
     Set Me.Picture = Nothing
     Set GetItems_MRU = cItems
@@ -154,12 +155,14 @@ Dim sP() As String
     m_paRolloverPosition.Y = -m_hdcRollover.Height
     
     sPath = "Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs"
-    sMRUListEx = Registry.CurrentUser.GetValue(sPath, "MRUListEx")
+    Set recentDocsRegKey = Registry.CurrentUser.OpenSubKey(sPath)
+    
+    sMRUListEx = recentDocsRegKey.GetValue("MRUListEx")
 
     While (Len(sMRUListEx) > 4) And (cItems.count < 15)
         lngRegIndex = GetDWord(ExtractBytes(sMRUListEx, 4))
         
-        sMRU = Registry.CurrentUser.GetValue(sPath, lngRegIndex)
+        sMRU = recentDocsRegKey.GetValue(lngRegIndex)
         
                                 '14 00    00 00
         GetStringByString sMRU, Chr$(&H14) & Chr$(0)
@@ -203,7 +206,7 @@ Dim folderPath As String
         
             Debug.Print "GetItems:: " & szPath
             If FSO.FileExists(ResolveLink(thisFile.Path)) Then
-                itemCollection.Add ExtOrNot(thisFile.Name) & "*" & thisFile.Path
+                itemCollection.Add ExtOrNot(thisFile.name) & "*" & thisFile.Path
                 
                 If itemCollection.count = 15 Then
                     Exit For
@@ -322,7 +325,7 @@ Private Sub ReInitialize()
     
     Set m_hdcBackBuffer = New ISoftX
     
-    Me.Font.Name = OptionsHelper.PrimaryFont
+    Me.Font.name = OptionsHelper.PrimaryFont
     
     m_hdcBackBuffer.hWnd = Me.hWnd
     m_hdcBackBuffer.Font = Me.Font

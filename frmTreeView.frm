@@ -180,11 +180,11 @@ End Function
 
 Public Property Let TrueFont(newFont As GDIFont)
     With mStdFont
-        .Name = newFont.FontFace
+        .name = newFont.FontFace
         .Size = newFont.FontWeight
     End With
     
-    m_separatorFont.Name = newFont.FontFace
+    m_separatorFont.name = newFont.FontFace
     m_separatorFont.Size = 20
 
     mDx.Font = mStdFont
@@ -366,8 +366,10 @@ Function ShowContextMenu() As Boolean
     If FileExists(m_nTargetNode.Tag) Then
         m_contextMenu.AddItem ""
         
-        If Not Registry.ClassesRoot.GetValue("lnkfile\shell", "Add to ViPad", vbNull) = vbNull Then
-            m_addToViPadCommand = Registry.ClassesRoot.GetValue("lnkfile\shell\Add to ViPad", "command", vbNullString)
+        Dim lnkFileRegKey As RegistryKey: Set lnkFileRegKey = Registry.ClassesRoot.OpenSubKey("lnkfile\shell")
+        
+        If lnkFileRegKey.GetValue("Add to ViPad") Then
+            m_addToViPadCommand = lnkFileRegKey.OpenSubKey("Add to ViPad").GetValue("command", vbNullString)
             m_addToViPadCommand = Replace(m_addToViPadCommand, "%1", m_nTargetNode.Tag)
             
             m_contextMenu.AddItem GetPublicString("strCopyToViPad"), "COPYTOVIPAD"
@@ -519,12 +521,12 @@ Private Sub Form_Load()
     m_pCursor.X = -1
     
     With mStdFont
-        .Name = sVar_sFontName
+        .name = sVar_sFontName
         .Size = 9
     End With
     
     With m_separatorFont
-        .Name = sVar_sFontName
+        .name = sVar_sFontName
         .Size = 12
     End With
 
@@ -1428,7 +1430,7 @@ Dim thisProgram As clsProgram
     theCommand = theItemTag
     
     If m_nLastSelectedNode Is Nothing Then
-        LogError "m_nLastSelectedNode was unexpectedly empty!", "m_contextMenu_onClick:" & Me.Name
+        LogError "m_nLastSelectedNode was unexpectedly empty!", "m_contextMenu_onClick:" & Me.name
         Exit Sub
     End If
     

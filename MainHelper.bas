@@ -367,21 +367,29 @@ Dim cmdLineArguements() As String
 End Function
 
 Sub Main()
-    Dim regvalue: regvalue = Registry.CurrentUser.GetValue("Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs", "MRUListEx")
-    Dim sPath, sMRUListEx, lngRegIndex, sMRU, sSeekFile
     
-    sPath = "Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs"
-    sMRUListEx = Registry.CurrentUser.GetValue(sPath, "MRUListEx")
-
-    While (Len(sMRUListEx) > 4)
-        lngRegIndex = GetDWord(ExtractBytes(sMRUListEx, 4))
-        sMRU = Registry.CurrentUser.GetValue(sPath, lngRegIndex)
-        GetStringByString CStr(sMRU), Chr$(&H14) & Chr$(0)
-                                '00 00    00
-        sSeekFile = GetStringByString(CStr(sMRU), Chr$(0) & ChrB$(0))
-        Debug.Print sSeekFile
-    Wend
+    SetOpenSaveDocs
     
+    Dim Results()
+    Dim result
+    Results = GetImageJumpList("notepad.exe").GetMRUList
+    
+    Debug.Print "---"
+    For Each result In Results
+        'Debug.Print result
+    Next
+    
+    'SetOpenSaveDocs
+    'CreateFileAssociation ".vistart-theme", "VistartTheme", "A ViStart Theme Package", App.Path & "\" & App.EXEName & ".exe"
+    
+    'Dim regvalue As RegistryKey: Set regvalue = Registry.CurrentUser.OpenSubKey("Software\7-Zip", True)
+    'Dim subKey As RegistryKey: Set subKey = regvalue.CreateSubKey("lnkfile\Test")
+    'subKey.SetValue "test5", 2147483647
+    'subKey.SetValue "", "", "test", REG_SZ
+    
+    
+    'GeneralHelper.AddToShellContextMenu "lnkfile"
+    'Dim sPath, sMRUListEx, lngRegIndex, sMRU, sSeekFile
     Exit Sub
     
     If Not InitClasses_IfNeeded Then

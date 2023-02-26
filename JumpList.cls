@@ -34,7 +34,7 @@ End Function
 Public Function GetMRUList()
     Debug.Print "GetMRUList() " & ImageName
 
-Dim thisMRUKey As ViRegistryKey
+Dim thisMRUKey As RegistryKey
 Dim m_lnkCache()
  
     For Each thisMRUKey In m_mruKey

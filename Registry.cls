@@ -15,6 +15,10 @@ Attribute VB_Ext_KEY = "SavedWithClassBuilder6" ,"Yes"
 Attribute VB_Ext_KEY = "Top_Level" ,"Yes"
 Option Explicit
 
+Private m_currentUser As RegistryKey
+Private m_localMachine As RegistryKey
+Private m_classesRoot As RegistryKey
+
 Public Property Get RegObject() As RegistryKey
 Attribute RegObject.VB_UserMemId = 0
 'used when retrieving value of a property, on the right side of an assignment.
@@ -34,5 +38,16 @@ End Property
 
 Public Property Get ClassesRoot() As RegistryKey
     Set ClassesRoot = New RegistryKey
-    LocalMachine.Hive = HKEY_CLASSES_ROOT
+    ClassesRoot.Hive = HKEY_CLASSES_ROOT
 End Property
+
+Private Sub Class_Initialize()
+    Set m_currentUser = New RegistryKey
+    m_currentUser.Hive = HKEY_CURRENT_USER
+    
+    Set m_localMachine = New RegistryKey
+    m_localMachine.Hive = HKEY_LOCAL_MACHINE
+    
+    Set m_classesRoot = New RegistryKey
+    m_classesRoot.Hive = HKEY_CLASSES_ROOT
+End Sub
