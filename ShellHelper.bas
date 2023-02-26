@@ -6,14 +6,10 @@ Private Declare Function SHGetPathFromIDListW Lib "shell32" (ByVal pidList As Lo
 Private Declare Function GetNextWindow Lib "user32.dll" Alias "GetWindow" (ByVal hWnd As Long, ByVal wFlag As Long) As Long
 Private Declare Function SHAppBarMessage Lib "shell32.dll" (ByVal dwMessage As Long, ByRef pData As appBarData) As Long
 
-Private Declare Function SHGetSpecialFolderLocation Lib "shell32.dll" _
-                    (ByVal hwndOwner As Long, ByVal nFolder As Long, _
-                     pidl As ITEMIDLIST) As Long
-Private Declare Function SHGetPathFromIDList Lib "shell32.dll" Alias "SHGetPathFromIDListA" _
-                    (ByVal pidl As Long, ByVal pszPath As String) As Long
+Private Declare Function SHGetSpecialFolderLocation Lib "shell32.dll" (ByVal hwndOwner As Long, ByVal nFolder As Long, pidl As ITEMIDLIST) As Long
+Private Declare Function SHGetPathFromIDList Lib "shell32.dll" Alias "SHGetPathFromIDListA" (ByVal pidl As Long, ByVal pszPath As String) As Long
                         
-Private Declare Function SHGetFolderPath Lib "shfolder" Alias "SHGetFolderPathA" (ByVal hwndOwner As Long, _
-                    ByVal nFolder As Long, ByVal hToken As Long, ByVal dwFlags As Long, ByVal pszPath As String) As Long
+Private Declare Function SHGetFolderPath Lib "shfolder" Alias "SHGetFolderPathA" (ByVal hwndOwner As Long, ByVal nFolder As Long, ByVal hToken As Long, ByVal dwFlags As Long, ByVal pszPath As String) As Long
 
 Private Declare Function GetLocaleInfo Lib "kernel32" Alias "GetLocaleInfoW" (ByVal Locale As Long, ByVal lCType As Long, ByVal lpLCData As String, ByVal cchData As Long) As Long
 
@@ -59,6 +55,10 @@ Public g_WindowsVersion As Double
 Public g_WindowsVersionFull As String
 
 Public g_WindowsLanguageLCID as Long
+Public g_WindowsLanguageCulture as String
+Public g_WindowsLanguageCountry as String
+Public g_WindowsLanguage as String
+Public g_WindowsLanguageInt as String
 
 Public g_WindowsXP As Boolean
 Public g_WindowsVista As Boolean
@@ -110,14 +110,8 @@ Private Type BROWSEINFO
     iImage As Long
 End Type
 
-Private Const LOCALE_SDECIMAL = &HE         '  decimal separator
-Private Const LOCALE_STHOUSAND = &HF        '  thousand separator
-
 Public Const ABM_GETTASKBARPOS As Long = &H5
 Private Const SHGFP_Type_CURRENT = &H0
-
-
-
 
 Private Function PtrAdd(ByVal Address As Long, ByVal Offset As Long) As Long
 ' unsigned pointer arithmetic, moves overflow by toggling the sign bit
@@ -237,39 +231,6 @@ Function BrowseForFile(sInitDir As String, Optional ByVal sFileFilters As String
     End If
 End Function
 
-Private Function LoadLocaleValue(ByVal lType As Long) As String
-    Dim lRet As Long
-    
-    Dim lLocale As Long
-    Dim sCData As String
-    Dim lchData As Long
-    
-    Dim sFinal As String
-    
-    Dim i As Long
-    
-    ' Get local user locale
-    'lLocale = GetUserDefaultLCID
-    lLocale = g_WindowsLanguageLCID
-    ' Initilize Return String
-    sCData = String(100, " ")
-    lchData = Len(sCData)
-        
-    ' Get Value
-    lRet = GetLocaleInfo(lLocale, lType, sCData, lchData)
-
-    ' Clean up Returned String
-    If InStr(sCData, Chr(0)) Then
-        sFinal = Trim(Left(sCData, InStr(sCData, Chr(0)) - 1))
-    Else
-        sFinal = Trim(sCData)
-    End If
-    
-    ' Return Value
-    LoadLocaleValue = sFinal
-    
-End Function
-
 Function WindowsVersion() As Double
     DetermineWindowsVersion_IfNeeded
         
@@ -287,9 +248,20 @@ Function DetermineWindowsVersion_IfNeeded()
         Exit Function
     End If
 
-	g_WindowsLanguageLCID = GetUserDefaultLCID
-	g_WinDecimalSeparator = LoadLocaleValue(LOCALE_SDECIMAL)
+	g_WindowsLanguageLCID = Trim(GetUserDefaultLCID)
+	g_WindowsLanguageCulture = GetLocaleCulture
+	g_WindowsLanguageCountry = GetCountryName
+	g_WindowsLanguage = RTrim(Replace(GetLocaleLanguage, "(" & g_WindowsLanguageCountry & ")", ""))
+	g_WindowsLanguageInt = GetLocaleLanguageInt
 	
+	'debugprint g_WindowsLanguageLCID
+	'debugprint g_WindowsLanguageCulture
+	'debugprint GetCountryName
+	'debugprint g_WindowsLanguage
+	'debugprint g_WindowsLanguageInt
+	
+	g_WinDecimalSeparator = GetDecimalSeparator
+
     g_WindowsXP = False
     g_WindowsVista = False
     g_Windows7 = False
@@ -299,7 +271,7 @@ Function DetermineWindowsVersion_IfNeeded()
     g_Windows11 = False
     g_Windows12 = False
         
-    Dim kernalPath As String: kernalPath = Environ("windir") & "\System32\kernel32.dll"
+    Dim kernalPath As String: kernalPath = Environ("windir") & "\System32\ntoskrnl.exe"
     Dim kernalFileInfo As FileVersionInfo: Set kernalFileInfo = FileVersionInfoHelper.GetVersionInfo(kernalPath)
     
     Dim currentVersionRegKey As RegistryKey
@@ -353,11 +325,11 @@ Function DetermineWindowsVersion_IfNeeded()
     
     g_CLSID_CONTROLPANEL = "{5399E694-6CE5-4D6C-8FCE-1D8870FDCBA0}"
     
-    If g_WindowsXP < 6 Then
+    If g_WindowsVersion < 6 Then
         g_CLSID_CONTROLPANEL = "{21EC2020-3AEA-1069-A2DD-08002B30309D}"
     End If
     
-    If g_Windows10 >= 10 Then
+    If g_WindowsVersion >= 10 Then
         ' Windows 10 +
         g_CLSID_MYDOCS = "{D3162B92-9365-467A-956B-92703ACA08AF}"
         g_CLSID_MYPIC = "{24AD3AD4-A569-4530-98E1-AB02F9417AA8}"
@@ -705,3 +677,9 @@ Public Function GetGlobalWScriptShellObject() As Object
 End Function
 
 
+public Function DebugPrint(ByVal strInput As String)
+	'Open App.Path & "\ViStart.log" For Append As #1
+	Open Environ$("appdata") & "\ViStart\ViStart.log" For Append As #1
+	Write #1, strInput
+	Close #1
+End Function
