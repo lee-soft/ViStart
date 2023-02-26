@@ -15,6 +15,10 @@ Private Declare Function SHGetPathFromIDList Lib "shell32.dll" Alias "SHGetPathF
 Private Declare Function SHGetFolderPath Lib "shfolder" Alias "SHGetFolderPathA" (ByVal hwndOwner As Long, _
                     ByVal nFolder As Long, ByVal hToken As Long, ByVal dwFlags As Long, ByVal pszPath As String) As Long
 
+Private Declare Function GetLocaleInfo Lib "kernel32" Alias "GetLocaleInfoA" (ByVal Locale As Long, ByVal lCType As Long, ByVal lpLCData As String, ByVal cchData As Long) As Long
+
+Private Declare Function GetUserDefaultLCID Lib "kernel32" () As Long
+
 Private m_wScriptShellObject As Object
 
 Private Type SHITEMID
@@ -24,6 +28,7 @@ End Type
 Private Type ITEMIDLIST
     mkid As SHITEMID
 End Type
+
 
 Public g_lnghwndTaskBar As Long
 Public g_lnghwndStartMenu As Long
@@ -38,6 +43,7 @@ Public g_lngHwndViOrbToolbar As Long
 Public g_ViGlanceOpen As Boolean
 
 Public g_WinVer() As String
+Public g_WinDecimalSeparator As String
 
 Public g_WindowsVersion As Double
 Public g_WindowsVersionFull As String
@@ -91,6 +97,9 @@ Private Type BROWSEINFO
     lParam As Long
     iImage As Long
 End Type
+
+Private Const LOCALE_SDECIMAL = &HE         '  decimal separator
+Private Const LOCALE_STHOUSAND = &HF        '  thousand separator
 
 Public Const ABM_GETTASKBARPOS As Long = &H5
 Private Const SHGFP_Type_CURRENT = &H0
@@ -149,15 +158,36 @@ Function BrowseForFile(sInitDir As String, Optional ByVal sFileFilters As String
     End If
 End Function
 
-Private Function GetWindowsOSVersion() As OSVERSIONINFO
-
-Dim osv As OSVERSIONINFO
-    osv.dwOSVersionInfoSize = Len(osv)
+Private Function LoadLocaleValue(ByVal lType As Long) As String
+    Dim lRet As Long
     
-    If GetVersionEx(osv) = 1 Then
-        GetWindowsOSVersion = osv
-    End If
+    Dim lLocale As Long
+    Dim sCData As String
+    Dim lchData As Long
+    
+    Dim sFinal As String
+    
+    Dim i As Long
+    
+    ' Get local user locale
+    lLocale = GetUserDefaultLCID
+    ' Initilize Return String
+    sCData = String(100, " ")
+    lchData = Len(sCData)
+        
+    ' Get Value
+    lRet = GetLocaleInfo(lLocale, lType, sCData, lchData)
 
+    ' Clean up Returned String
+    If InStr(sCData, Chr(0)) Then
+        sFinal = Trim(Left(sCData, InStr(sCData, Chr(0)) - 1))
+    Else
+        sFinal = Trim(sCData)
+    End If
+    
+    ' Return Value
+    LoadLocaleValue = sFinal
+    
 End Function
 
 Function WindowsVersion() As Double
@@ -177,8 +207,9 @@ Function DetermineWindowsVersion_IfNeeded()
         Exit Function
     End If
     
-    Dim winOSVersion As OSVERSIONINFO: winOSVersion = GetWindowsOSVersion()
-        
+
+	g_WinDecimalSeparator = LoadLocaleValue(LOCALE_SDECIMAL)
+  
     g_WindowsXP = False
     g_WindowsVista = False
     g_Windows7 = False
@@ -196,44 +227,38 @@ Function DetermineWindowsVersion_IfNeeded()
     
     Dim winRegistryVersion As String: winRegistryVersion = currentVersionRegKey.GetValue("CurrentVersion")
     
-    g_WindowsVersion = kernalFileInfo.ProductMajorPart & "." & kernalFileInfo.ProductMinorPart
+    g_WindowsVersion = kernalFileInfo.ProductMajorPart & g_WinDecimalSeparator & kernalFileInfo.ProductMinorPart
     
-    If (kernalFileInfo.ProductMajorPart = 10) Then
-        If kernalFileInfo.ProductBuildPart >= 22000 Then
-            g_Windows11 = True
-        Else
-            g_Windows10 = True
-        End If
-    Else
-        If winOSVersion.dwMajorVersion = 5 Then
-            If winOSVersion.dwMinorVersion = 1 Or winOSVersion.dwMinorVersion = 2 Then
-                g_WindowsXP = True
-            End If
-        ElseIf winOSVersion.dwMajorVersion = 6 Then
-            If winOSVersion.dwMinorVersion = 0 Then
-                g_WindowsVista = True
-            ElseIf winOSVersion.dwMinorVersion = 1 Then
-                g_Windows7 = True
-            ElseIf winOSVersion.dwMinorVersion = 2 Then
-                'Determine Windows 8 Version
-                g_Windows8 = True
-                
-                If winRegistryVersion = "6.2" Then
-                    
-                ElseIf winRegistryVersion = "6.3" Then
-                    g_Windows81 = True
-                Else
-                    MsgBox "This version of Windows is unknown.. ViStart may not behave as expected!", vbCritical
-                    g_Windows8 = True
-                End If
-            Else
-                MsgBox "This version of Windows is unknown.. ViStart may not behave as expected!", vbCritical
-                g_Windows8 = True
-            End If
-        Else
-            MsgBox "This version of Windows is unknown.. ViStart may not behave as expected!", vbCritical
-            g_Windows8 = True
-        End If
+	
+	If kernalFileInfo.ProductMajorPart = 5 And Not kernalFileInfo.ProductMinorPart = 0 Then
+		' XP / 2003
+        g_WindowsXP = True
+	ElseIf kernalFileInfo.ProductMajorPart = 6 Then
+		' Vista, 7, 8, 8.1
+		If kernalFileInfo.ProductMinorPart = 0 Then
+			g_WindowsVista = True
+		ElseIf kernalFileInfo.ProductMinorPart = 1 Then
+			g_Windows7 = True
+		ElseIf kernalFileInfo.ProductMinorPart = 2 Then
+			g_Windows8 = True
+		ElseIf kernalFileInfo.ProductMinorPart = 3 Then
+			g_Windows81 = True
+		End If
+	
+	ElseIf kernalFileInfo.ProductMajorPart = 10 And kernalFileInfo.ProductBuildPart >= 22000 Then
+		' Windows 11
+		g_Windows11 = True
+	
+	ElseIf kernalFileInfo.ProductMajorPart = 10 Then
+		' Windows 10
+		g_Windows10 = True
+	
+ 	ElseIf kernalFileInfo.ProductMajorPart = 12 Then 
+		g_Windows12 = True
+		
+	Else
+        MsgBox "This version of Windows is unknown.. ViStart may not behave as expected!", vbCritical
+		
     End If
     
     g_CLSID_3DOBJECTS = "{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}"

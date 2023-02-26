@@ -301,15 +301,15 @@ Dim MaxOSVersion As Double
         MaxOSVersion = 0
                 
         If Not IsNull(thisFrequentProgram.getAttribute("minwinversion")) Then
-            MinOSVersion = CSng(thisFrequentProgram.getAttribute("minwinversion"))
-                Else
-            MinOSVersion = WindowsVersion
+            MinOSVersion = Replace(thisFrequentProgram.getAttribute("minwinversion"), ".", g_WinDecimalSeparator)
+		Else
+            MinOSVersion = Replace(WindowsVersion, ".", g_WinDecimalSeparator)
         End If
                 
         If Not IsNull(thisFrequentProgram.getAttribute("maxwinversion")) Then
-            MaxOSVersion = CSng(thisFrequentProgram.getAttribute("maxwinversion"))
-                Else
-            MaxOSVersion = MinOSVersion
+            MaxOSVersion = Replace(thisFrequentProgram.getAttribute("maxwinversion"), ".", g_WinDecimalSeparator)
+		Else
+            MaxOSVersion = Replace(MinOSVersion, ".", g_WinDecimalSeparator)
         End If
         
         If WindowsVersion >= MinOSVersion And WindowsVersion <= MaxOSVersion Then
@@ -348,15 +348,15 @@ Dim MaxOSVersion As Double
         MaxOSVersion = 0
                 
         If Not IsNull(thisFrequentProgram.getAttribute("minwinversion")) Then
-            MinOSVersion = CSng(thisFrequentProgram.getAttribute("minwinversion"))
-                Else
-            MinOSVersion = WindowsVersion
+            MinOSVersion = Replace(thisFrequentProgram.getAttribute("minwinversion"), ".", g_WinDecimalSeparator)
+        	Else
+            MinOSVersion = Replace(WindowsVersion, ".", g_WinDecimalSeparator)
         End If
                 
         If Not IsNull(thisFrequentProgram.getAttribute("maxwinversion")) Then
-            MaxOSVersion = CSng(thisFrequentProgram.getAttribute("maxwinversion"))
-                Else
-            MaxOSVersion = MinOSVersion
+            MaxOSVersion = Replace(thisFrequentProgram.getAttribute("maxwinversion"), ".", g_WinDecimalSeparator)
+		Else
+    	    MaxOSVersion = Replace(MinOSVersion, ".", g_WinDecimalSeparator)
         End If
         
         If WindowsVersion >= MinOSVersion And WindowsVersion <= MaxOSVersion Then
