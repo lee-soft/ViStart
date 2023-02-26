@@ -185,32 +185,46 @@ Dim dataToSend() As Byte
 End Function
 
 Sub RemoveFromShellContextMenu(theType As String, Optional theText As String = CONTEXT_MENU)
-    InitClasses_IfNeeded
     
-    If Registry.ClassesRoot.GetValue(theType & "\shell", theText) Then
-        Registry.ClassesRoot.DeleteValue theType & "\shell\" & theText
+Dim typeRegistryKey As RegistryKey
+
+    On Error GoTo FailedToOpenShellType
+    Set typeRegistryKey = Registry.ClassesRoot.OpenSubKey(theType & "\shell")
+    
+    If typeRegistryKey.GetValue(theText) Then
+        typeRegistryKey.DeleteValue theText
     End If
 
+    Exit Sub
+FailedToOpenShellType:
+    LogError Err.Description, "GeneralHelper"
 End Sub
 
 Sub AddToShellContextMenu(theType As String, Optional theText As String = CONTEXT_MENU)
 
 Dim strKeyValue As String
 Dim sourceKey As RegistryKey
+Dim typeRegistryKey As RegistryKey
 
     strKeyValue = App.Path & "\" & App.EXEName & ".exe" & " /pin " & """" & "%1" & """"
 
-    If Not Registry.ClassesRoot.GetValue(theType & "\shell\" & theText, "command") Then
+    On Error GoTo FailedToOpenSubKey
+    Set typeRegistryKey = Registry.ClassesRoot.OpenSubKey(theType & "\shell\" & theText)
+    GoTo ResetSubKey
     
-        Set sourceKey = Registry.ClassesRoot.CreateSubKey(theType & "\shell\" & theText & "command")
-        sourceKey.SetValue "", strKeyValue
-    Else
-        Dim commandRegKey As RegistryKey
-        Set commandRegKey = Registry.ClassesRoot.OpenSubKey(theType & "\shell\" & theText & "\command\")
-        
-        If commandRegKey.GetValue("") <> strKeyValue Then
-            commandRegKey.SetValue "", strKeyValue
-        End If
+FailedToOpenSubKey:
+    
+    Set sourceKey = Registry.ClassesRoot.CreateSubKey(theType & "\shell\" & theText & "\command")
+    sourceKey.SetValue "", strKeyValue
+    
+ResetSubKey:
+    Set sourceKey = Nothing
+    
+    Dim commandRegKey As RegistryKey
+    Set commandRegKey = Registry.ClassesRoot.OpenSubKey(theType & "\shell\" & theText & "\command")
+    
+    If commandRegKey.GetValue("") <> strKeyValue Then
+        commandRegKey.SetValue "", strKeyValue
     End If
 
 End Sub
@@ -440,10 +454,10 @@ End Function
 
 Property Get CurrentDPI() As Long
 
-Dim WindowMetricsRegKey As RegistryKey
-    Set WindowMetricsRegKey = Registry.CurrentUser.OpenSubKey("Control Panel\Desktop\WindowMetrics")
+Dim windowMetricsRegKey As RegistryKey
+    Set windowMetricsRegKey = Registry.CurrentUser.OpenSubKey("Control Panel\Desktop\WindowMetrics")
     
-    CurrentDPI = WindowMetricsRegKey.GetValue("AppliedDPI")
+    CurrentDPI = windowMetricsRegKey.GetValue("AppliedDPI")
 End Property
 
 Public Function MAKELPARAM(wLow As Long, wHigh As Long) As Long

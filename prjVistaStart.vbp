@@ -141,7 +141,7 @@ HelpContextID="0"
 CompatibleMode="0"
 MajorVer=8
 MinorVer=1
-RevisionVer=5269
+RevisionVer=5270
 AutoIncrementVer=1
 ServerSupportFiles=0
 VersionCompanyName="Lee-Soft.com"
@@ -165,6 +165,3 @@ DebugStartupOption=0
 
 [MS Transaction Server]
 AutoRefresh=1
-
-[CodeSMART]
-Task_UID=25_05_21_19_24_44

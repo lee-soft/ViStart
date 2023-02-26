@@ -6,15 +6,15 @@ Begin VB.Form frmTreeView
    ClientHeight    =   6120
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   3675
+   ClientWidth     =   3680
    ClipControls    =   0   'False
    ControlBox      =   0   'False
    FillColor       =   &H0000FF00&
    ForeColor       =   &H0000C0C0&
    LinkTopic       =   "Form1"
-   ScaleHeight     =   408
+   ScaleHeight     =   612
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   245
+   ScaleWidth      =   368
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
    Begin VB.CommandButton cmdFocusGrab 
@@ -180,11 +180,11 @@ End Function
 
 Public Property Let TrueFont(newFont As GDIFont)
     With mStdFont
-        .name = newFont.FontFace
+        .Name = newFont.FontFace
         .Size = newFont.FontWeight
     End With
     
-    m_separatorFont.name = newFont.FontFace
+    m_separatorFont.Name = newFont.FontFace
     m_separatorFont.Size = 20
 
     mDx.Font = mStdFont
@@ -366,6 +366,8 @@ Function ShowContextMenu() As Boolean
     If FileExists(m_nTargetNode.Tag) Then
         m_contextMenu.AddItem ""
         
+        On Error GoTo FailedToReadViPad
+        
         Dim lnkFileRegKey As RegistryKey: Set lnkFileRegKey = Registry.ClassesRoot.OpenSubKey("lnkfile\shell")
         
         If lnkFileRegKey.GetValue("Add to ViPad") Then
@@ -393,6 +395,9 @@ Function ShowContextMenu() As Boolean
     Debug.Print "Attemping Resurrection!"
     m_contextMenu.Resurrect True, Me
 
+    Exit Function
+FailedToReadViPad:
+    LogError Err.Description, "frmTreeView"
 End Function
 
 Private Sub Form_Initialize()
@@ -521,12 +526,12 @@ Private Sub Form_Load()
     m_pCursor.X = -1
     
     With mStdFont
-        .name = sVar_sFontName
+        .Name = sVar_sFontName
         .Size = 9
     End With
     
     With m_separatorFont
-        .name = sVar_sFontName
+        .Name = sVar_sFontName
         .Size = 12
     End With
 
@@ -1430,7 +1435,7 @@ Dim thisProgram As clsProgram
     theCommand = theItemTag
     
     If m_nLastSelectedNode Is Nothing Then
-        LogError "m_nLastSelectedNode was unexpectedly empty!", "m_contextMenu_onClick:" & Me.name
+        LogError "m_nLastSelectedNode was unexpectedly empty!", "m_contextMenu_onClick:" & Me.Name
         Exit Sub
     End If
     
@@ -1652,6 +1657,9 @@ Dim typeChildCount As Long
                             
                             'always set to loaded
                             'targetNode.IconPosition = -4
+                            
+                            Dim newIcon
+                            Set newIcon = IconManager.GetViIcon(targetNode.Tag)
                             
                             Set targetNode.Icon = IconManager.GetViIcon(targetNode.Tag)
                             

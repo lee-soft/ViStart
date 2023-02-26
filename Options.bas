@@ -24,10 +24,17 @@ Function StartsWithWindows() As Boolean
     
     StartsWithWindows = False
     
-    If LCase$(Registry.CurrentUser.GetValue("Software\Microsoft\Windows\CurrentVersion\Run\ViStart", "<Empty>")) = LCase$(AppPath & App.EXEName & ".exe") Then
+Dim startWithWindowsRegKey As RegistryKey
+    Set startWithWindowsRegKey = Registry.CurrentUser.OpenSubKey("Software\Microsoft\Windows\CurrentVersion\Run\")
+    
+    On Error GoTo FailedToGetKey
+    If LCase$(startWithWindowsRegKey.GetValue("ViStart", "<Empty>")) = LCase$(AppPath & App.EXEName & ".exe") Then
         StartsWithWindows = True
     End If
     
+    Exit Function
+FailedToGetKey:
+    StartsWithWindows = False
 End Function
 
 Public Function ValidateOptions() As Boolean

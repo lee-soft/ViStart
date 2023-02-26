@@ -255,8 +255,11 @@ Public Function GetValue(ByVal ValueName As String, Optional ByVal DefaultValue 
     
     Case REG_SZ, REG_EXPAND_SZ
         GetValue = Left$(ValueData, ValueSize - 1)
-    Case REG_BINARY, REG_DWORD, REG_QWORD
+    Case REG_BINARY, REG_QWORD
         GetValue = ValueDataBuffer
+    Case REG_DWORD
+        GetValue = ConvertBytesToLong(ValueDataBuffer)
+        
     Case REG_MULTI_SZ
         Dim unformattedData As String
         unformattedData = Left$(ValueData, ValueSize - 1)

@@ -30,6 +30,8 @@ Public g_resourcesPath As String
 Public g_rolloverPath As String
 Public g_startButtonFindAttempts As Long
 
+Private m_initializedGlobalClasses As Boolean
+
 Private Const EXIT_PROGRAM As Long = 1
 
 Public Function WaitForDesktop()
@@ -105,10 +107,12 @@ Public Function InitCommonControlsVB() As Boolean
 End Function
 
 Function InitClasses_IfNeeded() As Boolean
-    If Not Registry Is Nothing Then
+    If m_initializedGlobalClasses Then
         InitClasses_IfNeeded = True
         Exit Function
     End If
+    
+    m_initializedGlobalClasses = True
 
     InitCommonControlsVB
     
@@ -370,31 +374,6 @@ Dim cmdLineArguements() As String
 End Function
 
 Sub Main()
-    
-    SetOpenSaveDocs
-    
-    Dim Results()
-    Dim result
-    Results = GetImageJumpList("notepad.exe").GetMRUList
-    
-    Debug.Print "---"
-    For Each result In Results
-        'Debug.Print result
-    Next
-    
-    'SetOpenSaveDocs
-    'CreateFileAssociation ".vistart-theme", "VistartTheme", "A ViStart Theme Package", App.Path & "\" & App.EXEName & ".exe"
-    
-    'Dim regvalue As RegistryKey: Set regvalue = Registry.CurrentUser.OpenSubKey("Software\7-Zip", True)
-    'Dim subKey As RegistryKey: Set subKey = regvalue.CreateSubKey("lnkfile\Test")
-    'subKey.SetValue "test5", 2147483647
-    'subKey.SetValue "", "", "test", REG_SZ
-    
-    
-    'GeneralHelper.AddToShellContextMenu "lnkfile"
-    'Dim sPath, sMRUListEx, lngRegIndex, sMRU, sSeekFile
-    Exit Sub
-    
     If Not InitClasses_IfNeeded Then
         Exit Sub
     End If

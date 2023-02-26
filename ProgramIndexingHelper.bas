@@ -370,8 +370,6 @@ Dim newNode As INode
         If thisColItem.IsFile Then
             Set newNode = sourceNode.createNode(ExtOrNot(thisColItem.Caption), MakeSearchable(thisColItem.Caption), thisColItem.Path, -3, thisColItem.VirtualPath, True)
             
-            Debug.Print "PopulateNodeFromCollection!"
-            
             If LCase$(Right$(GetFileName(thisColItem.Path), 3)) = "lnk" Then
                 newNode.EXEName = Replace(UCase$(GetFileName(ResolveLink(thisColItem.Path))), " ", "")
             Else
