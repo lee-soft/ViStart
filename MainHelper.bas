@@ -198,7 +198,10 @@ Dim ProgramDataPath As String
 Dim thisCLSID As CLSID
 Dim theImageFace As New GDIPImage
 
-    ProgramDataPath = Registry.LocalMachine.GetValue("SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders", "Common AppData")
+    Dim shellFoldersRegKey As RegistryKey
+    Set shellFoldersRegKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders")
+
+    ProgramDataPath = shellFoldersRegKey.GetValue("Common AppData")
     sBmpUserPath = ProgramDataPath & "\Microsoft\User Account Pictures\" & Environ$("USERNAME") & ".bmp"
     If FileExists(sBmpUserPath) = False Then
         'sBmpUserPath = ProgramDataPath & "\Microsoft\User Account Pictures\user.bmp"
@@ -508,9 +511,12 @@ Function GetSystemLargeIconSize() As Integer
 Dim strTemp As String
 
     On Error GoTo Handler
+    
+    Dim windowMetricsRegKey As RegistryKey
+    Set windowMetricsRegKey = Registry.CurrentUser.OpenSubKey("Control Panel\Desktop\WindowMetrics")
 
     'Get this system's Icon size
-    strTemp = Registry.CurrentUser.GetValue("Control Panel\Desktop\WindowMetrics\Shell Icon Size", "32")
+    strTemp = windowMetricsRegKey.GetValue("Shell Icon Size", "32")
     GetSystemLargeIconSize = CInt(strTemp)
     
     Exit Function

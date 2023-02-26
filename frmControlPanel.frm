@@ -60,15 +60,6 @@ Begin VB.Form frmControlPanel
          Begin VB.CheckBox chkUserPicture 
             BackColor       =   &H00FFFFFF&
             Caption         =   "Show user picture"
-            BeginProperty Font 
-               Name            =   "Segoe UI"
-               Size            =   9.75
-               Charset         =   0
-               Weight          =   400
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
             Height          =   375
             Left            =   120
             TabIndex        =   15
@@ -78,15 +69,6 @@ Begin VB.Form frmControlPanel
          Begin VB.CheckBox chkProgramMenuFirst 
             BackColor       =   &H00FFFFFF&
             Caption         =   "Show program menu first"
-            BeginProperty Font 
-               Name            =   "Segoe UI"
-               Size            =   9.75
-               Charset         =   0
-               Weight          =   400
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
             Height          =   375
             Left            =   120
             TabIndex        =   14
@@ -101,8 +83,8 @@ Begin VB.Form frmControlPanel
             Top             =   2280
             Visible         =   0   'False
             Width           =   6735
-            _extentx        =   11880
-            _extenty        =   1085
+            _ExtentX        =   11880
+            _ExtentY        =   1085
          End
          Begin VB.Label Label4 
             BackStyle       =   0  'Transparent
@@ -194,15 +176,6 @@ Begin VB.Form frmControlPanel
          Begin VB.CheckBox chkSkipMetroScreen 
             BackColor       =   &H00FFFFFF&
             Caption         =   "Automatically go to desktop when I log in "
-            BeginProperty Font 
-               Name            =   "Segoe UI"
-               Size            =   9.75
-               Charset         =   0
-               Weight          =   400
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
             Height          =   375
             Left            =   240
             TabIndex        =   36
@@ -212,15 +185,6 @@ Begin VB.Form frmControlPanel
          Begin VB.CheckBox chkDisableBottomLeftCorner 
             BackColor       =   &H00FFFFFF&
             Caption         =   "Disable bottom left (Start) hot corner"
-            BeginProperty Font 
-               Name            =   "Segoe UI"
-               Size            =   9.75
-               Charset         =   0
-               Weight          =   400
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
             Height          =   375
             Left            =   240
             TabIndex        =   35
@@ -230,15 +194,6 @@ Begin VB.Form frmControlPanel
          Begin VB.CheckBox chkDisableDragToClose 
             BackColor       =   &H00FFFFFF&
             Caption         =   "Disable Drag to close"
-            BeginProperty Font 
-               Name            =   "Segoe UI"
-               Size            =   9.75
-               Charset         =   0
-               Weight          =   400
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
             Height          =   375
             Left            =   240
             TabIndex        =   34
@@ -248,15 +203,6 @@ Begin VB.Form frmControlPanel
          Begin VB.CheckBox chkDisableCharmsBar 
             BackColor       =   &H00FFFFFF&
             Caption         =   "Disable CharmsBar"
-            BeginProperty Font 
-               Name            =   "Segoe UI"
-               Size            =   9.75
-               Charset         =   0
-               Weight          =   400
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
             Height          =   375
             Left            =   240
             TabIndex        =   33
@@ -266,15 +212,6 @@ Begin VB.Form frmControlPanel
          Begin VB.CheckBox chkHotCorners 
             BackColor       =   &H00FFFFFF&
             Caption         =   "Disable all Windows 8 hot corners"
-            BeginProperty Font 
-               Name            =   "Segoe UI"
-               Size            =   9.75
-               Charset         =   0
-               Weight          =   400
-               Underline       =   0   'False
-               Italic          =   0   'False
-               Strikethrough   =   0   'False
-            EndProperty
             Height          =   375
             Left            =   240
             TabIndex        =   32
@@ -313,15 +250,6 @@ Begin VB.Form frmControlPanel
       Begin VB.CheckBox chkStartWithWindows 
          BackColor       =   &H00FFFFFF&
          Caption         =   "Start ViStart with Windows"
-         BeginProperty Font 
-            Name            =   "Segoe UI"
-            Size            =   9.75
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
          Height          =   375
          Left            =   720
          TabIndex        =   30
@@ -337,15 +265,6 @@ Begin VB.Form frmControlPanel
       Begin VB.CheckBox chkSystemTray 
          BackColor       =   &H00FFFFFF&
          Caption         =   "Show ViStart on the system tray menu"
-         BeginProperty Font 
-            Name            =   "Segoe UI"
-            Size            =   9.75
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
          Height          =   375
          Left            =   720
          TabIndex        =   18
@@ -353,15 +272,6 @@ Begin VB.Form frmControlPanel
          Width           =   5055
       End
       Begin VB.ComboBox cmbWindowsOrb 
-         BeginProperty Font 
-            Name            =   "Segoe UI"
-            Size            =   9.75
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
          Height          =   360
          ItemData        =   "frmControlPanel.frx":058A
          Left            =   720
@@ -372,15 +282,6 @@ Begin VB.Form frmControlPanel
          Width           =   4935
       End
       Begin VB.ComboBox cmbWindowsKey 
-         BeginProperty Font 
-            Name            =   "Segoe UI"
-            Size            =   9.75
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
          Height          =   360
          ItemData        =   "frmControlPanel.frx":05A4
          Left            =   720
@@ -430,15 +331,6 @@ Begin VB.Form frmControlPanel
       Top             =   0
       Width           =   8655
       Begin VB.ComboBox cmbChildThemes 
-         BeginProperty Font 
-            Name            =   "Segoe UI"
-            Size            =   9.75
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
          Height          =   360
          ItemData        =   "frmControlPanel.frx":05BE
          Left            =   720
@@ -458,15 +350,6 @@ Begin VB.Form frmControlPanel
       End
       Begin VB.CommandButton cmdMoreOrbs 
          Caption         =   "More ..."
-         BeginProperty Font 
-            Name            =   "Segoe UI"
-            Size            =   9.75
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
          Height          =   495
          Left            =   5880
          TabIndex        =   20
@@ -476,15 +359,6 @@ Begin VB.Form frmControlPanel
       End
       Begin VB.CommandButton cmdMoreThemes 
          Caption         =   "More..."
-         BeginProperty Font 
-            Name            =   "Segoe UI"
-            Size            =   9.75
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
          Height          =   495
          Left            =   5880
          TabIndex        =   19
@@ -494,15 +368,6 @@ Begin VB.Form frmControlPanel
       End
       Begin VB.CommandButton cmdPickImage 
          Caption         =   "Pick image...&"
-         BeginProperty Font 
-            Name            =   "Segoe UI"
-            Size            =   9.75
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
          Height          =   400
          Left            =   5880
          TabIndex        =   9
@@ -511,15 +376,6 @@ Begin VB.Form frmControlPanel
       End
       Begin VB.CommandButton cmdInstallTheme 
          Caption         =   "Install...&"
-         BeginProperty Font 
-            Name            =   "Segoe UI"
-            Size            =   9.75
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
          Height          =   400
          Left            =   5880
          TabIndex        =   8
@@ -527,15 +383,6 @@ Begin VB.Form frmControlPanel
          Width           =   1575
       End
       Begin VB.ComboBox cmbStartOrbs 
-         BeginProperty Font 
-            Name            =   "Segoe UI"
-            Size            =   9.75
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
          Height          =   360
          ItemData        =   "frmControlPanel.frx":05C2
          Left            =   720
@@ -546,15 +393,6 @@ Begin VB.Form frmControlPanel
          Width           =   4935
       End
       Begin VB.ComboBox cmbThemes 
-         BeginProperty Font 
-            Name            =   "Segoe UI"
-            Size            =   9.75
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
          Height          =   360
          ItemData        =   "frmControlPanel.frx":05C6
          Left            =   720
@@ -649,15 +487,6 @@ Begin VB.Form frmControlPanel
       Begin VB.Label lblText 
          BackStyle       =   0  'Transparent
          Caption         =   "<New Text Object>"
-         BeginProperty Font 
-            Name            =   "Segoe UI"
-            Size            =   9.75
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
          Height          =   375
          Index           =   0
          Left            =   1080
@@ -695,15 +524,6 @@ Begin VB.Form frmControlPanel
          Alignment       =   2  'Center
          BackStyle       =   0  'Transparent
          Caption         =   "(ViStart the program itself is created by Lee-Soft.com)"
-         BeginProperty Font 
-            Name            =   "Segoe UI"
-            Size            =   9.75
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
          Height          =   375
          Left            =   1080
          TabIndex        =   23
@@ -771,15 +591,6 @@ Begin VB.Form frmControlPanel
          Alignment       =   2  'Center
          BackStyle       =   0  'Transparent
          Caption         =   "Service status:"
-         BeginProperty Font 
-            Name            =   "Segoe UI"
-            Size            =   9.75
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
          Height          =   495
          Left            =   2040
          TabIndex        =   29
@@ -790,15 +601,6 @@ Begin VB.Form frmControlPanel
       Begin VB.Label Label10 
          BackStyle       =   0  'Transparent
          Caption         =   $"frmControlPanel.frx":086E
-         BeginProperty Font 
-            Name            =   "Segoe UI"
-            Size            =   9.75
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
          Height          =   1455
          Left            =   840
          TabIndex        =   26
@@ -870,17 +672,17 @@ End Property
 
 Sub ValidateSkin(ByVal szNewSkin As String)
 
-	cmbChildThemes.Visible = False
-	
+        cmbChildThemes.Visible = False
+        
     If FileCheck(m_skinDir & szNewSkin & "\") Then
         Set m_childSkinNameStrings = OptionsHelper.GetChildSkins(m_skinDir & szNewSkin & "\layout.xml")
         PopulateChildSkins
 
-		If Settings.CurrentChildSkin <> vbNullString Then
-			cmbChildThemes.Visible = True
-		'Else
-			'cmbChildThemes.Visible = False
-		End If
+                If Settings.CurrentChildSkin <> vbNullString Then
+                        cmbChildThemes.Visible = True
+                'Else
+                        'cmbChildThemes.Visible = False
+                End If
     
         If Settings.CurrentSkin = vbNullString Or FileCheck(m_skinDir & Settings.CurrentSkin & "\") = False Then
             Settings.CurrentSkin = szNewSkin
@@ -888,7 +690,7 @@ Sub ValidateSkin(ByVal szNewSkin As String)
             Dim newSkinCollectionItem As CollectionItem
             Set newSkinCollectionItem = New CollectionItem
             newSkinCollectionItem.Value = szNewSkin
-			
+                        
             RaiseEvent onChangeSkin(newSkinCollectionItem)
         End If
     Else
@@ -939,10 +741,14 @@ Private Sub chkSkipMetroScreen_Click()
 End Sub
 
 Private Sub chkStartWithWindows_Click()
+
+Dim runAtStartupRegKey As RegistryKey
+    Set runAtStartupRegKey = Registry.CurrentUser.OpenSubKey("Software\Microsoft\Windows\CurrentVersion\Run")
+
     If chkStartWithWindows.Value = vbChecked Then
-        Registry.RegObj.SetStringValue HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Run", "ViStart", AppPath & App.EXEName & ".exe"
+        runAtStartupRegKey.SetValue "ViStart", AppPath & App.EXEName & ".exe"
     Else
-        Registry.Delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Run\ViStart"
+        runAtStartupRegKey.DeleteValue "ViStart"
     End If
 End Sub
 
@@ -951,15 +757,19 @@ Private Sub chkShowSplashScreen_Click()
 End Sub
 
 Private Sub Ensure_NukeMetro()
+
+Dim runAtStartupRegKey As RegistryKey
+    Set runAtStartupRegKey = Registry.CurrentUser.OpenSubKey("Software\Microsoft\Windows\CurrentVersion\Run")
+
     If chkDisableCharmsBar.Value = vbChecked Or _
        chkDisableDragToClose.Value = vbChecked Or _
        chkDisableBottomLeftCorner.Value = vbChecked Or _
        chkSkipMetroScreen.Value = vbChecked Then
         
-        Registry.RegObj.SetStringValue HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Run", "NukeMetro", """" & AppPath & App.EXEName & ".exe" & """" & " " & _
+        runAtStartupRegKey.SetValue "NukeMetro", """" & AppPath & App.EXEName & ".exe" & """" & " " & _
             "/nuke_metro"
     Else
-        Registry.Delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Run\NukeMetro"
+        runAtStartupRegKey.DeleteValue "NukeMetro"
     End If
 End Sub
 
@@ -1188,13 +998,13 @@ Private Sub lblAurthor_Click()
     AppLauncherHelper.ShellEx lblAurthor.Tag
 End Sub
 
-Private Sub lblText_Click(Index As Integer)
-    If lblText(Index).Tag <> vbNullString Then
-        AppLauncherHelper.ShellEx lblText(Index).Tag
+Private Sub lblText_Click(index As Integer)
+    If lblText(index).Tag <> vbNullString Then
+        AppLauncherHelper.ShellEx lblText(index).Tag
     End If
 End Sub
 
-Private Sub MenuItem_onChanged(Index As Integer)
+Private Sub MenuItem_onChanged(index As Integer)
     RaiseEvent onNavigationPanelChange
 End Sub
 
@@ -1443,14 +1253,14 @@ Sub InitializeStyleFrame()
     ListOrbs
     ListRollovers
         
-	' Hide rollover option when no _rollover folder exist
-	If cmbRollover.ListCount > 1 Then
-		Label7.Visible = True
-		cmbRollover.Visible = True
-	Else
-		Label7.Visible = False
-		cmbRollover.Visible = False
-	End If
+        ' Hide rollover option when no _rollover folder exist
+        If cmbRollover.ListCount > 1 Then
+                Label7.Visible = True
+                cmbRollover.Visible = True
+        Else
+                Label7.Visible = False
+                cmbRollover.Visible = False
+        End If
         
 End Sub
 
@@ -1505,7 +1315,7 @@ Sub AddNavigationItem(ByRef objNavigationItem As Object)
     Load MenuItem(MenuItem.count)
     With MenuItem(MenuItem.UBound)
         .Left = MenuItem(0).Left
-        .Top = MenuItem(.Index - 1).Top + MenuItem(0).Height + 2
+        .Top = MenuItem(.index - 1).Top + MenuItem(0).Height + 2
 
         .Source = objNavigationItem
         .Visible = True
@@ -1733,7 +1543,7 @@ Dim realPosition_X As Long
 Dim theDimensions As RECTF
 
 Dim theLabelIndex As Long
-Dim theFontStyle As FontStyle
+Dim theFontStyle As fontStyle
 
     If Not IsNull(theText.Text) Then
         theCaption = theText.Text
@@ -1767,7 +1577,7 @@ Dim theFontStyle As FontStyle
     AddText theCaption, theFontStyle
 End Sub
 
-Private Function AddText(ByVal theCaption As String, Optional ByVal theFontStyle As FontStyle = FontStyleRegular) As Label
+Private Function AddText(ByVal theCaption As String, Optional ByVal theFontStyle As fontStyle = FontStyleRegular) As Label
     'If theCaption = vbNullString Then Exit Function
     On Error GoTo Handler
 
