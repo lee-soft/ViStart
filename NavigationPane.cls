@@ -1090,116 +1090,119 @@ End Function
 
 
 Private Function ShowHideComputerIcons(ShellItem As String)
+
+    Dim HideMyComputerIconsRegKey As RegistryKey
+    Set HideMyComputerIconsRegKey = Registry.CurrentUser.OpenSubKey("Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons")
         
         Dim ComputerIconStatus As Variant
         ComputerIconStatus = 0
         ' 1 = icon is hidden
                 If InStr(1, UCase(ShellItem), g_CLSID_USERPROFILE, 1) > 0 Then
                         ' %UserProfile%
-                        ComputerIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_USERPROFILE)
+                        ComputerIconStatus = HideMyComputerIconsRegKey.GetValue(g_CLSID_USERPROFILE)
                                         
                         If ComputerIconStatus = 1 Then
-                                ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_USERPROFILE, 0)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.SetValue(g_CLSID_USERPROFILE, 0)
                         Else
-                                ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_USERPROFILE, 1)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.SetValue(g_CLSID_USERPROFILE, 1)
                         End If
 
         ElseIf InStr(1, UCase(ShellItem), g_CLSID_LIBRARIES, 1) > 0 Then
                         ' Libraries
-                        ComputerIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_LIBRARIES)
+                        ComputerIconStatus = HideMyComputerIconsRegKey.GetValue(g_CLSID_LIBRARIES)
                                         
                         If ComputerIconStatus = 1 Then
-                                ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_LIBRARIES, 0)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.SetValue(g_CLSID_LIBRARIES, 0)
                         Else
-                                ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_LIBRARIES, 1)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.SetValue(g_CLSID_LIBRARIES, 1)
                         End If
 
         ElseIf InStr(1, UCase(ShellItem), "450D8FBA-AD25-11D0-98A8-0800361B1103", 1) > 0 Or InStr(1, UCase(ShellItem), "PERSONAL", 1) Or InStr(1, UCase(ShellItem), g_CLSID_MYDOCS, 1) > 0 Then
                         ' My Documents - XP
                         ' Always set as Hidden to avoid duplicates
-                        ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", "{450D8FBA-AD25-11D0-98A8-0800361B1103}", 1)
+                        ComputerIconStatus = HideMyComputerIconsRegKey.GetValue("{450D8FBA-AD25-11D0-98A8-0800361B1103}", 1)
                         ComputerIconStatus = 0
-                        ComputerIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_MYDOCS)
+                        ComputerIconStatus = HideMyComputerIconsRegKey.GetValue(g_CLSID_MYDOCS)
 
                         If ComputerIconStatus = 1 Then
-                                ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_MYDOCS, 0)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.SetValue(g_CLSID_MYDOCS, 0)
                         Else
-                                ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_MYDOCS, 1)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.SetValue(g_CLSID_MYDOCS, 1)
                         End If
 
                 ElseIf InStr(1, UCase(ShellItem), g_CLSID_MYPIC, 1) > 0 Or InStr(1, UCase(ShellItem), "MYPICTURES", 1) Then
                         ' Pictures
-                        ComputerIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_MYPIC)
+                        ComputerIconStatus = HideMyComputerIconsRegKey.GetValue(g_CLSID_MYPIC)
                                         
                         If ComputerIconStatus = 1 Then
-                                ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_MYPIC, 0)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.SetValue(g_CLSID_MYPIC, 0)
                         Else
-                                ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_MYPIC, 1)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.SetValue(g_CLSID_MYPIC, 1)
                         End If
                 ElseIf InStr(1, UCase(ShellItem), g_CLSID_MYMUS, 1) > 0 Or InStr(1, UCase(ShellItem), "MYMUSIC", 1) Then
                         ' Music
-                        ComputerIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_MYMUS)
+                        ComputerIconStatus = HideMyComputerIconsRegKey.GetValue(g_CLSID_MYMUS)
                                         
                         If ComputerIconStatus = 1 Then
-                                ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_MYMUS, 0)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.SetValue(g_CLSID_MYMUS, 0)
                         Else
-                                ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_MYMUS, 1)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.SetValue(g_CLSID_MYMUS, 1)
                         End If
                 ElseIf InStr(1, UCase(ShellItem), g_CLSID_MYVID, 1) > 0 Or InStr(1, UCase(ShellItem), "MYVIDEO", 1) Then
                         ' Video
-                        ComputerIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_MYVID)
+                        ComputerIconStatus = HideMyComputerIconsRegKey.GetValue(g_CLSID_MYVID)
                                         
                         If ComputerIconStatus = 1 Then
-                                ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_MYVID, 0)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.SetValue(g_CLSID_MYVID, 0)
                         Else
-                                ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_MYVID, 1)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.SetValue(g_CLSID_MYVID, 1)
                         End If
                 ElseIf InStr(1, UCase(ShellItem), g_CLSID_DOWNLOADS, 1) > 0 Or InStr(1, UCase(ShellItem), "DOWNLOAD", 1) Then
                         ' Downloads
-                        ComputerIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_DOWNLOADS)
+                        ComputerIconStatus = HideMyComputerIconsRegKey.GetValue(g_CLSID_DOWNLOADS)
                                         
                         If ComputerIconStatus = 1 Then
-                                ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_DOWNLOADS, 0)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.SetValue(g_CLSID_DOWNLOADS, 0)
                         Else
-                                ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_DOWNLOADS, 1)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.SetValue(g_CLSID_DOWNLOADS, 1)
                         End If
                 ElseIf InStr(1, UCase(ShellItem), g_CLSID_3DOBJECTS, 1) > 0 Then
                         ' 3D Objects
-                        ComputerIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_3DOBJECTS)
+                        ComputerIconStatus = HideMyComputerIconsRegKey.GetValue(g_CLSID_3DOBJECTS)
                                         
                         If ComputerIconStatus = 1 Then
-                                ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_3DOBJECTS, 0)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.SetValue(g_CLSID_3DOBJECTS, 0)
                         Else
-                                ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_3DOBJECTS, 1)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.SetValue(g_CLSID_3DOBJECTS, 1)
                         End If
                 ElseIf InStr(1, UCase(ShellItem), g_CLSID_DESKTOP, 1) > 0 Then
                         ' Desktop
-                        ComputerIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_DESKTOP)
+                        ComputerIconStatus = HideMyComputerIconsRegKey.GetValue(g_CLSID_DESKTOP)
                                         
                         If ComputerIconStatus = 1 Then
-                                ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_DESKTOP, 0)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.SetValue(g_CLSID_DESKTOP, 0)
                         Else
-                                ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_DESKTOP, 1)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.SetValue(g_CLSID_DESKTOP, 1)
                         End If
                 ElseIf InStr(1, UCase(ShellItem), g_CLSID_GAMES, 1) > 0 Then
                         ' Games Explorer
-                        ComputerIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_GAMES)
+                        ComputerIconStatus = HideMyComputerIconsRegKey.GetValue(g_CLSID_GAMES)
                                         
                         If ComputerIconStatus = 1 Then
-                                ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_GAMES, 0)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.SetValue(g_CLSID_GAMES, 0)
                         Else
-                                ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_GAMES, 1)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.SetValue(g_CLSID_GAMES, 1)
                         End If
                                                         
         ElseIf Left(UCase(ShellItem), 7) = "CONTROL" Then
                         ' Control Panel
 
-                        ComputerIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_CONTROLPANEL)
+                        ComputerIconStatus = HideMyComputerIconsRegKey.GetValue(g_CLSID_CONTROLPANEL)
                                                         
                         If ComputerIconStatus = 1 Then
-                                ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_CONTROLPANEL, 0)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.SetValue(g_CLSID_CONTROLPANEL, 0)
                         Else
-                                ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_CONTROLPANEL, 1)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.SetValue(g_CLSID_CONTROLPANEL, 1)
                         End If
 
         End If
