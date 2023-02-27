@@ -982,7 +982,7 @@ Private Function ShowHideDesktopIcons(ShellItem As String)
         ElseIf InStr(1, UCase(ShellItem), "450D8FBA-AD25-11D0-98A8-0800361B1103", 1) > 0 Or InStr(1, UCase(ShellItem), "PERSONAL", 1) Or InStr(1, UCase(ShellItem), g_CLSID_MYDOCS, 1) > 0 Then
             ' My Documents - XP
                         ' Always set as Hidden to avoid duplicates
-                        DesktopIconStatus = NewStartPanelRegKey.GetValue("{450D8FBA-AD25-11D0-98A8-0800361B1103}", 1)
+                        DesktopIconStatus = NewStartPanelRegKey.SetValue("{450D8FBA-AD25-11D0-98A8-0800361B1103}", 1)
                         DesktopIconStatus = 0
                         DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_MYDOCS)
 
