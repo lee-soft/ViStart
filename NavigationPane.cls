@@ -131,9 +131,15 @@ Public Function ShowContextMenu(ByRef winOwner As Form)
         
         Dim NewStartPanelRegKey As RegistryKey
         Set NewStartPanelRegKey = Registry.CurrentUser.OpenSubKey("Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel")
- 
+        If NewStartPanelRegKey Is Nothing Then
+            Set NewStartPanelRegKey = Registry.CurrentUser.CreateSubKey("Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel")
+        End If
+        
         Dim HideMyComputerIconsRegKey As RegistryKey
         Set HideMyComputerIconsRegKey = Registry.CurrentUser.OpenSubKey("Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons")
+        If HideMyComputerIconsRegKey Is Nothing Then
+            Set HideMyComputerIconsRegKey = Registry.CurrentUser.CreateSubKey("Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons")
+        End If
  
                 DesktopIconStatus = 0
                 ComputerIconStatus = 0
@@ -159,7 +165,7 @@ Public Function ShowContextMenu(ByRef winOwner As Form)
                         End If
                         If ComputerIconStatus = 1 Then
                                 ' Documents
-                                ComputerIconStatus = HideMyComputerIconsRegKey("{450D8FBA-AD25-11D0-98A8-0800361B1103}")
+                                ComputerIconStatus = HideMyComputerIconsRegKey.GetValue("{450D8FBA-AD25-11D0-98A8-0800361B1103}")
                         End If
 
                 ElseIf InStr(1, UCase(m_selectedItem.Shell), g_CLSID_MYPIC, 1) > 0 Or InStr(1, UCase(m_selectedItem.Shell), "MYPICTURES", 1) Then
@@ -935,13 +941,13 @@ End Sub
 
 Private Function ShowHideDesktopIcons(ShellItem As String)
 
-    Dim NewStartPanelRegKey As RegistryKey
-    Set NewStartPanelRegKey = Registry.CurrentUser.OpenSubKey("Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel")
+        Dim NewStartPanelRegKey As RegistryKey
+        Set NewStartPanelRegKey = Registry.CurrentUser.OpenSubKey("Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel")
+        If NewStartPanelRegKey Is Nothing Then
+            Set NewStartPanelRegKey = Registry.CurrentUser.CreateSubKey("Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel")
+        End If
+        
 
-    Dim HideMyComputerIconsRegKey As RegistryKey
-    Set HideMyComputerIconsRegKey = Registry.CurrentUser.OpenSubKey("Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons")
-
-    
         Dim DesktopIconStatus As Variant
         DesktopIconStatus = 0
         ' 1 = icon is hidden

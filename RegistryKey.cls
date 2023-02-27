@@ -137,6 +137,8 @@ Public Function CreateSubKey(ByVal subKeyName As String) As RegistryKey
     ' Check for success
     If Not result = ERROR_SUCCESS Then
         ' Failed to create subkey
+        
+        Debug.Print "RegistryKey", "Unable to create subkey: ", subKeyName
         If Not m_supressErrors Then Err.Raise result, "RegistryKey", "Unable to create subkey"
         Exit Function
     End If
@@ -168,6 +170,7 @@ Public Function OpenSubKey(ByVal subKeyName As String, Optional ByVal writable A
     
     ' Open the subkey
     If Not result = ERROR_SUCCESS Then
+        Debug.Print "RegistryKey", "Unable to open sub key: " & subKeyName
         If Not m_supressErrors Then Err.Raise result, "RegistryKey", "Unable to open Registry sub key: " & subKeyName
         Exit Function
     End If
@@ -225,7 +228,8 @@ Public Function GetValue(ByVal ValueName As String, Optional ByVal DefaultValue 
         
     result = RegOpenKeyEx(Me.Key, "", 0&, KEY_READ, hKey)
     If result <> ERROR_SUCCESS Then
-        Err.Raise result, "RegistryKey", "Unable to open key!"
+        Debug.Print "RegistryKey", "Unable to open key: ", ValueName
+        If Not m_supressErrors Then Err.Raise result, "RegistryKey", "Unable to open key!"
         ' Failed to open key
         GetValue = DefaultValue
         Exit Function
@@ -248,6 +252,7 @@ Public Function GetValue(ByVal ValueName As String, Optional ByVal DefaultValue 
         RegCloseKey hKey
         GetValue = DefaultValue
         
+        Debug.Print "RegistryKey", "Unable to read key: " & ValueName
         If Not m_supressErrors Then Err.Raise result, "RegistryKey", "Unable to read key: " & ValueName
         Exit Function
     End If
