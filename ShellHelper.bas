@@ -6,14 +6,24 @@ Private Declare Function SHGetPathFromIDListW Lib "shell32" (ByVal pidList As Lo
 Private Declare Function GetNextWindow Lib "user32.dll" Alias "GetWindow" (ByVal hWnd As Long, ByVal wFlag As Long) As Long
 Private Declare Function SHAppBarMessage Lib "shell32.dll" (ByVal dwMessage As Long, ByRef pData As appBarData) As Long
 
-Private Declare Function SHGetSpecialFolderLocation Lib "shell32.dll" _
-                    (ByVal hwndOwner As Long, ByVal nFolder As Long, _
-                     pidl As ITEMIDLIST) As Long
-Private Declare Function SHGetPathFromIDList Lib "shell32.dll" Alias "SHGetPathFromIDListA" _
-                    (ByVal pidl As Long, ByVal pszPath As String) As Long
+Private Declare Function SHGetSpecialFolderLocation Lib "shell32.dll" (ByVal hwndOwner As Long, ByVal nFolder As Long, pidl As ITEMIDLIST) As Long
+Private Declare Function SHGetPathFromIDList Lib "shell32.dll" Alias "SHGetPathFromIDListA" (ByVal pidl As Long, ByVal pszPath As String) As Long
                         
-Private Declare Function SHGetFolderPath Lib "shfolder" Alias "SHGetFolderPathA" (ByVal hwndOwner As Long, _
-                    ByVal nFolder As Long, ByVal hToken As Long, ByVal dwFlags As Long, ByVal pszPath As String) As Long
+Private Declare Function SHGetFolderPath Lib "shfolder" Alias "SHGetFolderPathA" (ByVal hwndOwner As Long, ByVal nFolder As Long, ByVal hToken As Long, ByVal dwFlags As Long, ByVal pszPath As String) As Long
+
+Private Declare Function GetLocaleInfo Lib "kernel32" Alias "GetLocaleInfoW" (ByVal Locale As Long, ByVal lCType As Long, ByVal lpLCData As String, ByVal cchData As Long) As Long
+
+Private Declare Function GetUserDefaultLCID Lib "kernel32" () As Long
+
+Private Declare Function LoadLibrary Lib "kernel32" Alias "LoadLibraryW" (ByVal lpLibFileName As Long) As Long
+Private Declare Function FreeLibrary Lib "kernel32" (ByVal hLibModule As Long) As Long
+Private Declare Function FindResourceEx Lib "kernel32" Alias "FindResourceExW" (ByVal hModule As Long, ByVal lpType As Long, ByVal lpName As Long, ByVal wLanguage As Integer) As Long
+Private Declare Function LoadResource Lib "kernel32" (ByVal hInstance As Long, ByVal hResInfo As Long) As Long
+Private Declare Function LockResource Lib "kernel32" (ByVal hResData As Long) As Long
+Private Declare Function SysReAllocStringLen Lib "oleaut32" (ByVal pBSTR As Long, ByVal psz As Long, ByVal Length As Long) As Long
+Private Declare Function GetMem2 Lib "msvbvm60" (Src As Any, Dst As Any) As Long
+
+'Declare Function GetThreadLocale Lib "kernel32" Alias "GetThreadLocale" () As Long
 
 Private m_wScriptShellObject As Object
 
@@ -24,6 +34,7 @@ End Type
 Private Type ITEMIDLIST
     mkid As SHITEMID
 End Type
+
 
 Public g_lnghwndTaskBar As Long
 Public g_lnghwndStartMenu As Long
@@ -38,9 +49,16 @@ Public g_lngHwndViOrbToolbar As Long
 Public g_ViGlanceOpen As Boolean
 
 Public g_WinVer() As String
+Public g_WinDecimalSeparator As String
 
 Public g_WindowsVersion As Double
 Public g_WindowsVersionFull As String
+
+Public g_WindowsLanguageLCID as Long
+Public g_WindowsLanguageCulture as String
+Public g_WindowsLanguageCountry as String
+Public g_WindowsLanguage as String
+Public g_WindowsLanguageInt as String
 
 Public g_WindowsXP As Boolean
 Public g_WindowsVista As Boolean
@@ -94,6 +112,70 @@ End Type
 
 Public Const ABM_GETTASKBARPOS As Long = &H5
 Private Const SHGFP_Type_CURRENT = &H0
+
+Private Function PtrAdd(ByVal Address As Long, ByVal Offset As Long) As Long
+' unsigned pointer arithmetic, moves overflow by toggling the sign bit
+' required when using /LARGEADDRESSAWARE on 64bit windows
+    Const SIGN_BIT As Long = &H80000000
+    PtrAdd = (Address Xor SIGN_BIT) + Offset Xor SIGN_BIT
+End Function
+
+Private Property Get DUInt(ByVal Address As Long) As Long
+' Compensate for VB's lack of unsigned types
+' Copies a 16bit Unsigned Integer from a pointer into a Long
+    GetMem2 ByVal Address, DUInt
+End Property
+' https://blogs.msdn.microsoft.com/oldnewthing/20040130-00/?p=40813/
+Function FindStringResourceEx(ByVal hInstance As Long, ByVal uId As Long, ByVal langId As Long) As String
+
+    Const STRINGS_PER_BUCKET As Long = 16&
+    Const RT_STRING As Long = 6&
+    Const WCHARSIZE As Long = 2
+
+    Dim hResource As Long
+    Dim hGlobal As Long
+    Dim Ptr As Long, i As Long
+
+    hResource = FindResourceEx(hInstance, RT_STRING, uId \ STRINGS_PER_BUCKET + 1, langId)
+	
+    If hResource Then
+        hGlobal = LoadResource(hInstance, hResource)
+        If hGlobal Then
+            Ptr = LockResource(hGlobal)
+            If Ptr Then
+                For i = 1 To uId And (STRINGS_PER_BUCKET - 1)
+                    Ptr = PtrAdd(Ptr, (1 + DUInt(Ptr)) * WCHARSIZE)
+                Next
+                SysReAllocStringLen VarPtr(FindStringResourceEx), PtrAdd(Ptr, 2), DUInt(Ptr)
+            End If
+        End If
+    End If
+End Function
+
+
+Public Function GetStringFromFile(ByVal RESOURCE_FILE As String, ByVal RESOURCE_LANG As Long, ByVal STRING_ID As Long)
+
+    'Const RESOURCE_FILE = "c:\windows\system32\shell32.dll"
+    'Const RESOURCE_LANG = 1029
+    'Const STRING_ID = 4148
+
+    Dim hModule As Long
+    hModule = LoadLibrary(StrPtr(RESOURCE_FILE))
+	
+	Dim ExtractedString as String
+	
+    If hModule Then
+	
+		ExtractedString = FindStringResourceEx(hModule, STRING_ID, RESOURCE_LANG)
+		
+		'debug.print ExtractedString
+		GetStringFromFile = ExtractedString
+		
+        FreeLibrary hModule
+    End If
+	
+End Function
+
 
 'Purpose     :  Allows the user to select a file name from a local or network directory.
 'Inputs      :  sInitDir            The initial directory of the file dialog.
@@ -149,17 +231,6 @@ Function BrowseForFile(sInitDir As String, Optional ByVal sFileFilters As String
     End If
 End Function
 
-Private Function GetWindowsOSVersion() As OSVERSIONINFO
-
-Dim osv As OSVERSIONINFO
-    osv.dwOSVersionInfoSize = Len(osv)
-    
-    If GetVersionEx(osv) = 1 Then
-        GetWindowsOSVersion = osv
-    End If
-
-End Function
-
 Function WindowsVersion() As Double
     DetermineWindowsVersion_IfNeeded
         
@@ -176,9 +247,21 @@ Function DetermineWindowsVersion_IfNeeded()
     If g_WindowsXP Or g_WindowsVista Or g_Windows7 Or g_Windows8 Or g_Windows81 Or g_Windows10 Or g_Windows11 Or g_Windows12 Then
         Exit Function
     End If
-    
-    Dim winOSVersion As OSVERSIONINFO: winOSVersion = GetWindowsOSVersion()
-        
+
+	g_WindowsLanguageLCID = Trim(GetUserDefaultLCID)
+	g_WindowsLanguageCulture = GetLocaleCulture
+	g_WindowsLanguageCountry = GetCountryName
+	g_WindowsLanguage = RTrim(Replace(GetLocaleLanguage, "(" & g_WindowsLanguageCountry & ")", ""))
+	g_WindowsLanguageInt = GetLocaleLanguageInt
+	
+	'debugprint g_WindowsLanguageLCID
+	'debugprint g_WindowsLanguageCulture
+	'debugprint GetCountryName
+	'debugprint g_WindowsLanguage
+	'debugprint g_WindowsLanguageInt
+	
+	g_WinDecimalSeparator = GetDecimalSeparator
+
     g_WindowsXP = False
     g_WindowsVista = False
     g_Windows7 = False
@@ -188,7 +271,7 @@ Function DetermineWindowsVersion_IfNeeded()
     g_Windows11 = False
     g_Windows12 = False
         
-    Dim kernalPath As String: kernalPath = Environ("windir") & "\System32\kernel32.dll"
+    Dim kernalPath As String: kernalPath = Environ("windir") & "\System32\ntoskrnl.exe"
     Dim kernalFileInfo As FileVersionInfo: Set kernalFileInfo = FileVersionInfoHelper.GetVersionInfo(kernalPath)
     
     Dim currentVersionRegKey As RegistryKey
@@ -196,44 +279,38 @@ Function DetermineWindowsVersion_IfNeeded()
     
     Dim winRegistryVersion As String: winRegistryVersion = currentVersionRegKey.GetValue("CurrentVersion")
     
-    g_WindowsVersion = kernalFileInfo.ProductMajorPart & "." & kernalFileInfo.ProductMinorPart
+    g_WindowsVersion = kernalFileInfo.ProductMajorPart & g_WinDecimalSeparator & kernalFileInfo.ProductMinorPart
     
-    If (kernalFileInfo.ProductMajorPart = 10) Then
-        If kernalFileInfo.ProductBuildPart >= 22000 Then
-            g_Windows11 = True
-        Else
-            g_Windows10 = True
-        End If
-    Else
-        If winOSVersion.dwMajorVersion = 5 Then
-            If winOSVersion.dwMinorVersion = 1 Or winOSVersion.dwMinorVersion = 2 Then
-                g_WindowsXP = True
-            End If
-        ElseIf winOSVersion.dwMajorVersion = 6 Then
-            If winOSVersion.dwMinorVersion = 0 Then
-                g_WindowsVista = True
-            ElseIf winOSVersion.dwMinorVersion = 1 Then
-                g_Windows7 = True
-            ElseIf winOSVersion.dwMinorVersion = 2 Then
-                'Determine Windows 8 Version
-                g_Windows8 = True
-                
-                If winRegistryVersion = "6.2" Then
-                    
-                ElseIf winRegistryVersion = "6.3" Then
-                    g_Windows81 = True
-                Else
-                    MsgBox "This version of Windows is unknown.. ViStart may not behave as expected!", vbCritical
-                    g_Windows8 = True
-                End If
-            Else
-                MsgBox "This version of Windows is unknown.. ViStart may not behave as expected!", vbCritical
-                g_Windows8 = True
-            End If
-        Else
-            MsgBox "This version of Windows is unknown.. ViStart may not behave as expected!", vbCritical
-            g_Windows8 = True
-        End If
+	
+	If kernalFileInfo.ProductMajorPart = 5 And Not kernalFileInfo.ProductMinorPart = 0 Then
+		' XP / 2003
+        g_WindowsXP = True
+	ElseIf kernalFileInfo.ProductMajorPart = 6 Then
+		' Vista, 7, 8, 8.1
+		If kernalFileInfo.ProductMinorPart = 0 Then
+			g_WindowsVista = True
+		ElseIf kernalFileInfo.ProductMinorPart = 1 Then
+			g_Windows7 = True
+		ElseIf kernalFileInfo.ProductMinorPart = 2 Then
+			g_Windows8 = True
+		ElseIf kernalFileInfo.ProductMinorPart = 3 Then
+			g_Windows81 = True
+		End If
+	
+	ElseIf kernalFileInfo.ProductMajorPart = 10 And kernalFileInfo.ProductBuildPart >= 22000 Then
+		' Windows 11
+		g_Windows11 = True
+	
+	ElseIf kernalFileInfo.ProductMajorPart = 10 Then
+		' Windows 10
+		g_Windows10 = True
+	
+ 	ElseIf kernalFileInfo.ProductMajorPart = 12 Then 
+		g_Windows12 = True
+		
+	Else
+        MsgBox "This version of Windows is unknown.. ViStart may not behave as expected!", vbCritical
+		
     End If
     
     g_CLSID_3DOBJECTS = "{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}"
@@ -248,11 +325,11 @@ Function DetermineWindowsVersion_IfNeeded()
     
     g_CLSID_CONTROLPANEL = "{5399E694-6CE5-4D6C-8FCE-1D8870FDCBA0}"
     
-    If g_WindowsXP < 6 Then
+    If g_WindowsVersion < 6 Then
         g_CLSID_CONTROLPANEL = "{21EC2020-3AEA-1069-A2DD-08002B30309D}"
     End If
     
-    If g_Windows10 >= 10 Then
+    If g_WindowsVersion >= 10 Then
         ' Windows 10 +
         g_CLSID_MYDOCS = "{D3162B92-9365-467A-956B-92703ACA08AF}"
         g_CLSID_MYPIC = "{24AD3AD4-A569-4530-98E1-AB02F9417AA8}"
@@ -600,3 +677,9 @@ Public Function GetGlobalWScriptShellObject() As Object
 End Function
 
 
+public Function DebugPrint(ByVal strInput As String)
+	'Open App.Path & "\ViStart.log" For Append As #1
+	Open Environ$("appdata") & "\ViStart\ViStart.log" For Append As #1
+	Write #1, strInput
+	Close #1
+End Function

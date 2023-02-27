@@ -794,17 +794,17 @@ MaxOSVersion = 0
                 
             Set thisObjectXML = thisObject
 
-                        If Not IsNull(thisObject.getAttribute("minwinversion")) Then
-                                MinOSVersion = thisObject.getAttribute("minwinversion")
-                        Else
-                                MinOSVersion = WindowsVersion
-                        End If
-                        
-                        If Not IsNull(thisObject.getAttribute("maxwinversion")) Then
-                                MaxOSVersion = thisObject.getAttribute("maxwinversion")
-                        Else
-                                MaxOSVersion = MinOSVersion
-                        End If
+			If Not IsNull(thisObject.getAttribute("minwinversion")) Then
+				MinOSVersion = Replace(thisObject.getAttribute("minwinversion"), ".", g_WinDecimalSeparator)
+			Else
+				MinOSVersion = Replace(WindowsVersion, ".", g_WinDecimalSeparator)
+			End If
+			
+			If Not IsNull(thisObject.getAttribute("maxwinversion")) Then
+				MaxOSVersion = Replace(thisObject.getAttribute("maxwinversion"), ".", g_WinDecimalSeparator)
+			Else
+				MaxOSVersion = Replace(MinOSVersion, ".", g_WinDecimalSeparator)
+			End If
 
 
                         If WindowsVersion >= MinOSVersion And WindowsVersion <= MaxOSVersion Then
