@@ -12,12 +12,9 @@ Function SetOpenSaveDocs()
     On Error GoTo RegistryError
     
     EXPLORER_OPENSAVEDOCS = EXPLORER_OPENSAVEDOCS_XP
-    Registry.CurrentUser.OpenSubKey EXPLORER_OPENSAVEDOCS
-
-    Exit Function
-RegistryError:
-    EXPLORER_OPENSAVEDOCS = EXPLORER_OPENSAVEDOCS_VISTA
-
+    If Registry.CurrentUser.OpenSubKey(EXPLORER_OPENSAVEDOCS) Is Nothing Then
+        EXPLORER_OPENSAVEDOCS = EXPLORER_OPENSAVEDOCS_VISTA
+    End If
 End Function
 
 Public Function GetMRUListForKey(ByRef srcMRURoot As RegistryKey) As String()
