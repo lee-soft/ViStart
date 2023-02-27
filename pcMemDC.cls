@@ -11,8 +11,6 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-Attribute VB_Ext_KEY = "SavedWithClassBuilder6" ,"Yes"
-Attribute VB_Ext_KEY = "Top_Level" ,"Yes"
 Option Explicit
 ' cMemDC - flicker free drawing
 Private Declare Function CreateCompatibleBitmap Lib "gdi32" (ByVal hdc As Long, ByVal nWidth As Long, ByVal nHeight As Long) As Long

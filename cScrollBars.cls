@@ -11,8 +11,6 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-Attribute VB_Ext_KEY = "SavedWithClassBuilder6" ,"Yes"
-Attribute VB_Ext_KEY = "Top_Level" ,"Yes"
 Option Explicit
 
 ' ===========================================================================
@@ -22,7 +20,7 @@ Option Explicit
 ' Requires: SSUBTMR.DLL
 '
 ' ---------------------------------------------------------------------------
-' Copyright ® 1998 Steve McMahon (steve@vbaccelerator.com)
+' Copyright ï¿½ 1998 Steve McMahon (steve@vbaccelerator.com)
 ' Visit vbAccelerator - free, advanced source code for VB programmers.
 '     http://vbaccelerator.com
 ' ---------------------------------------------------------------------------

@@ -11,8 +11,6 @@ Attribute VB_GlobalNameSpace = True
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-Attribute VB_Ext_KEY = "SavedWithClassBuilder6" ,"Yes"
-Attribute VB_Ext_KEY = "Top_Level" ,"Yes"
 '--------------------------------------------------------------------------------
 '    Component  : GDIPCachedBitmap
 '    Description: A CachedBitmap object stores a bitmap in a format that is
