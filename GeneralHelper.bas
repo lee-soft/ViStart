@@ -208,21 +208,16 @@ Dim typeRegistryKey As RegistryKey
 
     strKeyValue = App.Path & "\" & App.EXEName & ".exe" & " /pin " & """" & "%1" & """"
 
-    On Error GoTo FailedToOpenSubKey
     Set typeRegistryKey = Registry.ClassesRoot.OpenSubKey(theType & "\shell\" & theText)
-    GoTo ResetSubKey
-    
-FailedToOpenSubKey:
-    
-    Set sourceKey = Registry.ClassesRoot.CreateSubKey(theType & "\shell\" & theText & "\command")
-    sourceKey.SetValue "", strKeyValue
-    
-ResetSubKey:
-    Set sourceKey = Nothing
+    If typeRegistryKey Is Nothing Then
+        Set sourceKey = Registry.ClassesRoot.CreateSubKey(theType & "\shell\" & theText & "\command")
+        sourceKey.SetValue "", strKeyValue
+        Set sourceKey = Nothing
+    End If
     
     Dim commandRegKey As RegistryKey
     Set commandRegKey = Registry.ClassesRoot.OpenSubKey(theType & "\shell\" & theText & "\command")
-    
+
     If commandRegKey.GetValue("") <> strKeyValue Then
         commandRegKey.SetValue "", strKeyValue
     End If
