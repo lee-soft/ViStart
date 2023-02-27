@@ -13,6 +13,14 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Attribute VB_Ext_KEY = "SavedWithClassBuilder6" ,"Yes"
 Attribute VB_Ext_KEY = "Top_Level" ,"Yes"
+'--------------------------------------------------------------------------------
+'    Component  : RegistryKey
+'    Project    : ViStart
+'    Author     : Lee Chantrey, lchantrey@gmail.com
+'
+'    Description: Port of the .NET RegistryKey class
+'--------------------------------------------------------------------------------
+
 Option Explicit
 
 Private Declare Function RegOpenKeyEx Lib "advapi32.dll" Alias "RegOpenKeyExA" (ByVal hKey As Long, ByVal lpSubKey As String, ByVal ulOptions As Long, ByVal samDesired As Long, phkResult As Long) As Long
@@ -21,7 +29,6 @@ Private Declare Function RegQueryValueEx Lib "advapi32.dll" Alias "RegQueryValue
 Private Declare Function RegSetValueEx Lib "advapi32.dll" Alias "RegSetValueExA" (ByVal hKey As Long, ByVal lpValueName As String, ByVal Reserved As Long, ByVal dwType As Long, lpData As Any, ByVal cbData As Long) As Long
 Private Declare Function RegCloseKey Lib "advapi32.dll" (ByVal hKey As Long) As Long
 Private Declare Function RegDeleteValue Lib "advapi32.dll" Alias "RegDeleteValueA" (ByVal hKey As Long, ByVal lpValueName As String) As Long
-Private Declare Function RegEnumKeyEx Lib "advapi32.dll" Alias "RegEnumKeyExA" (ByVal hKey As Long, ByVal dwIndex As Long, ByVal lpName As String, lpcbName As Long, ByVal lpReserved As Long, ByVal lpClass As String, lpcbClass As Long, lpftLastWriteTime As Any) As Long
 Private Declare Function RegEnumKey Lib "advapi32.dll" Alias "RegEnumKeyA" (ByVal hKey As Long, ByVal dwIndex As Long, ByVal lpName As String, ByVal cbName As Long) As Long
 
 Private Const KEY_QUERY_VALUE As Long = &H1
@@ -91,7 +98,7 @@ Public Function GetSubKeyNames() As Collection
 Dim subkey_num As Integer
 Dim subkey_name As String
 
-Dim Length As Long
+Dim length As Long
 
     Dim SubKeysNames As Collection
     Set SubKeysNames = New Collection
@@ -102,10 +109,10 @@ Dim Length As Long
 
     Do
         ' Enumerate subkeys until we get an error.
-        Length = 1024
-        subkey_name = Space$(Length)
+        length = 1024
+        subkey_name = Space$(length)
         If RegEnumKey(Me.Key, subkey_num, _
-            subkey_name, Length) _
+            subkey_name, length) _
                 <> ERROR_SUCCESS Then Exit Do
                 
         subkey_num = subkey_num + 1
@@ -118,7 +125,6 @@ End Function
 
 Public Function CreateSubKey(ByVal subKeyName As String) As RegistryKey
     Dim hKey As Long
-    Dim disposition As Long
     Dim subKeyPath As String
     Dim returnObject As RegistryKey
     
@@ -156,7 +162,6 @@ Public Function OpenSubKey(ByVal subKeyName As String, Optional ByVal writable A
     
     Dim access As Long
     Dim hSubKey As Long
-    Dim parentKey As Long
     Dim result As Long
     
     ' Determine the access level
@@ -270,7 +275,7 @@ Public Function GetValue(ByVal ValueName As String, Optional ByVal DefaultValue 
         Dim unformattedData As String
         unformattedData = Left$(ValueData, ValueSize - 1)
         
-        GetValue = Replace(unformattedData, ChrW(0), vbCrLf)
+        GetValue = Replace(unformattedData, ChrW$(0), vbCrLf)
         
     End Select
     

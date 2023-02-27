@@ -13,32 +13,33 @@ Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Attribute VB_Ext_KEY = "SavedWithClassBuilder6" ,"Yes"
 Attribute VB_Ext_KEY = "Top_Level" ,"Yes"
+'--------------------------------------------------------------------------------
+'    Component  : Registry
+'    Project    : ViStart
+'    Author     : Lee Chantrey, lchantrey@gmail.com
+'
+'    Description: Enables the consumer to use Registry.CurrentUser/LocalMachine
+'                 Like in .NET, So you can do this
+'                 Registry.CurrentUser.OpenSubKey etc
+'--------------------------------------------------------------------------------
+
+
 Option Explicit
 
 Private m_currentUser As RegistryKey
 Private m_localMachine As RegistryKey
 Private m_classesRoot As RegistryKey
 
-Public Property Get RegObject() As RegistryKey
-Attribute RegObject.VB_UserMemId = 0
-'used when retrieving value of a property, on the right side of an assignment.
-'Syntax: Debug.Print X.RegObject
-    Set RegObject = New RegistryKey
-End Property
-
 Public Property Get CurrentUser() As RegistryKey
-    Set CurrentUser = New RegistryKey
-    CurrentUser.Hive = HKEY_CURRENT_USER
+    Set CurrentUser = m_currentUser
 End Property
     
 Public Property Get LocalMachine() As RegistryKey
-    Set LocalMachine = New RegistryKey
-    LocalMachine.Hive = HKEY_LOCAL_MACHINE
+    Set LocalMachine = m_localMachine
 End Property
 
 Public Property Get ClassesRoot() As RegistryKey
-    Set ClassesRoot = New RegistryKey
-    ClassesRoot.Hive = HKEY_CLASSES_ROOT
+    Set ClassesRoot = m_classesRoot
 End Property
 
 Private Sub Class_Initialize()
