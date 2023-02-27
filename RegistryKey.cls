@@ -217,7 +217,7 @@ Public Function SetValue(ByVal ValueName As String, ByVal Value As Variant) As B
                 
         End Select
         
-        result = RegSetValueEx(Me.Key, ValueName, 0&, ValueType, valueAsBytes(0), UBound(valueAsBytes) + 1)
+        result = RegSetValueEx(hKey, ValueName, 0&, ValueType, valueAsBytes(0), UBound(valueAsBytes) + 1)
         RegCloseKey hKey
     End If
     
