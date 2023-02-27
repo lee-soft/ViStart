@@ -788,58 +788,58 @@ MaxOSVersion = 0
     End If
         
     For Each thisObject In navigationPaneXML.childNodes
-	
+        
         If TypeName(thisObject) = "IXMLDOMElement" Then
-		
+                
             Set thisObjectXML = thisObject
 
-			If Not IsNull(thisObject.getAttribute("minwinversion")) Then
-				MinOSVersion = thisObject.getAttribute("minwinversion")
-			Else
-				MinOSVersion = WindowsVersion
-			End If
-			
-			If Not IsNull(thisObject.getAttribute("maxwinversion")) Then
-				MaxOSVersion = thisObject.getAttribute("maxwinversion")
-			Else
-				MaxOSVersion = MinOSVersion
-			End If
+                        If Not IsNull(thisObject.getAttribute("minwinversion")) Then
+                                MinOSVersion = thisObject.getAttribute("minwinversion")
+                        Else
+                                MinOSVersion = WindowsVersion
+                        End If
+                        
+                        If Not IsNull(thisObject.getAttribute("maxwinversion")) Then
+                                MaxOSVersion = thisObject.getAttribute("maxwinversion")
+                        Else
+                                MaxOSVersion = MinOSVersion
+                        End If
 
 
-			If WindowsVersion >= MinOSVersion and WindowsVersion <= MaxOSVersion Then
+                        If WindowsVersion >= MinOSVersion And WindowsVersion <= MaxOSVersion Then
 
                                                         
-				If thisObjectXML.tagName = "folder" Then
-						Set thisFolderOption = New NavigationPaneFolder
-						m_navigationPaneOptions.Add thisFolderOption
-						
-						thisFolderOption.Visible = True
+                                If thisObjectXML.tagName = "folder" Then
+                                                Set thisFolderOption = New NavigationPaneFolder
+                                                m_navigationPaneOptions.Add thisFolderOption
+                                                
+                                                thisFolderOption.Visible = True
 
-						If Not IsNull(thisObjectXML.getAttribute("visible")) Then thisFolderOption.Visible = CBool(thisObjectXML.getAttribute("visible"))
-						If thisFolderOption.Visible = True Then GroupOptionsVisibileCount = GroupOptionsVisibileCount + 1
-						If GroupOptionsVisibileCount > Layout.GroupOptionsVisibilityLimit And Layout.EnableVisibilityLimit Then thisFolderOption.Visible = False
-						
-						If Not IsNull(thisObjectXML.getAttribute("display_as_menu")) Then thisFolderOption.OpenAsMenu = CBool(thisObjectXML.getAttribute("display_as_menu"))
-						If Not IsNull(thisObjectXML.getAttribute("caption")) Then thisFolderOption.Caption = thisObjectXML.getAttribute("caption")
-						If Not IsNull(thisObjectXML.getAttribute("path")) Then thisFolderOption.Shell = thisObjectXML.getAttribute("path")
-						If Not IsNull(thisObjectXML.getAttribute("rollover")) Then thisFolderOption.Rollover = thisObjectXML.getAttribute("rollover")
+                                                If Not IsNull(thisObjectXML.getAttribute("visible")) Then thisFolderOption.Visible = CBool(thisObjectXML.getAttribute("visible"))
+                                                If thisFolderOption.Visible = True Then GroupOptionsVisibileCount = GroupOptionsVisibileCount + 1
+                                                If GroupOptionsVisibileCount > Layout.GroupOptionsVisibilityLimit And Layout.EnableVisibilityLimit Then thisFolderOption.Visible = False
+                                                
+                                                If Not IsNull(thisObjectXML.getAttribute("display_as_menu")) Then thisFolderOption.OpenAsMenu = CBool(thisObjectXML.getAttribute("display_as_menu"))
+                                                If Not IsNull(thisObjectXML.getAttribute("caption")) Then thisFolderOption.Caption = thisObjectXML.getAttribute("caption")
+                                                If Not IsNull(thisObjectXML.getAttribute("path")) Then thisFolderOption.Shell = thisObjectXML.getAttribute("path")
+                                                If Not IsNull(thisObjectXML.getAttribute("rollover")) Then thisFolderOption.Rollover = thisObjectXML.getAttribute("rollover")
 
-				ElseIf thisObjectXML.tagName = "custom" Then
-						Set thisCustomOption = New NavigationPaneCustom
-						m_navigationPaneOptions.Add thisCustomOption
-						
-						thisCustomOption.Visible = True
-						
-						If Not IsNull(thisObjectXML.getAttribute("visible")) Then thisCustomOption.Visible = CBool(thisObjectXML.getAttribute("visible"))
-						If thisCustomOption.Visible = True Then GroupOptionsVisibileCount = GroupOptionsVisibileCount + 1
-						If GroupOptionsVisibileCount > Layout.GroupOptionsVisibilityLimit And Layout.EnableVisibilityLimit Then thisCustomOption.Visible = False
-														
-						If Not IsNull(thisObjectXML.getAttribute("caption")) Then thisCustomOption.Caption = thisObjectXML.getAttribute("caption")
-						If Not IsNull(thisObjectXML.getAttribute("rollover")) Then thisCustomOption.Rollover = thisObjectXML.getAttribute("rollover")
-						If Not IsNull(thisObjectXML.getAttribute("exec")) Then thisCustomOption.Shell = thisObjectXML.getAttribute("exec")
-														
-						thisCustomOption.Populate thisObjectXML
-				End If
+                                ElseIf thisObjectXML.tagName = "custom" Then
+                                                Set thisCustomOption = New NavigationPaneCustom
+                                                m_navigationPaneOptions.Add thisCustomOption
+                                                
+                                                thisCustomOption.Visible = True
+                                                
+                                                If Not IsNull(thisObjectXML.getAttribute("visible")) Then thisCustomOption.Visible = CBool(thisObjectXML.getAttribute("visible"))
+                                                If thisCustomOption.Visible = True Then GroupOptionsVisibileCount = GroupOptionsVisibileCount + 1
+                                                If GroupOptionsVisibileCount > Layout.GroupOptionsVisibilityLimit And Layout.EnableVisibilityLimit Then thisCustomOption.Visible = False
+                                                                                                                
+                                                If Not IsNull(thisObjectXML.getAttribute("caption")) Then thisCustomOption.Caption = thisObjectXML.getAttribute("caption")
+                                                If Not IsNull(thisObjectXML.getAttribute("rollover")) Then thisCustomOption.Rollover = thisObjectXML.getAttribute("rollover")
+                                                If Not IsNull(thisObjectXML.getAttribute("exec")) Then thisCustomOption.Shell = thisObjectXML.getAttribute("exec")
+                                                                                                                
+                                                thisCustomOption.Populate thisObjectXML
+                                End If
                                                         
             End If
 
@@ -954,9 +954,9 @@ Private Function ShowHideDesktopIcons(ShellItem As String)
                         DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_COMPUTER)
 
                         If DesktopIconStatus = 1 Then
-                                DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_COMPUTER, 0)
+                                DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_COMPUTER, 0)
                         Else
-                                DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_COMPUTER, 1)
+                                DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_COMPUTER, 1)
                         End If
 
         ElseIf InStr(1, UCase(ShellItem), g_CLSID_USERPROFILE, 1) > 0 Then
@@ -964,9 +964,9 @@ Private Function ShowHideDesktopIcons(ShellItem As String)
                         DesktopIconStatus = m_RegObj.GetValue(g_CLSID_USERPROFILE)
                                         
                         If DesktopIconStatus = 1 Then
-                                DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_USERPROFILE, 0)
+                                DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_USERPROFILE, 0)
                         Else
-                                DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_USERPROFILE, 1)
+                                DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_USERPROFILE, 1)
                         End If
 
         ElseIf InStr(1, UCase(ShellItem), g_CLSID_LIBRARIES, 1) > 0 Then
@@ -974,9 +974,9 @@ Private Function ShowHideDesktopIcons(ShellItem As String)
                         DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_LIBRARIES)
                                         
                         If DesktopIconStatus = 1 Then
-                                DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_LIBRARIES, 0)
+                                DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_LIBRARIES, 0)
                         Else
-                                DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_LIBRARIES, 1)
+                                DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_LIBRARIES, 1)
                         End If
 
         ElseIf InStr(1, UCase(ShellItem), "450D8FBA-AD25-11D0-98A8-0800361B1103", 1) > 0 Or InStr(1, UCase(ShellItem), "PERSONAL", 1) Or InStr(1, UCase(ShellItem), g_CLSID_MYDOCS, 1) > 0 Then
@@ -987,9 +987,9 @@ Private Function ShowHideDesktopIcons(ShellItem As String)
                         DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_MYDOCS)
 
                         If DesktopIconStatus = 1 Then
-                                DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_MYDOCS, 0)
+                                DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_MYDOCS, 0)
                         Else
-                                DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_MYDOCS, 1)
+                                DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_MYDOCS, 1)
                         End If
 
         ElseIf InStr(1, UCase(ShellItem), g_CLSID_NETWORK, 1) > 0 Then
@@ -997,9 +997,9 @@ Private Function ShowHideDesktopIcons(ShellItem As String)
                         DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_NETWORK)
                                         
                         If DesktopIconStatus = 1 Then
-                                DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_NETWORK, 0)
+                                DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_NETWORK, 0)
                         Else
-                                DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_NETWORK, 1)
+                                DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_NETWORK, 1)
                         End If
                 
                 ElseIf InStr(1, UCase(ShellItem), g_CLSID_MYPIC, 1) > 0 Or InStr(1, UCase(ShellItem), "MYPICTURES", 1) Then
@@ -1007,36 +1007,36 @@ Private Function ShowHideDesktopIcons(ShellItem As String)
                         DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_MYPIC)
                                         
                         If DesktopIconStatus = 1 Then
-                                DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_MYPIC, 0)
+                                DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_MYPIC, 0)
                         Else
-                                DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_MYPIC, 1)
+                                DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_MYPIC, 1)
                         End If
                 ElseIf InStr(1, UCase(ShellItem), g_CLSID_MYMUS, 1) > 0 Or InStr(1, UCase(ShellItem), "MYMUSIC", 1) Then
                         ' Music
                         DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_MYMUS)
                                         
                         If DesktopIconStatus = 1 Then
-                                DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_MYMUS, 0)
+                                DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_MYMUS, 0)
                         Else
-                                DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_MYMUS, 1)
+                                DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_MYMUS, 1)
                         End If
                 ElseIf InStr(1, UCase(ShellItem), g_CLSID_MYVID, 1) > 0 Or InStr(1, UCase(ShellItem), "MYVIDEO", 1) Then
                         ' Video
                         DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_MYVID)
                                         
                         If DesktopIconStatus = 1 Then
-                                DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_MYVID, 0)
+                                DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_MYVID, 0)
                         Else
-                                DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_MYVID, 1)
+                                DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_MYVID, 1)
                         End If
                 ElseIf InStr(1, UCase(ShellItem), g_CLSID_DOWNLOADS, 1) > 0 Or InStr(1, UCase(ShellItem), "DOWNLOAD", 1) Then
                         ' Downloads
                         DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_DOWNLOADS)
                                         
                         If DesktopIconStatus = 1 Then
-                                DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_DOWNLOADS, 0)
+                                DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_DOWNLOADS, 0)
                         Else
-                                DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_DOWNLOADS, 1)
+                                DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_DOWNLOADS, 1)
                         End If
                         
                 ElseIf InStr(1, UCase(ShellItem), g_CLSID_3DOBJECTS, 1) > 0 Then
@@ -1044,9 +1044,9 @@ Private Function ShowHideDesktopIcons(ShellItem As String)
                         DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_3DOBJECTS)
                                         
                         If DesktopIconStatus = 1 Then
-                                DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_3DOBJECTS, 0)
+                                DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_3DOBJECTS, 0)
                         Else
-                                DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_3DOBJECTS, 1)
+                                DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_3DOBJECTS, 1)
                         End If
                    
                 ElseIf InStr(1, UCase(ShellItem), g_CLSID_GAMES, 1) > 0 Then
@@ -1054,7 +1054,7 @@ Private Function ShowHideDesktopIcons(ShellItem As String)
                         DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_GAMES)
                                         
                         If DesktopIconStatus = 1 Then
-                                DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_GAMES, 0)
+                                DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_GAMES, 0)
                         Else
                                 DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_GAMES, 1)
                         End If
