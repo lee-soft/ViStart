@@ -173,9 +173,10 @@ Dim theCharIndex As Long
 Dim returnHandlers() As String
 
     If Left$(srcType, 1) <> "." Then srcType = "." & srcType
-    
-    On Error GoTo CannotOpenSubKeyError
     Set thisKey = Registry.CurrentUser.OpenSubKey("Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\" & srcType & "\OpenWithList")
+    If thisKey Is Nothing Then
+        Exit Function
+    End If
     
     theChars = StrConv(thisKey.GetValue("MRUList"), vbFromUnicode)
     For theCharIndex = LBound(theChars) To UBound(theChars)
@@ -184,11 +185,7 @@ Dim returnHandlers() As String
     Next
     
     GetTypeHandlersImageName = returnHandlers
-    'typeFullName = thisKey.GetValueAsString()
-
     Exit Function
-CannotOpenSubKeyError:
-    LogError Err.Description, "GetTypeHandlersImageName"
 End Function
 
 Public Function GetTypeHandlerPath(ByVal srcType As String) As String
