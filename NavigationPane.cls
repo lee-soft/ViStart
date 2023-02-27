@@ -120,24 +120,25 @@ Public Function ShowContextMenu(ByRef winOwner As Form)
 
     Dim DesktopIconStatus As Variant
     Dim ComputerIconStatus As Variant
+    
+    Dim NewStartPanelRegKey As RegistryKey
+    Set NewStartPanelRegKey = Registry.CurrentUser.OpenSubKey("Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel")
+    If NewStartPanelRegKey Is Nothing Then
+        Set NewStartPanelRegKey = Registry.CurrentUser.CreateSubKey("Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel")
+    End If
+    
+    Dim HideMyComputerIconsRegKey As RegistryKey
+    Set HideMyComputerIconsRegKey = Registry.CurrentUser.OpenSubKey("Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons")
+    If HideMyComputerIconsRegKey Is Nothing Then
+        Set HideMyComputerIconsRegKey = Registry.CurrentUser.CreateSubKey("Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons")
+    End If
         
     If TypeName(m_selectedItem) = "NavigationPaneFolder" Then
 
         Set m_contextMenu = New frmVistaMenu
     
         m_contextMenu.AddItem GetPublicString("strOpen"), "OPEN_OPTION", True
-        
-        Dim NewStartPanelRegKey As RegistryKey
-        Set NewStartPanelRegKey = Registry.CurrentUser.OpenSubKey("Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel")
-        If NewStartPanelRegKey Is Nothing Then
-            Set NewStartPanelRegKey = Registry.CurrentUser.CreateSubKey("Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel")
-        End If
-        
-        Dim HideMyComputerIconsRegKey As RegistryKey
-        Set HideMyComputerIconsRegKey = Registry.CurrentUser.OpenSubKey("Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons")
-        If HideMyComputerIconsRegKey Is Nothing Then
-            Set HideMyComputerIconsRegKey = Registry.CurrentUser.CreateSubKey("Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons")
-        End If
+
  
                 DesktopIconStatus = 0
                 ComputerIconStatus = 0
