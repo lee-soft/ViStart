@@ -28,8 +28,6 @@ End Function
 Public Function DWordByteArrayToLong(ByRef sourceByte() As Byte) As Long
     Dim myLong As Long
     
-    Debug.Print sourceByte(0) & ":" & sourceByte(1) & ":" & sourceByte(2) & ":" & sourceByte(3)
-    
     ' Assume myBytes contains the DWORD value in little-endian byte order
     ' (i.e., least significant byte first)
     
