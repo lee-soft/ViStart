@@ -26,8 +26,8 @@ Public Property Get ItemType() As PropertyTagType
    ItemType = m_itemType
 End Property
 
-Public Property Get Length() As Long
-   Length = m_lLength
+Public Property Get length() As Long
+   length = m_lLength
 End Property
 
 Public Property Get Name() As String

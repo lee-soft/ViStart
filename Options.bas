@@ -18,16 +18,21 @@ Public SecondaryFont As String
 
 Public sFonts() As String
 
-Dim Reg As New clsRegistry
+Dim Reg As New RegistryKey
 
 Function StartsWithWindows() As Boolean
-    
     StartsWithWindows = False
     
-    If LCase$(Registry.Read("HKCU\Software\Microsoft\Windows\CurrentVersion\Run\ViStart", "<Empty>")) = LCase$(AppPath & App.EXEName & ".exe") Then
+Dim startWithWindowsRegKey As RegistryKey
+    Set startWithWindowsRegKey = Registry.CurrentUser.OpenSubKey("Software\Microsoft\Windows\CurrentVersion\Run\")
+    
+    If startWithWindowsRegKey Is Nothing Then
+        Exit Function
+    End If
+ 
+    If LCase$(startWithWindowsRegKey.GetValue("ViStart", "<Empty>")) = LCase$(AppPath & App.EXEName & ".exe") Then
         StartsWithWindows = True
     End If
-    
 End Function
 
 Public Function ValidateOptions() As Boolean
@@ -72,17 +77,6 @@ Public Function PutOptions()
     If Not Settings Is Nothing Then Settings.Comit
     If Not MetroUtility Is Nothing Then MetroUtility.DumpOptions
     
-End Function
-
-Public Function GetOptions()
-
-Dim strKey() As String
-Dim lngKeyIndex As Long
-
-    'bTrayIcon = Registry.GetAppSettingBooleon("Settings\EnableTrayIcon", True)
-    bAutoClick = Registry.GetAppSettingBooleon("Settings\EnableAutoClick", True)
-    strIndexingPath = Registry.GetAppSetting("Settings\IndexingPath", sVar_Reg_StartMenu_MyDocuments)
-    lngIndexingLimit = Registry.GetAppSettingLong("Settings\IndexingLimit", 4096)
 End Function
 
 Function GetChildSkins(strPath As String) As Collection

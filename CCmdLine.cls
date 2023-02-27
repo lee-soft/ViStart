@@ -12,7 +12,7 @@ Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 ' *********************************************************************
-'  Copyright ©1998-2004 Karl E. Peterson, All Rights Reserved
+'  Copyright ï¿½1998-2004 Karl E. Peterson, All Rights Reserved
 '  http://www.mvps.org/vb
 ' *********************************************************************
 '  You are free to use this code within your own applications, but you

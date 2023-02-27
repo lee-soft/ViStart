@@ -61,7 +61,7 @@ Attribute m_popoutMenu.VB_VarHelpID = -1
 Private m_windowPosition As POINTL
 Private m_window As Form
 
-Private m_RegObj As New clsRegistry
+Private m_RegObj As New RegistryKey
 
 Private GroupOptionsVisibileCount As Long
 Private MinOSVersion As Double
@@ -120,69 +120,82 @@ Public Function ShowContextMenu(ByRef winOwner As Form)
 
     Dim DesktopIconStatus As Variant
     Dim ComputerIconStatus As Variant
+    
+    Dim NewStartPanelRegKey As RegistryKey
+    Set NewStartPanelRegKey = Registry.CurrentUser.OpenSubKey("Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel")
+    If NewStartPanelRegKey Is Nothing Then
+        Set NewStartPanelRegKey = Registry.CurrentUser.CreateSubKey("Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel")
+    End If
+    
+    Dim HideMyComputerIconsRegKey As RegistryKey
+    Set HideMyComputerIconsRegKey = Registry.CurrentUser.OpenSubKey("Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons")
+    If HideMyComputerIconsRegKey Is Nothing Then
+        Set HideMyComputerIconsRegKey = Registry.CurrentUser.CreateSubKey("Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons")
+    End If
         
     If TypeName(m_selectedItem) = "NavigationPaneFolder" Then
 
         Set m_contextMenu = New frmVistaMenu
     
         m_contextMenu.AddItem GetPublicString("strOpen"), "OPEN_OPTION", True
+
  
                 DesktopIconStatus = 0
                 ComputerIconStatus = 0
                 
                 If InStr(1, UCase(m_selectedItem.Shell), g_CLSID_USERPROFILE, 1) > 0 Then
                         ' %UserProfile%
-                        DesktopIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_USERPROFILE)
-                        ComputerIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_USERPROFILE)
+                        DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_USERPROFILE)
+                        ComputerIconStatus = HideMyComputerIconsRegKey.GetValue(g_CLSID_USERPROFILE)
                                 
                 ElseIf InStr(1, UCase(m_selectedItem.Shell), g_CLSID_LIBRARIES, 1) > 0 Then
                         ' Libraries
-                        DesktopIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_LIBRARIES)
-                        ComputerIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_LIBRARIES)
+                        DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_LIBRARIES)
+                        ComputerIconStatus = HideMyComputerIconsRegKey.GetValue(g_CLSID_LIBRARIES)
                 
                 ElseIf InStr(1, UCase(m_selectedItem.Shell), "{450D8FBA-AD25-11D0-98A8-0800361B1103}", 1) > 0 Or InStr(1, UCase(m_selectedItem.Shell), "PERSONAL", 1) Or InStr(1, UCase(m_selectedItem.Shell), g_CLSID_MYDOCS, 1) > 0 Then
                         ' My documents
-                        DesktopIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_MYDOCS)
-                        ComputerIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_MYDOCS)
+                        DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_MYDOCS)
+                        ComputerIconStatus = HideMyComputerIconsRegKey.GetValue(g_CLSID_MYDOCS)
                         
                         If DesktopIconStatus = 1 Then
                                 ' Documents
-                                DesktopIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", "{450D8FBA-AD25-11D0-98A8-0800361B1103}")
+                                DesktopIconStatus = NewStartPanelRegKey.GetValue("{450D8FBA-AD25-11D0-98A8-0800361B1103}")
                         End If
                         If ComputerIconStatus = 1 Then
                                 ' Documents
-                                ComputerIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", "{450D8FBA-AD25-11D0-98A8-0800361B1103}")
+                                ComputerIconStatus = HideMyComputerIconsRegKey.GetValue("{450D8FBA-AD25-11D0-98A8-0800361B1103}")
                         End If
 
                 ElseIf InStr(1, UCase(m_selectedItem.Shell), g_CLSID_MYPIC, 1) > 0 Or InStr(1, UCase(m_selectedItem.Shell), "MYPICTURES", 1) Then
                         ' Pictures
-                        DesktopIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_MYPIC)
-                        ComputerIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_MYPIC)
+                        DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_MYPIC)
+                        ComputerIconStatus = HideMyComputerIconsRegKey.GetValue(g_CLSID_MYPIC)
                                                 
                 ElseIf InStr(1, UCase(m_selectedItem.Shell), g_CLSID_MYMUS, 1) > 0 Or InStr(1, UCase(m_selectedItem.Shell), "MYMUSIC", 1) Then
                         ' Music
-                        DesktopIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_MYMUS)
-                        ComputerIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_MYMUS)
-                                                
+                        DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_MYMUS)
+                        ComputerIconStatus = HideMyComputerIconsRegKey.GetValue(g_CLSID_MYMUS)
+                        
                 ElseIf InStr(1, UCase(m_selectedItem.Shell), g_CLSID_MYVID, 1) > 0 Or InStr(1, UCase(m_selectedItem.Shell), "MYVIDEO", 1) Then
                         ' Videos
-                        DesktopIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_MYVID)
-                        ComputerIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_MYVID)
+                        DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_MYVID)
+                        ComputerIconStatus = HideMyComputerIconsRegKey.GetValue(g_CLSID_MYVID)
                                                 
                 ElseIf InStr(1, UCase(m_selectedItem.Shell), g_CLSID_DOWNLOADS, 1) > 0 Then
                         ' Downloads
-                        DesktopIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_DOWNLOADS)
-                        ComputerIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_DOWNLOADS)
-                
+                        DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_DOWNLOADS)
+                        ComputerIconStatus = HideMyComputerIconsRegKey.GetValue(g_CLSID_DOWNLOADS)
+                           
                 ElseIf InStr(1, UCase(m_selectedItem.Shell), g_CLSID_3DOBJECTS, 1) > 0 Then
                         ' 3D Objects
-                        DesktopIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_3DOBJECTS)
-                        ComputerIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_3DOBJECTS)
-                                                
+                        DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_3DOBJECTS)
+                        ComputerIconStatus = HideMyComputerIconsRegKey.GetValue(g_CLSID_3DOBJECTS)
+               
                 ElseIf InStr(1, UCase(m_selectedItem.Shell), g_CLSID_GAMES, 1) > 0 Then
                         ' Games Explorer
-                        DesktopIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_GAMES)
-                        ComputerIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_GAMES)
+                        DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_GAMES)
+                        ComputerIconStatus = HideMyComputerIconsRegKey.GetValue(g_CLSID_GAMES)
                 Else
                         DesktopIconStatus = -2
                         ComputerIconStatus = -2
@@ -245,12 +258,12 @@ Public Function ShowContextMenu(ByRef winOwner As Form)
 
                 If InStr(1, UCase(m_selectedItem.Shell), g_CLSID_COMPUTER, 1) > 0 Then
                         ' This PC
-                        DesktopIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_COMPUTER)
+                        DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_COMPUTER)
                         ComputerIconStatus = -2
                         
                 ElseIf InStr(1, UCase(m_selectedItem.Shell), g_CLSID_NETWORK, 1) > 0 Then
                         ' My network places
-                        DesktopIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_NETWORK)
+                        DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_NETWORK)
                         ComputerIconStatus = -2
                         
                 ElseIf Left(UCase(m_selectedItem.Shell), 7) = "CONTROL" Then
@@ -262,8 +275,8 @@ Public Function ShowContextMenu(ByRef winOwner As Form)
                                 DesktopIconStatus = 1
                         End If
                 Else
-                                DesktopIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_CONTROLPANEL)
-                                ComputerIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "HideMyComputerIcons", g_CLSID_CONTROLPANEL)
+                                DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_CONTROLPANEL)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.GetValue(g_CLSID_CONTROLPANEL)
                         End If
                 Else
                         DesktopIconStatus = -2
@@ -776,58 +789,58 @@ MaxOSVersion = 0
     End If
         
     For Each thisObject In navigationPaneXML.childNodes
-	
+        
         If TypeName(thisObject) = "IXMLDOMElement" Then
-		
+                
             Set thisObjectXML = thisObject
 
-			If Not IsNull(thisObject.getAttribute("minwinversion")) Then
-				MinOSVersion = thisObject.getAttribute("minwinversion")
-			Else
-				MinOSVersion = WindowsVersion
-			End If
-			
-			If Not IsNull(thisObject.getAttribute("maxwinversion")) Then
-				MaxOSVersion = thisObject.getAttribute("maxwinversion")
-			Else
-				MaxOSVersion = MinOSVersion
-			End If
+                        If Not IsNull(thisObject.getAttribute("minwinversion")) Then
+                                MinOSVersion = thisObject.getAttribute("minwinversion")
+                        Else
+                                MinOSVersion = WindowsVersion
+                        End If
+                        
+                        If Not IsNull(thisObject.getAttribute("maxwinversion")) Then
+                                MaxOSVersion = thisObject.getAttribute("maxwinversion")
+                        Else
+                                MaxOSVersion = MinOSVersion
+                        End If
 
 
-			If WindowsVersion >= MinOSVersion and WindowsVersion <= MaxOSVersion Then
+                        If WindowsVersion >= MinOSVersion And WindowsVersion <= MaxOSVersion Then
 
                                                         
-				If thisObjectXML.tagName = "folder" Then
-						Set thisFolderOption = New NavigationPaneFolder
-						m_navigationPaneOptions.Add thisFolderOption
-						
-						thisFolderOption.Visible = True
+                                If thisObjectXML.tagName = "folder" Then
+                                                Set thisFolderOption = New NavigationPaneFolder
+                                                m_navigationPaneOptions.Add thisFolderOption
+                                                
+                                                thisFolderOption.Visible = True
 
-						If Not IsNull(thisObjectXML.getAttribute("visible")) Then thisFolderOption.Visible = CBool(thisObjectXML.getAttribute("visible"))
-						If thisFolderOption.Visible = True Then GroupOptionsVisibileCount = GroupOptionsVisibileCount + 1
-						If GroupOptionsVisibileCount > Layout.GroupOptionsVisibilityLimit And Layout.EnableVisibilityLimit Then thisFolderOption.Visible = False
-						
-						If Not IsNull(thisObjectXML.getAttribute("display_as_menu")) Then thisFolderOption.OpenAsMenu = CBool(thisObjectXML.getAttribute("display_as_menu"))
-						If Not IsNull(thisObjectXML.getAttribute("caption")) Then thisFolderOption.Caption = thisObjectXML.getAttribute("caption")
-						If Not IsNull(thisObjectXML.getAttribute("path")) Then thisFolderOption.Shell = thisObjectXML.getAttribute("path")
-						If Not IsNull(thisObjectXML.getAttribute("rollover")) Then thisFolderOption.Rollover = thisObjectXML.getAttribute("rollover")
+                                                If Not IsNull(thisObjectXML.getAttribute("visible")) Then thisFolderOption.Visible = CBool(thisObjectXML.getAttribute("visible"))
+                                                If thisFolderOption.Visible = True Then GroupOptionsVisibileCount = GroupOptionsVisibileCount + 1
+                                                If GroupOptionsVisibileCount > Layout.GroupOptionsVisibilityLimit And Layout.EnableVisibilityLimit Then thisFolderOption.Visible = False
+                                                
+                                                If Not IsNull(thisObjectXML.getAttribute("display_as_menu")) Then thisFolderOption.OpenAsMenu = CBool(thisObjectXML.getAttribute("display_as_menu"))
+                                                If Not IsNull(thisObjectXML.getAttribute("caption")) Then thisFolderOption.Caption = thisObjectXML.getAttribute("caption")
+                                                If Not IsNull(thisObjectXML.getAttribute("path")) Then thisFolderOption.Shell = thisObjectXML.getAttribute("path")
+                                                If Not IsNull(thisObjectXML.getAttribute("rollover")) Then thisFolderOption.Rollover = thisObjectXML.getAttribute("rollover")
 
-				ElseIf thisObjectXML.tagName = "custom" Then
-						Set thisCustomOption = New NavigationPaneCustom
-						m_navigationPaneOptions.Add thisCustomOption
-						
-						thisCustomOption.Visible = True
-						
-						If Not IsNull(thisObjectXML.getAttribute("visible")) Then thisCustomOption.Visible = CBool(thisObjectXML.getAttribute("visible"))
-						If thisCustomOption.Visible = True Then GroupOptionsVisibileCount = GroupOptionsVisibileCount + 1
-						If GroupOptionsVisibileCount > Layout.GroupOptionsVisibilityLimit And Layout.EnableVisibilityLimit Then thisCustomOption.Visible = False
-														
-						If Not IsNull(thisObjectXML.getAttribute("caption")) Then thisCustomOption.Caption = thisObjectXML.getAttribute("caption")
-						If Not IsNull(thisObjectXML.getAttribute("rollover")) Then thisCustomOption.Rollover = thisObjectXML.getAttribute("rollover")
-						If Not IsNull(thisObjectXML.getAttribute("exec")) Then thisCustomOption.Shell = thisObjectXML.getAttribute("exec")
-														
-						thisCustomOption.Populate thisObjectXML
-				End If
+                                ElseIf thisObjectXML.tagName = "custom" Then
+                                                Set thisCustomOption = New NavigationPaneCustom
+                                                m_navigationPaneOptions.Add thisCustomOption
+                                                
+                                                thisCustomOption.Visible = True
+                                                
+                                                If Not IsNull(thisObjectXML.getAttribute("visible")) Then thisCustomOption.Visible = CBool(thisObjectXML.getAttribute("visible"))
+                                                If thisCustomOption.Visible = True Then GroupOptionsVisibileCount = GroupOptionsVisibileCount + 1
+                                                If GroupOptionsVisibileCount > Layout.GroupOptionsVisibilityLimit And Layout.EnableVisibilityLimit Then thisCustomOption.Visible = False
+                                                                                                                
+                                                If Not IsNull(thisObjectXML.getAttribute("caption")) Then thisCustomOption.Caption = thisObjectXML.getAttribute("caption")
+                                                If Not IsNull(thisObjectXML.getAttribute("rollover")) Then thisCustomOption.Rollover = thisObjectXML.getAttribute("rollover")
+                                                If Not IsNull(thisObjectXML.getAttribute("exec")) Then thisCustomOption.Shell = thisObjectXML.getAttribute("exec")
+                                                                                                                
+                                                thisCustomOption.Populate thisObjectXML
+                                End If
                                                         
             End If
 
@@ -926,118 +939,125 @@ End Sub
 
 
 Private Function ShowHideDesktopIcons(ShellItem As String)
+
+        Dim NewStartPanelRegKey As RegistryKey
+        Set NewStartPanelRegKey = Registry.CurrentUser.OpenSubKey("Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel")
+        If NewStartPanelRegKey Is Nothing Then
+            Set NewStartPanelRegKey = Registry.CurrentUser.CreateSubKey("Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel")
+        End If
         
+
         Dim DesktopIconStatus As Variant
         DesktopIconStatus = 0
         ' 1 = icon is hidden
         If InStr(1, UCase(ShellItem), g_CLSID_COMPUTER, 1) > 0 Then
                         ' This PC
-                        DesktopIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_COMPUTER)
+                        DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_COMPUTER)
 
                         If DesktopIconStatus = 1 Then
-                                DesktopIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_COMPUTER, 0)
+                                DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_COMPUTER, 0)
                         Else
-                                DesktopIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_COMPUTER, 1)
+                                DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_COMPUTER, 1)
                         End If
 
         ElseIf InStr(1, UCase(ShellItem), g_CLSID_USERPROFILE, 1) > 0 Then
                         ' %UserProfile%
-                        DesktopIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_USERPROFILE)
+                        DesktopIconStatus = m_RegObj.GetValue(g_CLSID_USERPROFILE)
                                         
                         If DesktopIconStatus = 1 Then
-                                DesktopIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_USERPROFILE, 0)
+                                DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_USERPROFILE, 0)
                         Else
-                                DesktopIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_USERPROFILE, 1)
+                                DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_USERPROFILE, 1)
                         End If
 
         ElseIf InStr(1, UCase(ShellItem), g_CLSID_LIBRARIES, 1) > 0 Then
                         ' Libraries
-                        DesktopIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_LIBRARIES)
+                        DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_LIBRARIES)
                                         
                         If DesktopIconStatus = 1 Then
-                                DesktopIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_LIBRARIES, 0)
+                                DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_LIBRARIES, 0)
                         Else
-                                DesktopIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_LIBRARIES, 1)
+                                DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_LIBRARIES, 1)
                         End If
 
         ElseIf InStr(1, UCase(ShellItem), "450D8FBA-AD25-11D0-98A8-0800361B1103", 1) > 0 Or InStr(1, UCase(ShellItem), "PERSONAL", 1) Or InStr(1, UCase(ShellItem), g_CLSID_MYDOCS, 1) > 0 Then
             ' My Documents - XP
                         ' Always set as Hidden to avoid duplicates
-                        DesktopIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", "{450D8FBA-AD25-11D0-98A8-0800361B1103}", 1)
+                        DesktopIconStatus = NewStartPanelRegKey.SetValue("{450D8FBA-AD25-11D0-98A8-0800361B1103}", 1)
                         DesktopIconStatus = 0
-                        DesktopIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_MYDOCS)
+                        DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_MYDOCS)
 
                         If DesktopIconStatus = 1 Then
-                                DesktopIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_MYDOCS, 0)
+                                DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_MYDOCS, 0)
                         Else
-                                DesktopIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_MYDOCS, 1)
+                                DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_MYDOCS, 1)
                         End If
 
         ElseIf InStr(1, UCase(ShellItem), g_CLSID_NETWORK, 1) > 0 Then
                         ' My network places / Network
-                        DesktopIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_NETWORK)
+                        DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_NETWORK)
                                         
                         If DesktopIconStatus = 1 Then
-                                DesktopIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_NETWORK, 0)
+                                DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_NETWORK, 0)
                         Else
-                                DesktopIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_NETWORK, 1)
+                                DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_NETWORK, 1)
                         End If
                 
                 ElseIf InStr(1, UCase(ShellItem), g_CLSID_MYPIC, 1) > 0 Or InStr(1, UCase(ShellItem), "MYPICTURES", 1) Then
                         ' Pictures
-                        DesktopIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_MYPIC)
+                        DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_MYPIC)
                                         
                         If DesktopIconStatus = 1 Then
-                                DesktopIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_MYPIC, 0)
+                                DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_MYPIC, 0)
                         Else
-                                DesktopIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_MYPIC, 1)
+                                DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_MYPIC, 1)
                         End If
                 ElseIf InStr(1, UCase(ShellItem), g_CLSID_MYMUS, 1) > 0 Or InStr(1, UCase(ShellItem), "MYMUSIC", 1) Then
                         ' Music
-                        DesktopIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_MYMUS)
+                        DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_MYMUS)
                                         
                         If DesktopIconStatus = 1 Then
-                                DesktopIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_MYMUS, 0)
+                                DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_MYMUS, 0)
                         Else
-                                DesktopIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_MYMUS, 1)
+                                DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_MYMUS, 1)
                         End If
                 ElseIf InStr(1, UCase(ShellItem), g_CLSID_MYVID, 1) > 0 Or InStr(1, UCase(ShellItem), "MYVIDEO", 1) Then
                         ' Video
-                        DesktopIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_MYVID)
+                        DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_MYVID)
                                         
                         If DesktopIconStatus = 1 Then
-                                DesktopIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_MYVID, 0)
+                                DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_MYVID, 0)
                         Else
-                                DesktopIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_MYVID, 1)
+                                DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_MYVID, 1)
                         End If
                 ElseIf InStr(1, UCase(ShellItem), g_CLSID_DOWNLOADS, 1) > 0 Or InStr(1, UCase(ShellItem), "DOWNLOAD", 1) Then
                         ' Downloads
-                        DesktopIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_DOWNLOADS)
+                        DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_DOWNLOADS)
                                         
                         If DesktopIconStatus = 1 Then
-                                DesktopIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_DOWNLOADS, 0)
+                                DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_DOWNLOADS, 0)
                         Else
-                                DesktopIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_DOWNLOADS, 1)
+                                DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_DOWNLOADS, 1)
                         End If
                         
                 ElseIf InStr(1, UCase(ShellItem), g_CLSID_3DOBJECTS, 1) > 0 Then
                         ' 3D Objects
-                        DesktopIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_3DOBJECTS)
+                        DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_3DOBJECTS)
                                         
                         If DesktopIconStatus = 1 Then
-                                DesktopIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_3DOBJECTS, 0)
+                                DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_3DOBJECTS, 0)
                         Else
-                                DesktopIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_3DOBJECTS, 1)
+                                DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_3DOBJECTS, 1)
                         End If
                    
                 ElseIf InStr(1, UCase(ShellItem), g_CLSID_GAMES, 1) > 0 Then
                         ' Games Explorer
-                        DesktopIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_GAMES)
+                        DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_GAMES)
                                         
                         If DesktopIconStatus = 1 Then
-                                DesktopIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_GAMES, 0)
+                                DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_GAMES, 0)
                         Else
-                                DesktopIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_GAMES, 1)
+                                DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_GAMES, 1)
                         End If
                                                                         
         ElseIf Left(UCase(ShellItem), 7) = "CONTROL" Then
@@ -1055,12 +1075,12 @@ Private Function ShowHideDesktopIcons(ShellItem As String)
                                 End If
                         Else
                 ' Vista - 11
-                                DesktopIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_CONTROLPANEL)
+                                DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_CONTROLPANEL)
                                                                 
                                 If DesktopIconStatus = 1 Then
-                                        DesktopIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_CONTROLPANEL, 0)
+                                        DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_CONTROLPANEL, 0)
                                 Else
-                                        DesktopIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideDesktopIcons\NewStartPanel", g_CLSID_CONTROLPANEL, 1)
+                                        DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_CONTROLPANEL, 1)
                                 End If
 
                         End If
@@ -1075,116 +1095,119 @@ End Function
 
 
 Private Function ShowHideComputerIcons(ShellItem As String)
+
+    Dim HideMyComputerIconsRegKey As RegistryKey
+    Set HideMyComputerIconsRegKey = Registry.CurrentUser.OpenSubKey("Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons")
         
         Dim ComputerIconStatus As Variant
         ComputerIconStatus = 0
         ' 1 = icon is hidden
                 If InStr(1, UCase(ShellItem), g_CLSID_USERPROFILE, 1) > 0 Then
                         ' %UserProfile%
-                        ComputerIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_USERPROFILE)
+                        ComputerIconStatus = HideMyComputerIconsRegKey.GetValue(g_CLSID_USERPROFILE)
                                         
                         If ComputerIconStatus = 1 Then
-                                ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_USERPROFILE, 0)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.SetValue(g_CLSID_USERPROFILE, 0)
                         Else
-                                ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_USERPROFILE, 1)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.SetValue(g_CLSID_USERPROFILE, 1)
                         End If
 
         ElseIf InStr(1, UCase(ShellItem), g_CLSID_LIBRARIES, 1) > 0 Then
                         ' Libraries
-                        ComputerIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_LIBRARIES)
+                        ComputerIconStatus = HideMyComputerIconsRegKey.GetValue(g_CLSID_LIBRARIES)
                                         
                         If ComputerIconStatus = 1 Then
-                                ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_LIBRARIES, 0)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.SetValue(g_CLSID_LIBRARIES, 0)
                         Else
-                                ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_LIBRARIES, 1)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.SetValue(g_CLSID_LIBRARIES, 1)
                         End If
 
         ElseIf InStr(1, UCase(ShellItem), "450D8FBA-AD25-11D0-98A8-0800361B1103", 1) > 0 Or InStr(1, UCase(ShellItem), "PERSONAL", 1) Or InStr(1, UCase(ShellItem), g_CLSID_MYDOCS, 1) > 0 Then
                         ' My Documents - XP
                         ' Always set as Hidden to avoid duplicates
-                        ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", "{450D8FBA-AD25-11D0-98A8-0800361B1103}", 1)
+                        ComputerIconStatus = HideMyComputerIconsRegKey.SetValue("{450D8FBA-AD25-11D0-98A8-0800361B1103}", 1)
                         ComputerIconStatus = 0
-                        ComputerIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_MYDOCS)
+                        ComputerIconStatus = HideMyComputerIconsRegKey.GetValue(g_CLSID_MYDOCS)
 
                         If ComputerIconStatus = 1 Then
-                                ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_MYDOCS, 0)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.SetValue(g_CLSID_MYDOCS, 0)
                         Else
-                                ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_MYDOCS, 1)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.SetValue(g_CLSID_MYDOCS, 1)
                         End If
 
                 ElseIf InStr(1, UCase(ShellItem), g_CLSID_MYPIC, 1) > 0 Or InStr(1, UCase(ShellItem), "MYPICTURES", 1) Then
                         ' Pictures
-                        ComputerIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_MYPIC)
+                        ComputerIconStatus = HideMyComputerIconsRegKey.GetValue(g_CLSID_MYPIC)
                                         
                         If ComputerIconStatus = 1 Then
-                                ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_MYPIC, 0)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.SetValue(g_CLSID_MYPIC, 0)
                         Else
-                                ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_MYPIC, 1)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.SetValue(g_CLSID_MYPIC, 1)
                         End If
                 ElseIf InStr(1, UCase(ShellItem), g_CLSID_MYMUS, 1) > 0 Or InStr(1, UCase(ShellItem), "MYMUSIC", 1) Then
                         ' Music
-                        ComputerIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_MYMUS)
+                        ComputerIconStatus = HideMyComputerIconsRegKey.GetValue(g_CLSID_MYMUS)
                                         
                         If ComputerIconStatus = 1 Then
-                                ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_MYMUS, 0)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.SetValue(g_CLSID_MYMUS, 0)
                         Else
-                                ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_MYMUS, 1)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.SetValue(g_CLSID_MYMUS, 1)
                         End If
                 ElseIf InStr(1, UCase(ShellItem), g_CLSID_MYVID, 1) > 0 Or InStr(1, UCase(ShellItem), "MYVIDEO", 1) Then
                         ' Video
-                        ComputerIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_MYVID)
+                        ComputerIconStatus = HideMyComputerIconsRegKey.GetValue(g_CLSID_MYVID)
                                         
                         If ComputerIconStatus = 1 Then
-                                ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_MYVID, 0)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.SetValue(g_CLSID_MYVID, 0)
                         Else
-                                ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_MYVID, 1)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.SetValue(g_CLSID_MYVID, 1)
                         End If
                 ElseIf InStr(1, UCase(ShellItem), g_CLSID_DOWNLOADS, 1) > 0 Or InStr(1, UCase(ShellItem), "DOWNLOAD", 1) Then
                         ' Downloads
-                        ComputerIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_DOWNLOADS)
+                        ComputerIconStatus = HideMyComputerIconsRegKey.GetValue(g_CLSID_DOWNLOADS)
                                         
                         If ComputerIconStatus = 1 Then
-                                ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_DOWNLOADS, 0)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.SetValue(g_CLSID_DOWNLOADS, 0)
                         Else
-                                ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_DOWNLOADS, 1)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.SetValue(g_CLSID_DOWNLOADS, 1)
                         End If
                 ElseIf InStr(1, UCase(ShellItem), g_CLSID_3DOBJECTS, 1) > 0 Then
                         ' 3D Objects
-                        ComputerIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_3DOBJECTS)
+                        ComputerIconStatus = HideMyComputerIconsRegKey.GetValue(g_CLSID_3DOBJECTS)
                                         
                         If ComputerIconStatus = 1 Then
-                                ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_3DOBJECTS, 0)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.SetValue(g_CLSID_3DOBJECTS, 0)
                         Else
-                                ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_3DOBJECTS, 1)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.SetValue(g_CLSID_3DOBJECTS, 1)
                         End If
                 ElseIf InStr(1, UCase(ShellItem), g_CLSID_DESKTOP, 1) > 0 Then
                         ' Desktop
-                        ComputerIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_DESKTOP)
+                        ComputerIconStatus = HideMyComputerIconsRegKey.GetValue(g_CLSID_DESKTOP)
                                         
                         If ComputerIconStatus = 1 Then
-                                ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_DESKTOP, 0)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.SetValue(g_CLSID_DESKTOP, 0)
                         Else
-                                ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_DESKTOP, 1)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.SetValue(g_CLSID_DESKTOP, 1)
                         End If
                 ElseIf InStr(1, UCase(ShellItem), g_CLSID_GAMES, 1) > 0 Then
                         ' Games Explorer
-                        ComputerIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_GAMES)
+                        ComputerIconStatus = HideMyComputerIconsRegKey.GetValue(g_CLSID_GAMES)
                                         
                         If ComputerIconStatus = 1 Then
-                                ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_GAMES, 0)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.SetValue(g_CLSID_GAMES, 0)
                         Else
-                                ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_GAMES, 1)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.SetValue(g_CLSID_GAMES, 1)
                         End If
                                                         
         ElseIf Left(UCase(ShellItem), 7) = "CONTROL" Then
                         ' Control Panel
 
-                        ComputerIconStatus = m_RegObj.GetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_CONTROLPANEL)
+                        ComputerIconStatus = HideMyComputerIconsRegKey.GetValue(g_CLSID_CONTROLPANEL)
                                                         
                         If ComputerIconStatus = 1 Then
-                                ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_CONTROLPANEL, 0)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.SetValue(g_CLSID_CONTROLPANEL, 0)
                         Else
-                                ComputerIconStatus = m_RegObj.SetLongValue(HKEY_CURRENT_USER, "Software\Microsoft\Windows\CurrentVersion\Explorer\HideMyComputerIcons", g_CLSID_CONTROLPANEL, 1)
+                                ComputerIconStatus = HideMyComputerIconsRegKey.SetValue(g_CLSID_CONTROLPANEL, 1)
                         End If
 
         End If

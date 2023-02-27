@@ -17,7 +17,7 @@ Public ImageName As String
 
 Private m_mruKey As Collection
 
-Public Function AddMRURegKey(thisMRUKey As ViRegistryKey)
+Public Function AddMRURegKey(thisMRUKey As RegistryKey)
     m_mruKey.Add thisMRUKey
 End Function
 
@@ -32,7 +32,7 @@ End Function
 Public Function GetMRUList()
     Debug.Print "GetMRUList() " & ImageName
 
-Dim thisMRUKey As ViRegistryKey
+Dim thisMRUKey As RegistryKey
 Dim m_lnkCache()
  
     For Each thisMRUKey In m_mruKey

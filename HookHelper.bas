@@ -4,20 +4,20 @@ Option Explicit
 ' Subclassing Without The Crashes from vbAccelerator
 ' http://www.vbaccelerator.com/home/vb/Code/Libraries/Subclassing/SSubTimer/article.asp
 
-Private Declare Function CallWindowProc Lib "user32" Alias "CallWindowProcA" (ByVal lpPrevWndFunc As Long, ByVal hwnd As Long, ByVal msg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
+Private Declare Function CallWindowProc Lib "user32" Alias "CallWindowProcA" (ByVal lpPrevWndFunc As Long, ByVal hWnd As Long, ByVal msg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
 
 Private Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" ( _
   lpvDest As Any, lpvSource As Any, ByVal cbCopy As Long)
 
 Private Declare Function GetProp Lib "user32" Alias "GetPropA" _
-  (ByVal hwnd As Long, ByVal lpString As String) As Long
+  (ByVal hWnd As Long, ByVal lpString As String) As Long
 Private Declare Function SetProp Lib "user32" Alias "SetPropA" _
-  (ByVal hwnd As Long, ByVal lpString As String, ByVal hData As Long) As Long
+  (ByVal hWnd As Long, ByVal lpString As String, ByVal hData As Long) As Long
 Private Declare Function RemoveProp Lib "user32" Alias "RemovePropA" _
-  (ByVal hwnd As Long, ByVal lpString As String) As Long
+  (ByVal hWnd As Long, ByVal lpString As String) As Long
   
 Private Declare Function SetWindowLongW Lib "user32" _
-  (ByVal hwnd As Long, ByVal nIndex As Long, ByVal wNewWord As Long) As Long
+  (ByVal hWnd As Long, ByVal nIndex As Long, ByVal wNewWord As Long) As Long
 
 
 Private Const HOOK_OBJECT_REFERENCE As String = "HOOK_OBJ"
@@ -42,7 +42,7 @@ End Sub
 
 Public Function HookWindow(ByVal sourcehWnd As Long, hookObj As IHookSink) As Long
 'Exit Function
-
+    
     'set the property, 'HOOK_OBJ' to the pointer of the hookObj on the source hWnd
     Call SetProp(sourcehWnd, HOOK_OBJECT_REFERENCE, PtrFromObject(hookObj))
     
@@ -55,17 +55,17 @@ Dim oldWindowProcedure As Long: oldWindowProcedure = GetWindowLong(sourcehWnd, G
     HookWindow = SetWindowLongW(sourcehWnd, GWL_WNDPROC, AddressOf CallbackFunctionForAllWindows)
 End Function
 
-Private Function CallbackFunctionForAllWindows(ByVal hwnd As Long, ByVal msg As Long, ByVal wp As Long, ByVal lp As Long) As Long
+Private Function CallbackFunctionForAllWindows(ByVal hWnd As Long, ByVal msg As Long, ByVal wp As Long, ByVal lp As Long) As Long
 
 Dim hookObject As IHookSink
-Dim hookObjectPointer As Long: hookObjectPointer = GetProp(hwnd, HOOK_OBJECT_REFERENCE)
+Dim hookObjectPointer As Long: hookObjectPointer = GetProp(hWnd, HOOK_OBJECT_REFERENCE)
    
     If hookObjectPointer Then
         'Get the hookObj from the pointer
         Set hookObject = ObjectFromPtr(hookObjectPointer)
         
         'Call the new window processor and pass the result to the caller (windows)
-        CallbackFunctionForAllWindows = hookObject.WindowProc(hwnd, msg, wp, lp)
+        CallbackFunctionForAllWindows = hookObject.WindowProc(hWnd, msg, wp, lp)
     Else
         LogError "Hook object not found", "HookHelper"
     End If

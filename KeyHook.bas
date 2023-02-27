@@ -73,6 +73,8 @@ Public Function UnhookKeyboard()
 End Function
 
 Public Function HookKeyboard(hWnd As Long)
+'Exit Function
+
     If m_hKeyboardHook <> 0 Then
         UnhookKeyboard
     End If

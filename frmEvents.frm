@@ -3,16 +3,16 @@ Begin VB.Form frmEvents
    BackColor       =   &H00808080&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "ViStart_Event_Handler"
-   ClientHeight    =   2025
+   ClientHeight    =   2030
    ClientLeft      =   150
    ClientTop       =   480
-   ClientWidth     =   2265
+   ClientWidth     =   2270
    Icon            =   "frmEvents.frx":0000
    LinkTopic       =   "Form2"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   2025
-   ScaleWidth      =   2265
+   ScaleHeight     =   2030
+   ScaleWidth      =   2270
    StartUpPosition =   3  'Windows Default
    Begin VB.CommandButton Command2 
       Caption         =   "Command2"
@@ -702,15 +702,14 @@ Dim topValueSet As Boolean: topValueSet = False
             If ((recStartButton.Left) <> (recOrb.Left) Or _
                 (recReBar32.Top + lngTop) <> recOrb.Top) Then
         
-                Debug.Print "MOVING; " & (recStartButton.Top) & "<>" & (recOrb.Top)
-                
+                'Debug.Print "MOVING; " & (recStartButton.Top) & "<>" & (recOrb.Top)
                 MoveWindow m_startButton.hWnd, recStartButton.Left, recReBar32.Top + lngTop, m_startButton.ScaleWidth, m_startButton.ScaleHeight, True
             End If
                         
         ElseIf g_Windows11 Then
             ' Windows 11+
             
-            Debug.Print "MOVING; " & (recStartButton.Top) & "<>" & (recOrb.Top)
+            'Debug.Print "MOVING; " & (recStartButton.Top) & "<>" & (recOrb.Top)
             MoveWindow m_startButton.hWnd, recStartButton.Left + 2, recReBar32.Top + lngTop, m_startButton.ScaleWidth, m_startButton.ScaleHeight, True
 
         Else
@@ -731,8 +730,7 @@ Dim topValueSet As Boolean: topValueSet = False
             Else
                 If (recReBar32.Top + lngTop) <> (recOrb.Top) Then
             
-                    Debug.Print "MOVING; " & recReBar32.Top + lngTop & "<>" & (recOrb.Top)
-                    
+                    'Debug.Print "MOVING; " & recReBar32.Top + lngTop & "<>" & (recOrb.Top)
                     MoveWindow m_startButton.hWnd, lngLeft, lngTop, m_startButton.ScaleWidth, m_startButton.ScaleHeight, True
                 End If
             End If

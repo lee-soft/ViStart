@@ -2,7 +2,6 @@ Attribute VB_Name = "MainHelper"
 Option Explicit
 
 Public Layout As LayoutParser
-Public Registry As clsShellReg
 Public g_winLoading As frmAbout
 Public Settings As ViSettings
 Public CmdLine As CommandLine
@@ -30,6 +29,8 @@ Public g_WDSInitialized As Boolean
 Public g_resourcesPath As String
 Public g_rolloverPath As String
 Public g_startButtonFindAttempts As Long
+
+Private m_initializedGlobalClasses As Boolean
 
 Private Const EXIT_PROGRAM As Long = 1
 
@@ -106,14 +107,15 @@ Public Function InitCommonControlsVB() As Boolean
 End Function
 
 Function InitClasses_IfNeeded() As Boolean
-    If Not Registry Is Nothing Then
+    If m_initializedGlobalClasses Then
         InitClasses_IfNeeded = True
         Exit Function
     End If
+    
+    m_initializedGlobalClasses = True
 
     InitCommonControlsVB
     
-    Set Registry = New clsShellReg
     Set Layout = New LayoutParser
     Set MetroUtility = New Windows8Utility
     Set IconManager = New CIconManager
@@ -200,7 +202,10 @@ Dim ProgramDataPath As String
 Dim thisCLSID As CLSID
 Dim theImageFace As New GDIPImage
 
-    ProgramDataPath = Registry.Read("HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders\Common AppData")
+    Dim shellFoldersRegKey As RegistryKey
+    Set shellFoldersRegKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders")
+
+    ProgramDataPath = shellFoldersRegKey.GetValue("Common AppData")
     sBmpUserPath = ProgramDataPath & "\Microsoft\User Account Pictures\" & Environ$("USERNAME") & ".bmp"
     If FileExists(sBmpUserPath) = False Then
         'sBmpUserPath = ProgramDataPath & "\Microsoft\User Account Pictures\user.bmp"
@@ -394,7 +399,6 @@ Sub Main()
     g_WDSInitialized = WDSAvailable
 
     If Settings Is Nothing Then Set Settings = New ViSettings
-    OptionsHelper.GetOptions
 
     If Settings.CurrentSkin <> vbNullString Then
         g_resourcesPath = sCon_AppDataPath & "_skins\" & Settings.CurrentSkin & "\"
@@ -486,9 +490,12 @@ Function GetSystemLargeIconSize() As Integer
 Dim strTemp As String
 
     On Error GoTo Handler
+    
+    Dim windowMetricsRegKey As RegistryKey
+    Set windowMetricsRegKey = Registry.CurrentUser.OpenSubKey("Control Panel\Desktop\WindowMetrics")
 
     'Get this system's Icon size
-    strTemp = Registry.Read("HKCU\Control Panel\Desktop\WindowMetrics\Shell Icon Size", "32")
+    strTemp = windowMetricsRegKey.GetValue("Shell Icon Size", "32")
     GetSystemLargeIconSize = CInt(strTemp)
     
     Exit Function

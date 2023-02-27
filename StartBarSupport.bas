@@ -151,7 +151,7 @@ Dim xmlLanguageFile As New DOMDocument
 
     UserVariable.Add "Programs", "strPrograms"
     UserVariable.Add "Files", "strFiles"
-	
+        
     UserVariable.Add "All files", "strAllExtensions"
     
     UserVariable.Add "Documents", "strDocuments"
@@ -172,7 +172,7 @@ Dim xmlLanguageFile As New DOMDocument
     UserVariable.Add "3D Objects", "strObjects"
 
     UserVariable.Add "ViStart Control panel", "strViStartControlPanel"
-	
+        
     UserVariable.Add "Style", "strStyle"
     UserVariable.Add "Configure", "strConfigure"
     UserVariable.Add "Desktop", "strDesktop"
@@ -180,7 +180,7 @@ Dim xmlLanguageFile As New DOMDocument
     UserVariable.Add "Start Menu Skin", "strWhichStartMenu"
     UserVariable.Add "Install...", "strInstall"
     UserVariable.Add "Select a new ViStart theme file", "strViStartTheme"
-	
+        
     UserVariable.Add "Start Orb Skin", "strWhatStarOrb"
     UserVariable.Add "Use Skin default Orb", "strSkinDefaultOrb"
     UserVariable.Add "Pick image...", "strPick"
@@ -209,20 +209,20 @@ Dim xmlLanguageFile As New DOMDocument
     UserVariable.Add "Start button shows the Windows menu", "strStartWinMenu"
 
     UserVariable.Add "Restore Windows Start Menu Shortcut", "strRestoreStartMenu"
-	
+        
     UserVariable.Add "Windows 8 exclusive features defaults", "strW8Features"
-	
+        
     UserVariable.Add "Disable all Windows 8 hot corners", "strHotCorners"
     UserVariable.Add "Disable CharmsBar", "strDisableCharmsBar"
     UserVariable.Add "Disable Drag to close", "strDisableDragToClose"
     UserVariable.Add "Disable bottom left (Start) hot corner", "strDisableBottomLeftCorner"
     UserVariable.Add "Automatically go to desktop when I log in", "strSkipMetroScreen"
     UserVariable.Add "Windows 8 related features require a restart to take effect", "strW8FeaturesWarning"
-	
+        
     UserVariable.Add "(ViStart the program itself is created by Lee Matthew Chantrey)", "strCopyright"
 
     
-    If g_Windows8 or g_Windows81 Then
+    If g_Windows8 Or g_Windows81 Then
         UserVariable.Add "Metro", "startmenu"
     Else
         UserVariable.Add "Start Menu", "startmenu"
@@ -376,12 +376,12 @@ Sub SetVars_IfNeeded()
     sCon_AppDataPath = Environ$("appdata") & "\ViStart\"
 
     If Not FSO.FolderExists(sCon_AppDataPath) Then
-    	If FSO.FolderExists(App.Path & "\_skins\") Then
-		' ViStart %APPDATA% folder doesn't exist _skins are present in same directory
-		sCon_AppDataPath = App.Path
-	End If
+        If FSO.FolderExists(App.Path & "\_skins\") Then
+                ' ViStart %APPDATA% folder doesn't exist _skins are present in same directory
+                sCon_AppDataPath = App.Path
+        End If
     End If
-	
+        
     If Not FSO.FolderExists(sCon_AppDataPath) Then
         FSO.CreateFolder sCon_AppDataPath
         
@@ -394,44 +394,50 @@ Sub SetVars_IfNeeded()
         End If
     End If
     
-    sVar_Reg_StartMenu_MyDocuments = Registry.Read("HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders\Personal")
+    Dim currentUserShellFoldersRegKey As RegistryKey
+    Dim localMachineShellFoldersRegKey As RegistryKey
+    
+    Set currentUserShellFoldersRegKey = Registry.CurrentUser.OpenSubKey("SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders")
+    Set localMachineShellFoldersRegKey = Registry.LocalMachine.OpenSubKey("Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders")
+    
+    sVar_Reg_StartMenu_MyDocuments = currentUserShellFoldersRegKey.GetValue("Personal")
     If (LenB(sVar_Reg_StartMenu_MyDocuments) = 0) Then
         MsgBox "RegFail: My Documents Shell Folder not found", vbCritical
         End
     End If
     
-    sVar_Reg_StartMenu_CommonUser = Registry.Read("HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders\Common Start Menu")
+    sVar_Reg_StartMenu_CommonUser = localMachineShellFoldersRegKey.GetValue("Common Start Menu")
     If (LenB(sVar_Reg_StartMenu_CommonUser) = 0) Then
         MsgBox "RegFail: Common User Start Menu not found", vbCritical
         End
     End If
     
-    sVar_Reg_StartMenu_CurrentUser = Registry.Read("HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders\Start Menu")
+    sVar_Reg_StartMenu_CurrentUser = currentUserShellFoldersRegKey.GetValue("Start Menu")
     If (LenB(sVar_Reg_StartMenu_CurrentUser) = 0) Then
         MsgBox "RegFail: Current User User Start Menu not found", vbCritical
         End
     End If
     
-    sVar_Reg_StartMenu_CommonPrograms = Registry.Read("HKLM\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders\Common Programs")
+    sVar_Reg_StartMenu_CommonPrograms = localMachineShellFoldersRegKey.GetValue("Common Programs")
     If (LenB(sVar_Reg_StartMenu_CommonPrograms) = 0) Then
         MsgBox "RegFail: Start Menu Common Programs not found", vbCritical
         End
     End If
 
-    sVar_Reg_StartMenu_CurrentUserPrograms = Registry.Read("HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders\Programs")
+    sVar_Reg_StartMenu_CurrentUserPrograms = currentUserShellFoldersRegKey.GetValue("Programs")
     If (LenB(sVar_Reg_StartMenu_CurrentUserPrograms) = 0) Then
         MsgBox "RegFail: Start Menu Current User Programs not found", vbCritical
         End
     End If
     
-    sVar_Reg_StartMenu_CurrentUserRecentItems = Registry.Read("HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders\Recent")
+    sVar_Reg_StartMenu_CurrentUserRecentItems = currentUserShellFoldersRegKey.GetValue("Recent")
     If (LenB(sVar_Reg_StartMenu_CurrentUserRecentItems) = 0) Then
         bHasRecentItems = False
     Else
         bHasRecentItems = True
     End If
     
-    sVar_Reg_Desktop = VarScan(Registry.Read("HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders\Desktop", "%userprofile%\desktop"))
+    sVar_Reg_Desktop = VarScan(Registry.CurrentUser.OpenSubKey("Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders").GetValue("Desktop", "%userprofile%\desktop"))
         
     sCon_OrbFolderPath = sCon_AppDataPath & "_orbs\"
     If Not FSO.FolderExists(sCon_OrbFolderPath) Then
@@ -482,7 +488,7 @@ Dim objAttribs As IXMLDOMAttribute
 
     For Each objAttribs In objElem.Attributes
 
-        If objAttribs.Name = sAttribName Then
+        If objAttribs.name = sAttribName Then
             AttributeExists = True
             Exit Function
         End If
@@ -772,7 +778,7 @@ Dim strOutput As String
     On Error Resume Next
 
     strOutput = "[Object#1];"
-    strOutput = strOutput & "Name:" & objSource.Name & "-"
+    strOutput = strOutput & "Name:" & objSource.name & "-"
     strOutput = strOutput & "Path:" & objSource.Path
     
     ObjectPathNameToString = strOutput
@@ -792,8 +798,8 @@ End Function
 Public Function FontExists(FontName As String) As Boolean
     Dim oFont As New StdFont
     Dim bAns As Boolean
-        oFont.Name = FontName
-        bAns = StrComp(FontName, oFont.Name, vbTextCompare) = 0
+        oFont.name = FontName
+        bAns = StrComp(FontName, oFont.name, vbTextCompare) = 0
         FontExists = bAns
 End Function
 

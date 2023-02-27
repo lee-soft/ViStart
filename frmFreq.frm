@@ -403,7 +403,7 @@ Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y A
     
     'If IsAnyFileMenuShowing Then Exit Sub
 
-Static lastPosition As POINTS
+Static lastPosition As points
 Static lastButton As Integer
     
     If bKeyboardMode Then
@@ -884,8 +884,10 @@ Private Sub picRollover_MouseUp(Button As Integer, Shift As Integer, X As Single
         
             m_vistaMenu.AddItem ""
         
-            If Registry.RegObj.KeyExists(HKEY_CLASSES_ROOT, "lnkfile\shell\Add to ViPad") Then
-                m_addToViPadCommand = Registry.RegObj.GetStringValue(HKEY_CLASSES_ROOT, "lnkfile\shell\Add to ViPad\command", "", "", False)
+            Dim lnkFileShellRegKey As RegistryKey: Set lnkFileShellRegKey = Registry.ClassesRoot.OpenSubKey("lnkfile\shell")
+
+            If Not lnkFileShellRegKey.OpenSubKey("Add to ViPad") Is Nothing Then
+                m_addToViPadCommand = lnkFileShellRegKey.OpenSubKey("Add to ViPad").GetValue("command", vbNullString)
                 m_addToViPadCommand = Replace(m_addToViPadCommand, "%1", lstItems(iCurIndex).Shell)
                 
                 m_vistaMenu.AddItem GetPublicString("strCopyToViPad"), "COPYTOVIPAD@NULL"
@@ -893,7 +895,7 @@ Private Sub picRollover_MouseUp(Button As Integer, Shift As Integer, X As Single
                 If m_viPadInstalled Then
                     m_addToViPadCommand = GenerateViPadAddToCommand(lstItems(iCurIndex).Shell)
                 
-	    	m_vistaMenu.AddItem GetPublicString("strCopyToViPad"), "COPYTOVIPAD@NULL"
+                m_vistaMenu.AddItem GetPublicString("strCopyToViPad"), "COPYTOVIPAD@NULL"
             '    'Else
             '    '    m_addToViPadCommand = "http://lee-soft.com/vipad"
                 End If

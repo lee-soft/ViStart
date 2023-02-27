@@ -9,9 +9,9 @@ Begin VB.Form frmStartMenuBase
    ClientTop       =   0
    ClientWidth     =   4680
    LinkTopic       =   "Form1"
-   ScaleHeight     =   206
+   ScaleHeight     =   309
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   312
+   ScaleWidth      =   468
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
    Begin VB.Timer timJumplistUpdater 
@@ -1464,7 +1464,7 @@ Dim clicked As Boolean
             m_jumpListDrawer.MouseLeaves
         End If
     Else
-        Debug.Print XSng & ":" & Layout.GroupMenuSchema.Left & " & " & Layout.GroupMenuSchema.Width
+        'Debug.Print XSng & ":" & Layout.GroupMenuSchema.Left & " & " & Layout.GroupMenuSchema.Width
     
         If IsInsideViComponent(XSng, YSng, Layout.GroupMenuSchema, clientMousePos) Then
             m_navigationDraw.HasMouse = True

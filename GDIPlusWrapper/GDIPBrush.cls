@@ -11,6 +11,9 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+Attribute VB_Ext_KEY = "SavedWithClassBuilder6" ,"Yes"
+Attribute VB_Ext_KEY = "Member0" ,"Colour"
+Attribute VB_Ext_KEY = "Top_Level" ,"Yes"
 '--------------------------------------------------------------------------------
 '    Component  : GDIPBrush
 '    Description: Defines a brush of a single color. Brushes are used to

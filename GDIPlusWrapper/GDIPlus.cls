@@ -32,7 +32,7 @@ Public Enum PixelFormat
    Format64bppArgb = 3424269
    Format64bppPArgb = 1851406
    Format8bppIndexed = 198659
-   Gdi = 131072
+   GDI = 131072
    Indexed = 65536
    Max = 15
    PAlpha = 524288

@@ -16,7 +16,7 @@ Option Explicit
 Private Declare Function LocalGdipSaveImageToFile Lib "gdiplus.dll" Alias "GdipSaveImageToFile" _
    (ByVal Image As Long, _
    ByVal FileName As Long, _
-   clsidEncoder As CLSID, _
+   clsidEncoder As clsid, _
    ByVal lPtrBuff As Long) As Long
 
 Private Declare Function LocalGdipGetPropertyItem Lib "gdiplus.dll" Alias "GdipGetPropertyItem" _
@@ -135,7 +135,7 @@ Dim cloneimage As Long
 End Function
 
 Public Property Get EncoderParameterList( _
-      clsidEncoder As CLSID _
+      clsidEncoder As clsid _
    )
 Dim i As Long
 Dim iFoundIndex As Long
@@ -157,8 +157,8 @@ Dim iFoundIndex As Long
 End Property
 
 Private Function matchCLSID( _
-      clsId1 As CLSID, _
-      clsId2 As CLSID _
+      clsId1 As clsid, _
+      clsId2 As clsid _
    ) As Boolean
 Dim i As Long
    If (clsId1.Data1 = clsId2.Data1) Then
@@ -176,7 +176,7 @@ Dim i As Long
 
 End Function
       
-Public Function Save(ByVal FileName As String, clsidEncoder As CLSID)
+Public Function Save(ByVal FileName As String, clsidEncoder As clsid)
     SetStatus LocalGdipSaveImageToFile(m_img, StrPtr(FileName), clsidEncoder, ByVal 0&)
       
 End Function
@@ -236,8 +236,8 @@ Public Property Get Flags() As Long
     Flags = lFlags
 End Property
 
-Public Property Get RawFormat() As CLSID
-Dim format As CLSID
+Public Property Get RawFormat() As clsid
+Dim format As clsid
    SetStatus GdipGetImageRawFormat(m_img, format)
    RawFormat = format
 End Property
@@ -297,7 +297,7 @@ End Property
 
 
 Public Sub SelectActiveFrame( _
-    dimensionId As CLSID, _
+    dimensionId As clsid, _
     ByVal frameIndex As Long _
     )
    SetStatus GdipImageSelectActiveFrame(m_img, _
@@ -332,7 +332,7 @@ Dim lSize As Long
       Dim lDataSize As Long
       If Not (lPtrBuff = 0) And (lSize > 0) Then
          RtlMoveMemory p, ByVal lPtrBuff, Len(p)
-         cItem.fInit p.Id, p.Length, p.Type, p.ValuePtr, lSize
+         cItem.fInit p.Id, p.length, p.Type, p.ValuePtr, lSize
       End If
       Set PropertyItemForID = cItem
    End If
@@ -359,13 +359,13 @@ Public Sub RemovePropertyItem(ByVal propId As Long)
    SetStatus GdipRemovePropertyItem(m_img, propId)
 End Sub
 
-Public Sub SetPropertyItem(Item As GDIPPropertyItem)
+Public Sub SetPropertyItem(item As GDIPPropertyItem)
    Dim p As gdiplus.PropertyItem
-   p.Id = Item.Id
-   p.Length = Item.Length
-   p.Type = Item.ItemType
-   ReDim b(0 To Item.DataBufferSize - 1) As Byte
-   Item.GetData b()
+   p.Id = item.Id
+   p.length = item.length
+   p.Type = item.ItemType
+   ReDim b(0 To item.DataBufferSize - 1) As Byte
+   item.GetData b()
    p.ValuePtr = VarPtr(b(0))
    SetStatus GdipSetPropertyItem(m_img, p)
 End Sub

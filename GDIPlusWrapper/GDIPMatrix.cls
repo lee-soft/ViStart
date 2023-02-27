@@ -14,9 +14,9 @@ Attribute VB_Exposed = False
 '--------------------------------------------------------------------------------
 '    Component  : GDIPMatrix
 
-'    Description: A Matrix object represents a 3 ×3 matrix that, in turn,
+'    Description: A Matrix object represents a 3 ï¿½3 matrix that, in turn,
 '    represents an affine transformation. A Matrix object stores only six of
-'    the 9 numbers in a 3 ×3 matrix because all 3 ×3 matrices that represent
+'    the 9 numbers in a 3 ï¿½3 matrix because all 3 ï¿½3 matrices that represent
 '    affine transformations have the same third column (0, 0, 1).
 '
 '    Based on Microsoft's GDI+ class   :

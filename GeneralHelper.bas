@@ -185,30 +185,41 @@ Dim dataToSend() As Byte
 End Function
 
 Sub RemoveFromShellContextMenu(theType As String, Optional theText As String = CONTEXT_MENU)
-    InitClasses_IfNeeded
     
-    If Registry.RegObj.KeyExists(HKEY_CLASSES_ROOT, theType & "\shell\" & theText) Then
-        Registry.RegObj.DeleteKey HKEY_CLASSES_ROOT, theType & "\shell\" & theText
+Dim typeRegistryKey As RegistryKey
+
+    On Error GoTo FailedToOpenShellType
+    Set typeRegistryKey = Registry.ClassesRoot.OpenSubKey(theType & "\shell")
+    
+    If typeRegistryKey.GetValue(theText) Then
+        typeRegistryKey.DeleteValue theText
     End If
 
+    Exit Sub
+FailedToOpenShellType:
+    LogError Err.Description, "GeneralHelper"
 End Sub
 
 Sub AddToShellContextMenu(theType As String, Optional theText As String = CONTEXT_MENU)
-    InitClasses_IfNeeded
-    
+
 Dim strKeyValue As String
+Dim sourceKey As RegistryKey
+Dim typeRegistryKey As RegistryKey
+
     strKeyValue = App.Path & "\" & App.EXEName & ".exe" & " /pin " & """" & "%1" & """"
 
-    If Not Registry.RegObj.KeyExists(HKEY_CLASSES_ROOT, theType & "\shell\" & theText & "\command") Then
+    Set typeRegistryKey = Registry.ClassesRoot.OpenSubKey(theType & "\shell\" & theText)
+    If typeRegistryKey Is Nothing Then
+        Set sourceKey = Registry.ClassesRoot.CreateSubKey(theType & "\shell\" & theText & "\command")
+        sourceKey.SetValue "", strKeyValue
+        Set sourceKey = Nothing
+    End If
     
-        Registry.RegObj.CreateKey HKEY_CLASSES_ROOT, theType & "\shell\" & theText
-        Registry.RegObj.CreateKey HKEY_CLASSES_ROOT, theType & "\shell\" & theText & "\command"
-        
-        Registry.RegObj.SetStringValue HKEY_CLASSES_ROOT, theType & "\shell\" & theText & "\command", "", strKeyValue
-    Else
-        If Registry.RegObj.GetStringValue(HKEY_CLASSES_ROOT, theType & "\shell\" & theText & "\command\", "", "") <> strKeyValue Then
-            Registry.RegObj.SetStringValue HKEY_CLASSES_ROOT, theType & "\shell\" & theText & "\command", "", strKeyValue
-        End If
+    Dim commandRegKey As RegistryKey
+    Set commandRegKey = Registry.ClassesRoot.OpenSubKey(theType & "\shell\" & theText & "\command")
+
+    If commandRegKey.GetValue("") <> strKeyValue Then
+        commandRegKey.SetValue "", strKeyValue
     End If
 
 End Sub
@@ -221,13 +232,18 @@ Sub CreateFileAssociation(ByVal szExtension As String, ByVal szClassName As Stri
         szExtension = "." & szExtension
     End If
     
-    Registry.RegObj.CreateKey HKEY_CLASSES_ROOT, szExtension
-    Registry.RegObj.SetStringValue HKEY_CLASSES_ROOT, szExtension, vbNullString, szClassName
-    Registry.RegObj.SetStringValue HKEY_CLASSES_ROOT, szClassName, "", szDescription
+    Dim extensionRegKey As RegistryKey
     
-    Registry.RegObj.CreateKey HKEY_CLASSES_ROOT, szClassName & "\Shell\Open\Command"
-    Registry.RegObj.SetStringValue HKEY_CLASSES_ROOT, szClassName & "\Shell\Open\Command", "", _
-                        szExeProgram & " /install_theme " & " ""%1"""
+    Set extensionRegKey = Registry.ClassesRoot.CreateSubKey(szExtension)
+    extensionRegKey.SetValue "", szClassName
+    
+    Dim classRegKey As RegistryKey
+    Set classRegKey = Registry.ClassesRoot.CreateSubKey(szClassName)
+    classRegKey.SetValue "", szDescription
+    
+    Dim classCommandRegKey As RegistryKey
+    Set classCommandRegKey = Registry.ClassesRoot.CreateSubKey(szClassName & "\Shell\Open\Command")
+    classCommandRegKey.SetValue "", szExeProgram & " /install_theme " & " ""%1"""
 End Sub
 
 Public Function CheckBoxToBoolean(ByVal theValue As CheckBoxConstants) As Boolean
@@ -432,7 +448,11 @@ Function SetOwner(ByVal HwndtoUse, ByVal HwndofOwner) As Long
 End Function
 
 Property Get CurrentDPI() As Long
-    CurrentDPI = Registry.Read("HKCU\Control Panel\Desktop\WindowMetrics\AppliedDPI")
+
+Dim windowMetricsRegKey As RegistryKey
+    Set windowMetricsRegKey = Registry.CurrentUser.OpenSubKey("Control Panel\Desktop\WindowMetrics")
+    
+    CurrentDPI = windowMetricsRegKey.GetValue("AppliedDPI")
 End Property
 
 Public Function MAKELPARAM(wLow As Long, wHigh As Long) As Long
