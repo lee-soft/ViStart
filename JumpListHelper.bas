@@ -9,8 +9,6 @@ Private Const EXPLORER_OPENSAVEDOCS_VISTA As String = "Software\Microsoft\Window
 Private EXPLORER_OPENSAVEDOCS As String
 
 Function SetOpenSaveDocs()
-    On Error GoTo RegistryError
-    
     EXPLORER_OPENSAVEDOCS = EXPLORER_OPENSAVEDOCS_XP
     If Registry.CurrentUser.OpenSubKey(EXPLORER_OPENSAVEDOCS) Is Nothing Then
         EXPLORER_OPENSAVEDOCS = EXPLORER_OPENSAVEDOCS_VISTA
