@@ -135,7 +135,7 @@ Public Sub CreateFromHBITMAP( _
    )
 Dim bm As Long
    Dispose
-   SetStatus GdipCreateBitmapFromHBITMAP(bm, hPal, bm)
+   SetStatus GdipCreateBitmapFromHBITMAP(hBmp, hPal, bm)
    m_img.fInit bm, m_lastResult
 End Sub
 
