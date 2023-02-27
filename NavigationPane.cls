@@ -1056,7 +1056,7 @@ Private Function ShowHideDesktopIcons(ShellItem As String)
                         If DesktopIconStatus = 1 Then
                                 DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_GAMES, 0)
                         Else
-                                DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_GAMES, 1)
+                                DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_GAMES, 1)
                         End If
                                                                         
         ElseIf Left(UCase(ShellItem), 7) = "CONTROL" Then
@@ -1077,9 +1077,9 @@ Private Function ShowHideDesktopIcons(ShellItem As String)
                                 DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_CONTROLPANEL)
                                                                 
                                 If DesktopIconStatus = 1 Then
-                                        DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_CONTROLPANEL, 0)
+                                        DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_CONTROLPANEL, 0)
                                 Else
-                                        DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_CONTROLPANEL, 1)
+                                        DesktopIconStatus = NewStartPanelRegKey.SetValue(g_CLSID_CONTROLPANEL, 1)
                                 End If
 
                         End If
