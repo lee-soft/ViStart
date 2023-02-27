@@ -53,8 +53,6 @@ Dim thisImagePath
 End Function
 
 Private Function UpdateJumplistPaths(theFile As Scripting.File)
-    Debug.Print "updating:: " & theFile.Path & " - " & theFile.Size
-
 Dim newJumplist As Collection
 
     If ExistInCol(m_jumpLists, theFile.Path) Then
