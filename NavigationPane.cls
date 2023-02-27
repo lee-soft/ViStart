@@ -1124,7 +1124,7 @@ Private Function ShowHideComputerIcons(ShellItem As String)
         ElseIf InStr(1, UCase(ShellItem), "450D8FBA-AD25-11D0-98A8-0800361B1103", 1) > 0 Or InStr(1, UCase(ShellItem), "PERSONAL", 1) Or InStr(1, UCase(ShellItem), g_CLSID_MYDOCS, 1) > 0 Then
                         ' My Documents - XP
                         ' Always set as Hidden to avoid duplicates
-                        ComputerIconStatus = HideMyComputerIconsRegKey.GetValue("{450D8FBA-AD25-11D0-98A8-0800361B1103}", 1)
+                        ComputerIconStatus = HideMyComputerIconsRegKey.SetValue("{450D8FBA-AD25-11D0-98A8-0800361B1103}", 1)
                         ComputerIconStatus = 0
                         ComputerIconStatus = HideMyComputerIconsRegKey.GetValue(g_CLSID_MYDOCS)
 
