@@ -21,20 +21,18 @@ Public sFonts() As String
 Dim Reg As New RegistryKey
 
 Function StartsWithWindows() As Boolean
-    
     StartsWithWindows = False
     
 Dim startWithWindowsRegKey As RegistryKey
     Set startWithWindowsRegKey = Registry.CurrentUser.OpenSubKey("Software\Microsoft\Windows\CurrentVersion\Run\")
     
-    On Error GoTo FailedToGetKey
+    If startWithWindowsRegKey Is Nothing Then
+        Exit Function
+    End If
+ 
     If LCase$(startWithWindowsRegKey.GetValue("ViStart", "<Empty>")) = LCase$(AppPath & App.EXEName & ".exe") Then
         StartsWithWindows = True
     End If
-    
-    Exit Function
-FailedToGetKey:
-    StartsWithWindows = False
 End Function
 
 Public Function ValidateOptions() As Boolean
