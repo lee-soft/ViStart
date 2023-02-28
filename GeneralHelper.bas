@@ -235,6 +235,11 @@ Sub CreateFileAssociation(ByVal szExtension As String, ByVal szClassName As Stri
     Dim extensionRegKey As RegistryKey
     
     Set extensionRegKey = Registry.ClassesRoot.CreateSubKey(szExtension)
+    If extensionRegKey Is Nothing Then
+        LogError "Cannot create file association for extension: " & szExtension
+        Exit Sub
+    End If
+    
     extensionRegKey.SetValue "", szClassName
     
     Dim classRegKey As RegistryKey

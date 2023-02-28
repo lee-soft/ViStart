@@ -96,7 +96,7 @@ Public Function GetSubKeyNames() As Collection
 Dim subkey_num As Integer
 Dim subkey_name As String
 
-Dim length As Long
+Dim Length As Long
 
     Dim SubKeysNames As Collection
     Set SubKeysNames = New Collection
@@ -107,10 +107,10 @@ Dim length As Long
 
     Do
         ' Enumerate subkeys until we get an error.
-        length = 1024
-        subkey_name = Space$(length)
+        Length = 1024
+        subkey_name = Space$(Length)
         If RegEnumKey(Me.Key, subkey_num, _
-            subkey_name, length) _
+            subkey_name, Length) _
                 <> ERROR_SUCCESS Then Exit Do
                 
         subkey_num = subkey_num + 1
@@ -197,7 +197,8 @@ Public Function SetValue(ByVal ValueName As String, ByVal Value As Variant) As B
     ElseIf vbValueType = vbLong Or vbValueType = vbInteger Then
         ValueType = REG_DWORD
     Else
-        Err.Raise 0, "RegistryKey", "Unimplmented type!"
+        Debug.Print "RegistryKey, unimplented type: " & vbValueType
+        If Not m_supressErrors Then Err.Raise 0, "RegistryKey", "Unimplmented type!"
     End If
     
     result = RegOpenKeyEx(Me.Key, "", 0, KEY_ALL_ACCESS, hKey)
@@ -282,4 +283,8 @@ End Function
 
 Private Sub Class_Initialize()
     m_supressErrors = True
+End Sub
+
+Private Sub Class_Terminate()
+    If m_hKeySet Then RegCloseKey m_hKey
 End Sub
