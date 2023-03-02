@@ -870,17 +870,17 @@ End Property
 
 Sub ValidateSkin(ByVal szNewSkin As String)
 
-	cmbChildThemes.Visible = False
-	
+        cmbChildThemes.Visible = False
+        
     If FileCheck(m_skinDir & szNewSkin & "\") Then
         Set m_childSkinNameStrings = OptionsHelper.GetChildSkins(m_skinDir & szNewSkin & "\layout.xml")
         PopulateChildSkins
 
-		If Settings.CurrentChildSkin <> vbNullString Then
-			cmbChildThemes.Visible = True
-		'Else
-			'cmbChildThemes.Visible = False
-		End If
+                If Settings.CurrentChildSkin <> vbNullString Then
+                        cmbChildThemes.Visible = True
+                'Else
+                        'cmbChildThemes.Visible = False
+                End If
     
         If Settings.CurrentSkin = vbNullString Or FileCheck(m_skinDir & Settings.CurrentSkin & "\") = False Then
             Settings.CurrentSkin = szNewSkin
@@ -888,7 +888,7 @@ Sub ValidateSkin(ByVal szNewSkin As String)
             Dim newSkinCollectionItem As CollectionItem
             Set newSkinCollectionItem = New CollectionItem
             newSkinCollectionItem.Value = szNewSkin
-			
+                        
             RaiseEvent onChangeSkin(newSkinCollectionItem)
         End If
     Else
@@ -958,6 +958,11 @@ Private Sub Ensure_NukeMetro()
 
 Dim runAtStartupRegKey As RegistryKey
     Set runAtStartupRegKey = Registry.CurrentUser.OpenSubKey("Software\Microsoft\Windows\CurrentVersion\Run")
+    
+    If runAtStartupRegKey Is Nothing Then
+        LogError "Unable to open registry key", "Ensure_NukeMetro::frmControlPanel"
+        Exit Sub
+    End If
 
     If chkDisableCharmsBar.Value = vbChecked Or _
        chkDisableDragToClose.Value = vbChecked Or _
@@ -1196,13 +1201,13 @@ Private Sub lblAurthor_Click()
     AppLauncherHelper.ShellEx lblAurthor.Tag
 End Sub
 
-Private Sub lblText_Click(Index As Integer)
-    If lblText(Index).Tag <> vbNullString Then
-        AppLauncherHelper.ShellEx lblText(Index).Tag
+Private Sub lblText_Click(index As Integer)
+    If lblText(index).Tag <> vbNullString Then
+        AppLauncherHelper.ShellEx lblText(index).Tag
     End If
 End Sub
 
-Private Sub MenuItem_onChanged(Index As Integer)
+Private Sub MenuItem_onChanged(index As Integer)
     RaiseEvent onNavigationPanelChange
 End Sub
 
@@ -1451,14 +1456,14 @@ Sub InitializeStyleFrame()
     ListOrbs
     ListRollovers
         
-	' Hide rollover option when no _rollover folder exist
-	If cmbRollover.ListCount > 1 Then
-		Label7.Visible = True
-		cmbRollover.Visible = True
-	Else
-		Label7.Visible = False
-		cmbRollover.Visible = False
-	End If
+        ' Hide rollover option when no _rollover folder exist
+        If cmbRollover.ListCount > 1 Then
+                Label7.Visible = True
+                cmbRollover.Visible = True
+        Else
+                Label7.Visible = False
+                cmbRollover.Visible = False
+        End If
         
 End Sub
 
@@ -1513,7 +1518,7 @@ Sub AddNavigationItem(ByRef objNavigationItem As Object)
     Load MenuItem(MenuItem.count)
     With MenuItem(MenuItem.UBound)
         .Left = MenuItem(0).Left
-        .Top = MenuItem(.Index - 1).Top + MenuItem(0).Height + 2
+        .Top = MenuItem(.index - 1).Top + MenuItem(0).Height + 2
 
         .Source = objNavigationItem
         .Visible = True
@@ -1741,7 +1746,7 @@ Dim realPosition_X As Long
 Dim theDimensions As RECTF
 
 Dim theLabelIndex As Long
-Dim theFontStyle As FontStyle
+Dim theFontStyle As fontStyle
 
     If Not IsNull(theText.Text) Then
         theCaption = theText.Text
@@ -1775,7 +1780,7 @@ Dim theFontStyle As FontStyle
     AddText theCaption, theFontStyle
 End Sub
 
-Private Function AddText(ByVal theCaption As String, Optional ByVal theFontStyle As FontStyle = FontStyleRegular) As Label
+Private Function AddText(ByVal theCaption As String, Optional ByVal theFontStyle As fontStyle = FontStyleRegular) As Label
     'If theCaption = vbNullString Then Exit Function
     On Error GoTo Handler
 

@@ -914,7 +914,7 @@ Private Sub picRollover_MouseUp(Button As Integer, Shift As Integer, X As Single
 
     Exit Sub
 Handler:
-    LogError Err.Description, "frmFreq"
+    LogError Err.Description, "frmFreq::MouseUp"
 End Sub
 
 Sub MoveSeperator(theY As Long)

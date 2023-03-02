@@ -11,7 +11,7 @@ Private Declare Function SHGetPathFromIDList Lib "shell32.dll" Alias "SHGetPathF
                         
 Private Declare Function SHGetFolderPath Lib "shfolder" Alias "SHGetFolderPathA" (ByVal hwndOwner As Long, ByVal nFolder As Long, ByVal hToken As Long, ByVal dwFlags As Long, ByVal pszPath As String) As Long
 
-Private Declare Function GetLocaleInfo Lib "kernel32" Alias "GetLocaleInfoW" (ByVal Locale As Long, ByVal lCType As Long, ByVal lpLCData As String, ByVal cchData As Long) As Long
+Private Declare Function GetLocaleInfo Lib "kernel32" Alias "GetLocaleInfoW" (ByVal Locale As Long, ByVal LCType As Long, ByVal lpLCData As String, ByVal cchData As Long) As Long
 
 Private Declare Function GetUserDefaultLCID Lib "kernel32" () As Long
 
@@ -54,11 +54,11 @@ Public g_WinDecimalSeparator As String
 Public g_WindowsVersion As Double
 Public g_WindowsVersionFull As String
 
-Public g_WindowsLanguageLCID as Long
-Public g_WindowsLanguageCulture as String
-Public g_WindowsLanguageCountry as String
-Public g_WindowsLanguage as String
-Public g_WindowsLanguageInt as String
+Public g_WindowsLanguageLCID As Long
+Public g_WindowsLanguageCulture As String
+Public g_WindowsLanguageCountry As String
+Public g_WindowsLanguage As String
+Public g_WindowsLanguageInt As String
 
 Public g_WindowsXP As Boolean
 Public g_WindowsVista As Boolean
@@ -134,19 +134,19 @@ Function FindStringResourceEx(ByVal hInstance As Long, ByVal uId As Long, ByVal 
 
     Dim hResource As Long
     Dim hGlobal As Long
-    Dim Ptr As Long, i As Long
+    Dim ptr As Long, i As Long
 
     hResource = FindResourceEx(hInstance, RT_STRING, uId \ STRINGS_PER_BUCKET + 1, langId)
-	
+        
     If hResource Then
         hGlobal = LoadResource(hInstance, hResource)
         If hGlobal Then
-            Ptr = LockResource(hGlobal)
-            If Ptr Then
+            ptr = LockResource(hGlobal)
+            If ptr Then
                 For i = 1 To uId And (STRINGS_PER_BUCKET - 1)
-                    Ptr = PtrAdd(Ptr, (1 + DUInt(Ptr)) * WCHARSIZE)
+                    ptr = PtrAdd(ptr, (1 + DUInt(ptr)) * WCHARSIZE)
                 Next
-                SysReAllocStringLen VarPtr(FindStringResourceEx), PtrAdd(Ptr, 2), DUInt(Ptr)
+                SysReAllocStringLen VarPtr(FindStringResourceEx), PtrAdd(ptr, 2), DUInt(ptr)
             End If
         End If
     End If
@@ -161,19 +161,19 @@ Public Function GetStringFromFile(ByVal RESOURCE_FILE As String, ByVal RESOURCE_
 
     Dim hModule As Long
     hModule = LoadLibrary(StrPtr(RESOURCE_FILE))
-	
-	Dim ExtractedString as String
-	
+        
+        Dim ExtractedString As String
+        
     If hModule Then
-	
-		ExtractedString = FindStringResourceEx(hModule, STRING_ID, RESOURCE_LANG)
-		
-		'debug.print ExtractedString
-		GetStringFromFile = ExtractedString
-		
+        
+                ExtractedString = FindStringResourceEx(hModule, STRING_ID, RESOURCE_LANG)
+                
+                'debug.print ExtractedString
+                GetStringFromFile = ExtractedString
+                
         FreeLibrary hModule
     End If
-	
+        
 End Function
 
 
@@ -248,19 +248,19 @@ Function DetermineWindowsVersion_IfNeeded()
         Exit Function
     End If
 
-	g_WindowsLanguageLCID = Trim(GetUserDefaultLCID)
-	g_WindowsLanguageCulture = GetLocaleCulture
-	g_WindowsLanguageCountry = GetCountryName
-	g_WindowsLanguage = RTrim(Replace(GetLocaleLanguage, "(" & g_WindowsLanguageCountry & ")", ""))
-	g_WindowsLanguageInt = GetLocaleLanguageInt
-	
-	'debugprint g_WindowsLanguageLCID
-	'debugprint g_WindowsLanguageCulture
-	'debugprint GetCountryName
-	'debugprint g_WindowsLanguage
-	'debugprint g_WindowsLanguageInt
-	
-	g_WinDecimalSeparator = GetDecimalSeparator
+        g_WindowsLanguageLCID = Trim(GetUserDefaultLCID)
+        g_WindowsLanguageCulture = GetLocaleCulture
+        g_WindowsLanguageCountry = GetCountryName
+        g_WindowsLanguage = RTrim(Replace(GetLocaleLanguage, "(" & g_WindowsLanguageCountry & ")", ""))
+        g_WindowsLanguageInt = GetLocaleLanguageInt
+        
+        'debugprint g_WindowsLanguageLCID
+        'debugprint g_WindowsLanguageCulture
+        'debugprint GetCountryName
+        'debugprint g_WindowsLanguage
+        'debugprint g_WindowsLanguageInt
+        
+        g_WinDecimalSeparator = GetDecimalSeparator
 
     g_WindowsXP = False
     g_WindowsVista = False
@@ -277,40 +277,45 @@ Function DetermineWindowsVersion_IfNeeded()
     Dim currentVersionRegKey As RegistryKey
     Set currentVersionRegKey = Registry.LocalMachine.OpenSubKey("Software\Microsoft\Windows NT\CurrentVersion")
     
+    If currentVersionRegKey Is Nothing Then
+        LogError "Unable to get registry key", "ShellHelper::DetermineWindowsVersion_IfNeeded"
+        Exit Function
+    End If
+    
     Dim winRegistryVersion As String: winRegistryVersion = currentVersionRegKey.GetValue("CurrentVersion")
     
     g_WindowsVersion = kernalFileInfo.ProductMajorPart & g_WinDecimalSeparator & kernalFileInfo.ProductMinorPart
     
-	
-	If kernalFileInfo.ProductMajorPart = 5 And Not kernalFileInfo.ProductMinorPart = 0 Then
-		' XP / 2003
+        
+        If kernalFileInfo.ProductMajorPart = 5 And Not kernalFileInfo.ProductMinorPart = 0 Then
+                ' XP / 2003
         g_WindowsXP = True
-	ElseIf kernalFileInfo.ProductMajorPart = 6 Then
-		' Vista, 7, 8, 8.1
-		If kernalFileInfo.ProductMinorPart = 0 Then
-			g_WindowsVista = True
-		ElseIf kernalFileInfo.ProductMinorPart = 1 Then
-			g_Windows7 = True
-		ElseIf kernalFileInfo.ProductMinorPart = 2 Then
-			g_Windows8 = True
-		ElseIf kernalFileInfo.ProductMinorPart = 3 Then
-			g_Windows81 = True
-		End If
-	
-	ElseIf kernalFileInfo.ProductMajorPart = 10 And kernalFileInfo.ProductBuildPart >= 22000 Then
-		' Windows 11
-		g_Windows11 = True
-	
-	ElseIf kernalFileInfo.ProductMajorPart = 10 Then
-		' Windows 10
-		g_Windows10 = True
-	
- 	ElseIf kernalFileInfo.ProductMajorPart = 12 Then 
-		g_Windows12 = True
-		
-	Else
+        ElseIf kernalFileInfo.ProductMajorPart = 6 Then
+                ' Vista, 7, 8, 8.1
+                If kernalFileInfo.ProductMinorPart = 0 Then
+                        g_WindowsVista = True
+                ElseIf kernalFileInfo.ProductMinorPart = 1 Then
+                        g_Windows7 = True
+                ElseIf kernalFileInfo.ProductMinorPart = 2 Then
+                        g_Windows8 = True
+                ElseIf kernalFileInfo.ProductMinorPart = 3 Then
+                        g_Windows81 = True
+                End If
+        
+        ElseIf kernalFileInfo.ProductMajorPart = 10 And kernalFileInfo.ProductBuildPart >= 22000 Then
+                ' Windows 11
+                g_Windows11 = True
+        
+        ElseIf kernalFileInfo.ProductMajorPart = 10 Then
+                ' Windows 10
+                g_Windows10 = True
+        
+        ElseIf kernalFileInfo.ProductMajorPart = 12 Then
+                g_Windows12 = True
+                
+        Else
         MsgBox "This version of Windows is unknown.. ViStart may not behave as expected!", vbCritical
-		
+                
     End If
     
     g_CLSID_3DOBJECTS = "{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}"
@@ -677,9 +682,9 @@ Public Function GetGlobalWScriptShellObject() As Object
 End Function
 
 
-public Function DebugPrint(ByVal strInput As String)
-	'Open App.Path & "\ViStart.log" For Append As #1
-	Open Environ$("appdata") & "\ViStart\ViStart.log" For Append As #1
-	Write #1, strInput
-	Close #1
+Public Function debugPrint(ByVal strInput As String)
+        'Open App.Path & "\ViStart.log" For Append As #1
+        Open Environ$("appdata") & "\ViStart\ViStart.log" For Append As #1
+        Write #1, strInput
+        Close #1
 End Function

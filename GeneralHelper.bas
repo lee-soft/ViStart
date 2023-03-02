@@ -201,7 +201,8 @@ FailedToOpenShellType:
 End Sub
 
 Sub AddToShellContextMenu(theType As String, Optional theText As String = CONTEXT_MENU)
-
+    On Error GoTo Handler
+    
 Dim strKeyValue As String
 Dim sourceKey As RegistryKey
 Dim typeRegistryKey As RegistryKey
@@ -221,7 +222,10 @@ Dim typeRegistryKey As RegistryKey
     If commandRegKey.GetValue("") <> strKeyValue Then
         commandRegKey.SetValue "", strKeyValue
     End If
-
+    
+ Exit Sub
+Handler:
+    LogError Err.Description, "GeneralHelper::AddToShellContextMenu"
 End Sub
 
 Sub CreateFileAssociation(ByVal szExtension As String, ByVal szClassName As String, _
@@ -453,9 +457,14 @@ Function SetOwner(ByVal HwndtoUse, ByVal HwndofOwner) As Long
 End Function
 
 Property Get CurrentDPI() As Long
-
+ 
 Dim windowMetricsRegKey As RegistryKey
     Set windowMetricsRegKey = Registry.CurrentUser.OpenSubKey("Control Panel\Desktop\WindowMetrics")
+    
+    If windowMetricsRegKey Is Nothing Then
+        CurrentDPI = 96
+        Exit Property
+    End If
     
     CurrentDPI = windowMetricsRegKey.GetValue("AppliedDPI")
 End Property

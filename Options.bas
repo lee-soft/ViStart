@@ -27,6 +27,7 @@ Dim startWithWindowsRegKey As RegistryKey
     Set startWithWindowsRegKey = Registry.CurrentUser.OpenSubKey("Software\Microsoft\Windows\CurrentVersion\Run\")
     
     If startWithWindowsRegKey Is Nothing Then
+        LogError "Unable to open registry key", "OptionsHelper::StartWithWindows"
         Exit Function
     End If
  

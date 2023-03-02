@@ -57,14 +57,13 @@ Public Function WriteLine(strLine As String)
 End Function
 
 Public Sub LogError(ByVal sDesc As String, Optional ByVal sFrom As String = "General")
-  
-    Debug.Print "APP ERROR; " & sDesc & " - " & sFrom
-    
+    Debug.Print "ERROR: ", sDesc, sFrom
+    If Not sVar_bDebugMode Then Exit Sub
+        
     Dim FileNum As Integer
-
     FileNum = FreeFile
     
-    Open Environ$("appdata") & "\ViStart\errors.log" For Append As FileNum
+    Open App.Path & "\errors.log" For Append As FileNum
         Write #FileNum, sDesc, sFrom, Now()
     Close FileNum
 End Sub

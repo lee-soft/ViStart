@@ -157,6 +157,11 @@ Dim recentDocsRegKey As RegistryKey
     sPath = "Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs"
     Set recentDocsRegKey = Registry.CurrentUser.OpenSubKey(sPath)
     
+    If recentDocsRegKey Is Nothing Then
+        LogError "Could not open registry key", "frmFileMenu::GetItems_MRU"
+        Exit Function
+    End If
+    
     sMRUListEx = recentDocsRegKey.GetValue("MRUListEx")
 
     While (Len(sMRUListEx) > 4) And (cItems.count < 15)
@@ -206,7 +211,7 @@ Dim folderPath As String
         
             Debug.Print "GetItems:: " & szPath
             If FSO.FileExists(ResolveLink(thisFile.Path)) Then
-                itemCollection.Add ExtOrNot(thisFile.name) & "*" & thisFile.Path
+                itemCollection.Add ExtOrNot(thisFile.Name) & "*" & thisFile.Path
                 
                 If itemCollection.count = 15 Then
                     Exit For
@@ -325,7 +330,7 @@ Private Sub ReInitialize()
     
     Set m_hdcBackBuffer = New ISoftX
     
-    Me.Font.name = OptionsHelper.PrimaryFont
+    Me.Font.Name = OptionsHelper.PrimaryFont
     
     m_hdcBackBuffer.hWnd = Me.hWnd
     m_hdcBackBuffer.Font = Me.Font

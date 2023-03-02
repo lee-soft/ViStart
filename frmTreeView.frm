@@ -330,6 +330,7 @@ Public Property Let Filter(new_strKeyWord As String)
 End Property
 
 Function ShowContextMenu() As Boolean
+    On Error GoTo Handler
 
     If (m_nTargetNode Is Nothing) Then
         ShowContextMenu = False
@@ -394,7 +395,7 @@ Function ShowContextMenu() As Boolean
     Exit Function
     
 Handler:
-    LogError Err.Description, "frmTreeView"
+    LogError Err.Description, "ShowContextMenu::frmTreeView"
 End Function
 
 Private Sub Form_Initialize()

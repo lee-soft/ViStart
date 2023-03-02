@@ -170,6 +170,7 @@ Dim returnHandlers() As String
     If Left$(srcType, 1) <> "." Then srcType = "." & srcType
     Set thisKey = Registry.CurrentUser.OpenSubKey("Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\" & srcType & "\OpenWithList")
     If thisKey Is Nothing Then
+        LogError "Unable to open registry key", "MRUHelper::GetTypeHandlersImageName"
         Exit Function
     End If
     
@@ -205,6 +206,7 @@ Dim primaryCommand As String
     
     Exit Function
 HandleInvalidSubKey:
+    LogError Err.Description, "GetTypeHandlerPath"
 End Function
 
 Public Function GetEXEPathFromQuote(ByVal srcPath As String)

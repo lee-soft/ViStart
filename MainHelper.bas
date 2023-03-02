@@ -204,7 +204,11 @@ Dim theImageFace As New GDIPImage
 
     Dim shellFoldersRegKey As RegistryKey
     Set shellFoldersRegKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders")
-
+    If shellFoldersRegKey Is Nothing Then
+        LogError "Unable to create User rollover, couldn't open registry key", "MainHelper::MakeUserRollover"
+        Exit Sub
+    End If
+    
     ProgramDataPath = shellFoldersRegKey.GetValue("Common AppData")
     sBmpUserPath = ProgramDataPath & "\Microsoft\User Account Pictures\" & Environ$("USERNAME") & ".bmp"
     If FileExists(sBmpUserPath) = False Then
@@ -500,6 +504,7 @@ Dim strTemp As String
     
     Exit Function
 Handler:
+    LogError "Could not open registry key, IconSize 32 will be assumed", "MainHelper::GetSystemLargeIconSize"
     GetSystemLargeIconSize = 32
 
 End Function
