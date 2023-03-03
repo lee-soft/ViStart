@@ -6,15 +6,15 @@ Begin VB.Form frmTreeView
    ClientHeight    =   6120
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   3675
+   ClientWidth     =   3680
    ClipControls    =   0   'False
    ControlBox      =   0   'False
    FillColor       =   &H0000FF00&
    ForeColor       =   &H0000C0C0&
    LinkTopic       =   "Form1"
-   ScaleHeight     =   408
+   ScaleHeight     =   612
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   245
+   ScaleWidth      =   368
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
    Begin VB.CommandButton cmdFocusGrab 
@@ -171,6 +171,12 @@ Public Event onRequestRecentProgramsRefresh()
 Public Event onRequestCloseStartMenu()
 
 Implements IHookSink
+
+Private m_logger As SeverityLogger
+
+Private Property Get Logger() As SeverityLogger
+    Set Logger = m_logger
+End Property
 
 Public Function callback_ForceRepaint(newNode As INode)
     m_queryType.Children.Add newNode
@@ -399,7 +405,8 @@ Handler:
 End Function
 
 Private Sub Form_Initialize()
-
+    Set m_logger = LogManager.GetCurrentClassLogger(Me)
+    
 Dim hasPrograms As Boolean
 
     Set m_dcLib = New Collection

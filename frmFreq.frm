@@ -4,15 +4,15 @@ Begin VB.Form frmFreq
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
    Caption         =   "ViStart_FrequentPrograms"
-   ClientHeight    =   4575
-   ClientLeft      =   195
+   ClientHeight    =   4580
+   ClientLeft      =   200
    ClientTop       =   8610
    ClientWidth     =   3690
    ClipControls    =   0   'False
    FillColor       =   &H0080FFFF&
    BeginProperty Font 
       Name            =   "Segoe UI"
-      Size            =   11.25
+      Size            =   11.5
       Charset         =   0
       Weight          =   400
       Underline       =   0   'False
@@ -21,9 +21,9 @@ Begin VB.Form frmFreq
    EndProperty
    ForeColor       =   &H000000C0&
    LinkTopic       =   "Form1"
-   ScaleHeight     =   305
+   ScaleHeight     =   458
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   246
+   ScaleWidth      =   369
    ShowInTaskbar   =   0   'False
    Begin VB.PictureBox picRollover 
       AutoRedraw      =   -1  'True
@@ -33,9 +33,9 @@ Begin VB.Form frmFreq
       ClipControls    =   0   'False
       Height          =   540
       Left            =   0
-      ScaleHeight     =   36
+      ScaleHeight     =   54
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   246
+      ScaleWidth      =   369
       TabIndex        =   0
       Top             =   -60
       Width           =   3690
@@ -68,7 +68,7 @@ Private Declare Function BitBlt Lib "gdi32" (ByVal hDestDC As Long, ByVal X As L
 Private Declare Function GetCursorPos Lib "user32" (lpPoint As POINTL) As Long
 
 Private Type LIST_ITEM2
-    Text As String
+    text As String
     SubText As String
     Shell As String
     Top As Long
@@ -77,7 +77,7 @@ End Type
 
 Private Type LIST_ITEM
     Icon As ViIcon
-    Text As String
+    text As String
     Shell As String
     Top As Long
     MRUList As JumpList
@@ -120,6 +120,12 @@ Private WithEvents ProgramsDBEvents As clsProgramDB
 Attribute ProgramsDBEvents.VB_VarHelpID = -1
 
 Implements IHookSink
+
+Private m_logger As SeverityLogger
+
+Property Get Logger()
+    Set Logger = m_logger
+End Property
 
 Public Function RolloverWithKeyboard(theRequestedIndex As Long)
     bKeyboardMode = True
@@ -200,9 +206,9 @@ Dim thisProgram As clsProgram
                 appDescription = GetAppDescription(thisProgram.Path)
                 
                 If appDescription <> vbNullString And thisProgram.Caption = vbNullString Then
-                    .Text = appDescription
+                    .text = appDescription
                 Else
-                    .Text = VarScan(thisProgram.Caption)
+                    .text = VarScan(thisProgram.Caption)
                 End If
                 
                 .Shell = thisProgram.Path
@@ -219,9 +225,7 @@ Dim thisProgram As clsProgram
     Next
 Exit Sub
 Handler:
-    MsgBox Err.Description
-
-    Logger.Error Err.Description, "PopulateItemsFromCollection"
+    Logger.Fatal Err.Description, "PopulateItemsFromCollection"
 End Sub
 
 Sub PopulateItems()
@@ -284,7 +288,7 @@ Dim dropY As Single
         End If
         
         Me.ForeColor = m_theFont.Colour
-        DrawTextMe Me, lstItems(lngItemPaintIndex).Text, m_cLeftMargin + m_intIconSize, lstItems(lngItemPaintIndex).Top, 9
+        DrawTextMe Me, lstItems(lngItemPaintIndex).text, m_cLeftMargin + m_intIconSize, lstItems(lngItemPaintIndex).Top, 9
         
         'Draw an icon if there is any
         If Not lstItems(lngItemPaintIndex).Icon Is Nothing Then lstItems(lngItemPaintIndex).Icon.DrawIconEx Me.hdc, 3, lstItems(lngItemPaintIndex).Top, 32, 32
@@ -350,6 +354,8 @@ Handler:
 End Sub
 
 Private Sub Form_Initialize()
+    Set m_logger = LogManager.GetCurrentClassLogger(Me)
+
     m_lngTopMargin = 2
 
     Set m_theFont = New ViFont
@@ -378,7 +384,7 @@ Private Sub Form_Load()
     PopulateItems
     Exit Sub
 Handler:
-    Logger.Error Err.Description, "Form_Load",
+    Logger.Error Err.Description, "Form_Load"
 End Sub
 
 Private Sub SetControlProperties()
@@ -645,7 +651,7 @@ Dim suggestedIndex As Long
             iCurIndex = suggestedIndex
             Debug.Print "01# Changing iCurIndex to " & suggestedIndex
             
-            Debug.Print "So::" & lstItems(suggestedIndex).Text & " :: " & suggestedIndex & " - " & m_itemCap
+            Debug.Print "So::" & lstItems(suggestedIndex).text & " :: " & suggestedIndex & " - " & m_itemCap
         End If
     End If
 
@@ -695,7 +701,7 @@ Dim hasMRUList As Boolean
         picRollover.Cls
         picRollover.ForeColor = m_theFont.Colour
         
-        DrawTextMe picRollover, lstItems(lngNewRolloverIndex).Text, m_cLeftMargin + m_intIconSize - 1, 2, 9
+        DrawTextMe picRollover, lstItems(lngNewRolloverIndex).text, m_cLeftMargin + m_intIconSize - 1, 2, 9
         picRollover.Move 1, lstItems(lngNewRolloverIndex).Top - 2
         
         lstItems(lngNewRolloverIndex).Icon.DrawIconEx picRollover.hdc, 2, 2, 32, 32

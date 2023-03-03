@@ -11,9 +11,9 @@ Begin VB.Form frmStartOrb
    ClipControls    =   0   'False
    ForeColor       =   &H00000000&
    LinkTopic       =   "Form1"
-   ScaleHeight     =   14
+   ScaleHeight     =   21
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   14
+   ScaleWidth      =   21
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
    Visible         =   0   'False
@@ -67,25 +67,31 @@ Public Windows81LeftDifference As Long
 
 Implements IHookSink
 
+Private m_logger As SeverityLogger
+
+Property Get Logger()
+    Set Logger = m_logger
+End Property
+
 Public Function SetContextMenu(ByRef newContextMenu As frmVistaMenu)
     Set m_startOptions = newContextMenu
 End Function
 
 Public Function ResetOrb()
 
-	If FileExists(ResourcesPath & "start_button.png") Then
-		Me.Path = ResourcesPath & "start_button.png"
-	ElseIf FileExists(sCon_AppDataPath & "_orbs\" & Settings.CurrentOrb) Then
-		Me.Path = sCon_AppDataPath & "_orbs\" & Settings.CurrentOrb
-	ElseIf FileExists(sCon_AppDataPath & "_orbs\default.png") Then
-		Me.Path = sCon_AppDataPath & "_orbs\default.png"
-	ElseIf FileExists(sCon_AppDataPath & "_orbs\Windows 7.png") Then
-		Me.Path = sCon_AppDataPath & "_orbs\Windows 7.png"
-	ElseIf FileExists(sCon_AppDataPath & "_orbs\start_button.png") Then
-		Me.Path = sCon_AppDataPath & "_orbs\start_button.png"
-	ElseIf FileExists(sCon_AppDataPath & "start_button.png") Then
-		Me.Path = sCon_AppDataPath & "start_button.png"
-	End If
+        If FileExists(ResourcesPath & "start_button.png") Then
+                Me.Path = ResourcesPath & "start_button.png"
+        ElseIf FileExists(sCon_AppDataPath & "_orbs\" & Settings.CurrentOrb) Then
+                Me.Path = sCon_AppDataPath & "_orbs\" & Settings.CurrentOrb
+        ElseIf FileExists(sCon_AppDataPath & "_orbs\default.png") Then
+                Me.Path = sCon_AppDataPath & "_orbs\default.png"
+        ElseIf FileExists(sCon_AppDataPath & "_orbs\Windows 7.png") Then
+                Me.Path = sCon_AppDataPath & "_orbs\Windows 7.png"
+        ElseIf FileExists(sCon_AppDataPath & "_orbs\start_button.png") Then
+                Me.Path = sCon_AppDataPath & "_orbs\start_button.png"
+        ElseIf FileExists(sCon_AppDataPath & "start_button.png") Then
+                Me.Path = sCon_AppDataPath & "start_button.png"
+        End If
 
     Settings.CurrentOrb = vbNullString
     
@@ -226,6 +232,8 @@ Private Sub Form_DragOver(Source As Control, X As Single, Y As Single, State As 
 End Sub
 
 Private Sub Form_Initialize()
+    Set m_logger = LogManager.GetCurrentClassLogger(Me)
+
     Set m_optionsDialog = frmControlPanel
     bMouseOn = True
 

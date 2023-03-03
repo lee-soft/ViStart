@@ -72,6 +72,12 @@ Private Declare Function SHChangeNotify Lib "shell32.dll" (ByVal wEventID As Lon
 Private WithEvents m_renameTextBox As VistaSearchBox
 Attribute m_renameTextBox.VB_VarHelpID = -1
 
+Private m_logger As SeverityLogger
+
+Property Get Logger()
+    Set Logger = m_logger
+End Property
+
 Public Property Get NavigationOptions() As Collection
     Set NavigationOptions = m_navigationPaneOptions
 End Property
@@ -854,6 +860,8 @@ Handler:
 End Function
 
 Private Sub Class_Initialize()
+    Set m_logger = LogManager.GetCurrentClassLogger(Me)
+
     InitializeGDIIfNotInitialized
 
     Set m_renameTextBox = New VistaSearchBox
@@ -1241,7 +1249,7 @@ Dim textBoxX As Long
     textBoxY = m_windowPosition.Y + m_backgroundPosition.Y + m_rolloverPosition.Y + (m_rolloverHeight / 2) - g_DefaultFont.FontWeight / 2
     textBoxX = m_windowPosition.X + m_backgroundPosition.X + m_rolloverPosition.X + 8
     
-    m_renameTextBox.Text = m_selectedItem.Caption
+    m_renameTextBox.text = m_selectedItem.Caption
     Set m_itemToBeRenamed = m_selectedItem
     
     Call SetWindowPos(m_renameTextBox.hWnd, HWND_TOPMOST, textBoxX, textBoxY, m_rollover.Width - 10, g_DefaultFont.FontWeight, 0)
@@ -1323,7 +1331,7 @@ Private Sub m_renameTextBox_onLostFocus()
     If m_itemToBeRenamed Is Nothing Then Exit Sub
 
     ShowWindow m_renameTextBox.hWnd, SW_HIDE
-    m_itemToBeRenamed.Caption = m_renameTextBox.Text
+    m_itemToBeRenamed.Caption = m_renameTextBox.text
     
     RaiseEvent onChanged
 End Sub

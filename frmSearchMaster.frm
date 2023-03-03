@@ -25,7 +25,7 @@ Begin VB.Form frmSearchMaster
       Width           =   1335
    End
    Begin VB.ListBox List1 
-      Height          =   2010
+      Height          =   1840
       Left            =   120
       TabIndex        =   0
       Top             =   120
@@ -53,6 +53,12 @@ Public Event onNewItem()
 
 Public Event onNewService(ByRef theSearchObject As CustomSearchSlave)
 Public Event onUpdateCollection(ByRef theSearchObject As CustomSearchSlave)
+
+Private m_logger As SeverityLogger
+
+Private Property Get Logger() As SeverityLogger
+    Set Logger = m_logger
+End Property
 
 Public Function SendAbortSignal()
     ExecuteNewQuery vbNullString

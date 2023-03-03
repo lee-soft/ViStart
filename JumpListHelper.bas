@@ -8,6 +8,16 @@ Private Const EXPLORER_OPENSAVEDOCS_VISTA As String = "Software\Microsoft\Window
 
 Private EXPLORER_OPENSAVEDOCS As String
 
+Private m_logger As SeverityLogger
+
+Private Property Get Logger() As SeverityLogger
+    If m_logger Is Nothing Then
+        m_logger = LogManager.GetLogger("StringHelper")
+    End If
+    
+    Set Logger = m_logger
+End Property
+
 Function SetOpenSaveDocs()
     EXPLORER_OPENSAVEDOCS = EXPLORER_OPENSAVEDOCS_XP
     If Registry.CurrentUser.OpenSubKey(EXPLORER_OPENSAVEDOCS) Is Nothing Then

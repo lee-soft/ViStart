@@ -23,6 +23,12 @@ Public SkipMetro_Enabled As Boolean
 Private m_desktopShellWindow As Long
 Private m_iniFile As WinProfile
 
+Private m_logger As SeverityLogger
+
+Property Get Logger()
+    Set Logger = m_logger
+End Property
+
 Public Function IsMetroRunning() As Boolean
 
     If FindWindow("ApplicationManager_DesktopShellWindow", vbNullString) <> 0 Then
@@ -41,21 +47,21 @@ Dim loopCount As Long
         m_desktopShellWindow = FindWindow("ApplicationManager_DesktopShellWindow", vbNullString)
         
         If loopCount = 10 Then
-            Log "Failed to aquire desktop shell window"
+            Logger.Trace "Failed to aquire desktop shell window"
             Exit Do
         End If
         
         If m_desktopShellWindow = 0 Then Sleep 1000
         loopCount = loopCount + 1
         
-        Log "Continue loop [GetDesktopShellWindow]"
+        Logger.Trace "Continue loop [GetDesktopShellWindow]"
         
     Loop While (m_desktopShellWindow = 0)
 
 End Function
 
 Public Function ActionSettings()
-    Log "Actioning Settings!"
+    Logger.Trace "Actioning Settings!"
 
     GetDesktopShellWindow
     If m_desktopShellWindow = 0 Then
@@ -82,25 +88,24 @@ Dim loopCount As Long
 Dim nextForegroundWindow As Long
 
     desktopShellWindow_hWnd = m_desktopShellWindow
-    Log "desktopShellWindow_hWnd is " & desktopShellWindow_hWnd
+    Logger.Trace "desktopShellWindow_hWnd is " & desktopShellWindow_hWnd
 
     Do
         DoEvents
         
         If desktopShellWindow_hWnd <> 0 Then
             nextForegroundWindow = GetForegroundWindow()
-            Log "Current:: " & GetWindowClassNameByHwnd(nextForegroundWindow) & " :: " & GetWindowNameByHwnd(nextForegroundWindow)
-        
+            
             BringWindowToTop desktopShellWindow_hWnd
             SetForegroundWindow desktopShellWindow_hWnd
             
             nextForegroundWindow = GetForegroundWindow()
             
             If nextForegroundWindow = desktopShellWindow_hWnd Then
-                Log "Succesfully brought to front!"
+                Logger.Trace "Succesfully brought to front!"
                 Exit Do
             Else
-                Log "Failed to bring to front, minimizing foreground window"
+                Logger.Trace "Failed to bring to front, minimizing foreground window"
                 nextForegroundWindow = GetForegroundWindow()
 
                 If GetWindowClassNameByHwnd(nextForegroundWindow) = "ImmersiveLauncher" Then
@@ -113,7 +118,7 @@ Dim nextForegroundWindow As Long
                     ShowWindow nextForegroundWindow, SW_RESTORE
                     
                     If GetForegroundWindow() = desktopShellWindow_hWnd Then
-                        Log "Succesfully brought to front!"
+                        Logger.Trace "Succesfully brought to front!"
                         Exit Do
                     End If
                     
@@ -126,7 +131,7 @@ Dim nextForegroundWindow As Long
         loopCount = loopCount + 1
         
         If loopCount = 10 Then
-            Log "Failed to bring to front!"
+            Logger.Trace "Failed to bring to front!"
             Exit Do
         Else
             'Send WinKey+M to minimize all windows
@@ -136,7 +141,7 @@ Dim nextForegroundWindow As Long
             keybd_event VK_LWIN, 0, KEYEVENTF_KEYUP, 0
         
             Sleep 10
-            Log "Continue loop [SkipMetroScreen]"
+            Logger.Trace "Continue loop [SkipMetroScreen]"
         End If
     Loop
     
@@ -170,7 +175,7 @@ Dim identifiedEdgeType As Boolean
 Dim loopCount As Long
 
 
-    Log "Starting to disable modern UI stuff "
+    Logger.Trace "Starting to disable modern UI stuff "
 
     Set appSwitchhWnds = New Collection
     Set startButtonhWnds = New Collection
@@ -186,7 +191,7 @@ Dim loopCount As Long
         edgeUiInputWndClasshWnd = FindWindow("EdgeUiInputWndClass", "")
         
         If loopCount = 5 Then
-            Log "Failed to aquire EdgeUiInputWndClass hWnd, aborting.. perhaps operation is done already?"
+            Logger.Trace "Failed to aquire EdgeUiInputWndClass hWnd, aborting.. perhaps operation is done already?"
             Exit Sub
         End If
         
@@ -233,33 +238,33 @@ Dim loopCount As Long
     Wend
     
     If WindowsStartCorner_Disabled Then
-        Log "Closing Start Button hWnds"
+        Logger.Trace "Closing Start Button hWnds"
         ClosehWndList startButtonhWnds
     End If
     
     If AppSwitcher_Disabled Then
-        Log "Closing App Switcher hWnds"
+        Logger.Trace "Closing App Switcher hWnds"
         ClosehWndList appSwitchhWnds
     End If
     
     If CharmsBarTop_Disabled Then
-        Log "Closing CharmsBar Top hWnds"
+        Logger.Trace "Closing CharmsBar Top hWnds"
         ClosehWndList charmsBarTophWnds
     End If
     
     If CharmsBarBottom_Disabled Then
-        Log "Closing CharmsBar Bottom hWnds"
+        Logger.Trace "Closing CharmsBar Bottom hWnds"
         ClosehWndList charmsBarBottomhWnds
     End If
     
     If DragToClose_Disabled Then
-        Log "Closing DragToClose hWnds"
+        Logger.Trace "Closing DragToClose hWnds"
         ClosehWndList dragToClosehWnds
     End If
     
     DoEvents
     
-    Log "Finished!"
+    Logger.Trace "Finished!"
     Unload frmNukeMetro
 
 End Sub
@@ -311,7 +316,9 @@ Public Function DumpOptions() As Boolean
 End Function
 
 Private Sub Class_Initialize()
+    Set m_logger = LogManager.GetCurrentClassLogger(Me)
     Set m_iniFile = New WinProfile
+    
     m_iniFile.INIPath = Environ$("appdata") & "\ViStart\nuke_metro.ini"
     ReadSettings
 End Sub

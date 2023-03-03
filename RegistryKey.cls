@@ -62,6 +62,12 @@ Private m_hKeySet As Boolean
 Private m_Path As String
 Private m_supressErrors As Boolean
 
+Private m_logger As SeverityLogger
+
+Property Get Logger()
+    Set Logger = m_logger
+End Property
+
 Property Let Hive(ByVal newHive As RegistryHive)
     m_hive = newHive
 End Property
@@ -96,7 +102,7 @@ Public Function GetSubKeyNames() As Collection
 Dim subkey_num As Integer
 Dim subkey_name As String
 
-Dim Length As Long
+Dim length As Long
 
     Dim SubKeysNames As Collection
     Set SubKeysNames = New Collection
@@ -107,10 +113,10 @@ Dim Length As Long
 
     Do
         ' Enumerate subkeys until we get an error.
-        Length = 1024
-        subkey_name = Space$(Length)
+        length = 1024
+        subkey_name = Space$(length)
         If RegEnumKey(Me.Key, subkey_num, _
-            subkey_name, Length) _
+            subkey_name, length) _
                 <> ERROR_SUCCESS Then Exit Do
                 
         subkey_num = subkey_num + 1
@@ -283,6 +289,7 @@ End Function
 
 Private Sub Class_Initialize()
     m_supressErrors = True
+    Set m_logger = LogManager.GetCurrentClassLogger(Me)
 End Sub
 
 Private Sub Class_Terminate()

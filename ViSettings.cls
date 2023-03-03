@@ -37,10 +37,18 @@ Public CatchRightWindowsKey As Boolean
 Public ShowSplashScreen As Boolean
 Public LanguageFile As String
 
+Private m_logger As SeverityLogger
+
+Property Get Logger()
+    Set Logger = m_logger
+End Property
+
 'Public IndexingLimit As Boolean
 'Public IndexingPath As String
 
 Private Sub Class_Initialize()
+    Set m_logger = LogManager.GetCurrentClassLogger(Me)
+
     On Error GoTo Handler
     SetVars_IfNeeded
     
@@ -74,13 +82,13 @@ Dim settingsXML As IXMLDOMElement
     Me.LanguageFile = CStr(ExtractXMLTextElement(m_generalXML, "language", vbNullString))
     
     If Not FileExists(App.Path & "\languages\" & Me.LanguageFile & ".xml") Then
-	
+        
         If FileExists(App.Path & "\languages\" & g_WindowsLanguage & ".xml") Then
             Me.LanguageFile = g_WindowsLanguage
-			
+                        
         ElseIf FileExists(App.Path & "\languages\" & g_WindowsLanguageInt & ".xml") Then
             Me.LanguageFile = g_WindowsLanguageInt
-			
+                        
         Else
             If FileExists(App.Path & "\languages\english.xml") Then
                 Logger.Warn "Native Language: " & g_WindowsLanguageInt & " / " & g_WindowsLanguage & " unavailable, defaulting to American English..", "Initialize"

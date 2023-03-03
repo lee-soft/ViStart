@@ -20,7 +20,7 @@ Private Declare Function FreeLibrary Lib "kernel32" (ByVal hLibModule As Long) A
 Private Declare Function FindResourceEx Lib "kernel32" Alias "FindResourceExW" (ByVal hModule As Long, ByVal lpType As Long, ByVal lpName As Long, ByVal wLanguage As Integer) As Long
 Private Declare Function LoadResource Lib "kernel32" (ByVal hInstance As Long, ByVal hResInfo As Long) As Long
 Private Declare Function LockResource Lib "kernel32" (ByVal hResData As Long) As Long
-Private Declare Function SysReAllocStringLen Lib "oleaut32" (ByVal pBSTR As Long, ByVal psz As Long, ByVal Length As Long) As Long
+Private Declare Function SysReAllocStringLen Lib "oleaut32" (ByVal pBSTR As Long, ByVal psz As Long, ByVal length As Long) As Long
 Private Declare Function GetMem2 Lib "msvbvm60" (Src As Any, Dst As Any) As Long
 
 'Declare Function GetThreadLocale Lib "kernel32" Alias "GetThreadLocale" () As Long
@@ -112,6 +112,16 @@ End Type
 
 Public Const ABM_GETTASKBARPOS As Long = &H5
 Private Const SHGFP_Type_CURRENT = &H0
+
+Private m_logger As SeverityLogger
+
+Private Property Get Logger() As SeverityLogger
+    If m_logger Is Nothing Then
+        m_logger = LogManager.GetLogger("ShellHelper")
+    End If
+    
+    Set Logger = m_logger
+End Property
 
 Private Function PtrAdd(ByVal Address As Long, ByVal Offset As Long) As Long
 ' unsigned pointer arithmetic, moves overflow by toggling the sign bit

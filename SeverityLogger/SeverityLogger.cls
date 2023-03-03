@@ -65,12 +65,15 @@ Public Function Error(ByVal errorDescription As String, ByVal sourceProcedure As
 
     Dim stringArray() As String
     Dim argumentIndex As Long
-    ReDim stringArray(0 To UBound(arguments)) ' Resize the string array to match the variant array size
     
-    For argumentIndex = 0 To UBound(arguments)
-        stringArray(argumentIndex) = CStr(arguments(argumentIndex)) ' Convert the variant to a string and add it to the string array
-    Next argumentIndex
-
+    If UBound(arguments) > 0 Then
+        ReDim stringArray(0 To UBound(arguments)) ' Resize the string array to match the variant array size
+        
+        For argumentIndex = 0 To UBound(arguments)
+            stringArray(argumentIndex) = CStr(arguments(argumentIndex)) ' Convert the variant to a string and add it to the string array
+        Next argumentIndex
+    End If
+    
     m_factory.InvokeLogger ErrorLevel, m_sourceModule & "::" & sourceProcedure, errorDescription, stringArray
 End Function
 
@@ -81,11 +84,14 @@ End Function
 Public Function Fatal(errorDescription As String, sourceProcedure As String, ParamArray arguments() As Variant)
     Dim stringArray() As String
     Dim argumentIndex As Long
-    ReDim stringArray(0 To UBound(arguments)) ' Resize the string array to match the variant array size
-    
-    For argumentIndex = 0 To UBound(arguments)
-        stringArray(argumentIndex) = CStr(arguments(argumentIndex)) ' Convert the variant to a string and add it to the string array
-    Next argumentIndex
+
+    If UBound(arguments) > 0 Then
+        ReDim stringArray(0 To UBound(arguments)) ' Resize the string array to match the variant array size
+        
+        For argumentIndex = 0 To UBound(arguments)
+            stringArray(argumentIndex) = CStr(arguments(argumentIndex)) ' Convert the variant to a string and add it to the string array
+        Next argumentIndex
+    End If
     
     m_factory.InvokeLogger FatalLevel, m_sourceModule & "::" & sourceProcedure, errorDescription, stringArray
 End Function

@@ -3,15 +3,15 @@ Begin VB.Form frmFileMenu
    BackColor       =   &H00F4F4F4&
    BorderStyle     =   0  'None
    Caption         =   "Vista_RecentItems"
-   ClientHeight    =   615
+   ClientHeight    =   620
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   765
+   ClientWidth     =   770
    ClipControls    =   0   'False
    ControlBox      =   0   'False
    BeginProperty Font 
       Name            =   "Segoe UI"
-      Size            =   8.25
+      Size            =   8.5
       Charset         =   0
       Weight          =   400
       Underline       =   0   'False
@@ -19,9 +19,9 @@ Begin VB.Form frmFileMenu
       Strikethrough   =   0   'False
    EndProperty
    LinkTopic       =   "Form1"
-   ScaleHeight     =   41
+   ScaleHeight     =   62
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   51
+   ScaleWidth      =   77
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
    Tag             =   "1"
@@ -72,6 +72,12 @@ Public Event onClickItem(strPath As String)
 Public Event onInActive()
 
 Implements IHookSink
+
+Private m_logger As SeverityLogger
+
+Property Get Logger()
+    Set Logger = m_logger
+End Property
 
 Function ShowContextMenu() As Boolean
     If (m_selectedItem Is Nothing) Then
@@ -314,6 +320,8 @@ Handler:
 End Function
 
 Private Sub Form_Initialize()
+    Set m_logger = LogManager.GetCurrentClassLogger(Me)
+    
     Set m_toolTip = New ViToolTip
     m_toolTip.AttachWindow Me.hWnd
     

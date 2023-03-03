@@ -65,7 +65,7 @@ Abort:
         
         Index_MyDirectory
     Else
-        Logger.Error Err.Description, "Index_MyDirectory" 
+        Logger.Error Err.Description, "Index_MyDirectory"
     End If
 End Sub
 
@@ -98,7 +98,7 @@ Dim nodFile As INode
     Exit Sub
     
 Decrepency:
-    Logger.Error Err.Description. "UnIndexFolder"
+    Logger.Error Err.Description, "UnIndexFolder"
 End Sub
 
 Sub IndexFolder(ByRef folSource As Folder, ByRef srcNode As INode)

@@ -221,6 +221,12 @@ Public Event onSkinChange()
 
 Implements IHookSink
 
+Private m_logger As SeverityLogger
+
+Property Get Logger()
+    Set Logger = m_logger
+End Property
+
 Public Function SetContextMenu(ByRef newContextMenu As frmVistaMenu)
     Set m_contextMenu = newContextMenu
 End Function
@@ -591,7 +597,7 @@ Dim thisForm As Form
     
     m_searchText.Font = m_searchBoxForeFontItalic
     
-    m_searchText.Text = GetPublicString("strStartSearch", "Start Search")
+    m_searchText.text = GetPublicString("strStartSearch", "Start Search")
     m_AllProgramsCaption = GetInitialString
     m_ArrowAllPrograms.State = 0
     m_powerMenu.Hide
@@ -829,7 +835,7 @@ Dim theFont As ViFont
     Set m_searchBoxForeFontItalic = g_DefaultFontItalic
     Set m_searchBoxNormalFont = g_DefaultFont
     
-    m_searchText.Text = GetPublicString("strStartSearch", "Start Search")
+    m_searchText.text = GetPublicString("strStartSearch", "Start Search")
     
     If Layout.SearchBoxSchema.BackColour <> -1 Then
         m_searchText.BackColour = Layout.SearchBoxSchema.BackColour
@@ -1148,6 +1154,7 @@ Private Sub Form_DragDropFolder(szFolderPath As String)
 End Sub
 
 Private Sub Form_Initialize()
+    Set m_logger = LogManager.GetCurrentClassLogger(Me)
     Inititalize
 End Sub
 
@@ -1338,8 +1345,8 @@ Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
         If KeyCode = vbKeyReturn Then
     
             If g_KeyboardSide = 1 Then
-                If m_searchText.Text <> vbNullString Then
-                    ShellEx m_searchText.Text
+                If m_searchText.text <> vbNullString Then
+                    ShellEx m_searchText.text
                 Else
                     ToggleProgramsMenu
                 End If
@@ -2281,8 +2288,8 @@ Private Sub m_searchText_onChange()
 End Sub
 
 Private Sub m_searchText_onFocus()
-    If m_searchText.Text = GetPublicString("strStartSearch", "Start Search") Then
-        m_searchText.Text = ""
+    If m_searchText.text = GetPublicString("strStartSearch", "Start Search") Then
+        m_searchText.text = ""
         m_searchText.Font = m_searchBoxNormalFont
         SetTextColor m_searchText.hWnd, vbBlack
         
@@ -2313,7 +2320,7 @@ Private Sub m_searchText_onKeyDown(KeyCode As Long)
     
         If g_KeyboardMenuState <> 1 Then
         
-            If AppLauncherHelper.shell32(Me.hWnd, m_searchText.Text) = False Then
+            If AppLauncherHelper.shell32(Me.hWnd, m_searchText.text) = False Then
                 
                 If m_recentPrograms.Visible Then
                     m_recentPrograms.RequestExecuteSelected
@@ -2335,8 +2342,8 @@ Private Sub m_searchText_onKeyUp(KeyCode As Long)
 End Sub
 
 Private Sub m_searchText_onLostFocus()
-    If m_searchText.Text = vbNullString Then
-        m_searchText.Text = GetPublicString("strStartSearch", "Start Search")
+    If m_searchText.text = vbNullString Then
+        m_searchText.text = GetPublicString("strStartSearch", "Start Search")
         m_searchText.Font = m_searchBoxForeFontItalic
     End If
 End Sub
@@ -2540,7 +2547,7 @@ Private Sub timTreeViewSearch_Timer()
     m_searchingStarted = True
 
 Dim searchText As String
-    searchText = m_searchText.Text
+    searchText = m_searchText.text
     
     g_KeyboardMenuState = 0
     g_KeyboardSide = 1
