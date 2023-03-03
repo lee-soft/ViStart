@@ -1,4 +1,14 @@
 Attribute VB_Name = "StringHelper"
+Private m_logger As SeverityLogger
+
+Private Property Get Logger() As SeverityLogger
+    If m_logger Is Nothing Then
+        m_logger = LogManager.GetLogger("StringHelper")
+    End If
+    
+    Set Logger = m_logger
+End Property
+
 
 Function JustExe(ByVal szPath As String) As String
 

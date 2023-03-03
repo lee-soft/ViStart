@@ -133,7 +133,7 @@ End Function
 
 Property Let Path(ByVal strPath As String)
     If m_mode = 0 Then
-        LogError "Critical Error, Mode Not Set!", "frmStartOrb::Path"
+        Logger.Fatal "Critical Error, Mode Not Set!", "Path", strPath
         Exit Property
     End If
 

@@ -396,7 +396,7 @@ Sub SetVars_IfNeeded()
         FSO.CreateFolder sCon_AppDataPath
         
         If Err Then
-            MsgBox Err.description, vbCritical
+            MsgBox Err.Description, vbCritical
             
             ExitApplication
             End
@@ -480,7 +480,7 @@ Dim objStrings As IXMLDOMElement
 Dim objString As IXMLDOMElement
 Dim thisObject As Object
 
-    On Error GoTo handler
+    On Error GoTo Handler
 
     'Set objStrings = ObjXML.selectSingleNode("/strings")
     ' iterate its string children
@@ -505,8 +505,8 @@ Dim thisObject As Object
     Next
     
     Exit Sub
-handler:
-    Logger.Error Err.description, "XML_PopulateStrings"
+Handler:
+    Logger.Error Err.Description, "XML_PopulateStrings"
 End Sub
 
 Public Function AttributeExists(ByRef objElem As MSXML2.IXMLDOMElement, ByVal sAttribName As String) As Boolean
@@ -647,7 +647,7 @@ Function QuickSortNamesAscending( _
     ByVal col_sCollectionToAlphabetize As Collection, _
     ByVal iSortType As VbCompareMethod) As Collection
     
-    On Error GoTo handler
+    On Error GoTo Handler
     
     Dim iEachItem As Long
     Dim col_sSorted As New Collection
@@ -706,14 +706,14 @@ Function QuickSortNamesAscending( _
             Set QuickSortNamesAscending = col_sSorted
             
             Exit Function
-handler:
-    Logger.Error Err.description, "QuickSortNamesAsc"
+Handler:
+    Logger.Error Err.Description, "QuickSortNamesAsc"
 End Function
 
 Public Function UpdateCol(ByRef Col As Collection, index, vUpdate, Optional sKey As String) As Boolean
     'Updates Collection Key, Keeps Numerical Index intact
 
-    On Error GoTo handler
+    On Error GoTo Handler
 
     Col.Remove index
     
@@ -725,7 +725,7 @@ Public Function UpdateCol(ByRef Col As Collection, index, vUpdate, Optional sKey
     
     UpdateCol = True
     Exit Function
-handler:
+Handler:
     UpdateCol = False
 
 End Function
@@ -746,14 +746,14 @@ End Function
 Public Function ExistCol(ByRef Col As Collection, index) As Boolean
     'Updates Collection Key, Keeps Numerical Index intact
 
-    On Error GoTo handler
+    On Error GoTo Handler
 
     If IsObject(Col(index)) Then
     End If
 
     ExistCol = True
     Exit Function
-handler:
+Handler:
     ExistCol = False
 
 End Function
@@ -761,14 +761,14 @@ End Function
 Public Function UpdateColValue(ByRef Col As Collection, index, vUpdate) As Boolean
     'Updates Collection Key, Keeps Numerical Index intact
 
-    On Error GoTo handler
+    On Error GoTo Handler
 
     Col.Remove index
     Col.Add vUpdate, index
 
     UpdateColValue = True
     Exit Function
-handler:
+Handler:
     UpdateColValue = False
 
 End Function
@@ -814,12 +814,12 @@ Dim strOutput As String
 End Function
 
 Public Function GetPublicString(ByVal stringID As String, Optional Default As String = vbNullString)
-    On Error GoTo handler
+    On Error GoTo Handler
     
     GetPublicString = UserVariable(stringID)
     Exit Function
     
-handler:
+Handler:
     GetPublicString = Default
 End Function
 

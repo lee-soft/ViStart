@@ -3,6 +3,16 @@ Option Explicit
 
 Public g_AutomaticDestinationsUpdater As AutomaticDestinationsUpdater
 
+Private m_logger As SeverityLogger
+
+Private Property Get Logger() As SeverityLogger
+    If m_logger Is Nothing Then
+        m_logger = LogManager.GetLogger("AutoDestinationHelper")
+    End If
+    
+    Set Logger = m_logger
+End Property
+
 Public Function DestermineHandler(ByVal theFile As String)
 
 Dim theExtension As String

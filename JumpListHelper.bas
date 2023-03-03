@@ -17,8 +17,6 @@ End Function
 
 Public Function GetMRUListForKey(ByRef srcMRURoot As RegistryKey) As String()
     On Error Resume Next
-    
-    Debug.Print srcMRURoot.Path
 
 Dim s_mruList As String
 Dim thisMRU
@@ -108,8 +106,8 @@ Dim MRUArrayIndex As Long
     GetMRUListForKey = MRUList
     
 Handler:
+    Logger.Error Err.Description, "GetMRUListForKey"
     Err.Clear
-    LogError "GetMRUListForKey", ""
 End Function
 
 Public Function GetImageJumpList(ByVal srcImagePath As String) As JumpList
@@ -156,7 +154,7 @@ Dim thisJumpList As New JumpList
     
     Exit Function
 Handler:
-    LogError Err.Description, "GetImageJumpList"
+    Logger.Error Err.Description, "GetImageJumpList", srcImagePath
 End Function
 
 Public Function GetTypeHandlersImageName(srcType As String) As String()
@@ -170,7 +168,7 @@ Dim returnHandlers() As String
     If Left$(srcType, 1) <> "." Then srcType = "." & srcType
     Set thisKey = Registry.CurrentUser.OpenSubKey("Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\" & srcType & "\OpenWithList")
     If thisKey Is Nothing Then
-        LogError "Unable to open registry key", "MRUHelper::GetTypeHandlersImageName"
+        Logger.Error "Unable to open registry key", "GetTypeHandlersImageName", srcType
         Exit Function
     End If
     
@@ -206,7 +204,7 @@ Dim primaryCommand As String
     
     Exit Function
 HandleInvalidSubKey:
-    LogError Err.Description, "GetTypeHandlerPath"
+    Logger.Error Err.Description, "GetTypeHandlerPath", srcType
 End Function
 
 Public Function GetEXEPathFromQuote(ByVal srcPath As String)

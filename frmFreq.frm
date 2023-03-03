@@ -221,7 +221,7 @@ Exit Sub
 Handler:
     MsgBox Err.Description
 
-    LogError "PopulateItemsFromCollection:: " & Err.Description, Me.Name
+    Logger.Error Err.Description, "PopulateItemsFromCollection"
 End Sub
 
 Sub PopulateItems()
@@ -261,7 +261,7 @@ Dim topValue As Long
     
     Exit Sub
 Handler:
-    LogError "PopulateItems:: " & Err.Description, "frmFreq"
+    Logger.Error Err.Description, "PopulateItems"
 End Sub
 
 Sub PaintItems()
@@ -302,7 +302,7 @@ Dim dropY As Single
     
     Exit Sub
 Handler:
-    LogError "PaintItems:: " & Err.Description, "frmFreq"
+    Logger.Error Err.Description, "PaintItems"
 End Sub
 
 Private Sub DrawTextMe(ObjSender As Object, sText As String, X As Long, Y As Long, lngSize As Long)
@@ -345,7 +345,7 @@ Dim rSize As RECT
 
     Exit Sub
 Handler:
-    LogError Err.Description, Me.Name & "::DrawTextMe"
+    Logger.Error Err.Description, "DrawTextMe"
 
 End Sub
 
@@ -378,7 +378,7 @@ Private Sub Form_Load()
     PopulateItems
     Exit Sub
 Handler:
-    CreateError "frmFreq", "Form_Load()", Err.Description
+    Logger.Error Err.Description, "Form_Load",
 End Sub
 
 Private Sub SetControlProperties()
@@ -714,7 +714,7 @@ Dim hasMRUList As Boolean
     
     Exit Function
 Handler:
-    CreateError "frmFreq", "Rollover", Err.Description
+    Logger.Error Err.Description, "Rollover"
 End Function
 
 Private Function DrawJumpListButton(theState As Long)
@@ -914,7 +914,7 @@ Private Sub picRollover_MouseUp(Button As Integer, Shift As Integer, X As Single
 
     Exit Sub
 Handler:
-    LogError Err.Description, "frmFreq::MouseUp"
+    Logger.Error Err.Description, "MouseUp"
 End Sub
 
 Sub MoveSeperator(theY As Long)

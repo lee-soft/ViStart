@@ -236,7 +236,7 @@ Public Function Load(ByVal LinkFile As String) As Boolean
    
    Exit Function
 Handler:
-   LogError Err.Description & " - " & LinkFile, "CShellLink"
+   Logger Err.Description, "Load"
 End Function
 
 ' ***********************************************

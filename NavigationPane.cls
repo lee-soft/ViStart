@@ -330,7 +330,7 @@ Public Function ShowContextMenu(ByRef winOwner As Form)
 
     Exit Function
 Handler:
-    LogError Err.Description, "ViNavigationPane::ShowContextMenu"
+    Logger.Error Err.Description, "ShowContextMenu"
 
 End Function
 
@@ -850,7 +850,7 @@ MaxOSVersion = 0
         
     Exit Function
 Handler:
-    LogError Err.Description, "ViNavigationPane"
+    Logger.Error Err.Description, "PopulateLinks"
 End Function
 
 Private Sub Class_Initialize()
@@ -934,7 +934,7 @@ Private Sub m_contextMenu_onClick(theItemTag As String)
     m_contextMenu_onInActive
     Exit Sub
 Handler:
-    LogError Err.Description, "ViNavigationPane"
+    Logger.Error Err.Description, "m_contextMenu_onClick", theItemTag
 End Sub
 
 
@@ -1094,7 +1094,7 @@ Private Function ShowHideDesktopIcons(ShellItem As String)
         
         Exit Function
 Handler:
-    LogError Err.Description, "ViNavigationPane::ShowHideDesktopIcons"
+    Logger.Error Err.Description, "ShowHideDesktopIcons"
 End Function
 
 
@@ -1225,7 +1225,7 @@ On Error GoTo Handler
                 
         Exit Function
 Handler:
-    LogError Err.Description, "ViNavigationPane::ShowHideComputerIcons"
+    Logger.Error Err.Description, "ShowHideComputerIcons"
 End Function
 
 Private Function RenameSelectedItem()

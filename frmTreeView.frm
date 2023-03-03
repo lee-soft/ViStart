@@ -395,7 +395,7 @@ Function ShowContextMenu() As Boolean
     Exit Function
     
 Handler:
-    LogError Err.Description, "ShowContextMenu::frmTreeView"
+    Logger.Error Err.Description, "ShowContextMenu"
 End Function
 
 Private Sub Form_Initialize()
@@ -774,7 +774,7 @@ Dim new_nTargetNode As INode
     
     Exit Sub
 Trapper:
-    CreateError "ITreeView", "UpdateRolloverPosition", Err.Description
+    Logger.Error Err.Description, "UpdateRolloverPosition"
 
 End Sub
 
@@ -945,7 +945,7 @@ Private Function ActionTargetNode() As Boolean
     
     Exit Function
 Trapper:
-    CreateError "ITreeView", "ActionTargetNode", Err.Description
+    Logger.Error Err.Description, "ActionTargetNode"
 
 End Function
 
@@ -1278,7 +1278,7 @@ Sub SelectLastItem()
 
     Exit Sub
 Trapper:
-    CreateError "ITreeView", "SelectLastItem", Err.Description
+    Logger.Error Err.Description, "SelectLastItem"
 
 End Sub
 
@@ -1319,7 +1319,7 @@ Dim bAbort As Boolean
     
     Exit Sub
 Trapper:
-    CreateError "ITreeView", "moveRolloverUp", Err.Description
+    Logger.Error Err.Description, "moveRolloverUp"
         
 End Sub
 
@@ -1360,7 +1360,7 @@ Dim bAbort As Boolean
     
     Exit Sub
 Trapper:
-    CreateError "ITreeView", "moveRolloverDown", Err.Description
+    Logger.Error Err.Description, "moveRolloverDown"
 
 End Sub
 
@@ -1433,7 +1433,7 @@ Dim thisProgram As clsProgram
     theCommand = theItemTag
     
     If m_nLastSelectedNode Is Nothing Then
-        LogError "m_nLastSelectedNode was unexpectedly empty!", "m_contextMenu_onClick:" & Me.Name
+        Logger.Error "m_nLastSelectedNode was unexpectedly empty!", "m_contextMenu_onClick"
         Exit Sub
     End If
     
@@ -1473,7 +1473,7 @@ Dim thisProgram As clsProgram
     
     Exit Sub
 Handler:
-    LogError Err.Description, "frmTreeView"
+    Logger.Error Err.Description, "m_contextMenu_onClick"
 End Sub
 
 Private Sub m_contextMenu_onInActive()

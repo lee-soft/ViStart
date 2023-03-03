@@ -81,7 +81,7 @@ Dim thisFile As Scripting.File
 
     Exit Function
 Handler:
-    LogError Err.Description, "AutomaticDestinationsUpdater::Update()"
+    Logger.Error Err.Description, "Update"
 End Function
 
 Private Sub Class_Initialize()

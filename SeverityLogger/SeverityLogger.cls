@@ -53,22 +53,39 @@ End Function
 ' Anything that can potentially cause application oddities, but for which I am
 ' automatically recovering. (Such as switching from a primary to backup server,
 ' retrying an operation, missing secondary data, etc.)
-Public Function Warn(warningMessage As String)
-    m_factory.InvokeLogger WarnLevel, m_sourceModule, warningMessage
+Public Function Warn(warningMessage As String, ByVal sourceProcedure As String)
+    m_factory.InvokeLogger WarnLevel, m_sourceModule & "::" & sourceProcedure, warningMessage
 End Function
 
 ' Any error which is fatal to the operation, but not the service or application
 ' (can't open a required file, missing data, etc.). These errors will force user
 ' (administrator, or direct user) intervention. These are usually reserved
 ' (in my apps) for incorrect connection strings, missing services, etc.
-Public Function Error(errorDescription As String, Optional sourceProcedure As String)
-    m_factory.InvokeLogger ErrorLevel, m_sourceModule, errorDescription
+Public Function Error(ByVal errorDescription As String, ByVal sourceProcedure As String, ParamArray arguments() As Variant)
+
+    Dim stringArray() As String
+    Dim argumentIndex As Long
+    ReDim stringArray(0 To UBound(arguments)) ' Resize the string array to match the variant array size
+    
+    For argumentIndex = 0 To UBound(arguments)
+        stringArray(argumentIndex) = CStr(arguments(argumentIndex)) ' Convert the variant to a string and add it to the string array
+    Next argumentIndex
+
+    m_factory.InvokeLogger ErrorLevel, m_sourceModule & "::" & sourceProcedure, errorDescription, stringArray
 End Function
 
 ' Any error that is forcing a shutdown of the service or application to prevent
 ' data loss (or further data loss). I reserve these only for the most heinous
 ' errors and situations where there is guaranteed to have been data corruption
 ' or loss.
-Public Function Fatal(errorDescription As String, Optional sourceProcedure As String)
-    m_factory.InvokeLogger FatalLevel, m_sourceModule, errorDescription
+Public Function Fatal(errorDescription As String, sourceProcedure As String, ParamArray arguments() As Variant)
+    Dim stringArray() As String
+    Dim argumentIndex As Long
+    ReDim stringArray(0 To UBound(arguments)) ' Resize the string array to match the variant array size
+    
+    For argumentIndex = 0 To UBound(arguments)
+        stringArray(argumentIndex) = CStr(arguments(argumentIndex)) ' Convert the variant to a string and add it to the string array
+    Next argumentIndex
+    
+    m_factory.InvokeLogger FatalLevel, m_sourceModule & "::" & sourceProcedure, errorDescription, stringArray
 End Function

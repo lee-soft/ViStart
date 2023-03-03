@@ -264,7 +264,7 @@ Dim currentSkinStartMenuParseResult As StartMenuParseResult
     Set currentSkinStartMenuParseResult = Layout.ParseStartMenu(g_resourcesPath & "layout.xml", ChildSkinID)
 
     If Not currentSkinStartMenuParseResult.ErrorCode = 0 Then
-        LogError "Failed to parse layout file", "StartMenuBase"
+        Logger.Error "Failed to parse layout file", "InitializeCurrentSkin"
         Exit Function
     End If
     
@@ -285,7 +285,7 @@ Dim currentSkinStartMenuParseResult As StartMenuParseResult
     
     If m_JumpListEnabled Then
         If Layout.JumpListViewerSchema Is Nothing Then
-            LogError "Warning:: Jumplist viewer schema is unavaliable but startmenu_expanded.png is present", "ResourcesPath"
+            Logger.Warning "Jumplist viewer schema is unavaliable but startmenu_expanded.png is present", "InitializeCurrentSkin"
             m_JumpListEnabled = False
         End If
     End If
@@ -626,7 +626,7 @@ Dim thisForm As Form
     
     Exit Sub
 Handler:
-    LogError Err.Description, Me.Name
+    Logger.Error Err.Description, "CloseMe"
 End Sub
 
 Sub ReDraw()
@@ -1949,7 +1949,7 @@ Private Function AlignChildWindows() As Boolean
     AlignChildWindows = True
     Exit Function
 Handler:
-    LogError Err.Description, "AlignChildWindows()"
+    Logger.Error Err.Description, "AlignChildWindows"
     AlignChildWindows = False
 End Function
 

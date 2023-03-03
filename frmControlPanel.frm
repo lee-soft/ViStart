@@ -960,7 +960,7 @@ Dim runAtStartupRegKey As RegistryKey
     Set runAtStartupRegKey = Registry.CurrentUser.OpenSubKey("Software\Microsoft\Windows\CurrentVersion\Run")
     
     If runAtStartupRegKey Is Nothing Then
-        LogError "Unable to open registry key", "Ensure_NukeMetro::frmControlPanel"
+        Logger.Error "Unable to open registry key", "Ensure_NukeMetro"
         Exit Sub
     End If
 

@@ -218,8 +218,6 @@ End Function
 Public Function UpdateByProgramPath(sProgramPath As String, Optional bReSort As Boolean = True) As Boolean
     On Error GoTo Handler
     
-    'LogError 0, "Update:: " & sProgramPath & " - " & bReSort, "clsProgramDB"
-    
 Dim Program As clsProgram
 
     Set Program = GetProgramByPath(sProgramPath)

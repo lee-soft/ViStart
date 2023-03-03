@@ -142,7 +142,7 @@ Public Function CreateSubKey(ByVal subKeyName As String) As RegistryKey
     If Not result = ERROR_SUCCESS Then
         ' Failed to create subkey
         
-        LogError "RegistryKey::Unable to create subkey: " & subKeyName
+        Logger.Warn "Unable to create subkey", "CreateSubKey", subKeyName
         If Not m_supressErrors Then Err.Raise result, "RegistryKey", "Unable to create subkey"
         Exit Function
     End If
@@ -173,7 +173,7 @@ Public Function OpenSubKey(ByVal subKeyName As String, Optional ByVal writable A
     
     ' Open the subkey
     If Not result = ERROR_SUCCESS Then
-        LogError "RegistryKey::Unable to open sub key: " & subKeyName
+        Logger.Error "Unable to open sub key", "OpenSubKey", subKeyName, access
         If Not m_supressErrors Then Err.Raise result, "RegistryKey", "Unable to open Registry sub key: " & subKeyName
         Exit Function
     End If
@@ -197,7 +197,7 @@ Public Function SetValue(ByVal ValueName As String, ByVal Value As Variant) As B
     ElseIf vbValueType = vbLong Or vbValueType = vbInteger Then
         ValueType = REG_DWORD
     Else
-        LogError "RegistryKey, unimplented type: " & vbValueType
+        Logger.Error "Unimplented type " & vbValueType, "SetValue", ValueName
         If Not m_supressErrors Then Err.Raise 0, "RegistryKey", "Unimplmented type!"
     End If
     
@@ -232,7 +232,7 @@ Public Function GetValue(ByVal ValueName As String, Optional ByVal DefaultValue 
         
     result = RegOpenKeyEx(Me.Key, "", 0&, KEY_READ, hKey)
     If result <> ERROR_SUCCESS Then
-        LogError "RegistryKey", "Unable to open key: & ValueName"
+        Logger.Error "Unable to open key", "GetValue", ValueName
         If Not m_supressErrors Then Err.Raise result, "RegistryKey", "Unable to open key!"
         ' Failed to open key
         GetValue = DefaultValue

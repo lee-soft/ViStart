@@ -83,10 +83,10 @@ Dim settingsXML As IXMLDOMElement
 			
         Else
             If FileExists(App.Path & "\languages\english.xml") Then
-                LogError "Native Language: " & g_WindowsLanguageInt & " / " & g_WindowsLanguage & " unavailable, defaulting to American English..", "ViSettings::Initialize()"
+                Logger.Warn "Native Language: " & g_WindowsLanguageInt & " / " & g_WindowsLanguage & " unavailable, defaulting to American English..", "Initialize"
                 Me.LanguageFile = "English"
             Else
-                LogError "No languages installed.. using precompiled values"
+                Logger.Warn "No languages installed.. using precompiled values"
             End If
         End If
     End If

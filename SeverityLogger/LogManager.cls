@@ -63,18 +63,21 @@ Public Property Let MinimumLevel(newLevel As LogLevel)
     m_logLevel = newLevel
 End Property
 
-Public Function InvokeLogger(ByVal level As LogLevel, ByVal source As String, ByVal message As String)
+Public Function InvokeLogger(ByVal level As LogLevel, ByVal source As String, ByVal message As String, Optional arguments As Variant)
     If level < m_logLevel Then
         Exit Function
     End If
     
+Dim sourceHeader As String
+    sourceHeader = source & " " & Join(arguments, ",")
+    
     If m_targetType = LogDebug Or m_targetType = LogAll Then
-        Debug.Print Now(); " "; level; " "; source; " - "; message
+        Debug.Print Now(); " "; level; " "; message; " "; sourceHeader
     End If
     
     If m_targetType = LogFile Or m_targetType = LogAll Then
         If Not m_logFile Is Nothing Then
-            m_logFile.WriteTextLine Now() & " " & level & " " & source & " - " & message
+            m_logFile.WriteTextLine Now() & " " & level & " " & message & " " & sourceHeader
             If m_autoFlush Then m_logFile.Flush
         End If
     End If
@@ -127,4 +130,3 @@ handler:
     IsLogged = False
 
 End Function
-

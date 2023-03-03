@@ -202,7 +202,7 @@ Dim sP() As String
         Dim proposedOrb As String: proposedOrb = URLDecode(CStr(sP(1)))
 
         If Not FileExists(sCon_AppDataPath & "_orbs\" & proposedOrb) Then
-            LogError "Attempting to apply new orb has failed due to missing file"
+            Logger.Error "Attempting to apply new orb has failed due to missing file", "RecieveAppMessage"
             Exit Function
         End If
         
@@ -218,7 +218,7 @@ Dim sP() As String
         Dim proposedSkin As String: proposedSkin = URLDecode(CStr(sP(1)))
     
         If Not FileCheck(sCon_AppDataPath & "_skins\" & proposedSkin & "\") Then
-            LogError "Attempting to apply new skin has failed due to missing or inaccessible files"
+            Logger.Error "Attempting to apply new skin has failed due to missing or inaccessible files", "RecieveAppMessage"
             Exit Function
         End If
     

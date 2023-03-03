@@ -11,6 +11,16 @@ Public g_bIndexing As Boolean
 
 Private m_old_strItemPath As String
 
+Private m_logger As SeverityLogger
+
+Private Property Get Logger() As SeverityLogger
+    If m_logger Is Nothing Then
+        m_logger = LogManager.GetLogger("ArrayHelper")
+    End If
+    
+    Set Logger = m_logger
+End Property
+
 Private Function GetFolder(strPath As String, ByRef srcFolder As Folder) As Boolean
 
     On Error GoTo NotFolder:
@@ -55,7 +65,7 @@ Abort:
         
         Index_MyDirectory
     Else
-        CreateError "IndexHelper", "Index_MyDirectory", Err.Description
+        Logger.Error Err.Description, "Index_MyDirectory" 
     End If
 End Sub
 
@@ -88,8 +98,7 @@ Dim nodFile As INode
     Exit Sub
     
 Decrepency:
-    CreateError "modXMLCache", "UnIndexFolder(" & ObjectCaptionString(srcNode) & ObjectChildrenCount(srcNode) & ")", "Something went wrong with the indexing system: " & Err.Description
-
+    Logger.Error Err.Description. "UnIndexFolder"
 End Sub
 
 Sub IndexFolder(ByRef folSource As Folder, ByRef srcNode As INode)
@@ -148,6 +157,5 @@ Dim nodFile As INode
     Exit Sub
     
 Decrepency:
-    CreateError "modXMLCache", "IndexFolder(" & ObjectPathNameToString(folSource) & ")", ObjectPathNameToString(nodFile) & vbCrLf & "Something went wrong with the indexing system: " & Err.Description
-
+    Logger.Error Err.Description, "IndexFolder"
 End Sub

@@ -158,7 +158,7 @@ Dim recentDocsRegKey As RegistryKey
     Set recentDocsRegKey = Registry.CurrentUser.OpenSubKey(sPath)
     
     If recentDocsRegKey Is Nothing Then
-        LogError "Could not open registry key", "frmFileMenu::GetItems_MRU"
+        Logger.Error "Could not open registry key", "GetItems_MRU"
         Exit Function
     End If
     

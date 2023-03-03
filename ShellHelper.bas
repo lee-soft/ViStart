@@ -278,7 +278,7 @@ Function DetermineWindowsVersion_IfNeeded()
     Set currentVersionRegKey = Registry.LocalMachine.OpenSubKey("Software\Microsoft\Windows NT\CurrentVersion")
     
     If currentVersionRegKey Is Nothing Then
-        LogError "Unable to get registry key", "ShellHelper::DetermineWindowsVersion_IfNeeded"
+        Logger.Error "Unable to get registry key", "DetermineWindowsVersion_IfNeeded"
         Exit Function
     End If
     
@@ -669,7 +669,7 @@ Dim lnk As New ShellLinkObject
     Exit Function
 Handler:
     If Err.Number <> 70 Then
-        LogError Err.Description & " {" & Err.Number & "}", "GetShellLink(" & szLinkPath & ")"
+        Logger.Error Err.Description & " {" & Err.Number & "}", "GetShellLink", szLinkPath
     End If
 End Function
 

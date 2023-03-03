@@ -49,6 +49,16 @@ Private Const SE_ERR_NOTEXIST As Long = 2
 
 Dim FSO As New FileSystemObject
 
+Private m_logger As SeverityLogger
+
+Private Property Get Logger() As SeverityLogger
+    If m_logger Is Nothing Then
+        m_logger = LogManager.GetLogger("AppLauncherHelper")
+    End If
+    
+    Set Logger = m_logger
+End Property
+
 Public Function SelectBestExecutionMethod(ByVal szFile As String)
 
 Dim theFile As String
@@ -90,11 +100,7 @@ Public Function CmdRun(sPath As String, Optional winStyle As VbAppWinStyle = vbH
 
     Exit Function
 Handler:
-
-    CreateError "modEXE", "Cmd_Run", _
-           "Parameter[1] = " & sPath & vbCrLf & _
-           vbCrLf & _
-           Err.Description
+    Logger.Error Err.Description, "CmdRun", sPath
 End Function
 
 Public Function ExplorerRun(sPath As String, Optional sVisibility As VbAppWinStyle = vbNormalFocus)
@@ -104,12 +110,7 @@ Public Function ExplorerRun(sPath As String, Optional sVisibility As VbAppWinSty
 
     Exit Function
 Handler:
-
-    CreateError "modEXE", "Explorer_Run", _
-           "Parameter[1] = " & sPath & vbCrLf & _
-           vbCrLf & _
-           Err.Description
-
+    Logger.Error Err.Description, "ExplorerRun", sPath
 End Function
 
 Public Function ShellCommand(Program As String) As Boolean
@@ -121,8 +122,7 @@ Public Function ShellCommand(Program As String) As Boolean
     Exit Function
 Handler:
     ShellCommand = False
-    'g_WinError.ShowError "winStartBar", "Shell32", Err.description
-    CreateError "", "ShellCommand", Err.Description
+    Logger.Error Err.Description, "ShellCommand", Program
 
 End Function
 
@@ -190,7 +190,7 @@ Dim lngSecondQ As Long
 
     Exit Function
 Handler:
-    CreateError "AppLauncherHelper", "ShellEx", Err.Description
+    Logger.Error Err.Description, "ShellEx"
 End Function
 
 Function HexToStr(ByRef strHex)
@@ -228,7 +228,7 @@ Function StrToHex(s As Variant) As Variant
       Else
          Temp = ""
       For i = 1 To Len(s)
-         Temp = Temp & Format(Hex(Asc(Mid$(s, i, 1))), "00")
+         Temp = Temp & format(Hex(Asc(Mid$(s, i, 1))), "00")
       Next i
          StrToHex = Temp
       End If

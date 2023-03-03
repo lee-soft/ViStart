@@ -33,6 +33,16 @@ Option Explicit
 
 Private Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
 
+Private m_logger As SeverityLogger
+
+Private Property Get Logger() As SeverityLogger
+    If m_logger Is Nothing Then
+        m_logger = LogManager.GetLogger("ThemeHelper")
+    End If
+    
+    Set Logger = m_logger
+End Property
+
 Public Function InstallOrb(szSourceFile As String, ByRef szOrbName As String) As Boolean
 
 Dim fileNameHolder As String
