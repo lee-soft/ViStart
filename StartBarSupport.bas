@@ -84,6 +84,16 @@ Public AppPath As String
 
 Dim bHasRecentItems As Boolean
 
+Private m_logger As SeverityLogger
+
+Private Property Get Logger() As SeverityLogger
+    If m_logger Is Nothing Then
+        m_logger = LogManager.GetLogger("StartBarSupport")
+    End If
+    
+    Set Logger = m_logger
+End Property
+
 Public Function PopulateUserStringsFromXML(ByVal szSourceFile As String)
 
 Dim xmlLanguageFile As New DOMDocument
@@ -305,7 +315,7 @@ Dim theHandles As New LayerdWindowHandles
    curWinLong = GetWindowLong(sourceForm.hWnd, GWL_EXSTYLE)
    
     If SetWindowLong(sourceForm.hWnd, GWL_EXSTYLE, curWinLong Or WS_EX_LAYERED Or WS_EX_TOOLWINDOW) = 0 Then
-        'LogError "Failed to create layered window", "Startbar_Support"
+        'Logger.Error "Failed to create layered window", "Startbar_Support"
         'Exit Function
     End If
 
@@ -386,7 +396,7 @@ Sub SetVars_IfNeeded()
         FSO.CreateFolder sCon_AppDataPath
         
         If Err Then
-            MsgBox Err.Description, vbCritical
+            MsgBox Err.description, vbCritical
             
             ExitApplication
             End
@@ -470,7 +480,7 @@ Dim objStrings As IXMLDOMElement
 Dim objString As IXMLDOMElement
 Dim thisObject As Object
 
-    On Error GoTo Handler
+    On Error GoTo handler
 
     'Set objStrings = ObjXML.selectSingleNode("/strings")
     ' iterate its string children
@@ -486,8 +496,8 @@ Dim thisObject As Object
                     MsgBox "id or value not found in string", vbCritical
                     End
                 Else
-                    If UpdateColValue(UserVariable, CStr(objString.Attributes.getNamedItem("id").Text), CStr(objString.Attributes.getNamedItem("value").Text)) = False Then
-                        LogError "'" & CStr(objString.Attributes.getNamedItem("id").Text) & "' is not a known string identifier", ""
+                    If UpdateColValue(UserVariable, CStr(objString.Attributes.getNamedItem("id").text), CStr(objString.Attributes.getNamedItem("value").text)) = False Then
+                        Logger.Error "'" & CStr(objString.Attributes.getNamedItem("id").text) & "' is not a known string identifier", ""
                     End If
                 End If
             End If
@@ -495,8 +505,8 @@ Dim thisObject As Object
     Next
     
     Exit Sub
-Handler:
-    CreateError "StartBar_Support", "XML_PopulateStrings", Err.Description
+handler:
+    Logger.Error Err.description, "XML_PopulateStrings"
 End Sub
 
 Public Function AttributeExists(ByRef objElem As MSXML2.IXMLDOMElement, ByVal sAttribName As String) As Boolean
@@ -637,7 +647,7 @@ Function QuickSortNamesAscending( _
     ByVal col_sCollectionToAlphabetize As Collection, _
     ByVal iSortType As VbCompareMethod) As Collection
     
-    On Error GoTo Handler
+    On Error GoTo handler
     
     Dim iEachItem As Long
     Dim col_sSorted As New Collection
@@ -696,14 +706,14 @@ Function QuickSortNamesAscending( _
             Set QuickSortNamesAscending = col_sSorted
             
             Exit Function
-Handler:
-    CreateError "StartBar_Support", "QuickSortNamesAsc", Err.Description
+handler:
+    Logger.Error Err.description, "QuickSortNamesAsc"
 End Function
 
 Public Function UpdateCol(ByRef Col As Collection, index, vUpdate, Optional sKey As String) As Boolean
     'Updates Collection Key, Keeps Numerical Index intact
 
-    On Error GoTo Handler
+    On Error GoTo handler
 
     Col.Remove index
     
@@ -715,7 +725,7 @@ Public Function UpdateCol(ByRef Col As Collection, index, vUpdate, Optional sKey
     
     UpdateCol = True
     Exit Function
-Handler:
+handler:
     UpdateCol = False
 
 End Function
@@ -736,14 +746,14 @@ End Function
 Public Function ExistCol(ByRef Col As Collection, index) As Boolean
     'Updates Collection Key, Keeps Numerical Index intact
 
-    On Error GoTo Handler
+    On Error GoTo handler
 
     If IsObject(Col(index)) Then
     End If
 
     ExistCol = True
     Exit Function
-Handler:
+handler:
     ExistCol = False
 
 End Function
@@ -751,14 +761,14 @@ End Function
 Public Function UpdateColValue(ByRef Col As Collection, index, vUpdate) As Boolean
     'Updates Collection Key, Keeps Numerical Index intact
 
-    On Error GoTo Handler
+    On Error GoTo handler
 
     Col.Remove index
     Col.Add vUpdate, index
 
     UpdateColValue = True
     Exit Function
-Handler:
+handler:
     UpdateColValue = False
 
 End Function
@@ -804,12 +814,12 @@ Dim strOutput As String
 End Function
 
 Public Function GetPublicString(ByVal stringID As String, Optional Default As String = vbNullString)
-    On Error GoTo Handler
+    On Error GoTo handler
     
     GetPublicString = UserVariable(stringID)
     Exit Function
     
-Handler:
+handler:
     GetPublicString = Default
 End Function
 
