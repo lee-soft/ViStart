@@ -63,13 +63,13 @@ Public Property Let MinimumLevel(newLevel As LogLevel)
     m_logLevel = newLevel
 End Property
 
-Public Function InvokeLogger(ByVal level As LogLevel, ByVal source As String, ByVal message As String, Optional arguments As Variant)
+Public Function InvokeLogger(ByVal level As LogLevel, ByVal Source As String, ByVal message As String, Optional arguments As Variant)
     If level < m_logLevel Then
         Exit Function
     End If
     
 Dim sourceHeader As String
-    sourceHeader = source & " " & Join(arguments, ",")
+    sourceHeader = Source & " " & Join(arguments, ",")
     
     If m_targetType = LogDebug Or m_targetType = LogAll Then
         Debug.Print Now(); " "; level; " "; message; " "; sourceHeader
@@ -115,18 +115,18 @@ Private Sub Class_Initialize()
     Set m_defaultLogger = New SeverityLogger
     Set m_loggers = New Collection
     
-    m_logLevel = ErrorLevel
+    m_logLevel = TraceLevel
     Target = LogAll
     AutoFlush = True
 End Sub
 
 Private Function IsLogged(loggerKey As String) As Boolean
 
-    On Error GoTo handler
+    On Error GoTo Handler
     IsLogged = Not (IsEmpty(m_loggers(loggerKey)))
     
     Exit Function
-handler:
+Handler:
     IsLogged = False
 
 End Function

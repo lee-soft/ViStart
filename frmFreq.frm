@@ -184,7 +184,6 @@ End Sub
 
 Private Sub PopulateItemsFromCollection(ByVal slotIndexStart As Long, ByRef topValue As Long, ByRef sourceCollection As Collection)
     
-    Debug.Print "PopulateItemsFromCollection:: " & slotIndexStart & " - " & topValue
     On Error GoTo Handler
     
 Dim itemIndex As Long
@@ -414,8 +413,7 @@ Static lastButton As Integer
     
     If bKeyboardMode Then
         bKeyboardMode = False
-        
-        Debug.Print "HARE!"
+
         picRollover.Visible = False
     End If
     
@@ -433,7 +431,6 @@ Static lastButton As Integer
         m_viPadInstalled = IsViPadInstalled
         m_trackingMouse = TrackMouse(Me.hWnd)
         picRollover.Visible = True
-        Debug.Print "Visible!!"
     End If
     
     If m_vistaMenu Is Nothing Then UpdateRolloverStatus CreatePointL(CLng(Y), CLng(X))
@@ -484,7 +481,6 @@ Private Function IHookSink_WindowProc(hWnd As Long, msg As Long, wp As Long, lp 
     If msg = WM_MOUSELEAVE Then
         m_trackingMouse = False
         
-        Debug.Print "Leaving!"
         TestRolloverVisability
     Else
         ' Just allow default processing for everything else.
@@ -494,7 +490,7 @@ Private Function IHookSink_WindowProc(hWnd As Long, msg As Long, wp As Long, lp 
     
     Exit Function
 Handler:
-    Debug.Print Err.Description
+    Logger.Error Err.Description, "IHookSink_WindowProc", msg
 
     ' Just allow default processing for everything else.
     IHookSink_WindowProc = _
@@ -625,33 +621,23 @@ Dim i As Long
 Dim bOnTopOfButton As Boolean
 Dim suggestedIndex As Long
 
-    'Debug.Print "UpdateRolloverStatus:: " & cPos.X & " - " & cPos.Y
-
     suggestedIndex = Floor(cPos.Y / ItemGap)
     
     If Settings.Programs.PinnedPrograms.count > 0 Then
         If suggestedIndex = Settings.Programs.PinnedPrograms.count Then
-            Debug.Print "changing index!"
             suggestedIndex = Floor((cPos.Y - 10) / ItemGap)
         End If
     End If
     
     If (suggestedIndex > -1) And suggestedIndex <= m_itemCap Then
                 
-                
         'Cancel Keyboard Mode
         bKeyboardMode = False
         bOnTopOfButton = True
 
         If iCurIndex <> suggestedIndex Then
-        
-            
             Rollover suggestedIndex
-
             iCurIndex = suggestedIndex
-            Debug.Print "01# Changing iCurIndex to " & suggestedIndex
-            
-            Debug.Print "So::" & lstItems(suggestedIndex).text & " :: " & suggestedIndex & " - " & m_itemCap
         End If
     End If
 
@@ -660,8 +646,6 @@ Dim suggestedIndex As Long
         If Not bKeyboardMode Then
 
             iCurIndex = -1
-            Debug.Print "02# Changing iCurIndex to " & iCurIndex
-            
             'Hide rollover object
             picRollover.Top = -picRollover.Height
         End If
@@ -675,21 +659,18 @@ Private Function Rollover(ByVal lngNewRolloverIndex As Long)
 Dim hasMRUList As Boolean
     
     If lngNewRolloverIndex = -2 Then
-        'Debug.Print "Bail 04"
         Exit Function
     End If
     
     If UBound(lstItems) = 0 Then
-        'Debug.Print "Bail 00"
         Exit Function
     End If
     
     If Not m_vistaMenu Is Nothing Then
-        'Debug.Print "Bail 01"
         Exit Function
     End If
     
-    Debug.Print "Rollovering over:: " & lngNewRolloverIndex
+    Logger.Trace "Rollovering over:: " & lngNewRolloverIndex, "Rollover"
     
     If lngNewRolloverIndex >= LBound(lstItems) And lngNewRolloverIndex <= UBound(lstItems) Then
     
@@ -812,7 +793,7 @@ Dim sP() As String
 End Sub
 
 Private Sub m_vistaMenu_onInActive()
-    Debug.Print "INACTIVE!"
+    Logger.Trace "Inactive", "m_vistaMenu_onInActive"
     
     If Not m_vistaMenu Is Nothing Then
         Unload m_vistaMenu
@@ -914,7 +895,7 @@ Private Sub picRollover_MouseUp(Button As Integer, Shift As Integer, X As Single
             m_vistaMenu.AddItem GetPublicString("strProperties"), "PROPERTIES@" & lstItems(iCurIndex).Shell
         End If
         
-        Debug.Print "Attemping Resurrection!"
+        Logger.Trace "Attemping to show program option menu", "picRollover_MouseUp"
         m_vistaMenu.Resurrect True
     End If
 

@@ -262,7 +262,7 @@ Public Function GetValue(ByVal ValueName As String, Optional ByVal DefaultValue 
         RegCloseKey hKey
         GetValue = DefaultValue
         
-        Debug.Print "RegistryKey", "Unable to read key: " & ValueName
+        Logger.Error "Unable to read key", "GetValue", ValueName
         If Not m_supressErrors Then Err.Raise result, "RegistryKey", "Unable to read key: " & ValueName
         Exit Function
     End If

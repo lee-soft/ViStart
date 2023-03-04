@@ -88,7 +88,7 @@ Function ShowContextMenu() As Boolean
     If Not m_contextMenu Is Nothing Then Unload m_contextMenu
     Set m_contextMenu = BuildGenericFileContextMenu(m_selectedItem.Tag)
     
-    Debug.Print "Attemping Resurrection!"
+    Logger.Trace "Attemping to show context menu", "ShowContextMenu"
     m_contextMenu.Resurrect True, Me
 End Function
 
@@ -215,7 +215,6 @@ Dim folderPath As String
         
         For Each thisFile In recentFiles.Files
         
-            Debug.Print "GetItems:: " & szPath
             If FSO.FileExists(ResolveLink(thisFile.Path)) Then
                 itemCollection.Add ExtOrNot(thisFile.Name) & "*" & thisFile.Path
                 
@@ -268,8 +267,7 @@ Dim theFileName As String
         theFileName = sP(0)
         
         lngTextWidth = 32 + m_hdcBackBuffer.GetTextRect(theFileName).Right
-        Debug.Print lngTextWidth & ":" & theFileName
-        
+
         If m_lngFormWidth < 360 Then
         
             If (lngTextWidth > m_lngFormWidth) Then
@@ -281,8 +279,6 @@ Dim theFileName As String
             End If
         End If
     Next
-
-    Debug.Print "m_lngFormWidth:: " & m_lngFormWidth
 
     Me.Width = m_lngFormWidth * Screen.TwipsPerPixelX
     
@@ -311,7 +307,7 @@ Dim theFileName As String
     Form_Paint
     timIconDelay.Enabled = True
     
-    Debug.Print "Final Width:: " & Me.ScaleWidth
+    Logger.Trace "Final width of menu", "PopulateFromPath", Me.ScaleWidth
     
     Exit Function
 Handler:
@@ -515,7 +511,7 @@ Private Function IHookSink_WindowProc(hWnd As Long, uMsg As Long, wParam As Long
 
     Exit Function
 Handler:
-    Debug.Print Err.Description
+    Logger.Error Err.Description, "IHookSink_WindowProc", uMsg
 
     ' Just allow default processing for everything else.
     IHookSink_WindowProc = _

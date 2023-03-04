@@ -651,7 +651,7 @@ Sub ReDraw()
         
     Else
         If BlurEnabled Then
-            Debug.Print "Aha!!"
+            Logger.Trace "Bluring desktop with background", "ReDraw"
             m_navigationDraw.UpdateBlurred m_DesktopBitmap.Image
             m_BitmapGraphics.DrawImage m_DesktopBitmap.Image, 0, 0, Me.ScaleWidth, Me.ScaleHeight
         Else
@@ -1002,7 +1002,7 @@ On Error GoTo Handler
         
     Exit Sub
 Handler:
-    Debug.Print "UpdateBuffer()" & Err.Description
+    Logger.Error Err.Description, "UpdateBuffer"
 End Sub
 
 Function ReInitSurface() As Boolean
@@ -1160,7 +1160,8 @@ End Sub
 
 Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
 
-    Debug.Print "frmStartMenuBase:: " & KeyCode & " <> " & g_KeyboardMenuState & " <> " & g_KeyboardSide
+    Logger.Trace "g_KeyboardMenuState: " & g_KeyboardMenuState & _
+                 "g_KeyboardSide" & g_KeyboardSide, "Form_KeyDown", KeyCode
 
     If KeyCode = vbKeyLeft Or KeyCode = vbKeyRight Then
     
@@ -1176,7 +1177,7 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
                 If m_navigationDraw.index < m_navigationDraw.count Then
                     If m_recentPrograms.Visible Then
                     
-                        Debug.Print "Attacking Recent Programs!"
+                        Logger.Trace "Attaching Rollover to Recent Programs!", "Form_KeyDown", KeyCode, Shift
                         m_recentPrograms.RolloverWithKeyboard (m_navigationDraw.index - 1)
                     Else
                         m_programMenu.SelectVisibleItem m_navigationDraw.index
@@ -1471,8 +1472,6 @@ Dim clicked As Boolean
             m_jumpListDrawer.MouseLeaves
         End If
     Else
-        'Debug.Print XSng & ":" & Layout.GroupMenuSchema.Left & " & " & Layout.GroupMenuSchema.Width
-    
         If IsInsideViComponent(XSng, YSng, Layout.GroupMenuSchema, clientMousePos) Then
             m_navigationDraw.HasMouse = True
         
@@ -1688,8 +1687,7 @@ Private Function UpdatePowerButtonState(ByRef sourceButton As PowerOptionButton,
 End Function
 
 Private Sub ShowRightRollover(index As Long)
-    Debug.Print "ShowRightRollover; " & index
-    
+    Logger.Trace "Show Rollover On Right", "ShowRightRollover", index
     m_navigationDraw.SelectOptionByIndex index
 End Sub
 
@@ -1744,13 +1742,6 @@ Private Sub ShowRollover(ByVal Path As String, Optional DefaultAlpha As Byte = 4
             Exit Sub
         End If
     
-        'If Not m_currentFadeOutImage Is Nothing Then
-            'If ExistInCol(m_FadeOuts, m_currentFadeOutImage.Tag) = False Then
-                'm_FadeOuts.Add m_currentFadeOutImage, m_currentFadeOutImage.Tag
-                'Debug.Print "Adding bad fadeout: " & m_currentFadeOutImage.Tag & "<>" & m_currentFadeOutImage.Path
-            'End If
-        'End If
-        
         If Not m_currentFadeOutImage Is Nothing Then
             Unload m_currentFadeOutImage
         End If
@@ -1759,15 +1750,12 @@ Private Sub ShowRollover(ByVal Path As String, Optional DefaultAlpha As Byte = 4
         
         If ExistInCol(m_FadeOuts, m_currentFadeOutImage.Tag) = False Then
             m_FadeOuts.Add m_currentFadeOutImage, m_currentFadeOutImage.Tag
-            Debug.Print "Add fadeout: " & m_currentFadeOutImage.Tag
+            Logger.Trace "Add fadeout for ", "ShowRollover", m_currentFadeOutImage.Tag
         End If
-        
-        'unload m_currentFadeInImage
+
     End If
     
     Set m_currentFadeInImage = GenerateRolloverImage(Path)
-    'm_currentFadeInImage.Hide
-    
     SetWindowPos m_currentFadeInImage.hWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOSIZE Or SWP_NOMOVE Or SWP_NOACTIVATE
     SetOwner m_currentFadeInImage.hWnd, Me.hWnd
     
@@ -1815,8 +1803,6 @@ Dim State As Long
     End If
 
     If m_AllPrograms.State <> State Then
-        Debug.Print "STATE CHANGED; " & State
-
         m_AllPrograms.State = State
     End If
 End Sub
@@ -1845,25 +1831,17 @@ Private Function IHookSink_WindowProc(hWnd As Long, msg As Long, wp As Long, lp 
             If g_bStartMenuVisible And _
                 (Not MouseInsideWindow(g_ViGlanceOrb)) Then
                 
-                Debug.Print "CloseMe::WA_INACTIVE:: " & lp & " " & App.ThreadID
+                Logger.Trace "Recieved message to close self", "IHookSink_WindowProc", msg, wp, lp
                 CloseMe
             End If
         End If
     ElseIf msg = WM_MOVE Then
-        'm_programMenu.Left = Me.Left + (10 * Screen.TwipsPerPixelX)
-        'm_programMenu.Top = Me.Top
-        
         m_windowPosition.X = LOWORD(lp)
         m_windowPosition.Y = HiWord(lp)
         
-        'AlignChildWindows
-    
-        
     ElseIf msg = WM_ACTIVATE Then
         
-        If wp = WA_ACTIVE Then
-            'm_searchText.SetKeyboardFocus
-        Else
+        If wp <> WA_ACTIVE Then
             ' Just allow default processing for everything else.
             IHookSink_WindowProc = _
                 CallOldWindowProcessor(hWnd, msg, wp, lp)
@@ -1885,7 +1863,7 @@ Private Function IHookSink_WindowProc(hWnd As Long, msg As Long, wp As Long, lp 
 
     ElseIf msg = UM_CLOSE_STARTMENU Then
     
-        Debug.Print "CloseMe::UM_CLOSE_STARTMENU"
+        Logger.Trace "UM_CLOSE_STARTMENU", "IHookSink_WindowProc", msg, wp, lp
         CloseMe
     
     ElseIf msg = WM_ENDSESSION Then

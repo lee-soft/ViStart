@@ -135,6 +135,11 @@ Private m_abNormalDPI As Boolean
 Private m_userDPI As Long
 
 Private m_ORB_HEIGHT As Long
+Private m_logger As SeverityLogger
+
+Property Get Logger()
+    Set Logger = m_logger
+End Property
 
 Private Sub InitializeMenu()
     Set m_startOptions = New frmVistaMenu
@@ -217,6 +222,10 @@ Dim startOrbPath As String
     
     InitializeStartButton = True
 End Function
+
+Private Sub Form_Initialize()
+    Set m_logger = LogManager.GetCurrentClassLogger(Me)
+End Sub
 
 Private Sub Form_Load()
     InitializeMenu
@@ -446,8 +455,7 @@ Dim taskbarEdge As AbeBarEnum
     
     If IsRectDifferent(m_taskbarKnownRect, TaskBar) Then
         'Taskbar must have moved
-        
-        Debug.Print "New taskbar dimensions!"
+        Logger.Trace "Taskbar dimensions have changed", "ActivateStartMenu"
         
         taskbarEdge = GetTaskBarEdge()
         m_taskbarKnownRect = TaskBar
@@ -701,15 +709,12 @@ Dim topValueSet As Boolean: topValueSet = False
             
             If ((recStartButton.Left) <> (recOrb.Left) Or _
                 (recReBar32.Top + lngTop) <> recOrb.Top) Then
-        
-                'Debug.Print "MOVING; " & (recStartButton.Top) & "<>" & (recOrb.Top)
+
                 MoveWindow m_startButton.hWnd, recStartButton.Left, recReBar32.Top + lngTop, m_startButton.ScaleWidth, m_startButton.ScaleHeight, True
             End If
                         
         ElseIf g_Windows11 Then
             ' Windows 11+
-            
-            'Debug.Print "MOVING; " & (recStartButton.Top) & "<>" & (recOrb.Top)
             MoveWindow m_startButton.hWnd, recStartButton.Left + 2, recReBar32.Top + lngTop, m_startButton.ScaleWidth, m_startButton.ScaleHeight, True
 
         Else
@@ -730,7 +735,6 @@ Dim topValueSet As Boolean: topValueSet = False
             Else
                 If (recReBar32.Top + lngTop) <> (recOrb.Top) Then
             
-                    'Debug.Print "MOVING; " & recReBar32.Top + lngTop & "<>" & (recOrb.Top)
                     MoveWindow m_startButton.hWnd, lngLeft, lngTop, m_startButton.ScaleWidth, m_startButton.ScaleHeight, True
                 End If
             End If
@@ -747,8 +751,6 @@ Dim topValueSet As Boolean: topValueSet = False
             lngTop = 1
         
             If (recReBar32.Left + lngLeft) <> (recOrb.Left) Then
-                
-                Debug.Print ":D"
                 MoveWindow m_startButton.hWnd, lngLeft, lngTop, m_startButton.ScaleWidth, m_startButton.ScaleHeight, True
             End If
         End If
@@ -785,7 +787,7 @@ End Sub
 Private Sub timViOrb_Timer()
 
     If IsWindowVisible(g_hwndStartButton) = APITRUE Then
-        Debug.Print "Closing Start Button!"
+        Logger.Trace "Closing Start Button!", "timViOrb_Timer"
         
         ShowWindow g_hwndStartButton, SW_HIDE
         Call SetWindowPos(m_startButton.hWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOSIZE Or SWP_NOMOVE)
@@ -849,7 +851,7 @@ Static m_NotTopMost As Boolean
                 If m_NotTopMost = True Then
                     m_NotTopMost = False
                     
-                    Debug.Print "m_startButton::Show"
+                    Logger.Trace "Showing ViStart start button", "timzOrderCheck_Timer"
                     ShowWindow m_startButton.hWnd, SW_SHOWNOACTIVATE
                 End If
             End If
