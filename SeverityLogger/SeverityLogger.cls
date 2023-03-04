@@ -39,8 +39,20 @@ End Function
 
 ' Only when I would be "tracing" the code and trying to find one part of a
 ' function specifically.
-Public Function Trace(traceMessage As String, Optional sourceProcedure As String)
-    m_factory.InvokeLogger TraceLevel, m_sourceModule, traceMessage
+Public Function Trace(ByVal traceMessage As String, ByVal sourceProcedure As String, ParamArray arguments() As Variant)
+    
+    Dim stringArray() As String
+    Dim argumentIndex As Long
+    
+    If UBound(arguments) > 0 Then
+        ReDim stringArray(0 To UBound(arguments)) ' Resize the string array to match the variant array size
+        
+        For argumentIndex = 0 To UBound(arguments)
+            stringArray(argumentIndex) = CStr(arguments(argumentIndex)) ' Convert the variant to a string and add it to the string array
+        Next argumentIndex
+    End If
+    
+    m_factory.InvokeLogger TraceLevel, m_sourceModule & "::" & sourceProcedure, traceMessage, stringArray
 End Function
 
 ' Generally useful information to log (service start/stop, configuration

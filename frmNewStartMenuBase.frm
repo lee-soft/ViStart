@@ -223,7 +223,7 @@ Implements IHookSink
 
 Private m_logger As SeverityLogger
 
-Property Get Logger()
+Property Get Logger() As SeverityLogger
     Set Logger = m_logger
 End Property
 
@@ -291,7 +291,7 @@ Dim currentSkinStartMenuParseResult As StartMenuParseResult
     
     If m_JumpListEnabled Then
         If Layout.JumpListViewerSchema Is Nothing Then
-            Logger.Warning "Jumplist viewer schema is unavaliable but startmenu_expanded.png is present", "InitializeCurrentSkin"
+            Logger.Warn "Jumplist viewer schema is unavaliable but startmenu_expanded.png is present", "InitializeCurrentSkin"
             m_JumpListEnabled = False
         End If
     End If
@@ -1155,6 +1155,7 @@ End Sub
 
 Private Sub Form_Initialize()
     Set m_logger = LogManager.GetCurrentClassLogger(Me)
+    
     Inititalize
 End Sub
 

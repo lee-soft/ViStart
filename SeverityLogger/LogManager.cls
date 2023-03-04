@@ -69,7 +69,12 @@ Public Function InvokeLogger(ByVal level As LogLevel, ByVal Source As String, By
     End If
     
 Dim sourceHeader As String
-    sourceHeader = Source & " " & Join(arguments, ",")
+
+    If Not IsMissing(arguments) Then
+        sourceHeader = Source & " " & Join(arguments, ",")
+    Else
+        sourceHeader = Source
+    End If
     
     If m_targetType = LogDebug Or m_targetType = LogAll Then
         Debug.Print Now(); " "; level; " "; message; " "; sourceHeader

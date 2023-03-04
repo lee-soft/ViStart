@@ -12,7 +12,7 @@ Private m_logger As SeverityLogger
 
 Private Property Get Logger() As SeverityLogger
     If m_logger Is Nothing Then
-        m_logger = LogManager.GetLogger("StringHelper")
+        Set m_logger = LogManager.GetLogger("MRUHelper")
     End If
     
     Set Logger = m_logger
@@ -121,7 +121,7 @@ Handler:
 End Function
 
 Public Function GetImageJumpList(ByVal srcImagePath As String) As JumpList
-    On Error GoTo Handler
+    'On Error GoTo Handler
 
 Dim r_recentDocs As RegistryKey
 Dim r_openSaveDocs As RegistryKey
@@ -146,7 +146,7 @@ Dim thisJumpList As New JumpList
 
     For Each thisTypeNameColItem In r_recentDocs.GetSubKeyNames
         thisTypeName = CStr(thisTypeNameColItem)
-
+        
         If ExistInStringArray(GetTypeHandlersImageName(thisTypeName), srcImagePath) Then
             thisJumpList.AddMRURegKey r_recentDocs.OpenSubKey(thisTypeName)
             setJumpList = True
@@ -168,12 +168,15 @@ Handler:
 End Function
 
 Public Function GetTypeHandlersImageName(srcType As String) As String()
-
+    On Error GoTo Handler
+    
 Dim thisKey As RegistryKey
 Dim primaryCommand As String
 Dim theChars() As Byte
 Dim theCharIndex As Long
 Dim returnHandlers() As String
+
+    GetTypeHandlersImageName = returnHandlers
 
     If Left$(srcType, 1) <> "." Then srcType = "." & srcType
     Set thisKey = Registry.CurrentUser.OpenSubKey("Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\" & srcType & "\OpenWithList")
@@ -190,6 +193,8 @@ Dim returnHandlers() As String
     
     GetTypeHandlersImageName = returnHandlers
     Exit Function
+Handler:
+    Logger.Error Err.Description, "GetTypeHandlersImageName", srcType
 End Function
 
 Public Function GetTypeHandlerPath(ByVal srcType As String) As String
