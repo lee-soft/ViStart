@@ -538,8 +538,6 @@ Sub UpdateDesktopImage(newPosition As POINTL)
     Dim tempImage As New GDIPBitmap
     tempImage.CreateFromHBITMAP desktopCopyBitmap.hBitmap, 0
     
-    'tempImage.Image.Save "C:\cock.bmp", encoder.EncoderForMimeType("image/bmp").CodecCLSID
-    
     theGrahipcs.Clear
     theGrahipcs.CompositingQuality = CompositingQualityHighQuality
     theGrahipcs.InterpolationMode = InterpolationModeHighQualityBilinear
@@ -549,10 +547,7 @@ Sub UpdateDesktopImage(newPosition As POINTL)
     desktopCopySmallDC.SelectBitmap desktopCopyBitmap
     
     BitBlt desktopCopySmallDC.Handle, 0, 0, Me.ScaleWidth, Me.ScaleHeight, m_StartMenuMaskInvertedDC.hdc, 0, 0, vbSrcAnd
-    'BitBlt m_StartMenuMaskDC.Handle, 0, 0, Me.ScaleWidth, Me.ScaleHeight, m_StartMenuMaskDC.Handle, 0, 0, vbSrcInvert
-    'SavePicture modTemp2.CreateBitmapPicture(desktopCopyBitmap.hBitmap), "C:\fffs.bmp"
-    'm_DesktopBitmap.Image.Save "C:\fffs2.bmp", encoder.EncoderForMimeType("image/bmp").CodecCLSID
-    
+
     theGrahipcs.Clear
     
     hDCMemory = theGrahipcs.GetHDC
