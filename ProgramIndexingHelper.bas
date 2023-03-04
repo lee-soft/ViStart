@@ -384,10 +384,7 @@ Dim newNode As INode
                 newNode.EXEName = Replace(UCase$(GetFileName(ResolveLink(thisColItem.Path))), " ", "")
             Else
                 newNode.EXEName = Replace(UCase$(GetFileName(thisColItem.Path)), " ", "")
-                'Debug.Print newNode.EXEName
-                
             End If
-            
             
             newNode.visibleInSearchOnly = thisColItem.VisibleOnlyInSearch
         End If
@@ -436,7 +433,7 @@ Dim iFileCount(0 To 3) As Long
 Dim lngMonitorIndex As Long
 Dim bNeedCache As Boolean
 
-    Debug.Print "FILECOUNTTEST!!!"
+    Logger.Trace "Performing a File Count Test", "FileCountTest"
 
     bNeedCache = False
 

@@ -97,8 +97,6 @@ Dim eat As Boolean
     
     CopyMemory xpInfo, lParam, Len(xpInfo) 'copy the structure from lParam to xpinfo
     
-    'Debug.Print "xpInfo.vkCode:: " & xpInfo.vkCode
-    
     If (Settings.CatchRightWindowsKey And xpInfo.vkCode = VK_RWINKEY) Or _
         (Settings.CatchLeftWindowsKey And xpInfo.vkCode = VK_LWINKEY) Then
     
@@ -137,7 +135,6 @@ Dim eat As Boolean
             
                 
                 If xpInfo.vkCode <> VK_RWINKEY And xpInfo.vkCode <> VK_LWINKEY And xpInfo.vkCode <> 162 Then
-                    Debug.Print "ere:: " & xpInfo.vkCode
                     frmEvents.ActivateSearchText xpInfo.vkCode
                 End If
             End If

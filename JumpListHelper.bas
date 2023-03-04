@@ -47,13 +47,9 @@ Dim MRUArrayIndex As Long
         
         If LenB(thisMRU) = 2 Then
         
-            'Debug.Print "Reading:: " & CStr(thisMRU)
-            
             thisMRUValue = srcMRURoot.GetValue(CStr(thisMRU))
             lnkFileName = thisMRUValue
             
-            Debug.Print "lnkFileName:: " & lnkFileName & "'"
-
             If FileExists(lnkFileName) Then
                 ReDim Preserve MRUList(MRUArrayIndex)
                 MRUList(MRUArrayIndex) = lnkFileName
@@ -77,8 +73,6 @@ Dim MRUArrayIndex As Long
             thisMRUValue = srcMRURoot.GetValue(CStr(thisMRU))
             endFileNamePos = 1
             
-            'Debug.Print thisMRUValue
-            
             'Chr$(0) is actually a double byte ZERO ChrB(0) is a single byte
             'Remember strings are double-byte in VB6
             endFileNamePos = InStrB(thisMRUValue, Chr$(0))
@@ -89,8 +83,6 @@ Dim MRUArrayIndex As Long
                 If Len(thisLnkName) > 3 Then
                 
                     If Not (Right$(thisLnkName, 4) = ".lnk") And InStr(thisLnkName, ".") > 0 Then
-                        
-                        'Debug.Print "thisLnkName:: " & thisLnkName
                         
                         If FileExists(Environ$("userprofile") & "\Recent\" & Left$(thisLnkName, InStrRev(thisLnkName, ".") - 1) & ".lnk") Then
                             thisLnkName = Left$(thisLnkName, InStrRev(thisLnkName, ".") - 1) & ".lnk"

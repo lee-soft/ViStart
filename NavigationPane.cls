@@ -351,8 +351,6 @@ Public Function count() As Long
 End Function
 
 Public Function ResetRollover()
-    Debug.Print "HARE @2"
-    
     m_lastIndex = -1
     Set m_selectedItem = Nothing
     
@@ -364,18 +362,14 @@ Public Property Get index() As Long
 End Property
 
 Public Function SelectOptionByIndex(newIndex As Long)
-    Debug.Print "SelectOptionByIndex:: " & newIndex
-
     If newIndex > 0 And newIndex <= m_visiblePaneOptions.count Then
-        Debug.Print "setting index:: " & newIndex
-        
         m_lastIndex = newIndex
         Set m_selectedItem = m_visiblePaneOptions(m_lastIndex)
         MoveRolloverToIndex m_lastIndex
 
         RaiseEvent onChanged
     Else
-        Debug.Print "warning:: " & newIndex & " index is out of bounds!!"
+        Logger.Warn newIndex & " index is out of bounds!!", "SelectOptionByIndex"
     End If
 
 End Function
@@ -508,8 +502,6 @@ Public Function MouseOut()
     
     If Not m_selectedItem Is Nothing Then
     
-        Debug.Print "HARE @1"
-        
         Set m_selectedItem = Nothing
         m_lastIndex = -1
         RaiseEvent onChanged
@@ -615,27 +607,19 @@ Dim suggestedIndex As Long
 Dim A As Long
 Dim newY As Long
 
-    'Debug.Print "Position.Y:: " & Position.Y
-    
     newY = Position.Y - TOP_MARGIN + (m_rolloverHeight / 2) - (m_font.Size / 2) - 2
-    
     suggestedIndex = FindIndex(newY, m_seperatorAmount) + 1
-    'Debug.Print "suggestedIndex:: " & suggestedIndex & " & " & (newY / m_seperatorAmount) & " & " & newY
-    
+
     If suggestedIndex > 0 And suggestedIndex <= m_visiblePaneOptions.count Then
         
         
         A = ((suggestedIndex - 1) * m_seperatorAmount) _
                 + m_rolloverHeight
         
-        'Debug.Print A & " * " & Position.Y & " % " & suggestedIndex
-        
         If Position.Y <= A Then
             If m_lastIndex <> suggestedIndex Then
                 m_lastIndex = suggestedIndex
                 MoveRolloverToIndex suggestedIndex
-                
-                Debug.Print "Selected Item:: " & suggestedIndex
             End If
         Else
             If Not m_selectedItem Is Nothing Then

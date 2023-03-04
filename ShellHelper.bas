@@ -177,8 +177,6 @@ Public Function GetStringFromFile(ByVal RESOURCE_FILE As String, ByVal RESOURCE_
     If hModule Then
         
                 ExtractedString = FindStringResourceEx(hModule, STRING_ID, RESOURCE_LANG)
-                
-                'debug.print ExtractedString
                 GetStringFromFile = ExtractedString
                 
         FreeLibrary hModule
@@ -428,8 +426,6 @@ Dim lParamReturn As Long
 
         g_ViGlanceOrb = FindWindow("ThunderRT6FormDC", "#Start~ViGlance#")
         If g_ViGlanceOrb <> 0 Then
-            
-            Debug.Print ">:)"
             g_ViGlanceOpen = True
         Else
             g_ViGlanceOpen = False
@@ -532,8 +528,6 @@ Dim lngZOrder As Long
         hWnd = GetNextWindow(hWnd, _
           GW_HWNDNEXT)
         lngZOrder = lngZOrder + 1
-        
-        'Debug.Print lngZOrder & ";" & GetWindowClassString(hwnd) & ";" & GetWindowNameString(hwnd)
     Loop
     
     GetZOrder = lngZOrder
@@ -552,8 +546,6 @@ Dim thisForm As Form
                 
                 Dim t As String * 64
                 GetWindowText hWnd, t, Len(t)
-                Debug.Print "hwnd: " & t
-                
             Else
                 hWndBelongToUs = True
             End If
@@ -667,7 +659,6 @@ Dim LnkFile As CShellLink
 End Function
 
 Public Function GetShellLink(ByVal szLinkPath As String) As ShellLinkObject
-    'Debug.Print "GetShellLink:: " & szLinkPath
     On Error GoTo Handler
     
 Dim lnk As New ShellLinkObject
