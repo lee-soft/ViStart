@@ -317,6 +317,7 @@ Dim cmdLineArguements() As String
         
             Case "/debug":
                 sVar_bDebugMode = True
+                LogManager.Target = LogAll
                 LogManager.MinimumLevel = TraceLevel
                 
             Case "/nuke_metro"
