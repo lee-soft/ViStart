@@ -6,15 +6,15 @@ Begin VB.Form frmTreeView
    ClientHeight    =   6120
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   3680
+   ClientWidth     =   3675
    ClipControls    =   0   'False
    ControlBox      =   0   'False
    FillColor       =   &H0000FF00&
    ForeColor       =   &H0000C0C0&
    LinkTopic       =   "Form1"
-   ScaleHeight     =   612
+   ScaleHeight     =   408
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   368
+   ScaleWidth      =   245
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
    Begin VB.CommandButton cmdFocusGrab 

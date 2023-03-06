@@ -4,15 +4,15 @@ Begin VB.Form frmFreq
    BackColor       =   &H00000000&
    BorderStyle     =   0  'None
    Caption         =   "ViStart_FrequentPrograms"
-   ClientHeight    =   4580
-   ClientLeft      =   200
+   ClientHeight    =   4575
+   ClientLeft      =   195
    ClientTop       =   8610
    ClientWidth     =   3690
    ClipControls    =   0   'False
    FillColor       =   &H0080FFFF&
    BeginProperty Font 
       Name            =   "Segoe UI"
-      Size            =   11.5
+      Size            =   11.25
       Charset         =   0
       Weight          =   400
       Underline       =   0   'False
@@ -21,9 +21,9 @@ Begin VB.Form frmFreq
    EndProperty
    ForeColor       =   &H000000C0&
    LinkTopic       =   "Form1"
-   ScaleHeight     =   458
+   ScaleHeight     =   305
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   369
+   ScaleWidth      =   246
    ShowInTaskbar   =   0   'False
    Begin VB.PictureBox picRollover 
       AutoRedraw      =   -1  'True
@@ -33,9 +33,9 @@ Begin VB.Form frmFreq
       ClipControls    =   0   'False
       Height          =   540
       Left            =   0
-      ScaleHeight     =   54
+      ScaleHeight     =   36
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   369
+      ScaleWidth      =   246
       TabIndex        =   0
       Top             =   -60
       Width           =   3690

@@ -3,10 +3,10 @@ Begin VB.Form frmControlPanel
    BackColor       =   &H00FFFFFF&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Control Panel"
-   ClientHeight    =   11970
-   ClientLeft      =   50
-   ClientTop       =   370
-   ClientWidth     =   19090
+   ClientHeight    =   11964
+   ClientLeft      =   48
+   ClientTop       =   372
+   ClientWidth     =   19092
    BeginProperty Font 
       Name            =   "Segoe UI"
       Size            =   9.5

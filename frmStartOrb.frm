@@ -11,9 +11,9 @@ Begin VB.Form frmStartOrb
    ClipControls    =   0   'False
    ForeColor       =   &H00000000&
    LinkTopic       =   "Form1"
-   ScaleHeight     =   21
+   ScaleHeight     =   14
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   21
+   ScaleWidth      =   14
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
    Visible         =   0   'False

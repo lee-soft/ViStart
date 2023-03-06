@@ -3,15 +3,15 @@ Begin VB.Form frmFileMenu
    BackColor       =   &H00F4F4F4&
    BorderStyle     =   0  'None
    Caption         =   "Vista_RecentItems"
-   ClientHeight    =   620
+   ClientHeight    =   615
    ClientLeft      =   0
    ClientTop       =   0
-   ClientWidth     =   770
+   ClientWidth     =   765
    ClipControls    =   0   'False
    ControlBox      =   0   'False
    BeginProperty Font 
       Name            =   "Segoe UI"
-      Size            =   8.5
+      Size            =   8.25
       Charset         =   0
       Weight          =   400
       Underline       =   0   'False
@@ -19,9 +19,9 @@ Begin VB.Form frmFileMenu
       Strikethrough   =   0   'False
    EndProperty
    LinkTopic       =   "Form1"
-   ScaleHeight     =   62
+   ScaleHeight     =   41
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   77
+   ScaleWidth      =   51
    ShowInTaskbar   =   0   'False
    StartUpPosition =   3  'Windows Default
    Tag             =   "1"
