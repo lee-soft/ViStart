@@ -139,7 +139,7 @@ End Function
 
 Property Let Path(ByVal strPath As String)
     If m_mode = 0 Then
-        Logger.Fatal "Critical Error, Mode Not Set!", "Path", strPath
+        Logger.Fatal "Mode Not Set!", "Path", strPath
         Exit Property
     End If
 

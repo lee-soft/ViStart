@@ -59,7 +59,6 @@ Dim defaultLayout As String
     
     If sourceXml.loadXML(defaultLayout) = False Then
         Logger.Fatal "Couldn't parse layout file within executable", "LoadFromResources"
-        MsgBox "Couldn't parse layout file within executable", vbCritical, "XML Syntax Error"
         Exit Function
     End If
     
@@ -92,7 +91,6 @@ Dim multiLayout As Boolean
     If FileExists(strPath) Then
         If xmlLayout.Load(strPath) = False Then
             Logger.Fatal "Couldn't parse layout.xml file within resources", "ParseStartMenu"
-            MsgBox "Couldn't parse layout.xml file within resources folder", vbCritical, "XML Syntax Error"
             ParseStartMenu = False
             Exit Function
         End If

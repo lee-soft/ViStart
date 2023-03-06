@@ -107,12 +107,15 @@ Attribute m_taskbarParent.VB_VarHelpID = -1
 
 Private m_startButton As frmStartOrb
 Attribute m_startButton.VB_VarHelpID = -1
+
 Private WithEvents m_startButtonEvents As IPngImageEvents
 Attribute m_startButtonEvents.VB_VarHelpID = -1
 Private WithEvents m_startMenuBase As frmStartMenuBase
 Attribute m_startMenuBase.VB_VarHelpID = -1
 Private WithEvents m_startOptions As frmVistaMenu
 Attribute m_startOptions.VB_VarHelpID = -1
+Private WithEvents m_logManager As LogManager
+Attribute m_logManager.VB_VarHelpID = -1
 
 Private m_windows8TaskBar As Windows8TaskBar
 
@@ -225,6 +228,7 @@ End Function
 
 Private Sub Form_Initialize()
     Set m_logger = LogManager.GetCurrentClassLogger(Me)
+    Set m_logManager = LogManager
 End Sub
 
 Private Sub Form_Load()
@@ -332,6 +336,12 @@ Private Sub Form_Unload(Cancel As Integer)
     
     DeleteIconFromTray
     ExitApplication
+End Sub
+
+Private Sub m_logManager_LogEvent(ByVal level As LogLevel, ByVal Source As String, ByVal message As String, arguments() As String)
+    If level = FatalLevel Then
+        MsgBox Source & vbCrLf & vbCrLf & message, vbCritical, "Fatal Error"
+    End If
 End Sub
 
 Private Sub m_startButtonEvents_onMouseDown(ObjSender As Object)

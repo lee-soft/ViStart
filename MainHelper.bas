@@ -317,6 +317,7 @@ Dim cmdLineArguements() As String
         
             Case "/debug":
                 sVar_bDebugMode = True
+                LogManager.MinimumLevel = TraceLevel
                 
             Case "/nuke_metro"
                 DetermineProgramAction = HandleWindows8Utility()
@@ -388,9 +389,9 @@ Dim cmdLineArguements() As String
 End Function
 
 Sub Main()
-    LogManager.MinimumLevel = InfoLevel
+    LogManager.MinimumLevel = ErrorLevel
     LogManager.Target = LogDebug
-    
+
     If Not InitClasses_IfNeeded Then
         Exit Sub
     End If
