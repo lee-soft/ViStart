@@ -25,6 +25,11 @@ Option Explicit
 Private m_defaultLogger As SeverityLogger
 Private m_loggers As Collection
 
+Private m_logLevel As LogLevel
+Private m_targetType As TargetType
+Private m_logFile As StreamWriter
+Private m_autoFlush As Boolean
+
 Public Enum LogLevel
     TraceLevel = 1
     InfoLevel = 2
@@ -34,15 +39,13 @@ Public Enum LogLevel
 End Enum
 
 Public Enum TargetType
+    LogNone
     LogFile
     LogDebug
     LogAll
 End Enum
 
-Private m_logLevel As LogLevel
-Private m_targetType As TargetType
-Private m_logFile As StreamWriter
-Private m_autoFlush As Boolean
+Public Event LogEvent(ByVal level As LogLevel, ByVal Source As String, ByVal message As String, arguments() As String)
 
 Public Property Let AutoFlush(ByVal newAutoFlush As Boolean)
     m_autoFlush = newAutoFlush
@@ -69,9 +72,11 @@ Public Function InvokeLogger(ByVal level As LogLevel, ByVal Source As String, By
     End If
     
 Dim sourceHeader As String
+Dim argumentsAsStrings() As String
 
     If Not IsMissing(arguments) Then
-        sourceHeader = Source & " " & Join(arguments, ",")
+        argumentsAsStrings = arguments
+        sourceHeader = Source & " " & Join(argumentsAsStrings, ",")
     Else
         sourceHeader = Source
     End If
@@ -86,6 +91,8 @@ Dim sourceHeader As String
             If m_autoFlush Then m_logFile.Flush
         End If
     End If
+    
+    RaiseEvent LogEvent(level, Source, message, argumentsAsStrings)
 End Function
 
 Public Function GetLogger(ByVal loggerKey As String) As SeverityLogger
@@ -119,9 +126,8 @@ End Function
 Private Sub Class_Initialize()
     Set m_defaultLogger = New SeverityLogger
     Set m_loggers = New Collection
-    
-    m_logLevel = TraceLevel
-    Target = LogAll
+
+    Target = LogNone
     AutoFlush = True
 End Sub
 
