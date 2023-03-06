@@ -39,7 +39,7 @@ Public LanguageFile As String
 
 Private m_logger As SeverityLogger
 
-Property Get Logger()
+Property Get Logger() As SeverityLogger
     Set Logger = m_logger
 End Property
 
@@ -91,10 +91,10 @@ Dim settingsXML As IXMLDOMElement
                         
         Else
             If FileExists(App.Path & "\languages\english.xml") Then
-                Logger.Warn "Native Language: " & g_WindowsLanguageInt & " / " & g_WindowsLanguage & " unavailable, defaulting to American English..", "Initialize"
+                Logger.Warn "Native Language: " & g_WindowsLanguageInt & " / " & g_WindowsLanguage & " unavailable, defaulting to American English..", "Class_Initialize"
                 Me.LanguageFile = "English"
             Else
-                Logger.Warn "No languages installed.. using precompiled values"
+                Logger.Warn "No languages installed.. using precompiled values", "Class_Initialize"
             End If
         End If
     End If
