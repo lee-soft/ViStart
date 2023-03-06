@@ -415,7 +415,6 @@ Public Sub DrawImage(Image As GDIPImage, _
                       Width As Single, _
                       Height As Single)
                         
-    Debug.Print X, Y, Width, Height
     SetStatus GdipDrawImageRect(m_gfx, Image.nativeImage, X, Y, (Width), (Height))
 End Sub
 

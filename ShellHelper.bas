@@ -20,7 +20,7 @@ Private Declare Function FreeLibrary Lib "kernel32" (ByVal hLibModule As Long) A
 Private Declare Function FindResourceEx Lib "kernel32" Alias "FindResourceExW" (ByVal hModule As Long, ByVal lpType As Long, ByVal lpName As Long, ByVal wLanguage As Integer) As Long
 Private Declare Function LoadResource Lib "kernel32" (ByVal hInstance As Long, ByVal hResInfo As Long) As Long
 Private Declare Function LockResource Lib "kernel32" (ByVal hResData As Long) As Long
-Private Declare Function SysReAllocStringLen Lib "oleaut32" (ByVal pBSTR As Long, ByVal psz As Long, ByVal Length As Long) As Long
+Private Declare Function SysReAllocStringLen Lib "oleaut32" (ByVal pBSTR As Long, ByVal psz As Long, ByVal length As Long) As Long
 Private Declare Function GetMem2 Lib "msvbvm60" (Src As Any, Dst As Any) As Long
 
 'Declare Function GetThreadLocale Lib "kernel32" Alias "GetThreadLocale" () As Long
@@ -113,6 +113,16 @@ End Type
 Public Const ABM_GETTASKBARPOS As Long = &H5
 Private Const SHGFP_Type_CURRENT = &H0
 
+Private m_logger As SeverityLogger
+
+Private Property Get Logger() As SeverityLogger
+    If m_logger Is Nothing Then
+        Set m_logger = LogManager.GetLogger("ShellHelper")
+    End If
+    
+    Set Logger = m_logger
+End Property
+
 Private Function PtrAdd(ByVal Address As Long, ByVal Offset As Long) As Long
 ' unsigned pointer arithmetic, moves overflow by toggling the sign bit
 ' required when using /LARGEADDRESSAWARE on 64bit windows
@@ -167,8 +177,6 @@ Public Function GetStringFromFile(ByVal RESOURCE_FILE As String, ByVal RESOURCE_
     If hModule Then
         
                 ExtractedString = FindStringResourceEx(hModule, STRING_ID, RESOURCE_LANG)
-                
-                'debug.print ExtractedString
                 GetStringFromFile = ExtractedString
                 
         FreeLibrary hModule
@@ -278,7 +286,7 @@ Function DetermineWindowsVersion_IfNeeded()
     Set currentVersionRegKey = Registry.LocalMachine.OpenSubKey("Software\Microsoft\Windows NT\CurrentVersion")
     
     If currentVersionRegKey Is Nothing Then
-        LogError "Unable to get registry key", "ShellHelper::DetermineWindowsVersion_IfNeeded"
+        Logger.Error "Unable to get registry key", "DetermineWindowsVersion_IfNeeded"
         Exit Function
     End If
     
@@ -418,8 +426,6 @@ Dim lParamReturn As Long
 
         g_ViGlanceOrb = FindWindow("ThunderRT6FormDC", "#Start~ViGlance#")
         If g_ViGlanceOrb <> 0 Then
-            
-            Debug.Print ">:)"
             g_ViGlanceOpen = True
         Else
             g_ViGlanceOpen = False
@@ -522,8 +528,6 @@ Dim lngZOrder As Long
         hWnd = GetNextWindow(hWnd, _
           GW_HWNDNEXT)
         lngZOrder = lngZOrder + 1
-        
-        'Debug.Print lngZOrder & ";" & GetWindowClassString(hwnd) & ";" & GetWindowNameString(hwnd)
     Loop
     
     GetZOrder = lngZOrder
@@ -542,8 +546,6 @@ Dim thisForm As Form
                 
                 Dim t As String * 64
                 GetWindowText hWnd, t, Len(t)
-                Debug.Print "hwnd: " & t
-                
             Else
                 hWndBelongToUs = True
             End If
@@ -657,7 +659,6 @@ Dim LnkFile As CShellLink
 End Function
 
 Public Function GetShellLink(ByVal szLinkPath As String) As ShellLinkObject
-    'Debug.Print "GetShellLink:: " & szLinkPath
     On Error GoTo Handler
     
 Dim lnk As New ShellLinkObject
@@ -669,7 +670,7 @@ Dim lnk As New ShellLinkObject
     Exit Function
 Handler:
     If Err.Number <> 70 Then
-        LogError Err.Description & " {" & Err.Number & "}", "GetShellLink(" & szLinkPath & ")"
+        Logger.Error Err.Description & " {" & Err.Number & "}", "GetShellLink", szLinkPath
     End If
 End Function
 

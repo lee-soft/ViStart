@@ -127,6 +127,16 @@ Public Const TTM_SETDELAYTIME = (WM_USER + 3)
 
 Public Const TTM_POP = (WM_USER + 28)
 
+Private m_logger As SeverityLogger
+
+Private Property Get Logger() As SeverityLogger
+    If m_logger Is Nothing Then
+        Set m_logger = LogManager.GetLogger("GeneralHelper")
+    End If
+    
+    Set Logger = m_logger
+End Property
+
 Public Function IsViPadInstalled() As Boolean
     IsViPadInstalled = FileExists(Environ$("appdata") & "\ViPad\ViPad.exe")
 End Function
@@ -197,7 +207,7 @@ Dim typeRegistryKey As RegistryKey
 
     Exit Sub
 FailedToOpenShellType:
-    LogError Err.Description, "GeneralHelper"
+    Logger.Error Err.Description, "RemoveFromShellContextMenu"
 End Sub
 
 Sub AddToShellContextMenu(theType As String, Optional theText As String = CONTEXT_MENU)
@@ -225,7 +235,7 @@ Dim typeRegistryKey As RegistryKey
     
  Exit Sub
 Handler:
-    LogError Err.Description, "GeneralHelper::AddToShellContextMenu"
+    Logger.Error Err.Description, "AddToShellContextMenu"
 End Sub
 
 Sub CreateFileAssociation(ByVal szExtension As String, ByVal szClassName As String, _
@@ -240,7 +250,7 @@ Sub CreateFileAssociation(ByVal szExtension As String, ByVal szClassName As Stri
     
     Set extensionRegKey = Registry.ClassesRoot.CreateSubKey(szExtension)
     If extensionRegKey Is Nothing Then
-        LogError "Cannot create file association for extension: " & szExtension
+        Logger.Error "Cannot create file association", "CreateFileAssociation", szExtension, szClassName, szDescription, szExeProgram
         Exit Sub
     End If
     
@@ -278,7 +288,7 @@ End Function
 Public Function ExtractXMLTextElement(ByRef parentElement As IXMLDOMElement, ByVal szElementName As String, ByVal DefaultValue As String) As String
     On Error GoTo Handler
     
-    ExtractXMLTextElement = CStr(parentElement.selectSingleNode(szElementName).Text)
+    ExtractXMLTextElement = CStr(parentElement.selectSingleNode(szElementName).text)
     Exit Function
 Handler:
     ExtractXMLTextElement = DefaultValue
@@ -291,7 +301,7 @@ Dim element As IXMLDOMElement
     Set element = sourceDoc.createElement(szElementName)
     parentElement.appendChild element
     
-    element.Text = szValue
+    element.text = szValue
 End Function
 
 Public Function TrimNull(ByVal StrIn As String) As String
@@ -339,8 +349,8 @@ Dim encoder As New GDIPImageEncoderList
     'newBackground.Image.Save "C:\b.png", encoder.EncoderForMimeType("image/png").CodecCLSID
 End Function
 
-Public Function MSHashString(Text As String) As Long
-    HashData ByVal Text, Len(Text), MSHashString, Len(MSHashString)
+Public Function MSHashString(text As String) As Long
+    HashData ByVal text, Len(text), MSHashString, Len(MSHashString)
 End Function
 
 Public Function IsInsideViComponent(X As Single, Y As Single, ByRef testComponent As GenericViElement, ByRef outClientPosition As POINTL) As Boolean

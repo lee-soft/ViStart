@@ -56,7 +56,7 @@ Public Function SetStatusHelper(ByVal status As GpStatus, Optional szRoutineName
        'ok
     Else
        'Err.Raise 1048 + status, App.EXEName & ".GDIP", "GDI+ Error " & status
-       LogError "GDI+ Error; " & status & " - " & szRoutineName, "GDIPlus"
+       Logger.Error 1048 + status & " " & App.EXEName & ".GDIP", szRoutineName
     End If
     
     m_LastError = status

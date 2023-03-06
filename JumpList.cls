@@ -30,7 +30,6 @@ Public Function IsEmpty() As Boolean
 End Function
 
 Public Function GetMRUList()
-    Debug.Print "GetMRUList() " & ImageName
 
 Dim thisMRUKey As RegistryKey
 Dim m_lnkCache()

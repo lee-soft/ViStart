@@ -23,6 +23,16 @@ Private Declare Function SetWindowLongW Lib "user32" _
 Private Const HOOK_OBJECT_REFERENCE As String = "HOOK_OBJ"
 Private Const OLD_WINDOW_PROC As String = "OLD_PROC"
 
+Private m_logger As SeverityLogger
+
+Private Property Get Logger() As SeverityLogger
+    If m_logger Is Nothing Then
+        Set m_logger = LogManager.GetLogger("HookHelper")
+    End If
+    
+    Set Logger = m_logger
+End Property
+
 Public Function CallOldWindowProcessor(sourcehWnd As Long, ByVal msg As Long, ByVal wParam As Long, ByVal lParam As Long) As Long
 
 Dim oldProcessorPointer As Long: oldProcessorPointer = GetProp(sourcehWnd, OLD_WINDOW_PROC)
@@ -67,7 +77,7 @@ Dim hookObjectPointer As Long: hookObjectPointer = GetProp(hWnd, HOOK_OBJECT_REF
         'Call the new window processor and pass the result to the caller (windows)
         CallbackFunctionForAllWindows = hookObject.WindowProc(hWnd, msg, wp, lp)
     Else
-        LogError "Hook object not found", "HookHelper"
+        Logger.Error "Hook object not found", "CallbackFunctionForAllWindows", msg
     End If
 End Function
 

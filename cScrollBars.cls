@@ -290,6 +290,12 @@ Public Event Scroll(eBar As EFSScrollBarConstants)
 Public Event Change(eBar As EFSScrollBarConstants)
 Public Event MouseWheel(eBar As EFSScrollBarConstants, lAmount As Long)
 
+Private m_logger As SeverityLogger
+
+Private Property Get Logger() As SeverityLogger
+    Set Logger = m_logger
+End Property
+
 Public Property Get Visible(ByVal eBar As EFSScrollBarConstants) As Boolean
    If (eBar = efsHorizontal) Then
       Visible = m_bVisibleHorz
@@ -361,7 +367,7 @@ Dim lR As Long
    If (eStyle <> efsRegular) Then
       If (m_bNoFlatScrollBars) Then
          ' can't do it..
-         Debug.Print "Can't set non-regular style mode on this system - COMCTL32.DLL version < 4.71."
+         Logger.Error "Can't set non-regular style mode on this system - COMCTL32.DLL version < 4.71.", "Style"
          Exit Property
       End If
    End If
@@ -534,6 +540,8 @@ Private Sub pAttachMessages()
 End Sub
 
 Private Sub Class_Initialize()
+    Set m_logger = LogManager.GetCurrentClassLogger(Me)
+    
    m_lSmallChangeHorz = 1
    m_lSmallChangeVert = 1
    m_eStyle = efsRegular

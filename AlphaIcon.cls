@@ -18,6 +18,12 @@ Private m_IconXP As GDIPBitmap
 
 Private m_IsAlphaBitmap As Boolean
 
+Private m_logger As SeverityLogger
+
+Property Get Logger()
+    Set Logger = m_logger
+End Property
+
 Public Property Get Image() As GDIPImage
     Set Image = m_IconXP.Image
 End Property
@@ -36,7 +42,7 @@ Dim Y As Long
     Set m_IconXP = New GDIPBitmap
 
     If GetIconInfo(icoHandle, ii) = 0 Then
-        Debug.Print "Error retrieving icon info!"
+        Logger.Error "Error retrieving icon info!", "CreateFromHICON"
     End If
     
     m_Icon.CreateFromHBITMAP ii.hbmColor, 0
@@ -94,3 +100,6 @@ Dim Y As Long
     
 End Function
 
+Private Sub Class_Initialize()
+    Set m_logger = LogManager.GetCurrentClassLogger(Me)
+End Sub

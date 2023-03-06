@@ -221,6 +221,12 @@ Public Event onSkinChange()
 
 Implements IHookSink
 
+Private m_logger As SeverityLogger
+
+Property Get Logger() As SeverityLogger
+    Set Logger = m_logger
+End Property
+
 Public Function SetContextMenu(ByRef newContextMenu As frmVistaMenu)
     Set m_contextMenu = newContextMenu
 End Function
@@ -264,7 +270,7 @@ Dim currentSkinStartMenuParseResult As StartMenuParseResult
     Set currentSkinStartMenuParseResult = Layout.ParseStartMenu(g_resourcesPath & "layout.xml", ChildSkinID)
 
     If Not currentSkinStartMenuParseResult.ErrorCode = 0 Then
-        LogError "Failed to parse layout file", "StartMenuBase"
+        Logger.Error "Failed to parse layout file", "InitializeCurrentSkin"
         Exit Function
     End If
     
@@ -285,7 +291,7 @@ Dim currentSkinStartMenuParseResult As StartMenuParseResult
     
     If m_JumpListEnabled Then
         If Layout.JumpListViewerSchema Is Nothing Then
-            LogError "Warning:: Jumplist viewer schema is unavaliable but startmenu_expanded.png is present", "ResourcesPath"
+            Logger.Warn "Jumplist viewer schema is unavaliable but startmenu_expanded.png is present", "InitializeCurrentSkin"
             m_JumpListEnabled = False
         End If
     End If
@@ -532,8 +538,6 @@ Sub UpdateDesktopImage(newPosition As POINTL)
     Dim tempImage As New GDIPBitmap
     tempImage.CreateFromHBITMAP desktopCopyBitmap.hBitmap, 0
     
-    'tempImage.Image.Save "C:\cock.bmp", encoder.EncoderForMimeType("image/bmp").CodecCLSID
-    
     theGrahipcs.Clear
     theGrahipcs.CompositingQuality = CompositingQualityHighQuality
     theGrahipcs.InterpolationMode = InterpolationModeHighQualityBilinear
@@ -543,10 +547,7 @@ Sub UpdateDesktopImage(newPosition As POINTL)
     desktopCopySmallDC.SelectBitmap desktopCopyBitmap
     
     BitBlt desktopCopySmallDC.Handle, 0, 0, Me.ScaleWidth, Me.ScaleHeight, m_StartMenuMaskInvertedDC.hdc, 0, 0, vbSrcAnd
-    'BitBlt m_StartMenuMaskDC.Handle, 0, 0, Me.ScaleWidth, Me.ScaleHeight, m_StartMenuMaskDC.Handle, 0, 0, vbSrcInvert
-    'SavePicture modTemp2.CreateBitmapPicture(desktopCopyBitmap.hBitmap), "C:\fffs.bmp"
-    'm_DesktopBitmap.Image.Save "C:\fffs2.bmp", encoder.EncoderForMimeType("image/bmp").CodecCLSID
-    
+
     theGrahipcs.Clear
     
     hDCMemory = theGrahipcs.GetHDC
@@ -591,7 +592,7 @@ Dim thisForm As Form
     
     m_searchText.Font = m_searchBoxForeFontItalic
     
-    m_searchText.Text = GetPublicString("strStartSearch", "Start Search")
+    m_searchText.text = GetPublicString("strStartSearch", "Start Search")
     m_AllProgramsCaption = GetInitialString
     m_ArrowAllPrograms.State = 0
     m_powerMenu.Hide
@@ -626,7 +627,7 @@ Dim thisForm As Form
     
     Exit Sub
 Handler:
-    LogError Err.Description, Me.Name
+    Logger.Error Err.Description, "CloseMe"
 End Sub
 
 Sub ReDraw()
@@ -645,7 +646,7 @@ Sub ReDraw()
         
     Else
         If BlurEnabled Then
-            Debug.Print "Aha!!"
+            Logger.Trace "Bluring desktop with background", "ReDraw"
             m_navigationDraw.UpdateBlurred m_DesktopBitmap.Image
             m_BitmapGraphics.DrawImage m_DesktopBitmap.Image, 0, 0, Me.ScaleWidth, Me.ScaleHeight
         Else
@@ -829,7 +830,7 @@ Dim theFont As ViFont
     Set m_searchBoxForeFontItalic = g_DefaultFontItalic
     Set m_searchBoxNormalFont = g_DefaultFont
     
-    m_searchText.Text = GetPublicString("strStartSearch", "Start Search")
+    m_searchText.text = GetPublicString("strStartSearch", "Start Search")
     
     If Layout.SearchBoxSchema.BackColour <> -1 Then
         m_searchText.BackColour = Layout.SearchBoxSchema.BackColour
@@ -996,14 +997,11 @@ On Error GoTo Handler
         
     Exit Sub
 Handler:
-    Debug.Print "UpdateBuffer()" & Err.Description
+    Logger.Error Err.Description, "UpdateBuffer"
 End Sub
 
 Function ReInitSurface() As Boolean
     On Error GoTo Handler
-    
-    'm_winSize.cx = Me.ScaleWidth
-    'm_winSize.cy = Me.ScaleHeight
     
     m_Bitmap.Dispose
     m_BitmapGraphics.Dispose
@@ -1030,7 +1028,7 @@ Function ReInitSurface() As Boolean
     Exit Function
 Handler:
     ReInitSurface = False
-    Debug.Print "ReInitSurface():" & Me.ScaleWidth & " / " & Me.ScaleHeight & vbCrLf & Err.Description
+    Logger.Error Err.Description, "ReInitSurface", Me.ScaleWidth, Me.ScaleHeight
 End Function
 
 Private Sub DrawAllProgramsArrow()
@@ -1148,12 +1146,15 @@ Private Sub Form_DragDropFolder(szFolderPath As String)
 End Sub
 
 Private Sub Form_Initialize()
+    Set m_logger = LogManager.GetCurrentClassLogger(Me)
+    
     Inititalize
 End Sub
 
 Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
 
-    Debug.Print "frmStartMenuBase:: " & KeyCode & " <> " & g_KeyboardMenuState & " <> " & g_KeyboardSide
+    Logger.Trace "g_KeyboardMenuState: " & g_KeyboardMenuState & _
+                 "g_KeyboardSide" & g_KeyboardSide, "Form_KeyDown", KeyCode
 
     If KeyCode = vbKeyLeft Or KeyCode = vbKeyRight Then
     
@@ -1169,7 +1170,7 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
                 If m_navigationDraw.index < m_navigationDraw.count Then
                     If m_recentPrograms.Visible Then
                     
-                        Debug.Print "Attacking Recent Programs!"
+                        Logger.Trace "Attaching Rollover to Recent Programs!", "Form_KeyDown", KeyCode, Shift
                         m_recentPrograms.RolloverWithKeyboard (m_navigationDraw.index - 1)
                     Else
                         m_programMenu.SelectVisibleItem m_navigationDraw.index
@@ -1331,15 +1332,13 @@ End Sub
 
 Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
 
-    Debug.Print "KeyCode:: " & KeyCode
-
     If g_KeyboardMenuState = 1 Then
         
         If KeyCode = vbKeyReturn Then
     
             If g_KeyboardSide = 1 Then
-                If m_searchText.Text <> vbNullString Then
-                    ShellEx m_searchText.Text
+                If m_searchText.text <> vbNullString Then
+                    ShellEx m_searchText.text
                 Else
                     ToggleProgramsMenu
                 End If
@@ -1464,8 +1463,6 @@ Dim clicked As Boolean
             m_jumpListDrawer.MouseLeaves
         End If
     Else
-        'Debug.Print XSng & ":" & Layout.GroupMenuSchema.Left & " & " & Layout.GroupMenuSchema.Width
-    
         If IsInsideViComponent(XSng, YSng, Layout.GroupMenuSchema, clientMousePos) Then
             m_navigationDraw.HasMouse = True
         
@@ -1681,8 +1678,7 @@ Private Function UpdatePowerButtonState(ByRef sourceButton As PowerOptionButton,
 End Function
 
 Private Sub ShowRightRollover(index As Long)
-    Debug.Print "ShowRightRollover; " & index
-    
+    Logger.Trace "Show Rollover On Right", "ShowRightRollover", index
     m_navigationDraw.SelectOptionByIndex index
 End Sub
 
@@ -1737,13 +1733,6 @@ Private Sub ShowRollover(ByVal Path As String, Optional DefaultAlpha As Byte = 4
             Exit Sub
         End If
     
-        'If Not m_currentFadeOutImage Is Nothing Then
-            'If ExistInCol(m_FadeOuts, m_currentFadeOutImage.Tag) = False Then
-                'm_FadeOuts.Add m_currentFadeOutImage, m_currentFadeOutImage.Tag
-                'Debug.Print "Adding bad fadeout: " & m_currentFadeOutImage.Tag & "<>" & m_currentFadeOutImage.Path
-            'End If
-        'End If
-        
         If Not m_currentFadeOutImage Is Nothing Then
             Unload m_currentFadeOutImage
         End If
@@ -1752,15 +1741,12 @@ Private Sub ShowRollover(ByVal Path As String, Optional DefaultAlpha As Byte = 4
         
         If ExistInCol(m_FadeOuts, m_currentFadeOutImage.Tag) = False Then
             m_FadeOuts.Add m_currentFadeOutImage, m_currentFadeOutImage.Tag
-            Debug.Print "Add fadeout: " & m_currentFadeOutImage.Tag
+            Logger.Trace "Add fadeout for ", "ShowRollover", m_currentFadeOutImage.Tag
         End If
-        
-        'unload m_currentFadeInImage
+
     End If
     
     Set m_currentFadeInImage = GenerateRolloverImage(Path)
-    'm_currentFadeInImage.Hide
-    
     SetWindowPos m_currentFadeInImage.hWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOSIZE Or SWP_NOMOVE Or SWP_NOACTIVATE
     SetOwner m_currentFadeInImage.hWnd, Me.hWnd
     
@@ -1808,8 +1794,6 @@ Dim State As Long
     End If
 
     If m_AllPrograms.State <> State Then
-        Debug.Print "STATE CHANGED; " & State
-
         m_AllPrograms.State = State
     End If
 End Sub
@@ -1838,25 +1822,17 @@ Private Function IHookSink_WindowProc(hWnd As Long, msg As Long, wp As Long, lp 
             If g_bStartMenuVisible And _
                 (Not MouseInsideWindow(g_ViGlanceOrb)) Then
                 
-                Debug.Print "CloseMe::WA_INACTIVE:: " & lp & " " & App.ThreadID
+                Logger.Trace "Recieved message to close self", "IHookSink_WindowProc", msg, wp, lp
                 CloseMe
             End If
         End If
     ElseIf msg = WM_MOVE Then
-        'm_programMenu.Left = Me.Left + (10 * Screen.TwipsPerPixelX)
-        'm_programMenu.Top = Me.Top
-        
         m_windowPosition.X = LOWORD(lp)
         m_windowPosition.Y = HiWord(lp)
         
-        'AlignChildWindows
-    
-        
     ElseIf msg = WM_ACTIVATE Then
         
-        If wp = WA_ACTIVE Then
-            'm_searchText.SetKeyboardFocus
-        Else
+        If wp <> WA_ACTIVE Then
             ' Just allow default processing for everything else.
             IHookSink_WindowProc = _
                 CallOldWindowProcessor(hWnd, msg, wp, lp)
@@ -1878,7 +1854,7 @@ Private Function IHookSink_WindowProc(hWnd As Long, msg As Long, wp As Long, lp 
 
     ElseIf msg = UM_CLOSE_STARTMENU Then
     
-        Debug.Print "CloseMe::UM_CLOSE_STARTMENU"
+        Logger.Trace "UM_CLOSE_STARTMENU", "IHookSink_WindowProc", msg, wp, lp
         CloseMe
     
     ElseIf msg = WM_ENDSESSION Then
@@ -1914,7 +1890,7 @@ Private Function IHookSink_WindowProc(hWnd As Long, msg As Long, wp As Long, lp 
     
     Exit Function
 Handler:
-    Debug.Print Err.Description
+    Logger.Error Err.Description, "IHookSink_WindowProc", msg
 
     ' Just allow default processing for everything else.
     IHookSink_WindowProc = _
@@ -1949,14 +1925,13 @@ Private Function AlignChildWindows() As Boolean
     AlignChildWindows = True
     Exit Function
 Handler:
-    LogError Err.Description, "AlignChildWindows()"
+    Logger.Error Err.Description, "AlignChildWindows"
     AlignChildWindows = False
 End Function
 
 Private Sub m_jumpListDrawer_onChanged(newItem As JumpListItem)
     ReDraw
-    
-    Debug.Print "Setting tooltip:: " & newItem.Caption
+
     m_toolTip.SetToolTip newItem.Path
     m_toolTip.Hide
 End Sub
@@ -2156,13 +2131,7 @@ End Sub
 
 Private Sub m_programMenu_onClick(srcNode As INode)
     CloseMe
-    
-    'If Is64bit() Then
-        'ExplorerRun (srcNode.Tag)
-    'Else
-        'If Not ShellEx(srcNode.Tag) = APITRUE Then Exit Sub
-    'End If
-    
+
     SelectBestExecutionMethod srcNode.Tag
     
     Settings.Programs.UpdateByNode srcNode
@@ -2170,7 +2139,6 @@ Private Sub m_programMenu_onClick(srcNode As INode)
 End Sub
 
 Private Sub m_programMenu_onExit(ByVal index As Long)
-    Debug.Print "m_programMenu_onExit:: " & index
 
     g_KeyboardMenuState = 1
     g_KeyboardSide = 2
@@ -2214,7 +2182,6 @@ Private Sub m_recentPrograms_onRequestCloseStartMenu()
 End Sub
 
 Private Sub m_recentPrograms_onExitSide(ByVal index As Long)
-    Debug.Print "m_recentPrograms_onExitSide:: " & index
 
     g_KeyboardMenuState = 1
     g_KeyboardSide = 2
@@ -2281,8 +2248,8 @@ Private Sub m_searchText_onChange()
 End Sub
 
 Private Sub m_searchText_onFocus()
-    If m_searchText.Text = GetPublicString("strStartSearch", "Start Search") Then
-        m_searchText.Text = ""
+    If m_searchText.text = GetPublicString("strStartSearch", "Start Search") Then
+        m_searchText.text = ""
         m_searchText.Font = m_searchBoxNormalFont
         SetTextColor m_searchText.hWnd, vbBlack
         
@@ -2290,8 +2257,7 @@ Private Sub m_searchText_onFocus()
 End Sub
 
 Private Sub m_searchText_onKeyDown(KeyCode As Long)
-    Debug.Print "m_searchText_onKeyDown;;" & KeyCode
-    
+
     If KeyCode = vbKeyLeft Or KeyCode = vbKeyRight Then
         KeyCode = 0
         Exit Sub
@@ -2313,7 +2279,7 @@ Private Sub m_searchText_onKeyDown(KeyCode As Long)
     
         If g_KeyboardMenuState <> 1 Then
         
-            If AppLauncherHelper.shell32(Me.hWnd, m_searchText.Text) = False Then
+            If AppLauncherHelper.shell32(Me.hWnd, m_searchText.text) = False Then
                 
                 If m_recentPrograms.Visible Then
                     m_recentPrograms.RequestExecuteSelected
@@ -2335,8 +2301,8 @@ Private Sub m_searchText_onKeyUp(KeyCode As Long)
 End Sub
 
 Private Sub m_searchText_onLostFocus()
-    If m_searchText.Text = vbNullString Then
-        m_searchText.Text = GetPublicString("strStartSearch", "Start Search")
+    If m_searchText.text = vbNullString Then
+        m_searchText.text = GetPublicString("strStartSearch", "Start Search")
         m_searchText.Font = m_searchBoxForeFontItalic
     End If
 End Sub
@@ -2372,8 +2338,6 @@ Dim cursorPos As win.POINTL
 
     GetCursorPos cursorPos
     ScreenToClient Me.hWnd, cursorPos
-    
-    Debug.Print cursorPos.X & ":" & cursorPos.Y
     
     m_ignoreActivation = False
     
@@ -2540,7 +2504,7 @@ Private Sub timTreeViewSearch_Timer()
     m_searchingStarted = True
 
 Dim searchText As String
-    searchText = m_searchText.Text
+    searchText = m_searchText.text
     
     g_KeyboardMenuState = 0
     g_KeyboardSide = 1
@@ -2555,7 +2519,6 @@ Dim searchText As String
         
         If m_recentPrograms.Visible Then
             ToggleProgramsMenu
-            Debug.Print "Toggle!"
         End If
             
         m_programMenu.Filter = searchText

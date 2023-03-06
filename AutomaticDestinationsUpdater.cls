@@ -18,6 +18,12 @@ Private m_jumpLists As Collection
 
 Private m_filesFolder As Scripting.Folder
 
+Private m_logger As SeverityLogger
+
+Property Get Logger()
+    Set Logger = m_logger
+End Property
+
 Public Function JumplistsAvailable() As Boolean
     JumplistsAvailable = Not m_filesFolder Is Nothing
 End Function
@@ -81,10 +87,11 @@ Dim thisFile As Scripting.File
 
     Exit Function
 Handler:
-    LogError Err.Description, "AutomaticDestinationsUpdater::Update()"
+    Logger.Error Err.Description, "Update"
 End Function
 
 Private Sub Class_Initialize()
+    Set m_logger = LogManager.GetCurrentClassLogger(Me)
     
 Dim filesPath As String
 

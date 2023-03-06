@@ -107,12 +107,15 @@ Attribute m_taskbarParent.VB_VarHelpID = -1
 
 Private m_startButton As frmStartOrb
 Attribute m_startButton.VB_VarHelpID = -1
+
 Private WithEvents m_startButtonEvents As IPngImageEvents
 Attribute m_startButtonEvents.VB_VarHelpID = -1
 Private WithEvents m_startMenuBase As frmStartMenuBase
 Attribute m_startMenuBase.VB_VarHelpID = -1
 Private WithEvents m_startOptions As frmVistaMenu
 Attribute m_startOptions.VB_VarHelpID = -1
+Private WithEvents m_logManager As LogManager
+Attribute m_logManager.VB_VarHelpID = -1
 
 Private m_windows8TaskBar As Windows8TaskBar
 
@@ -135,6 +138,11 @@ Private m_abNormalDPI As Boolean
 Private m_userDPI As Long
 
 Private m_ORB_HEIGHT As Long
+Private m_logger As SeverityLogger
+
+Property Get Logger()
+    Set Logger = m_logger
+End Property
 
 Private Sub InitializeMenu()
     Set m_startOptions = New frmVistaMenu
@@ -217,6 +225,11 @@ Dim startOrbPath As String
     
     InitializeStartButton = True
 End Function
+
+Private Sub Form_Initialize()
+    Set m_logger = LogManager.GetCurrentClassLogger(Me)
+    Set m_logManager = LogManager
+End Sub
 
 Private Sub Form_Load()
     InitializeMenu
@@ -323,6 +336,12 @@ Private Sub Form_Unload(Cancel As Integer)
     
     DeleteIconFromTray
     ExitApplication
+End Sub
+
+Private Sub m_logManager_LogEvent(ByVal level As LogLevel, ByVal Source As String, ByVal message As String, arguments() As String)
+    If level = FatalLevel Then
+        MsgBox Source & vbCrLf & vbCrLf & message, vbCritical, "Fatal Error"
+    End If
 End Sub
 
 Private Sub m_startButtonEvents_onMouseDown(ObjSender As Object)
@@ -446,8 +465,7 @@ Dim taskbarEdge As AbeBarEnum
     
     If IsRectDifferent(m_taskbarKnownRect, TaskBar) Then
         'Taskbar must have moved
-        
-        Debug.Print "New taskbar dimensions!"
+        Logger.Trace "Taskbar dimensions have changed", "ActivateStartMenu"
         
         taskbarEdge = GetTaskBarEdge()
         m_taskbarKnownRect = TaskBar
@@ -701,15 +719,12 @@ Dim topValueSet As Boolean: topValueSet = False
             
             If ((recStartButton.Left) <> (recOrb.Left) Or _
                 (recReBar32.Top + lngTop) <> recOrb.Top) Then
-        
-                'Debug.Print "MOVING; " & (recStartButton.Top) & "<>" & (recOrb.Top)
+
                 MoveWindow m_startButton.hWnd, recStartButton.Left, recReBar32.Top + lngTop, m_startButton.ScaleWidth, m_startButton.ScaleHeight, True
             End If
                         
         ElseIf g_Windows11 Then
             ' Windows 11+
-            
-            'Debug.Print "MOVING; " & (recStartButton.Top) & "<>" & (recOrb.Top)
             MoveWindow m_startButton.hWnd, recStartButton.Left + 2, recReBar32.Top + lngTop, m_startButton.ScaleWidth, m_startButton.ScaleHeight, True
 
         Else
@@ -730,7 +745,6 @@ Dim topValueSet As Boolean: topValueSet = False
             Else
                 If (recReBar32.Top + lngTop) <> (recOrb.Top) Then
             
-                    'Debug.Print "MOVING; " & recReBar32.Top + lngTop & "<>" & (recOrb.Top)
                     MoveWindow m_startButton.hWnd, lngLeft, lngTop, m_startButton.ScaleWidth, m_startButton.ScaleHeight, True
                 End If
             End If
@@ -747,8 +761,6 @@ Dim topValueSet As Boolean: topValueSet = False
             lngTop = 1
         
             If (recReBar32.Left + lngLeft) <> (recOrb.Left) Then
-                
-                Debug.Print ":D"
                 MoveWindow m_startButton.hWnd, lngLeft, lngTop, m_startButton.ScaleWidth, m_startButton.ScaleHeight, True
             End If
         End If
@@ -785,7 +797,7 @@ End Sub
 Private Sub timViOrb_Timer()
 
     If IsWindowVisible(g_hwndStartButton) = APITRUE Then
-        Debug.Print "Closing Start Button!"
+        Logger.Trace "Closing Start Button!", "timViOrb_Timer"
         
         ShowWindow g_hwndStartButton, SW_HIDE
         Call SetWindowPos(m_startButton.hWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOSIZE Or SWP_NOMOVE)
@@ -849,7 +861,7 @@ Static m_NotTopMost As Boolean
                 If m_NotTopMost = True Then
                     m_NotTopMost = False
                     
-                    Debug.Print "m_startButton::Show"
+                    Logger.Trace "Showing ViStart start button", "timzOrderCheck_Timer"
                     ShowWindow m_startButton.hWnd, SW_SHOWNOACTIVATE
                 End If
             End If

@@ -8,6 +8,16 @@ Private Const EXPLORER_OPENSAVEDOCS_VISTA As String = "Software\Microsoft\Window
 
 Private EXPLORER_OPENSAVEDOCS As String
 
+Private m_logger As SeverityLogger
+
+Private Property Get Logger() As SeverityLogger
+    If m_logger Is Nothing Then
+        Set m_logger = LogManager.GetLogger("MRUHelper")
+    End If
+    
+    Set Logger = m_logger
+End Property
+
 Function SetOpenSaveDocs()
     EXPLORER_OPENSAVEDOCS = EXPLORER_OPENSAVEDOCS_XP
     If Registry.CurrentUser.OpenSubKey(EXPLORER_OPENSAVEDOCS) Is Nothing Then
@@ -17,8 +27,6 @@ End Function
 
 Public Function GetMRUListForKey(ByRef srcMRURoot As RegistryKey) As String()
     On Error Resume Next
-    
-    Debug.Print srcMRURoot.Path
 
 Dim s_mruList As String
 Dim thisMRU
@@ -39,13 +47,9 @@ Dim MRUArrayIndex As Long
         
         If LenB(thisMRU) = 2 Then
         
-            'Debug.Print "Reading:: " & CStr(thisMRU)
-            
             thisMRUValue = srcMRURoot.GetValue(CStr(thisMRU))
             lnkFileName = thisMRUValue
             
-            Debug.Print "lnkFileName:: " & lnkFileName & "'"
-
             If FileExists(lnkFileName) Then
                 ReDim Preserve MRUList(MRUArrayIndex)
                 MRUList(MRUArrayIndex) = lnkFileName
@@ -69,8 +73,6 @@ Dim MRUArrayIndex As Long
             thisMRUValue = srcMRURoot.GetValue(CStr(thisMRU))
             endFileNamePos = 1
             
-            'Debug.Print thisMRUValue
-            
             'Chr$(0) is actually a double byte ZERO ChrB(0) is a single byte
             'Remember strings are double-byte in VB6
             endFileNamePos = InStrB(thisMRUValue, Chr$(0))
@@ -81,8 +83,6 @@ Dim MRUArrayIndex As Long
                 If Len(thisLnkName) > 3 Then
                 
                     If Not (Right$(thisLnkName, 4) = ".lnk") And InStr(thisLnkName, ".") > 0 Then
-                        
-                        'Debug.Print "thisLnkName:: " & thisLnkName
                         
                         If FileExists(Environ$("userprofile") & "\Recent\" & Left$(thisLnkName, InStrRev(thisLnkName, ".") - 1) & ".lnk") Then
                             thisLnkName = Left$(thisLnkName, InStrRev(thisLnkName, ".") - 1) & ".lnk"
@@ -108,12 +108,12 @@ Dim MRUArrayIndex As Long
     GetMRUListForKey = MRUList
     
 Handler:
+    Logger.Error Err.Description, "GetMRUListForKey"
     Err.Clear
-    LogError "GetMRUListForKey", ""
 End Function
 
 Public Function GetImageJumpList(ByVal srcImagePath As String) As JumpList
-    On Error GoTo Handler
+    'On Error GoTo Handler
 
 Dim r_recentDocs As RegistryKey
 Dim r_openSaveDocs As RegistryKey
@@ -138,7 +138,7 @@ Dim thisJumpList As New JumpList
 
     For Each thisTypeNameColItem In r_recentDocs.GetSubKeyNames
         thisTypeName = CStr(thisTypeNameColItem)
-
+        
         If ExistInStringArray(GetTypeHandlersImageName(thisTypeName), srcImagePath) Then
             thisJumpList.AddMRURegKey r_recentDocs.OpenSubKey(thisTypeName)
             setJumpList = True
@@ -156,21 +156,24 @@ Dim thisJumpList As New JumpList
     
     Exit Function
 Handler:
-    LogError Err.Description, "GetImageJumpList"
+    Logger.Error Err.Description, "GetImageJumpList", srcImagePath
 End Function
 
 Public Function GetTypeHandlersImageName(srcType As String) As String()
-
+    On Error GoTo Handler
+    
 Dim thisKey As RegistryKey
 Dim primaryCommand As String
 Dim theChars() As Byte
 Dim theCharIndex As Long
 Dim returnHandlers() As String
 
+    GetTypeHandlersImageName = returnHandlers
+
     If Left$(srcType, 1) <> "." Then srcType = "." & srcType
     Set thisKey = Registry.CurrentUser.OpenSubKey("Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\" & srcType & "\OpenWithList")
     If thisKey Is Nothing Then
-        LogError "Unable to open registry key", "MRUHelper::GetTypeHandlersImageName"
+        Logger.Error "Unable to open registry key", "GetTypeHandlersImageName", srcType
         Exit Function
     End If
     
@@ -182,6 +185,8 @@ Dim returnHandlers() As String
     
     GetTypeHandlersImageName = returnHandlers
     Exit Function
+Handler:
+    Logger.Error Err.Description, "GetTypeHandlersImageName", srcType
 End Function
 
 Public Function GetTypeHandlerPath(ByVal srcType As String) As String
@@ -206,7 +211,7 @@ Dim primaryCommand As String
     
     Exit Function
 HandleInvalidSubKey:
-    LogError Err.Description, "GetTypeHandlerPath"
+    Logger.Error Err.Description, "GetTypeHandlerPath", srcType
 End Function
 
 Public Function GetEXEPathFromQuote(ByVal srcPath As String)

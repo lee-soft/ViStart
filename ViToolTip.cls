@@ -25,12 +25,6 @@ Public Sub Hide()
 End Sub
 
 Public Sub Show()
-    Debug.Print "Showing!"
-    'SetForegroundWindow m_toolTipHwnd
-
-    'SendMessage ByVal m_toolTipHwnd, ByVal TTM_POP, ByVal 0, ByVal 0
-    'SendMessage ByVal m_toolTipHwnd, ByVal TTM_POPUP, ByVal 0, ByVal 0
-
 End Sub
 
 Public Sub AttachWindow(ByVal hWnd As Long)
@@ -50,8 +44,6 @@ Private Sub Class_Initialize()
         0, 0, 0, 0, 0, 0, 0, 0, ByVal 0)
         
     SendMessage ByVal m_toolTipHwnd, ByVal TTM_SETDELAYTIME, 1, 500
-    'SendMessage ByVal m_toolTipHwnd, ByVal TTM_SETDELAYTIME, 0, 0
-    'SendMessage ByVal m_toolTipHwnd, ByVal TTM_SETDELAYTIME, 2, 0
 
     SetWindowPos m_toolTipHwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOSIZE Or SWP_NOMOVE Or SWP_NOACTIVATE
 End Sub

@@ -2,7 +2,7 @@ Attribute VB_Name = "KeyBoard"
 Option Explicit
 
 Public Declare Function SetWindowsHookEx Lib "user32" Alias "SetWindowsHookExA" (ByVal idHook As Long, ByVal lpfn As Long, ByVal hmod As Long, ByVal dwThreadId As Long) As Long
-Public Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (Destination As Any, Source As Any, ByVal Length As Long)
+Public Declare Sub CopyMemory Lib "kernel32" Alias "RtlMoveMemory" (Destination As Any, Source As Any, ByVal length As Long)
 Public Declare Function UnhookWindowsHookEx Lib "user32" (ByVal hHook As Long) As Long
 Public Declare Function CallNextHookEx Lib "user32" (ByVal hHook As Long, ByVal nCode As Long, ByVal wParam As Long, lParam As Any) As Long
 Private Declare Function SendInput Lib "user32.dll" (ByVal nInputs As Long, pInputs As GENERALINPUT, ByVal cbSize As Long) As Long
@@ -97,8 +97,6 @@ Dim eat As Boolean
     
     CopyMemory xpInfo, lParam, Len(xpInfo) 'copy the structure from lParam to xpinfo
     
-    'Debug.Print "xpInfo.vkCode:: " & xpInfo.vkCode
-    
     If (Settings.CatchRightWindowsKey And xpInfo.vkCode = VK_RWINKEY) Or _
         (Settings.CatchLeftWindowsKey And xpInfo.vkCode = VK_LWINKEY) Then
     
@@ -137,7 +135,6 @@ Dim eat As Boolean
             
                 
                 If xpInfo.vkCode <> VK_RWINKEY And xpInfo.vkCode <> VK_LWINKEY And xpInfo.vkCode <> 162 Then
-                    Debug.Print "ere:: " & xpInfo.vkCode
                     frmEvents.ActivateSearchText xpInfo.vkCode
                 End If
             End If

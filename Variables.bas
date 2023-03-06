@@ -70,7 +70,7 @@ Function UsrVarValue(sName As String, Optional Default = "") As String
         UsrVarValue = Default
     
         If IsVariable(sName) = True Then
-            LogError "Invalid Variable: '" & sName & "'", "Variables"
+            Logger.Error "Invalid Variable", "UsrValValue", sName, Default
         End If
         Exit Function
     End If

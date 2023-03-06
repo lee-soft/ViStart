@@ -1,8 +1,17 @@
 Attribute VB_Name = "ContextMenuHelper"
 Option Explicit
 
-'This module is a generic context menu builder for files shown in ViStart
+Private m_logger As SeverityLogger
 
+Private Property Get Logger() As SeverityLogger
+    If m_logger Is Nothing Then
+        Set m_logger = LogManager.GetLogger("ContextMenuHelper")
+    End If
+    
+    Set Logger = m_logger
+End Property
+
+'This module is a generic context menu builder for files shown in ViStart
 Public Function BuildGenericFileContextMenu(ByVal szFilePath As String) As frmVistaMenu
     On Error GoTo Handler
 
@@ -28,7 +37,7 @@ Dim newContextMenu As frmVistaMenu
 
     Exit Function
 Handler:
-    LogError Err.Description, "ContextMenuHelper::BuildGenericFileContextMenu"
+    Logger.Error Err.Description, "BuildGenericFileContextMenu"
 End Function
 
 Public Function GenericFileContextMenuHandler(ByVal szCommand As String, ByVal szFilePath As String)
@@ -67,5 +76,5 @@ Dim theRecentPrograms As frmFreq
     
     Exit Function
 Handler:
-    LogError Err.Description, "ContextMenuHelper::GenericFileContextMenuHandler"
+    Logger.Error Err.Description, "GenericFileContextMenuHandler"
 End Function

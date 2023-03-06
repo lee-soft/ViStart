@@ -72,6 +72,12 @@ Private Declare Function SHChangeNotify Lib "shell32.dll" (ByVal wEventID As Lon
 Private WithEvents m_renameTextBox As VistaSearchBox
 Attribute m_renameTextBox.VB_VarHelpID = -1
 
+Private m_logger As SeverityLogger
+
+Property Get Logger()
+    Set Logger = m_logger
+End Property
+
 Public Property Get NavigationOptions() As Collection
     Set NavigationOptions = m_navigationPaneOptions
 End Property
@@ -330,7 +336,7 @@ Public Function ShowContextMenu(ByRef winOwner As Form)
 
     Exit Function
 Handler:
-    LogError Err.Description, "ViNavigationPane::ShowContextMenu"
+    Logger.Error Err.Description, "ShowContextMenu"
 
 End Function
 
@@ -345,8 +351,6 @@ Public Function count() As Long
 End Function
 
 Public Function ResetRollover()
-    Debug.Print "HARE @2"
-    
     m_lastIndex = -1
     Set m_selectedItem = Nothing
     
@@ -358,18 +362,14 @@ Public Property Get index() As Long
 End Property
 
 Public Function SelectOptionByIndex(newIndex As Long)
-    Debug.Print "SelectOptionByIndex:: " & newIndex
-
     If newIndex > 0 And newIndex <= m_visiblePaneOptions.count Then
-        Debug.Print "setting index:: " & newIndex
-        
         m_lastIndex = newIndex
         Set m_selectedItem = m_visiblePaneOptions(m_lastIndex)
         MoveRolloverToIndex m_lastIndex
 
         RaiseEvent onChanged
     Else
-        Debug.Print "warning:: " & newIndex & " index is out of bounds!!"
+        Logger.Warn newIndex & " index is out of bounds!!", "SelectOptionByIndex"
     End If
 
 End Function
@@ -502,8 +502,6 @@ Public Function MouseOut()
     
     If Not m_selectedItem Is Nothing Then
     
-        Debug.Print "HARE @1"
-        
         Set m_selectedItem = Nothing
         m_lastIndex = -1
         RaiseEvent onChanged
@@ -609,27 +607,19 @@ Dim suggestedIndex As Long
 Dim A As Long
 Dim newY As Long
 
-    'Debug.Print "Position.Y:: " & Position.Y
-    
     newY = Position.Y - TOP_MARGIN + (m_rolloverHeight / 2) - (m_font.Size / 2) - 2
-    
     suggestedIndex = FindIndex(newY, m_seperatorAmount) + 1
-    'Debug.Print "suggestedIndex:: " & suggestedIndex & " & " & (newY / m_seperatorAmount) & " & " & newY
-    
+
     If suggestedIndex > 0 And suggestedIndex <= m_visiblePaneOptions.count Then
         
         
         A = ((suggestedIndex - 1) * m_seperatorAmount) _
                 + m_rolloverHeight
         
-        'Debug.Print A & " * " & Position.Y & " % " & suggestedIndex
-        
         If Position.Y <= A Then
             If m_lastIndex <> suggestedIndex Then
                 m_lastIndex = suggestedIndex
                 MoveRolloverToIndex suggestedIndex
-                
-                Debug.Print "Selected Item:: " & suggestedIndex
             End If
         Else
             If Not m_selectedItem Is Nothing Then
@@ -850,10 +840,12 @@ MaxOSVersion = 0
         
     Exit Function
 Handler:
-    LogError Err.Description, "ViNavigationPane"
+    Logger.Error Err.Description, "PopulateLinks"
 End Function
 
 Private Sub Class_Initialize()
+    Set m_logger = LogManager.GetCurrentClassLogger(Me)
+
     InitializeGDIIfNotInitialized
 
     Set m_renameTextBox = New VistaSearchBox
@@ -934,7 +926,7 @@ Private Sub m_contextMenu_onClick(theItemTag As String)
     m_contextMenu_onInActive
     Exit Sub
 Handler:
-    LogError Err.Description, "ViNavigationPane"
+    Logger.Error Err.Description, "m_contextMenu_onClick", theItemTag
 End Sub
 
 
@@ -1094,7 +1086,7 @@ Private Function ShowHideDesktopIcons(ShellItem As String)
         
         Exit Function
 Handler:
-    LogError Err.Description, "ViNavigationPane::ShowHideDesktopIcons"
+    Logger.Error Err.Description, "ShowHideDesktopIcons"
 End Function
 
 
@@ -1225,7 +1217,7 @@ On Error GoTo Handler
                 
         Exit Function
 Handler:
-    LogError Err.Description, "ViNavigationPane::ShowHideComputerIcons"
+    Logger.Error Err.Description, "ShowHideComputerIcons"
 End Function
 
 Private Function RenameSelectedItem()
@@ -1241,7 +1233,7 @@ Dim textBoxX As Long
     textBoxY = m_windowPosition.Y + m_backgroundPosition.Y + m_rolloverPosition.Y + (m_rolloverHeight / 2) - g_DefaultFont.FontWeight / 2
     textBoxX = m_windowPosition.X + m_backgroundPosition.X + m_rolloverPosition.X + 8
     
-    m_renameTextBox.Text = m_selectedItem.Caption
+    m_renameTextBox.text = m_selectedItem.Caption
     Set m_itemToBeRenamed = m_selectedItem
     
     Call SetWindowPos(m_renameTextBox.hWnd, HWND_TOPMOST, textBoxX, textBoxY, m_rollover.Width - 10, g_DefaultFont.FontWeight, 0)
@@ -1323,7 +1315,7 @@ Private Sub m_renameTextBox_onLostFocus()
     If m_itemToBeRenamed Is Nothing Then Exit Sub
 
     ShowWindow m_renameTextBox.hWnd, SW_HIDE
-    m_itemToBeRenamed.Caption = m_renameTextBox.Text
+    m_itemToBeRenamed.Caption = m_renameTextBox.text
     
     RaiseEvent onChanged
 End Sub

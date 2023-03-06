@@ -14,6 +14,16 @@ Private Declare Function VerQueryValueA Lib "Version.dll" _
          (ByVal lpString1 As String, _
          ByVal lpString2 As Long) As Long
 
+Private m_logger As SeverityLogger
+
+Private Property Get Logger() As SeverityLogger
+    If m_logger Is Nothing Then
+        Set m_logger = LogManager.GetLogger("ProgramMenuHelper")
+    End If
+    
+    Set Logger = m_logger
+End Property
+
 Function CreateProgramFromPath(ByVal szProgramPath As String) As clsProgram
 
 Dim thisProgram As clsProgram
@@ -68,7 +78,7 @@ Dim sBuffer As String
 
     Exit Function
 Handler:
-    LogError Err.Description, "ProgramMenuHelper"
+    Logger.Error Err.Description, "GetAppDescription", aExeName
 End Function
 
 Public Function GetStringFromPointer(ByVal PtrStr As Long)

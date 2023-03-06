@@ -68,7 +68,7 @@ Private Declare Function BitBlt Lib "gdi32" (ByVal hDestDC As Long, ByVal X As L
 Private Declare Function GetCursorPos Lib "user32" (lpPoint As POINTL) As Long
 
 Private Type LIST_ITEM2
-    Text As String
+    text As String
     SubText As String
     Shell As String
     Top As Long
@@ -77,7 +77,7 @@ End Type
 
 Private Type LIST_ITEM
     Icon As ViIcon
-    Text As String
+    text As String
     Shell As String
     Top As Long
     MRUList As JumpList
@@ -120,6 +120,12 @@ Private WithEvents ProgramsDBEvents As clsProgramDB
 Attribute ProgramsDBEvents.VB_VarHelpID = -1
 
 Implements IHookSink
+
+Private m_logger As SeverityLogger
+
+Property Get Logger() As SeverityLogger
+    Set Logger = m_logger
+End Property
 
 Public Function RolloverWithKeyboard(theRequestedIndex As Long)
     bKeyboardMode = True
@@ -178,7 +184,6 @@ End Sub
 
 Private Sub PopulateItemsFromCollection(ByVal slotIndexStart As Long, ByRef topValue As Long, ByRef sourceCollection As Collection)
     
-    Debug.Print "PopulateItemsFromCollection:: " & slotIndexStart & " - " & topValue
     On Error GoTo Handler
     
 Dim itemIndex As Long
@@ -200,9 +205,9 @@ Dim thisProgram As clsProgram
                 appDescription = GetAppDescription(thisProgram.Path)
                 
                 If appDescription <> vbNullString And thisProgram.Caption = vbNullString Then
-                    .Text = appDescription
+                    .text = appDescription
                 Else
-                    .Text = VarScan(thisProgram.Caption)
+                    .text = VarScan(thisProgram.Caption)
                 End If
                 
                 .Shell = thisProgram.Path
@@ -219,9 +224,7 @@ Dim thisProgram As clsProgram
     Next
 Exit Sub
 Handler:
-    MsgBox Err.Description
-
-    LogError "PopulateItemsFromCollection:: " & Err.Description, Me.Name
+    Logger.Fatal Err.Description, "PopulateItemsFromCollection"
 End Sub
 
 Sub PopulateItems()
@@ -261,7 +264,7 @@ Dim topValue As Long
     
     Exit Sub
 Handler:
-    LogError "PopulateItems:: " & Err.Description, "frmFreq"
+    Logger.Error Err.Description, "PopulateItems"
 End Sub
 
 Sub PaintItems()
@@ -284,7 +287,7 @@ Dim dropY As Single
         End If
         
         Me.ForeColor = m_theFont.Colour
-        DrawTextMe Me, lstItems(lngItemPaintIndex).Text, m_cLeftMargin + m_intIconSize, lstItems(lngItemPaintIndex).Top, 9
+        DrawTextMe Me, lstItems(lngItemPaintIndex).text, m_cLeftMargin + m_intIconSize, lstItems(lngItemPaintIndex).Top, 9
         
         'Draw an icon if there is any
         If Not lstItems(lngItemPaintIndex).Icon Is Nothing Then lstItems(lngItemPaintIndex).Icon.DrawIconEx Me.hdc, 3, lstItems(lngItemPaintIndex).Top, 32, 32
@@ -302,7 +305,7 @@ Dim dropY As Single
     
     Exit Sub
 Handler:
-    LogError "PaintItems:: " & Err.Description, "frmFreq"
+    Logger.Error Err.Description, "PaintItems"
 End Sub
 
 Private Sub DrawTextMe(ObjSender As Object, sText As String, X As Long, Y As Long, lngSize As Long)
@@ -345,11 +348,13 @@ Dim rSize As RECT
 
     Exit Sub
 Handler:
-    LogError Err.Description, Me.Name & "::DrawTextMe"
+    Logger.Error Err.Description, "DrawTextMe"
 
 End Sub
 
 Private Sub Form_Initialize()
+    Set m_logger = LogManager.GetCurrentClassLogger(Me)
+
     m_lngTopMargin = 2
 
     Set m_theFont = New ViFont
@@ -378,7 +383,7 @@ Private Sub Form_Load()
     PopulateItems
     Exit Sub
 Handler:
-    CreateError "frmFreq", "Form_Load()", Err.Description
+    Logger.Error Err.Description, "Form_Load"
 End Sub
 
 Private Sub SetControlProperties()
@@ -408,8 +413,7 @@ Static lastButton As Integer
     
     If bKeyboardMode Then
         bKeyboardMode = False
-        
-        Debug.Print "HARE!"
+
         picRollover.Visible = False
     End If
     
@@ -427,7 +431,6 @@ Static lastButton As Integer
         m_viPadInstalled = IsViPadInstalled
         m_trackingMouse = TrackMouse(Me.hWnd)
         picRollover.Visible = True
-        Debug.Print "Visible!!"
     End If
     
     If m_vistaMenu Is Nothing Then UpdateRolloverStatus CreatePointL(CLng(Y), CLng(X))
@@ -478,7 +481,6 @@ Private Function IHookSink_WindowProc(hWnd As Long, msg As Long, wp As Long, lp 
     If msg = WM_MOUSELEAVE Then
         m_trackingMouse = False
         
-        Debug.Print "Leaving!"
         TestRolloverVisability
     Else
         ' Just allow default processing for everything else.
@@ -488,7 +490,7 @@ Private Function IHookSink_WindowProc(hWnd As Long, msg As Long, wp As Long, lp 
     
     Exit Function
 Handler:
-    Debug.Print Err.Description
+    Logger.Error Err.Description, "IHookSink_WindowProc", msg
 
     ' Just allow default processing for everything else.
     IHookSink_WindowProc = _
@@ -619,33 +621,23 @@ Dim i As Long
 Dim bOnTopOfButton As Boolean
 Dim suggestedIndex As Long
 
-    'Debug.Print "UpdateRolloverStatus:: " & cPos.X & " - " & cPos.Y
-
     suggestedIndex = Floor(cPos.Y / ItemGap)
     
     If Settings.Programs.PinnedPrograms.count > 0 Then
         If suggestedIndex = Settings.Programs.PinnedPrograms.count Then
-            Debug.Print "changing index!"
             suggestedIndex = Floor((cPos.Y - 10) / ItemGap)
         End If
     End If
     
     If (suggestedIndex > -1) And suggestedIndex <= m_itemCap Then
                 
-                
         'Cancel Keyboard Mode
         bKeyboardMode = False
         bOnTopOfButton = True
 
         If iCurIndex <> suggestedIndex Then
-        
-            
             Rollover suggestedIndex
-
             iCurIndex = suggestedIndex
-            Debug.Print "01# Changing iCurIndex to " & suggestedIndex
-            
-            Debug.Print "So::" & lstItems(suggestedIndex).Text & " :: " & suggestedIndex & " - " & m_itemCap
         End If
     End If
 
@@ -654,8 +646,6 @@ Dim suggestedIndex As Long
         If Not bKeyboardMode Then
 
             iCurIndex = -1
-            Debug.Print "02# Changing iCurIndex to " & iCurIndex
-            
             'Hide rollover object
             picRollover.Top = -picRollover.Height
         End If
@@ -669,21 +659,18 @@ Private Function Rollover(ByVal lngNewRolloverIndex As Long)
 Dim hasMRUList As Boolean
     
     If lngNewRolloverIndex = -2 Then
-        'Debug.Print "Bail 04"
         Exit Function
     End If
     
     If UBound(lstItems) = 0 Then
-        'Debug.Print "Bail 00"
         Exit Function
     End If
     
     If Not m_vistaMenu Is Nothing Then
-        'Debug.Print "Bail 01"
         Exit Function
     End If
     
-    Debug.Print "Rollovering over:: " & lngNewRolloverIndex
+    Logger.Trace "Rollovering over:: " & lngNewRolloverIndex, "Rollover"
     
     If lngNewRolloverIndex >= LBound(lstItems) And lngNewRolloverIndex <= UBound(lstItems) Then
     
@@ -695,7 +682,7 @@ Dim hasMRUList As Boolean
         picRollover.Cls
         picRollover.ForeColor = m_theFont.Colour
         
-        DrawTextMe picRollover, lstItems(lngNewRolloverIndex).Text, m_cLeftMargin + m_intIconSize - 1, 2, 9
+        DrawTextMe picRollover, lstItems(lngNewRolloverIndex).text, m_cLeftMargin + m_intIconSize - 1, 2, 9
         picRollover.Move 1, lstItems(lngNewRolloverIndex).Top - 2
         
         lstItems(lngNewRolloverIndex).Icon.DrawIconEx picRollover.hdc, 2, 2, 32, 32
@@ -714,7 +701,7 @@ Dim hasMRUList As Boolean
     
     Exit Function
 Handler:
-    CreateError "frmFreq", "Rollover", Err.Description
+    Logger.Error Err.Description, "Rollover"
 End Function
 
 Private Function DrawJumpListButton(theState As Long)
@@ -806,7 +793,7 @@ Dim sP() As String
 End Sub
 
 Private Sub m_vistaMenu_onInActive()
-    Debug.Print "INACTIVE!"
+    Logger.Trace "Inactive", "m_vistaMenu_onInActive"
     
     If Not m_vistaMenu Is Nothing Then
         Unload m_vistaMenu
@@ -908,13 +895,13 @@ Private Sub picRollover_MouseUp(Button As Integer, Shift As Integer, X As Single
             m_vistaMenu.AddItem GetPublicString("strProperties"), "PROPERTIES@" & lstItems(iCurIndex).Shell
         End If
         
-        Debug.Print "Attemping Resurrection!"
+        Logger.Trace "Attemping to show program option menu", "picRollover_MouseUp"
         m_vistaMenu.Resurrect True
     End If
 
     Exit Sub
 Handler:
-    LogError Err.Description, "frmFreq::MouseUp"
+    Logger.Error Err.Description, "MouseUp"
 End Sub
 
 Sub MoveSeperator(theY As Long)

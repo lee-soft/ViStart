@@ -37,10 +37,18 @@ Private m_Dirty As Boolean              ' Flag indicating object needs to be sav
 Private Const defOverwrite As Boolean = False
 Private Const defAutoQuote As Boolean = True
 
+Private m_logger As SeverityLogger
+
+Property Get Logger()
+    Set Logger = m_logger
+End Property
+
 ' *************************************************
 '  Initialization / Termination
 ' *************************************************
 Private Sub Class_Initialize()
+    Set m_logger = LogManager.GetCurrentClassLogger(Me)
+
    ' Set property defaults.
    m_Overwrite = defOverwrite
    m_AutoQuote = defAutoQuote
@@ -236,7 +244,7 @@ Public Function Load(ByVal LinkFile As String) As Boolean
    
    Exit Function
 Handler:
-   LogError Err.Description & " - " & LinkFile, "CShellLink"
+   Logger.Error Err.Description, "Load"
 End Function
 
 ' ***********************************************

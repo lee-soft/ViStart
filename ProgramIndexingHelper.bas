@@ -12,6 +12,16 @@ Private FSO As New FileSystemObject
 
 Private iItemCount As Long
 
+Private m_logger As SeverityLogger
+
+Private Property Get Logger() As SeverityLogger
+    If m_logger Is Nothing Then
+        Set m_logger = LogManager.GetLogger("ProgramIndexingHelper")
+    End If
+    
+    Set Logger = m_logger
+End Property
+
 Public Sub ResetCount()
 
 Dim counterIndex As Long
@@ -95,7 +105,7 @@ Dim thisColItem As ColItem
     For Each thisFile In sourceFolder.Files
         If Err Then
             If Err.Number <> 70 Then
-                CreateError "Programs", "PopulateCollection", Err.Description
+                Logger.Error Err.Description, "PopulateCollectionFromEXEDirectory"
             End If
             
             Err.Clear
@@ -167,7 +177,7 @@ Dim thisColItem As ColItem
     For Each thisFile In sourceFolder.Files
         If Err Then
             If Err.Number <> 70 Then
-                CreateError "Programs", "PopulateCollection", Err.Description
+                Logger.Error Err.Description, "PopulateCollection"
             End If
             
             Err.Clear
@@ -374,10 +384,7 @@ Dim newNode As INode
                 newNode.EXEName = Replace(UCase$(GetFileName(ResolveLink(thisColItem.Path))), " ", "")
             Else
                 newNode.EXEName = Replace(UCase$(GetFileName(thisColItem.Path)), " ", "")
-                'Debug.Print newNode.EXEName
-                
             End If
-            
             
             newNode.visibleInSearchOnly = thisColItem.VisibleOnlyInSearch
         End If
@@ -426,7 +433,7 @@ Dim iFileCount(0 To 3) As Long
 Dim lngMonitorIndex As Long
 Dim bNeedCache As Boolean
 
-    Debug.Print "FILECOUNTTEST!!!"
+    Logger.Trace "Performing a File Count Test", "FileCountTest"
 
     bNeedCache = False
 

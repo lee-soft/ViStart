@@ -20,6 +20,16 @@ Public sFonts() As String
 
 Dim Reg As New RegistryKey
 
+Private m_logger As SeverityLogger
+
+Private Property Get Logger() As SeverityLogger
+    If m_logger Is Nothing Then
+        Set m_logger = LogManager.GetLogger("OptionsHelper")
+    End If
+    
+    Set Logger = m_logger
+End Property
+
 Function StartsWithWindows() As Boolean
     StartsWithWindows = False
     
@@ -27,7 +37,7 @@ Dim startWithWindowsRegKey As RegistryKey
     Set startWithWindowsRegKey = Registry.CurrentUser.OpenSubKey("Software\Microsoft\Windows\CurrentVersion\Run\")
     
     If startWithWindowsRegKey Is Nothing Then
-        LogError "Unable to open registry key", "OptionsHelper::StartWithWindows"
+        Logger.Error "Unable to open registry key", "StartWithWindows"
         Exit Function
     End If
  

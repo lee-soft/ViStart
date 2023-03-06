@@ -34,6 +34,16 @@ Private m_initializedGlobalClasses As Boolean
 
 Private Const EXIT_PROGRAM As Long = 1
 
+Private m_logger As SeverityLogger
+
+Private Property Get Logger() As SeverityLogger
+    If m_logger Is Nothing Then
+        Set m_logger = LogManager.GetLogger("MainHelper")
+    End If
+    
+    Set Logger = m_logger
+End Property
+
 Public Function WaitForDesktop()
 
     ShellHelper.UpdateHwnds
@@ -205,7 +215,7 @@ Dim theImageFace As New GDIPImage
     Dim shellFoldersRegKey As RegistryKey
     Set shellFoldersRegKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Folders")
     If shellFoldersRegKey Is Nothing Then
-        LogError "Unable to create User rollover, couldn't open registry key", "MainHelper::MakeUserRollover"
+        Logger.Error "Unable to create User rollover, couldn't open registry key", "MakeUserRollover"
         Exit Sub
     End If
     
@@ -284,7 +294,7 @@ Private Function HandleWindows8Utility() As Long
     WaitUntilDesktopIsAvailable
     Exit Function
 Handler:
-    LogError Err.Description
+    Logger.Error Err.Description, "HandleWindows8Utility"
 End Function
 
 Function DetermineProgramAction() As Long
@@ -297,7 +307,7 @@ Dim cmdLineArguements() As String
         Set CmdLine = New CommandLine
     End If
     
-    If CmdLine.Arguments > 0 Then
+    If CmdLine.arguments > 0 Then
         Select Case LCase$(CmdLine.Argument(1))
         
             'Case "/show"
@@ -307,6 +317,8 @@ Dim cmdLineArguements() As String
         
             Case "/debug":
                 sVar_bDebugMode = True
+                LogManager.Target = LogAll
+                LogManager.MinimumLevel = TraceLevel
                 
             Case "/nuke_metro"
                 DetermineProgramAction = HandleWindows8Utility()
@@ -315,7 +327,7 @@ Dim cmdLineArguements() As String
                 SetVars_IfNeeded
                 SetDefaultFont_IfNeeded
             
-                If CmdLine.Arguments > 1 Then
+                If CmdLine.arguments > 1 Then
                 
                     If Not InstallOrb(CmdLine.Argument(2), newOrbName) Then
                         ExitApplication
@@ -338,7 +350,7 @@ Dim cmdLineArguements() As String
                 SetVars_IfNeeded
                 SetDefaultFont_IfNeeded
             
-                If CmdLine.Arguments > 1 Then
+                If CmdLine.arguments > 1 Then
                     If Not InstallTheme(CmdLine.Argument(2), newThemeName) Then
                         ExitApplication
                         Exit Function
@@ -361,7 +373,7 @@ Dim cmdLineArguements() As String
                 SetVars_IfNeeded
                 SetDefaultFont_IfNeeded
             
-                If CmdLine.Arguments > 1 Then
+                If CmdLine.arguments > 1 Then
                         
                     If FindWindow(vbNullString, MASTERID) <> 0 Then
                         DetermineProgramAction = EXIT_PROGRAM
@@ -378,6 +390,9 @@ Dim cmdLineArguements() As String
 End Function
 
 Sub Main()
+    LogManager.MinimumLevel = ErrorLevel
+    LogManager.Target = LogDebug
+
     If Not InitClasses_IfNeeded Then
         Exit Sub
     End If
@@ -504,7 +519,7 @@ Dim strTemp As String
     
     Exit Function
 Handler:
-    LogError "Could not open registry key, IconSize 32 will be assumed", "MainHelper::GetSystemLargeIconSize"
+    Logger.Warn "Could not open registry key, IconSize 32 will be assumed", "GetSystemLargeIconSize"
     GetSystemLargeIconSize = 32
 
 End Function

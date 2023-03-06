@@ -863,6 +863,12 @@ Private m_ElementY As Long
 Private WithEvents m_cScroll As cScrollBars
 Attribute m_cScroll.VB_VarHelpID = -1
 
+Private m_logger As SeverityLogger
+
+Property Get Logger()
+    Set Logger = m_logger
+End Property
+
 Public Property Let NavigationPanel(ByRef newNavigationPane As ViNavigationPane)
     Set m_navigationPane = newNavigationPane
     InititalizeConfigureFrame
@@ -960,7 +966,7 @@ Dim runAtStartupRegKey As RegistryKey
     Set runAtStartupRegKey = Registry.CurrentUser.OpenSubKey("Software\Microsoft\Windows\CurrentVersion\Run")
     
     If runAtStartupRegKey Is Nothing Then
-        LogError "Unable to open registry key", "Ensure_NukeMetro::frmControlPanel"
+        Logger.Error "Unable to open registry key", "Ensure_NukeMetro"
         Exit Sub
     End If
 
@@ -995,7 +1001,7 @@ Private Sub cmbChildThemes_Click()
     Set newSkinCollectionItem = New CollectionItem
     
     newSkinCollectionItem.Key = m_childSkinNameStrings(cmbChildThemes.listIndex + 1).Key
-    newSkinCollectionItem.Value = cmbThemes.Text
+    newSkinCollectionItem.Value = cmbThemes.text
     
     RaiseEvent onChangeSkin(newSkinCollectionItem)
 End Sub
@@ -1009,7 +1015,7 @@ Private Sub cmbStartOrbs_Click()
     If cmbStartOrbs.listIndex = 0 Then
         RaiseEvent onChangeOrb(vbNullString)
     Else
-        RaiseEvent onChangeOrb(cmbStartOrbs.Text)
+        RaiseEvent onChangeOrb(cmbStartOrbs.text)
     End If
 End Sub
 
@@ -1025,16 +1031,16 @@ Private Sub cmbRollover_Click()
 
                 RaiseEvent onChangeRollover(vbNullString)
     Else
-                Settings.CurrentRollover = cmbRollover.Text
+                Settings.CurrentRollover = cmbRollover.text
         g_rolloverPath = sCon_AppDataPath & "_rollover\" & Settings.CurrentRollover & "\"
 
-        RaiseEvent onChangeRollover(cmbRollover.Text)
+        RaiseEvent onChangeRollover(cmbRollover.text)
     End If
 
 End Sub
 
 Private Sub cmbThemes_Click()
-    ValidateSkin cmbThemes.Text
+    ValidateSkin cmbThemes.text
 End Sub
 
 Private Sub cmbWindowsKey_Change()
@@ -1118,6 +1124,7 @@ Private Sub cmdShowMetroShortcut_Click()
 End Sub
 
 Private Sub Form_Initialize()
+    Set m_logger = LogManager.GetCurrentClassLogger(Me)
     Set m_childSkinNameStrings = New Collection
 End Sub
 
@@ -1719,7 +1726,7 @@ Dim theDimensions As RECTF
 
 Dim theLabelIndex As Long
 
-    theCaption = theText.Text
+    theCaption = theText.text
     If Not IsNull(theText.getAttribute("href")) Then
         theHref = theText.getAttribute("href")
     End If
@@ -1748,8 +1755,8 @@ Dim theDimensions As RECTF
 Dim theLabelIndex As Long
 Dim theFontStyle As fontStyle
 
-    If Not IsNull(theText.Text) Then
-        theCaption = theText.Text
+    If Not IsNull(theText.text) Then
+        theCaption = theText.text
     End If
     
     If Not IsNull(theText.getAttribute("style")) Then

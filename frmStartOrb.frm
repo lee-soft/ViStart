@@ -67,25 +67,31 @@ Public Windows81LeftDifference As Long
 
 Implements IHookSink
 
+Private m_logger As SeverityLogger
+
+Property Get Logger()
+    Set Logger = m_logger
+End Property
+
 Public Function SetContextMenu(ByRef newContextMenu As frmVistaMenu)
     Set m_startOptions = newContextMenu
 End Function
 
 Public Function ResetOrb()
 
-	If FileExists(ResourcesPath & "start_button.png") Then
-		Me.Path = ResourcesPath & "start_button.png"
-	ElseIf FileExists(sCon_AppDataPath & "_orbs\" & Settings.CurrentOrb) Then
-		Me.Path = sCon_AppDataPath & "_orbs\" & Settings.CurrentOrb
-	ElseIf FileExists(sCon_AppDataPath & "_orbs\default.png") Then
-		Me.Path = sCon_AppDataPath & "_orbs\default.png"
-	ElseIf FileExists(sCon_AppDataPath & "_orbs\Windows 7.png") Then
-		Me.Path = sCon_AppDataPath & "_orbs\Windows 7.png"
-	ElseIf FileExists(sCon_AppDataPath & "_orbs\start_button.png") Then
-		Me.Path = sCon_AppDataPath & "_orbs\start_button.png"
-	ElseIf FileExists(sCon_AppDataPath & "start_button.png") Then
-		Me.Path = sCon_AppDataPath & "start_button.png"
-	End If
+        If FileExists(ResourcesPath & "start_button.png") Then
+                Me.Path = ResourcesPath & "start_button.png"
+        ElseIf FileExists(sCon_AppDataPath & "_orbs\" & Settings.CurrentOrb) Then
+                Me.Path = sCon_AppDataPath & "_orbs\" & Settings.CurrentOrb
+        ElseIf FileExists(sCon_AppDataPath & "_orbs\default.png") Then
+                Me.Path = sCon_AppDataPath & "_orbs\default.png"
+        ElseIf FileExists(sCon_AppDataPath & "_orbs\Windows 7.png") Then
+                Me.Path = sCon_AppDataPath & "_orbs\Windows 7.png"
+        ElseIf FileExists(sCon_AppDataPath & "_orbs\start_button.png") Then
+                Me.Path = sCon_AppDataPath & "_orbs\start_button.png"
+        ElseIf FileExists(sCon_AppDataPath & "start_button.png") Then
+                Me.Path = sCon_AppDataPath & "start_button.png"
+        End If
 
     Settings.CurrentOrb = vbNullString
     
@@ -133,7 +139,7 @@ End Function
 
 Property Let Path(ByVal strPath As String)
     If m_mode = 0 Then
-        LogError "Critical Error, Mode Not Set!", "frmStartOrb::Path"
+        Logger.Fatal "Mode Not Set!", "Path", strPath
         Exit Property
     End If
 
@@ -221,11 +227,9 @@ Private Sub Form_Click()
         
 End Sub
 
-Private Sub Form_DragOver(Source As Control, X As Single, Y As Single, State As Integer)
-    Debug.Print ":D"
-End Sub
-
 Private Sub Form_Initialize()
+    Set m_logger = LogManager.GetCurrentClassLogger(Me)
+
     Set m_optionsDialog = frmControlPanel
     bMouseOn = True
 
@@ -362,7 +366,7 @@ Private Function IHookSink_WindowProc(hWnd As Long, msg As Long, wp As Long, lp 
     
     Exit Function
 Handler:
-    Debug.Print Err.Description
+    Logger.Error Err.Description, "IHookSink_WindowProc"
 
     ' Just allow default processing for everything else.
     IHookSink_WindowProc = _

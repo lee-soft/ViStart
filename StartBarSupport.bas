@@ -84,6 +84,16 @@ Public AppPath As String
 
 Dim bHasRecentItems As Boolean
 
+Private m_logger As SeverityLogger
+
+Private Property Get Logger() As SeverityLogger
+    If m_logger Is Nothing Then
+        Set m_logger = LogManager.GetLogger("StartBarSupport")
+    End If
+    
+    Set Logger = m_logger
+End Property
+
 Public Function PopulateUserStringsFromXML(ByVal szSourceFile As String)
 
 Dim xmlLanguageFile As New DOMDocument
@@ -305,7 +315,7 @@ Dim theHandles As New LayerdWindowHandles
    curWinLong = GetWindowLong(sourceForm.hWnd, GWL_EXSTYLE)
    
     If SetWindowLong(sourceForm.hWnd, GWL_EXSTYLE, curWinLong Or WS_EX_LAYERED Or WS_EX_TOOLWINDOW) = 0 Then
-        'LogError "Failed to create layered window", "Startbar_Support"
+        'Logger.Error "Failed to create layered window", "Startbar_Support"
         'Exit Function
     End If
 
@@ -486,8 +496,8 @@ Dim thisObject As Object
                     MsgBox "id or value not found in string", vbCritical
                     End
                 Else
-                    If UpdateColValue(UserVariable, CStr(objString.Attributes.getNamedItem("id").Text), CStr(objString.Attributes.getNamedItem("value").Text)) = False Then
-                        LogError "'" & CStr(objString.Attributes.getNamedItem("id").Text) & "' is not a known string identifier", ""
+                    If UpdateColValue(UserVariable, CStr(objString.Attributes.getNamedItem("id").text), CStr(objString.Attributes.getNamedItem("value").text)) = False Then
+                        Logger.Error "'" & CStr(objString.Attributes.getNamedItem("id").text) & "' is not a known string identifier", ""
                     End If
                 End If
             End If
@@ -496,7 +506,7 @@ Dim thisObject As Object
     
     Exit Sub
 Handler:
-    CreateError "StartBar_Support", "XML_PopulateStrings", Err.Description
+    Logger.Error Err.Description, "XML_PopulateStrings"
 End Sub
 
 Public Function AttributeExists(ByRef objElem As MSXML2.IXMLDOMElement, ByVal sAttribName As String) As Boolean
@@ -697,7 +707,7 @@ Function QuickSortNamesAscending( _
             
             Exit Function
 Handler:
-    CreateError "StartBar_Support", "QuickSortNamesAsc", Err.Description
+    Logger.Error Err.Description, "QuickSortNamesAsc"
 End Function
 
 Public Function UpdateCol(ByRef Col As Collection, index, vUpdate, Optional sKey As String) As Boolean

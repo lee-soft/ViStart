@@ -88,6 +88,16 @@ Private Type Guid
     Data4(0 To 7) As Byte
 End Type
 
+Private m_logger As SeverityLogger
+
+Private Property Get Logger() As SeverityLogger
+    If m_logger Is Nothing Then
+        Set m_logger = LogManager.GetLogger("IconHelper")
+    End If
+    
+    Set Logger = m_logger
+End Property
+
 Public Function ExtractIconEx(FileName As String, hdcDestination As Long, PixelsXY As Integer, Optional lngX As Long = 0, Optional lngY As Long = 0) As Long
 Dim SmallIcon As Long
 
@@ -104,8 +114,6 @@ Dim SmallIcon As Long
 End Function
 
 Function GetIcon(srcHdc As Long, sPath As String, lngIconIndex As Long, Optional lngX As Long = 0, Optional lngY As Long = 0)
-
-    Debug.Print "GetIcon"
 
 Dim lngError As Long
 Dim lngIcon As Long
@@ -136,7 +144,7 @@ Dim m_hr As Long
 
     m_hr = SHGetFileInfoW(StrPtr(szPath), 0&, pidl, Len(pidl), uFlags)
     If pidl.hIcon = 0 Then
-        LogError "error retrieving icon: " & szPath, "IconHelper::SHExtractIcon"
+        Logger.Error "error retrieving icon", "SHExtractIcon", szPath, iconSize
         Exit Function
     End If
 

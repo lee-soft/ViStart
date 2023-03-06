@@ -25,7 +25,7 @@ Begin VB.Form frmSearchMaster
       Width           =   1335
    End
    Begin VB.ListBox List1 
-      Height          =   2010
+      Height          =   1840
       Left            =   120
       TabIndex        =   0
       Top             =   120
@@ -53,6 +53,12 @@ Public Event onNewItem()
 
 Public Event onNewService(ByRef theSearchObject As CustomSearchSlave)
 Public Event onUpdateCollection(ByRef theSearchObject As CustomSearchSlave)
+
+Private m_logger As SeverityLogger
+
+Private Property Get Logger() As SeverityLogger
+    Set Logger = m_logger
+End Property
 
 Public Function SendAbortSignal()
     ExecuteNewQuery vbNullString
@@ -88,7 +94,6 @@ Dim thisItem As CustomSearchSlave
 End Function
 
 Public Function ExecuteNewQuery(szNewQuery As String)
-    Debug.Print "EXECUTEQUERY " & szNewQuery
 
 Dim thisItem As CustomSearchSlave
 Dim notifyCode As Long
@@ -100,11 +105,6 @@ Dim notifyCode As Long
     End If
     
     For Each thisItem In m_slaves
-        'SendAppMessage CStr(thisItem), "QUERY " & URLEncode(newQuery)
-        'If IsWindow(thisItem.hWnd) = APIFALSE Then
-            'OpenSlaves
-        'End If
-
         Set thisItem.Results = New Collection
         
         If notifyCode = NOTIFY_NEWSEARCH Then RaiseEvent onUpdateCollection(thisItem)
@@ -202,7 +202,7 @@ Dim sP() As String
         Dim proposedOrb As String: proposedOrb = URLDecode(CStr(sP(1)))
 
         If Not FileExists(sCon_AppDataPath & "_orbs\" & proposedOrb) Then
-            LogError "Attempting to apply new orb has failed due to missing file"
+            Logger.Error "Attempting to apply new orb has failed due to missing file", "RecieveAppMessage"
             Exit Function
         End If
         
@@ -218,7 +218,7 @@ Dim sP() As String
         Dim proposedSkin As String: proposedSkin = URLDecode(CStr(sP(1)))
     
         If Not FileCheck(sCon_AppDataPath & "_skins\" & proposedSkin & "\") Then
-            LogError "Attempting to apply new skin has failed due to missing or inaccessible files"
+            Logger.Error "Attempting to apply new skin has failed due to missing or inaccessible files", "RecieveAppMessage"
             Exit Function
         End If
     
@@ -233,20 +233,14 @@ Dim sP() As String
         End If
     
     Case "ITEM"
-        'If m_ignoreUntilReady Then Exit Function
-        
         If UBound(sP) = 3 Then
-            'AddItem URLDecode(sP(1)), URLDecode(sP(2))
             RecieveItemFromSlave URLDecode(sP(1)), URLDecode(sP(2)), URLDecode(sP(3)), sourcehWnd
-            Debug.Print theData
-            
         ElseIf UBound(sP) = 2 Then
             RecieveItemFromSlave URLDecode(sP(1)), URLDecode(sP(2)), vbNullString, sourcehWnd
         End If
         
     Case "NEW"
         FlushItemsForCollection CStr(sourcehWnd)
-        'm_ignoreUntilReady = False
 
     End Select
     
