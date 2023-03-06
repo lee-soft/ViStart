@@ -53,7 +53,7 @@ Private m_logger As SeverityLogger
 
 Private Property Get Logger() As SeverityLogger
     If m_logger Is Nothing Then
-        m_logger = LogManager.GetLogger("AppLauncherHelper")
+        Set m_logger = LogManager.GetLogger("AppLauncherHelper")
     End If
     
     Set Logger = m_logger
@@ -195,13 +195,13 @@ End Function
 
 Function HexToStr(ByRef strHex)
 
-Dim Length
+Dim length
 Dim Max
 Dim str
     
     Max = Len(strHex)
-    For Length = 1 To Max Step 2
-        str = str & Chr$("&h" & Mid$(strHex, Length, 2))
+    For length = 1 To Max Step 2
+        str = str & Chr$("&h" & Mid$(strHex, length, 2))
     Next
     HexToStr = str
     

@@ -53,8 +53,7 @@ Function ShowContextMenu() As Boolean
     
     If Not m_contextMenu Is Nothing Then Unload m_contextMenu
     Set m_contextMenu = BuildGenericFileContextMenu(m_selectedItem.Path)
-    
-    Debug.Print "Attemping Resurrection!"
+
     m_contextMenu.Resurrect True, FindFormByName("frmStartMenuBase")
 End Function
 
@@ -71,8 +70,6 @@ Public Function MouseLeftClick(ByVal X As Long, Y As Long)
 End Function
 
 Public Function MouseLeaves()
-    Debug.Print "MouseLeaves()!"
-
     If Not m_contextMenu Is Nothing Then
         Exit Function
     End If
@@ -197,17 +194,12 @@ Dim widthMinusIcon As String
     If m_theList Is Nothing Then Exit Function
     If m_background Is Nothing Then Exit Function
     
-    Debug.Print "Clearing!"
-    
-    'm_graphics.Clear
     m_graphics.DrawImageRect m_background, 0, 0, m_Width, m_Height, m_backgroundPosition.X, m_backgroundPosition.Y
     
     textPosition.X = 22
     widthMinusIcon = m_Width - textPosition.X
     
     For Each theItem In m_theList
-        'Debug.Print theItem
-        
         If theItem Is m_selectedItem Then
             m_graphics.DrawImage m_rollover, 0, CSng(yPos), m_rollover.Width, m_rollover.Height
         End If
@@ -224,8 +216,6 @@ Dim widthMinusIcon As String
                 theText = Mid$(theText, 1, Len(theText) - 1)
             Wend
             
-            Debug.Print theText
-            
             theText = theText & "..."
         End If
         
@@ -233,9 +223,6 @@ Dim widthMinusIcon As String
         
         yPos = yPos + ITEM_SEPERATOR
     Next
-
-    Debug.Print "Done!"
-
 End Function
 
 Private Sub pInitialize()
@@ -278,8 +265,6 @@ Private Sub pInitialize()
 End Sub
 
 Private Sub m_contextMenu_onClick(theItemTag As String)
-    Debug.Print "m_contextMenu_onClick!"
-    
     m_contextMenu_onInActive
     
     If m_selectedItem Is Nothing Then Exit Sub
@@ -293,6 +278,4 @@ Private Sub m_contextMenu_onInActive()
     End If
     
     Me.MouseMove m_lastKnownCursorPosition
-    
-    Debug.Print "JumpListDrawer::onInActive!"
 End Sub

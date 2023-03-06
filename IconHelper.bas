@@ -92,7 +92,7 @@ Private m_logger As SeverityLogger
 
 Private Property Get Logger() As SeverityLogger
     If m_logger Is Nothing Then
-        m_logger = LogManager.GetLogger("ArrayHelper")
+        Set m_logger = LogManager.GetLogger("ArrayHelper")
     End If
     
     Set Logger = m_logger
@@ -114,8 +114,6 @@ Dim SmallIcon As Long
 End Function
 
 Function GetIcon(srcHdc As Long, sPath As String, lngIconIndex As Long, Optional lngX As Long = 0, Optional lngY As Long = 0)
-
-    Debug.Print "GetIcon"
 
 Dim lngError As Long
 Dim lngIcon As Long

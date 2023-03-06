@@ -624,7 +624,6 @@ Dim seperatorIncrease As Long
         selectedSeperator = selectedSeperator - 1
 
         seperatorIncrease = (selectedSeperator + 1) * M_SEPARATOR_GAP 'Difference between node height and seperater total height is 2
-        Debug.Print "CalculateRolloverYFromCurrentIndex:: " & selectedSeperator
     End If
     
     addition = 17
@@ -676,15 +675,9 @@ Dim invisibleSeperator As Long
             Exit Function
         End If
     End If
-    
-    If Len(mstrKeyWord) > 0 Then
-        'sourceY = sourceY - 4
-    End If
 
     sourceY = sourceY - seperatorIncrease 'Difference between node height and seperater total height is 2
     FindNodeIndex = Floor(sourceY / m_cNodeSpace) + 1
-
-    'Debug.Print "FindNodeIndex:: " & FindNodeIndex
 End Function
 
 Private Sub Form_MouseMove(Button As Integer, Shift As Integer, X As Single, Y As Single)
@@ -716,12 +709,7 @@ Dim originalY As Long
     End If
 
     If Not m_bKeyboardMode Then
-        'If Not KeyBoard.mFocusObj Is Nothing Then
-            'KeyBoard.mFocusObj.onLostFocus 'REMOVED TEST
-            'Set KeyBoard.mFocusObj = Me.g_iKeyboard 'REMOVED TEST
-            
         m_bKeyboardMode = True
-        'End If
     End If
 
     newNodeIndex = FindNodeIndex(Y)
@@ -739,13 +727,9 @@ Dim originalY As Long
         If newNodeIndex > 0 Then
     
             If Not mcVisibleNodes(newNodeIndex).IconPosition = MC_SEPERATOR_NODE Then
-                Debug.Print "New Item:: " & mcVisibleNodes(newNodeIndex).Caption
-                
                 m_lngNodeIndex = newNodeIndex
                 mvRolloverPos.Y = CalculateRolloverYFromCurrentIndex
-                'SetRolloverYFromNodeIndex
-                
-                
+
                 UpdateRolloverPosition
             End If
         End If
@@ -774,8 +758,6 @@ Dim new_nTargetNode As INode
             'Debug.Print "#3 Setting new target node: " & m_lngNodeIndex
         End If
         
-        Debug.Print "TargetNode:: " & m_nTargetNode.Caption
-        
         MoveRollover
     End If
     
@@ -802,8 +784,6 @@ Private Sub MoveRollover()
 
     On Error GoTo Reazon
     
-    Debug.Print "MoveRollover!"
-    
 Dim seperatorIndex As Long
     
     If m_nTargetNode Is Nothing Then
@@ -812,19 +792,13 @@ Dim seperatorIndex As Long
     
     If Len(mstrKeyWord) > 0 Then
         If m_nTargetNode.Tag = "//SYS_SHOW_ALL" And m_bKeyboardMode Then
-            Debug.Print "**************"
-        
             m_paSearchIconSourcePosition.X = 16
         
             mvRolloverPos.Y = m_rShowAllResults.Top - 2
             mvRolloverPos.X = m_rShowAllResults.Left
         Else
             m_paSearchIconSourcePosition.X = 0
-            
-            'mvRolloverPos.Y = (mLngRounded - m_dcRollover.Height + mLngTopStart) - 1
         End If
-    Else
-        'mvRolloverPos.Y = mvRolloverPos.Y - 4
     End If
 
     m_rTextRolloverPos.Top = mvRolloverPos.Y + 2
@@ -838,14 +812,11 @@ Dim seperatorIndex As Long
     
     mvRolloverIconIndex.Y = m_nTargetNode.IconPosition * m_cIconSize
 
-    Debug.Print "mvRolloverPos " & mvRolloverPos.X & ":" & mvRolloverPos.Y
-    
-            Form_Paint
-
+    Form_Paint
     
     Exit Sub
 Reazon:
-    Debug.Print Err.Description
+    Logger.Error Err.Description, "MoveRollover"
     
 End Sub
 
@@ -991,7 +962,6 @@ Dim lngSpareNodeSpaces2 As Long
     mrTextPos.Top = mLngTopStart
     
     SetScrollbarValues recSize, lngVerticleMax, lngClipVerticle
-    'Debug.Print "lngVerticleMax:: " & lngVerticleMax
 
     rVisibleArea.Top = 0
     rVisibleArea.Left = 0
@@ -1195,8 +1165,6 @@ End Sub
 
 Sub SelectFirstVisibleItem()
 
-    Debug.Print "SelectFirstVisibleItem"
-
 Dim lngFirstVisibleNode As Long
     lngFirstVisibleNode = RoundIt((scrVerticle.Value + 10) / m_cNodeSpace, 1)
 
@@ -1218,7 +1186,6 @@ Dim lngFirstVisibleNode As Long
 End Sub
 
 Sub SelectFirstItem()
-    Debug.Print "SelectFirstItem"
 
 Dim bAbort As Boolean
 
@@ -1237,15 +1204,12 @@ Dim bAbort As Boolean
     
     While bAbort = False
         If (m_lngNodeIndex = mcVisibleNodes.count) Then
-        
-            Debug.Print "Abort Code #1"
             bAbort = True
         Else
             mLngRounded = mLngRounded + m_cNodeSpace
             m_lngNodeIndex = m_lngNodeIndex + 1
             
             If Not mcVisibleNodes(m_lngNodeIndex).IconPosition = MC_SEPERATOR_NODE Then
-                Debug.Print "Abort Code #2"
                 bAbort = True
             End If
         End If
@@ -1331,8 +1295,6 @@ Trapper:
 End Sub
 
 Sub moveRolloverDown()
-    Debug.Print "frmTreeView::moveRolloverDown()"
-
     On Error GoTo Trapper
     
     If m_lngNodeIndex < 0 Then
@@ -1379,8 +1341,6 @@ Private Function IHookSink_WindowProc(hWnd As Long, uMsg As Long, wParam As Long
      Select Case uMsg
      
         Case WM_MOUSELEAVE
-            Debug.Print "MouseLeave!"
-        
             m_trackingMouse = False
             
             m_bKeyboardMode = False
@@ -1679,7 +1639,7 @@ Dim typeChildCount As Long
                             If Not targetNode.Icon Is Nothing Then
                                 targetNode.Icon.DrawIcon mDx.hdc, mvIconPos.X, mvIconPos.Y
                             Else
-                                Debug.Print "invalid icon specified:: " & targetNode.Tag
+                                Logger.Error "invalid icon specified:: " & targetNode.Tag, "mTreeViewData_onNode"
                             End If
                             'ExtractIconEx targetNode.Tag, mDx.hdc, 16, mvIconPos.X, mvIconPos.Y
                         Else
@@ -1734,8 +1694,6 @@ Private Sub mTreeViewSearchResults_onUpLevel()
 End Sub
 
 Private Sub scrVerticle_Change()
-    Debug.Print "scrVerticle:: " & scrVerticle.Value
-    
     m_lngNodeIndex = FindNodeIndex(m_pCursor.Y)
     mvRolloverPos.Y = CalculateRolloverYFromCurrentIndex()
     

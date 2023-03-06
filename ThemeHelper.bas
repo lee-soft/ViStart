@@ -37,7 +37,7 @@ Private m_logger As SeverityLogger
 
 Private Property Get Logger() As SeverityLogger
     If m_logger Is Nothing Then
-        m_logger = LogManager.GetLogger("ThemeHelper")
+        Set m_logger = LogManager.GetLogger("ThemeHelper")
     End If
     
     Set Logger = m_logger

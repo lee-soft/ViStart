@@ -413,8 +413,7 @@ Sub Rollover(index As Integer)
         imgSel.Cls
         imgSel.FontName = OptionsHelper.PrimaryFont
         imgSel.FontBold = lblItems(index).Bold
-        
-        Debug.Print lblItems(index).Caption
+
         DrawText imgSel.hdc, lblItems(index).Caption, recRollover, 0
     End If
 End Sub
@@ -455,7 +454,6 @@ Dim lpCursor As POINTL
         GetCursorPos lpCursor
         
         If (lpCursor.Y + Me.ScaleHeight) > (Screen.Height / Screen.TwipsPerPixelY) Then
-            Debug.Print "HARTE!"
             lpCursor.Y = lpCursor.Y - Me.ScaleHeight
         End If
         

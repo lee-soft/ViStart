@@ -1003,9 +1003,6 @@ End Sub
 Function ReInitSurface() As Boolean
     On Error GoTo Handler
     
-    'm_winSize.cx = Me.ScaleWidth
-    'm_winSize.cy = Me.ScaleHeight
-    
     m_Bitmap.Dispose
     m_BitmapGraphics.Dispose
 
@@ -1031,7 +1028,7 @@ Function ReInitSurface() As Boolean
     Exit Function
 Handler:
     ReInitSurface = False
-    Debug.Print "ReInitSurface():" & Me.ScaleWidth & " / " & Me.ScaleHeight & vbCrLf & Err.Description
+    Logger.Error Err.Description, "ReInitSurface", Me.ScaleWidth, Me.ScaleHeight
 End Function
 
 Private Sub DrawAllProgramsArrow()
@@ -1334,8 +1331,6 @@ Private Sub UpdateProgramMenuIfRequired()
 End Sub
 
 Private Sub Form_KeyUp(KeyCode As Integer, Shift As Integer)
-
-    Debug.Print "KeyCode:: " & KeyCode
 
     If g_KeyboardMenuState = 1 Then
         
@@ -1895,7 +1890,7 @@ Private Function IHookSink_WindowProc(hWnd As Long, msg As Long, wp As Long, lp 
     
     Exit Function
 Handler:
-    Debug.Print Err.Description
+    Logger.Error Err.Description, "IHookSink_WindowProc", msg
 
     ' Just allow default processing for everything else.
     IHookSink_WindowProc = _
@@ -1936,8 +1931,7 @@ End Function
 
 Private Sub m_jumpListDrawer_onChanged(newItem As JumpListItem)
     ReDraw
-    
-    Debug.Print "Setting tooltip:: " & newItem.Caption
+
     m_toolTip.SetToolTip newItem.Path
     m_toolTip.Hide
 End Sub
@@ -2137,13 +2131,7 @@ End Sub
 
 Private Sub m_programMenu_onClick(srcNode As INode)
     CloseMe
-    
-    'If Is64bit() Then
-        'ExplorerRun (srcNode.Tag)
-    'Else
-        'If Not ShellEx(srcNode.Tag) = APITRUE Then Exit Sub
-    'End If
-    
+
     SelectBestExecutionMethod srcNode.Tag
     
     Settings.Programs.UpdateByNode srcNode
@@ -2151,7 +2139,6 @@ Private Sub m_programMenu_onClick(srcNode As INode)
 End Sub
 
 Private Sub m_programMenu_onExit(ByVal index As Long)
-    Debug.Print "m_programMenu_onExit:: " & index
 
     g_KeyboardMenuState = 1
     g_KeyboardSide = 2
@@ -2195,7 +2182,6 @@ Private Sub m_recentPrograms_onRequestCloseStartMenu()
 End Sub
 
 Private Sub m_recentPrograms_onExitSide(ByVal index As Long)
-    Debug.Print "m_recentPrograms_onExitSide:: " & index
 
     g_KeyboardMenuState = 1
     g_KeyboardSide = 2
@@ -2271,8 +2257,7 @@ Private Sub m_searchText_onFocus()
 End Sub
 
 Private Sub m_searchText_onKeyDown(KeyCode As Long)
-    Debug.Print "m_searchText_onKeyDown;;" & KeyCode
-    
+
     If KeyCode = vbKeyLeft Or KeyCode = vbKeyRight Then
         KeyCode = 0
         Exit Sub
@@ -2353,8 +2338,6 @@ Dim cursorPos As win.POINTL
 
     GetCursorPos cursorPos
     ScreenToClient Me.hWnd, cursorPos
-    
-    Debug.Print cursorPos.X & ":" & cursorPos.Y
     
     m_ignoreActivation = False
     
@@ -2536,7 +2519,6 @@ Dim searchText As String
         
         If m_recentPrograms.Visible Then
             ToggleProgramsMenu
-            Debug.Print "Toggle!"
         End If
             
         m_programMenu.Filter = searchText

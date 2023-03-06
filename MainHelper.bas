@@ -38,7 +38,7 @@ Private m_logger As SeverityLogger
 
 Private Property Get Logger() As SeverityLogger
     If m_logger Is Nothing Then
-        m_logger = LogManager.GetLogger("MainHelper")
+        Set m_logger = LogManager.GetLogger("MainHelper")
     End If
     
     Set Logger = m_logger
@@ -388,6 +388,9 @@ Dim cmdLineArguements() As String
 End Function
 
 Sub Main()
+    LogManager.MinimumLevel = InfoLevel
+    LogManager.Target = LogDebug
+    
     If Not InitClasses_IfNeeded Then
         Exit Sub
     End If

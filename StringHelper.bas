@@ -3,7 +3,7 @@ Private m_logger As SeverityLogger
 
 Private Property Get Logger() As SeverityLogger
     If m_logger Is Nothing Then
-        m_logger = LogManager.GetLogger("StringHelper")
+        Set m_logger = LogManager.GetLogger("StringHelper")
     End If
     
     Set Logger = m_logger
@@ -201,12 +201,12 @@ Public Function GetDWord(Word As String, Optional Little As Boolean = False) As 
 End Function
 
 Function StrToHex(ByRef str)
-    Dim Length
+    Dim length
     Dim Max
     Dim strHex
     Max = Len(str)
-    For Length = 1 To Max
-        strHex = strHex & Right$("0" & Hex$(Asc(Mid$(str, Length, 1))), 2)
+    For length = 1 To Max
+        strHex = strHex & Right$("0" & Hex$(Asc(Mid$(str, length, 1))), 2)
     Next
     StrToHex = strHex
 End Function

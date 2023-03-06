@@ -227,10 +227,6 @@ Private Sub Form_Click()
         
 End Sub
 
-Private Sub Form_DragOver(Source As Control, X As Single, Y As Single, State As Integer)
-    Debug.Print ":D"
-End Sub
-
 Private Sub Form_Initialize()
     Set m_logger = LogManager.GetCurrentClassLogger(Me)
 
@@ -370,7 +366,7 @@ Private Function IHookSink_WindowProc(hWnd As Long, msg As Long, wp As Long, lp 
     
     Exit Function
 Handler:
-    Debug.Print Err.Description
+    Logger.Error Err.Description, "IHookSink_WindowProc"
 
     ' Just allow default processing for everything else.
     IHookSink_WindowProc = _
