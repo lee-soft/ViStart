@@ -204,6 +204,8 @@ Private Sub Form_Click()
 End Sub
 
 Private Sub Form_Load()
+    SetIcon Me.Hwnd, "APPICON", true
+
     Label3.Caption = "Lee Matthew Chantrey"
     Label2.Caption = "(build " & App.Revision & ")"
 End Sub

@@ -48,11 +48,11 @@ Private Sub Command1_Click()
 End Sub
 
 Private Sub Form_Load()
+    SetIcon Me.Hwnd, "APPICON", true
+
     Set m_toolTip = New ViToolTip
     m_toolTip.AttachWindow Me.hWnd
     m_toolTip.SetToolTip "Test"
-    
-    
 End Sub
 
 Private Sub Timer1_Timer()

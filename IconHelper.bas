@@ -5,13 +5,27 @@ Option Explicit
 Private Declare Function DestroyIcon Lib "user32.dll" (ByVal hIcon As Long) As Long
 'For Drawing the icon
 'To: Retrieve the icon from the .EXE, .DLL or .ICO
-Public Declare Function ExtractIconW Lib "shell32.dll" (ByVal hinst As Long, ByVal lpszExeFileName As Long, ByVal nIconIndex As Long) As Long
+Public Declare Function ExtractIconW Lib "shell32.dll" (ByVal hInst As Long, ByVal lpszExeFileName As Long, ByVal nIconIndex As Long) As Long
 Public Declare Function ExtractIconExW Lib "shell32.dll" _
           (ByVal lpszFile As Long, _
            ByVal nIconIndex As Long, _
            ByRef phiconLarge As Any, _
            ByRef phiconSmall As Any, _
            ByVal nIcons As Long) As Long
+           
+Private Declare Function LoadImageAsString Lib "user32" Alias "LoadImageA" ( _
+      ByVal hInst As Long, _
+      ByVal lpsz As String, _
+      ByVal uType As Long, _
+      ByVal cxDesired As Long, _
+      ByVal cyDesired As Long, _
+      ByVal fuLoad As Long _
+   ) As Long
+   
+Private Declare Function SendMessageLong Lib "user32" Alias "SendMessageA" ( _
+      ByVal hWnd As Long, ByVal wMsg As Long, _
+      ByVal wParam As Long, ByVal lParam As Long _
+   ) As Long
            
 'To: Draw the icon into our picture box
 Private Declare Function DrawIconEx Lib "user32.dll" (ByVal hdc As Long, ByVal xLeft As Long, ByVal yTop As Long, ByVal hIcon As Long, ByVal cxWidth As Long, ByVal cyWidth As Long, ByVal istepIfAniCur As Long, ByVal hbrFlickerFreeDraw As Long, ByVal diFlags As Long) As Long
@@ -180,3 +194,55 @@ Dim iconY As Long
 
     GetIconDimensions = iconX
 End Function
+
+Public Sub SetIcon( _
+      ByVal hWnd As Long, _
+      ByVal sIconResName As String, _
+      Optional ByVal bSetAsAppIcon As Boolean = True _
+   )
+Dim lhWndTop As Long
+Dim lHWnd As Long
+Dim cx As Long
+Dim cy As Long
+Dim hIconLarge As Long
+Dim hIconSmall As Long
+      
+   If (bSetAsAppIcon) Then
+      ' Find VB's hidden parent window:
+      lHWnd = hWnd
+      lhWndTop = lHWnd
+      Do While Not (lHWnd = 0)
+         lHWnd = GetWindow(lHWnd, GW_OWNER)
+         If Not (lHWnd = 0) Then
+            lhWndTop = lHWnd
+         End If
+      Loop
+   End If
+   
+   cx = GetSystemMetrics(SM_CXICON)
+   cy = GetSystemMetrics(SM_CYICON)
+   hIconLarge = LoadImageAsString( _
+         App.hInstance, sIconResName, _
+         IMAGE_ICON, _
+         cx, cy, _
+         LR_SHARED)
+   If (bSetAsAppIcon) Then
+      SendMessageLong lhWndTop, WM_SETICON, ICON_BIG, hIconLarge
+   End If
+   SendMessageLong hWnd, WM_SETICON, ICON_BIG, hIconLarge
+   
+   cx = GetSystemMetrics(SM_CXSMICON)
+   cy = GetSystemMetrics(SM_CYSMICON)
+   hIconSmall = LoadImageAsString( _
+         App.hInstance, sIconResName, _
+         IMAGE_ICON, _
+         cx, cy, _
+         LR_SHARED)
+   If (bSetAsAppIcon) Then
+      SendMessageLong lhWndTop, WM_SETICON, ICON_SMALL, hIconSmall
+   End If
+   SendMessageLong hWnd, WM_SETICON, ICON_SMALL, hIconSmall
+   
+End Sub
+
+
