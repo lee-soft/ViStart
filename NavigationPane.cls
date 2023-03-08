@@ -197,7 +197,11 @@ Public Function ShowContextMenu(ByRef winOwner As Form)
                         ' 3D Objects
                         DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_3DOBJECTS)
                         ComputerIconStatus = HideMyComputerIconsRegKey.GetValue(g_CLSID_3DOBJECTS)
-               
+                ElseIf InStr(1, UCase(m_selectedItem.Shell), g_CLSID_DESKTOP, 1) > 0 Then
+                        ' Desktop
+                
+                        DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_DESKTOP)
+                        ComputerIconStatus = HideMyComputerIconsRegKey.GetValue(g_CLSID_DESKTOP)
                 ElseIf InStr(1, UCase(m_selectedItem.Shell), g_CLSID_GAMES, 1) > 0 Then
                         ' Games Explorer
                         DesktopIconStatus = NewStartPanelRegKey.GetValue(g_CLSID_GAMES)
