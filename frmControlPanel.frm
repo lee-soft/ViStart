@@ -1129,7 +1129,7 @@ Private Sub Form_Initialize()
 End Sub
 
 Private Sub Form_Load()
-    
+    SetIcon Me.Hwnd, "APPICON", true
 
     Me.Height = (picFrame(0).Height + 28) * Screen.TwipsPerPixelY
     Me.Width = (naviBar.Width + picFrame(0).Width) * Screen.TwipsPerPixelX
