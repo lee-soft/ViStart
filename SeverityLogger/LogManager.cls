@@ -127,7 +127,7 @@ Private Sub Class_Initialize()
     Set m_defaultLogger = New SeverityLogger
     Set m_loggers = New Collection
 
-    Target = LogNone
+    Target = LogAll
     AutoFlush = True
 End Sub
 

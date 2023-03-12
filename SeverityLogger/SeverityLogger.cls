@@ -44,7 +44,7 @@ Public Function Trace(ByVal traceMessage As String, ByVal sourceProcedure As Str
     Dim stringArray() As String
     Dim argumentIndex As Long
     
-    If UBound(arguments) > 0 Then
+    If UBound(arguments) > -1 Then
         ReDim stringArray(0 To UBound(arguments)) ' Resize the string array to match the variant array size
         
         For argumentIndex = 0 To UBound(arguments)
@@ -65,8 +65,19 @@ End Function
 ' Anything that can potentially cause application oddities, but for which I am
 ' automatically recovering. (Such as switching from a primary to backup server,
 ' retrying an operation, missing secondary data, etc.)
-Public Function Warn(warningMessage As String, ByVal sourceProcedure As String)
-    m_factory.InvokeLogger WarnLevel, m_sourceModule & "::" & sourceProcedure, warningMessage
+Public Function Warn(warningMessage As String, ByVal sourceProcedure As String, ParamArray arguments() As Variant)
+Dim stringArray() As String
+    Dim argumentIndex As Long
+    
+    If UBound(arguments) > -1 Then
+        ReDim stringArray(0 To UBound(arguments)) ' Resize the string array to match the variant array size
+        
+        For argumentIndex = 0 To UBound(arguments)
+            stringArray(argumentIndex) = CStr(arguments(argumentIndex)) ' Convert the variant to a string and add it to the string array
+        Next argumentIndex
+    End If
+ 
+    m_factory.InvokeLogger WarnLevel, m_sourceModule & "::" & sourceProcedure, warningMessage, stringArray
 End Function
 
 ' Any error which is fatal to the operation, but not the service or application
@@ -78,7 +89,7 @@ Public Function Error(ByVal errorDescription As String, ByVal sourceProcedure As
     Dim stringArray() As String
     Dim argumentIndex As Long
     
-    If UBound(arguments) > 0 Then
+    If UBound(arguments) > -1 Then
         ReDim stringArray(0 To UBound(arguments)) ' Resize the string array to match the variant array size
         
         For argumentIndex = 0 To UBound(arguments)
@@ -97,7 +108,7 @@ Public Function Fatal(errorDescription As String, sourceProcedure As String, Par
     Dim stringArray() As String
     Dim argumentIndex As Long
 
-    If UBound(arguments) > 0 Then
+    If UBound(arguments) > -1 Then
         ReDim stringArray(0 To UBound(arguments)) ' Resize the string array to match the variant array size
         
         For argumentIndex = 0 To UBound(arguments)
