@@ -31,6 +31,16 @@ Public Function LongToDWordByteArray(ByVal Value As Long) As Byte()
     LongToDWordByteArray = result
 End Function
 
+Public Function ConvertBytesToLong(bytes() As Byte) As Long
+    Dim result As Long
+
+    ' Copy the bytes into the result variable
+    win.CopyMemory result, bytes(0), 4
+
+    ' Return the result
+    ConvertBytesToLong = result
+End Function
+
 Public Function DWordByteArrayToLong(ByRef sourceByte() As Byte) As Long
     Dim myLong As Long
     

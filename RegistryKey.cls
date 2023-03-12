@@ -364,9 +364,7 @@ Public Function GetValue(ByVal ValueName As String, Optional ByVal DefaultValue 
     Case REG_BINARY, REG_QWORD
         GetValue = ValueDataBuffer
     Case REG_DWORD
-        Debug.Print ValueDataBuffer(0), ValueDataBuffer(1), ValueDataBuffer(2), ValueDataBuffer(3)
-    
-        GetValue = DWordByteArrayToLong(ValueDataBuffer)
+        GetValue = ConvertBytesToLong(ValueDataBuffer)
         
     Case REG_MULTI_SZ
         Dim unformattedData As String
