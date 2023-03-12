@@ -1,17 +1,23 @@
 Attribute VB_Name = "DWordHelper"
 Option Explicit
 
-Public Function LOWORD(ByVal LongIn As Long) As Integer
-   Call win.CopyMemory(LOWORD, LongIn, 2)
+Public Declare Function CopyMemory _
+               Lib "kernel32" _
+               Alias "RtlMoveMemory" (dest As Any, _
+                                      Src As Any, _
+                                      ByVal cb As Long) As Long
+
+Public Function LoWord(ByVal LongIn As Long) As Integer
+   Call CopyMemory(LoWord, LongIn, 2)
 End Function
 
 Public Function HiWord(ByVal LongIn As Long) As Integer
-   Call win.CopyMemory(HiWord, ByVal (VarPtr(LongIn) + 2), 2)
+   Call CopyMemory(HiWord, ByVal (VarPtr(LongIn) + 2), 2)
 End Function
 
-Public Function MakeLong(ByVal HiWord As Integer, ByVal LOWORD As Integer) As Long
-   Call win.CopyMemory(MakeLong, LOWORD, 2)
-   Call win.CopyMemory(ByVal (VarPtr(MakeLong) + 2), HiWord, 2)
+Public Function MakeLong(ByVal HiWord As Integer, ByVal LoWord As Integer) As Long
+   Call CopyMemory(MakeLong, LoWord, 2)
+   Call CopyMemory(ByVal (VarPtr(MakeLong) + 2), HiWord, 2)
 End Function
 
 Public Function LongToDWordByteArray(ByVal Value As Long) As Byte()
@@ -19,7 +25,7 @@ Public Function LongToDWordByteArray(ByVal Value As Long) As Byte()
     Dim result(3) As Byte
     
     ' Copy the bytes of the Long value into the byte array
-    win.CopyMemory result(0), Value, 4
+    CopyMemory result(0), Value, 4
     
     ' Return the byte array
     LongToDWordByteArray = result
@@ -36,20 +42,23 @@ Public Function DWordByteArrayToLong(ByRef sourceByte() As Byte) As Long
     myPtr = StrPtr(sourceByte(0))
     
     ' Copy the bytes into a Long variable
-    win.CopyMemory myLong, myPtr, 4
+    CopyMemory myLong, myPtr, 4
     
     'ByteSwap (result)
 
     DWordByteArrayToLong = myLong
 End Function
 
-Public Function ConvertBytesToLong(bytes() As Byte) As Long
-    Dim result As Long
-    
-    ' Copy the bytes into the result variable
-    win.CopyMemory result, bytes(0), 4
-    
-    ' Return the result
-    ConvertBytesToLong = result
+Public Function ULongTovbLong(Value As Double) As Long
+
+Const OFFSET_4 = 4294967296#
+Const MAXINT_4 = &H7FFFFFFF
+
+    If Value < 0 Or Value >= OFFSET_4 Then Error 6 ' Overflow
+    If Value <= MAXINT_4 Then
+        ULongTovbLong = Value
+    Else
+        ULongTovbLong = Value - OFFSET_4
+    End If
 End Function
 
