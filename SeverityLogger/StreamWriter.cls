@@ -51,3 +51,8 @@ Public Sub Flush()
     FlushFileBuffers m_fileNumber
     Seek m_fileNumber, currentPosition
 End Sub
+
+Private Sub Class_Terminate()
+    CloseStream
+End Sub
+
