@@ -140,7 +140,7 @@ Private m_userDPI As Long
 Private m_ORB_HEIGHT As Long
 Private m_logger As SeverityLogger
 
-Property Get Logger()
+Property Get Logger() As SeverityLogger
     Set Logger = m_logger
 End Property
 

@@ -25,7 +25,7 @@ Private m_iniFile As WinProfile
 
 Private m_logger As SeverityLogger
 
-Property Get Logger()
+Property Get Logger() As SeverityLogger
     Set Logger = m_logger
 End Property
 
@@ -47,21 +47,21 @@ Dim loopCount As Long
         m_desktopShellWindow = FindWindow("ApplicationManager_DesktopShellWindow", vbNullString)
         
         If loopCount = 10 Then
-            Logger.Trace "Failed to aquire desktop shell window"
+            Logger.Trace "Failed to aquire desktop shell window", "GetDesktopShellWindow"
             Exit Do
         End If
         
         If m_desktopShellWindow = 0 Then Sleep 1000
         loopCount = loopCount + 1
         
-        Logger.Trace "Continue loop [GetDesktopShellWindow]"
+        Logger.Trace "Continue loop [GetDesktopShellWindow]", "GetDesktopShellWindow"
         
     Loop While (m_desktopShellWindow = 0)
 
 End Function
 
 Public Function ActionSettings()
-    Logger.Trace "Actioning Settings!"
+    Logger.Trace "Actioning Settings!", "ActionSettings"
 
     GetDesktopShellWindow
     If m_desktopShellWindow = 0 Then
@@ -88,7 +88,7 @@ Dim loopCount As Long
 Dim nextForegroundWindow As Long
 
     desktopShellWindow_hWnd = m_desktopShellWindow
-    Logger.Trace "desktopShellWindow_hWnd is " & desktopShellWindow_hWnd
+    Logger.Trace "desktopShellWindow_hWnd is " & desktopShellWindow_hWnd, "SkipMetroScreen"
 
     Do
         DoEvents
@@ -102,10 +102,10 @@ Dim nextForegroundWindow As Long
             nextForegroundWindow = GetForegroundWindow()
             
             If nextForegroundWindow = desktopShellWindow_hWnd Then
-                Logger.Trace "Succesfully brought to front!"
+                Logger.Trace "Succesfully brought to front!", "SkipMetroScreen"
                 Exit Do
             Else
-                Logger.Trace "Failed to bring to front, minimizing foreground window"
+                Logger.Trace "Failed to bring to front, minimizing foreground window", "SkipMetroScreen"
                 nextForegroundWindow = GetForegroundWindow()
 
                 If GetWindowClassNameByHwnd(nextForegroundWindow) = "ImmersiveLauncher" Then
@@ -118,7 +118,7 @@ Dim nextForegroundWindow As Long
                     ShowWindow nextForegroundWindow, SW_RESTORE
                     
                     If GetForegroundWindow() = desktopShellWindow_hWnd Then
-                        Logger.Trace "Succesfully brought to front!"
+                        Logger.Trace "Succesfully brought to front!", "SkipMetroScreen"
                         Exit Do
                     End If
                     
@@ -131,7 +131,7 @@ Dim nextForegroundWindow As Long
         loopCount = loopCount + 1
         
         If loopCount = 10 Then
-            Logger.Trace "Failed to bring to front!"
+            Logger.Trace "Failed to bring to front!", "SkipMetroScreen"
             Exit Do
         Else
             'Send WinKey+M to minimize all windows
@@ -141,7 +141,7 @@ Dim nextForegroundWindow As Long
             keybd_event VK_LWIN, 0, KEYEVENTF_KEYUP, 0
         
             Sleep 10
-            Logger.Trace "Continue loop [SkipMetroScreen]"
+            Logger.Trace "Continue loop [SkipMetroScreen]", "SkipMetroScreen"
         End If
     Loop
     
@@ -175,7 +175,7 @@ Dim identifiedEdgeType As Boolean
 Dim loopCount As Long
 
 
-    Logger.Trace "Starting to disable modern UI stuff "
+    Logger.Trace "Starting to disable modern UI stuff ", "DisableMetroShit"
 
     Set appSwitchhWnds = New Collection
     Set startButtonhWnds = New Collection
@@ -191,7 +191,7 @@ Dim loopCount As Long
         edgeUiInputWndClasshWnd = FindWindow("EdgeUiInputWndClass", "")
         
         If loopCount = 5 Then
-            Logger.Trace "Failed to aquire EdgeUiInputWndClass hWnd, aborting.. perhaps operation is done already?"
+            Logger.Trace "Failed to aquire EdgeUiInputWndClass hWnd, aborting.. perhaps operation is done already?", "DisableMetroShit"
             Exit Sub
         End If
         
@@ -238,33 +238,33 @@ Dim loopCount As Long
     Wend
     
     If WindowsStartCorner_Disabled Then
-        Logger.Trace "Closing Start Button hWnds"
+        Logger.Trace "Closing Start Button hWnds", "DisableMetroShit"
         ClosehWndList startButtonhWnds
     End If
     
     If AppSwitcher_Disabled Then
-        Logger.Trace "Closing App Switcher hWnds"
+        Logger.Trace "Closing App Switcher hWnds", "DisableMetroShit"
         ClosehWndList appSwitchhWnds
     End If
     
     If CharmsBarTop_Disabled Then
-        Logger.Trace "Closing CharmsBar Top hWnds"
+        Logger.Trace "Closing CharmsBar Top hWnds", "DisableMetroShit"
         ClosehWndList charmsBarTophWnds
     End If
     
     If CharmsBarBottom_Disabled Then
-        Logger.Trace "Closing CharmsBar Bottom hWnds"
+        Logger.Trace "Closing CharmsBar Bottom hWnds", "DisableMetroShit"
         ClosehWndList charmsBarBottomhWnds
     End If
     
     If DragToClose_Disabled Then
-        Logger.Trace "Closing DragToClose hWnds"
+        Logger.Trace "Closing DragToClose hWnds", "DisableMetroShit"
         ClosehWndList dragToClosehWnds
     End If
     
     DoEvents
     
-    Logger.Trace "Finished!"
+    Logger.Trace "Finished!", "DisableMetroShit"
     Unload frmNukeMetro
 
 End Sub

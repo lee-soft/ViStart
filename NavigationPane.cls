@@ -74,7 +74,7 @@ Attribute m_renameTextBox.VB_VarHelpID = -1
 
 Private m_logger As SeverityLogger
 
-Property Get Logger()
+Property Get Logger() As SeverityLogger
     Set Logger = m_logger
 End Property
 
@@ -94,7 +94,7 @@ Public Function AddNewFolder(szNewFolderPath As String)
     Set thisFolder = FSO.GetFolder(szNewFolderPath)
     
     thisFolderOption.OpenAsMenu = False
-    thisFolderOption.Caption = thisFolder.Name
+    thisFolderOption.Caption = thisFolder.name
     thisFolderOption.Shell = thisFolder.Path
     thisFolderOption.Visible = True
     
