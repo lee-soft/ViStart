@@ -3,13 +3,13 @@ Begin VB.Form frmControlPanel
    BackColor       =   &H00FFFFFF&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Control Panel"
-   ClientHeight    =   11950
-   ClientLeft      =   50
-   ClientTop       =   380
-   ClientWidth     =   19090
+   ClientHeight    =   11955
+   ClientLeft      =   45
+   ClientTop       =   375
+   ClientWidth     =   19095
    BeginProperty Font 
       Name            =   "Segoe UI"
-      Size            =   10
+      Size            =   9.75
       Charset         =   0
       Weight          =   400
       Underline       =   0   'False
@@ -20,16 +20,16 @@ Begin VB.Form frmControlPanel
    LinkTopic       =   "Form2"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   1195
+   ScaleHeight     =   797
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   1909
+   ScaleWidth      =   1273
    StartUpPosition =   2  'CenterScreen
    Begin VB.PictureBox picFrame 
       BackColor       =   &H00FFFFFF&
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "Segoe UI"
-         Size            =   8.5
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -39,9 +39,9 @@ Begin VB.Form frmControlPanel
       Height          =   8175
       Index           =   3
       Left            =   5120
-      ScaleHeight     =   818
+      ScaleHeight     =   545
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   866
+      ScaleWidth      =   577
       TabIndex        =   21
       Top             =   940
       Visible         =   0   'False
@@ -65,7 +65,7 @@ Begin VB.Form frmControlPanel
          Caption         =   "<PLACE HOLDER>"
          BeginProperty Font 
             Name            =   "Segoe UI"
-            Size            =   10
+            Size            =   9.75
             Charset         =   0
             Weight          =   400
             Underline       =   -1  'True
@@ -89,18 +89,18 @@ Begin VB.Form frmControlPanel
          Caption         =   "ViStart 8.1"
          BeginProperty Font 
             Name            =   "Segoe UI"
-            Size            =   14.5
+            Size            =   14.25
             Charset         =   0
             Weight          =   400
             Underline       =   0   'False
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Height          =   780
+         Height          =   450
          Left            =   720
          TabIndex        =   22
          Top             =   420
-         Width           =   7460
+         Width           =   7455
       End
    End
    Begin VB.PictureBox picFrame 
@@ -108,7 +108,7 @@ Begin VB.Form frmControlPanel
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "Segoe UI"
-         Size            =   8.5
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -118,9 +118,9 @@ Begin VB.Form frmControlPanel
       Height          =   8175
       Index           =   1
       Left            =   6300
-      ScaleHeight     =   818
+      ScaleHeight     =   545
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   858
+      ScaleWidth      =   572
       TabIndex        =   4
       Top             =   1080
       Visible         =   0   'False
@@ -130,9 +130,9 @@ Begin VB.Form frmControlPanel
          BorderStyle     =   0  'None
          Height          =   4695
          Left            =   600
-         ScaleHeight     =   470
+         ScaleHeight     =   313
          ScaleMode       =   3  'Pixel
-         ScaleWidth      =   776
+         ScaleWidth      =   517
          TabIndex        =   13
          Top             =   240
          Width           =   7755
@@ -170,8 +170,8 @@ Begin VB.Form frmControlPanel
             Top             =   4110
             Visible         =   0   'False
             Width           =   6735
-            _ExtentX        =   11889
-            _ExtentY        =   1094
+            _ExtentX        =   11880
+            _ExtentY        =   1085
          End
          Begin VB.Label Label8 
             BackStyle       =   0  'Transparent
@@ -187,7 +187,7 @@ Begin VB.Form frmControlPanel
             Caption         =   "Default settings for Start menu items"
             BeginProperty Font 
                Name            =   "Segoe UI"
-               Size            =   14.5
+               Size            =   14.25
                Charset         =   0
                Weight          =   400
                Underline       =   0   'False
@@ -205,7 +205,7 @@ Begin VB.Form frmControlPanel
             Caption         =   "Visibility settings"
             BeginProperty Font 
                Name            =   "Segoe UI"
-               Size            =   14.5
+               Size            =   14.25
                Charset         =   0
                Weight          =   400
                Underline       =   0   'False
@@ -225,7 +225,7 @@ Begin VB.Form frmControlPanel
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "Segoe UI"
-         Size            =   8.5
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -235,8 +235,8 @@ Begin VB.Form frmControlPanel
       Height          =   8175
       Index           =   2
       Left            =   3480
-      ScaleHeight     =   8180
-      ScaleWidth      =   8660
+      ScaleHeight     =   8175
+      ScaleWidth      =   8655
       TabIndex        =   0
       Top             =   7440
       Visible         =   0   'False
@@ -263,8 +263,8 @@ Begin VB.Form frmControlPanel
          BorderStyle     =   0  'None
          Height          =   4455
          Left            =   480
-         ScaleHeight     =   4460
-         ScaleWidth      =   8060
+         ScaleHeight     =   4455
+         ScaleWidth      =   8055
          TabIndex        =   30
          Top             =   4320
          Visible         =   0   'False
@@ -329,7 +329,7 @@ Begin VB.Form frmControlPanel
             Caption         =   "How should the Windows 8 features work?"
             BeginProperty Font 
                Name            =   "Segoe UI"
-               Size            =   14.5
+               Size            =   14.25
                Charset         =   0
                Weight          =   400
                Underline       =   0   'False
@@ -392,7 +392,7 @@ Begin VB.Form frmControlPanel
          Caption         =   "Set default desktop actions"
          BeginProperty Font 
             Name            =   "Segoe UI"
-            Size            =   14.5
+            Size            =   14.25
             Charset         =   0
             Weight          =   400
             Underline       =   0   'False
@@ -411,7 +411,7 @@ Begin VB.Form frmControlPanel
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "Segoe UI"
-         Size            =   8.5
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -421,8 +421,8 @@ Begin VB.Form frmControlPanel
       Height          =   8175
       Index           =   0
       Left            =   3360
-      ScaleHeight     =   8180
-      ScaleWidth      =   8660
+      ScaleHeight     =   8175
+      ScaleWidth      =   8655
       TabIndex        =   5
       Top             =   0
       Width           =   8655
@@ -503,7 +503,7 @@ Begin VB.Form frmControlPanel
          Caption         =   "Rollover Skin"
          BeginProperty Font 
             Name            =   "Segoe UI"
-            Size            =   14.5
+            Size            =   14.25
             Charset         =   0
             Weight          =   400
             Underline       =   0   'False
@@ -521,7 +521,7 @@ Begin VB.Form frmControlPanel
          Caption         =   "Start Orb Skin"
          BeginProperty Font 
             Name            =   "Segoe UI"
-            Size            =   14.5
+            Size            =   14.25
             Charset         =   0
             Weight          =   400
             Underline       =   0   'False
@@ -539,7 +539,7 @@ Begin VB.Form frmControlPanel
          Caption         =   "Start Menu Skin"
          BeginProperty Font 
             Name            =   "Segoe UI"
-            Size            =   14.5
+            Size            =   14.25
             Charset         =   0
             Weight          =   400
             Underline       =   0   'False
@@ -563,7 +563,7 @@ Begin VB.Form frmControlPanel
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "Segoe UI"
-         Size            =   8.5
+         Size            =   8.25
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -573,8 +573,8 @@ Begin VB.Form frmControlPanel
       Height          =   8175
       Index           =   5
       Left            =   9980
-      ScaleHeight     =   8180
-      ScaleWidth      =   8660
+      ScaleHeight     =   8175
+      ScaleWidth      =   8655
       TabIndex        =   23
       Top             =   7340
       Visible         =   0   'False
@@ -621,7 +621,7 @@ Begin VB.Form frmControlPanel
          Caption         =   "ViStart Service settings"
          BeginProperty Font 
             Name            =   "Segoe UI"
-            Size            =   14.5
+            Size            =   14.25
             Charset         =   0
             Weight          =   400
             Underline       =   0   'False
@@ -641,8 +641,8 @@ Begin VB.Form frmControlPanel
       TabIndex        =   12
       Top             =   0
       Width           =   3375
-      _ExtentX        =   5944
-      _ExtentY        =   14429
+      _ExtentX        =   5953
+      _ExtentY        =   14420
    End
 End
 Attribute VB_Name = "frmControlPanel"
@@ -1029,15 +1029,15 @@ Private Sub lblAurthor_Click()
     AppLauncherHelper.ShellEx lblAurthor.Tag
 End Sub
 
-Private Sub lblText_Click(index As Integer)
-    If lblText(index).Tag = "_ABOUT_SKIN" Then
+Private Sub lblText_Click(Index As Integer)
+    If lblText(Index).Tag = "_ABOUT_SKIN" Then
         InitializeAboutSkinFrame
-    ElseIf lblText(index).Tag <> vbNullString Then
-        AppLauncherHelper.ShellEx lblText(index).Tag
+    ElseIf lblText(Index).Tag <> vbNullString Then
+        AppLauncherHelper.ShellEx lblText(Index).Tag
     End If
 End Sub
 
-Private Sub MenuItem_onChanged(index As Integer)
+Private Sub MenuItem_onChanged(Index As Integer)
     RaiseEvent onNavigationPanelChange
 End Sub
 
@@ -1199,7 +1199,7 @@ End Sub
 
 Sub RenderXMLFrame(ByVal sourceXML As String)
 
-    lblViStartTitle.Caption = App.Title & " " & App.Major & "." & App.Minor & "." & App.Revision & vbNewLine & vbNewLine & Settings.CurrentSkin
+    lblViStartTitle.Caption = App.Title & " " & App.Major & "." & App.Minor & "." & App.Revision
     ClearAboutText
 
 Dim xmlDoc As DOMDocument
@@ -1213,7 +1213,7 @@ Dim thisObject As Object
         Exit Sub
     End If
  
-    m_ElementY = 100
+    m_ElementY = lblViStartTitle.Top + lblViStartTitle.Height + 10
     
     Set skinInfoXML = xmlDoc.firstChild
     For Each thisObject In skinInfoXML.childNodes
@@ -1374,7 +1374,7 @@ Sub AddNavigationItem(ByRef objNavigationItem As Object)
     Load MenuItem(MenuItem.count)
     With MenuItem(MenuItem.UBound)
         .Left = MenuItem(0).Left
-        .Top = MenuItem(.index - 1).Top + MenuItem(0).Height + 2
+        .Top = MenuItem(.Index - 1).Top + MenuItem(0).Height + 2
 
         .Source = objNavigationItem
         .Visible = True
