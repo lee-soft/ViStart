@@ -170,8 +170,8 @@ Begin VB.Form frmControlPanel
             Top             =   4110
             Visible         =   0   'False
             Width           =   6735
-            _ExtentX        =   11880
-            _ExtentY        =   1085
+            _extentx        =   11880
+            _extenty        =   1085
          End
          Begin VB.Label Label8 
             BackStyle       =   0  'Transparent
@@ -811,7 +811,7 @@ Private Sub cmbChildThemes_Click()
     Set newSkinCollectionItem = New CollectionItem
     
     newSkinCollectionItem.Key = m_childSkinNameStrings(cmbChildThemes.listIndex + 1).Key
-    newSkinCollectionItem.Value = cmbThemes.text
+    newSkinCollectionItem.Value = cmbThemes.Text
     
     RaiseEvent onChangeSkin(newSkinCollectionItem)
 End Sub
@@ -825,7 +825,7 @@ Private Sub cmbStartOrbs_Click()
     If cmbStartOrbs.listIndex = 0 Then
         RaiseEvent onChangeOrb(vbNullString)
     Else
-        RaiseEvent onChangeOrb(cmbStartOrbs.text)
+        RaiseEvent onChangeOrb(cmbStartOrbs.Text)
     End If
 End Sub
 
@@ -841,16 +841,16 @@ Private Sub cmbRollover_Click()
 
                 RaiseEvent onChangeRollover(vbNullString)
     Else
-                Settings.CurrentRollover = cmbRollover.text
+                Settings.CurrentRollover = cmbRollover.Text
         g_rolloverPath = sCon_AppDataPath & "_rollover\" & Settings.CurrentRollover & "\"
 
-        RaiseEvent onChangeRollover(cmbRollover.text)
+        RaiseEvent onChangeRollover(cmbRollover.Text)
     End If
 
 End Sub
 
 Private Sub cmbThemes_Click()
-    ValidateSkin cmbThemes.text
+    ValidateSkin cmbThemes.Text
 End Sub
 
 Private Sub cmbWindowsKey_Change()
@@ -950,7 +950,7 @@ Private Sub Form_Initialize()
 End Sub
 
 Private Sub Form_Load()
-    SetIcon Me.hWnd, "APPICON", True
+    SetIcon Me.hWnd, 1, True
 
     Me.Height = (picFrame(0).Height + 28) * Screen.TwipsPerPixelY
     Me.Width = (naviBar.Width + picFrame(0).Width) * Screen.TwipsPerPixelX
@@ -1029,15 +1029,15 @@ Private Sub lblAurthor_Click()
     AppLauncherHelper.ShellEx lblAurthor.Tag
 End Sub
 
-Private Sub lblText_Click(Index As Integer)
-    If lblText(Index).Tag = "_ABOUT_SKIN" Then
+Private Sub lblText_Click(index As Integer)
+    If lblText(index).Tag = "_ABOUT_SKIN" Then
         InitializeAboutSkinFrame
-    ElseIf lblText(Index).Tag <> vbNullString Then
-        AppLauncherHelper.ShellEx lblText(Index).Tag
+    ElseIf lblText(index).Tag <> vbNullString Then
+        AppLauncherHelper.ShellEx lblText(index).Tag
     End If
 End Sub
 
-Private Sub MenuItem_onChanged(Index As Integer)
+Private Sub MenuItem_onChanged(index As Integer)
     RaiseEvent onNavigationPanelChange
 End Sub
 
@@ -1374,7 +1374,7 @@ Sub AddNavigationItem(ByRef objNavigationItem As Object)
     Load MenuItem(MenuItem.count)
     With MenuItem(MenuItem.UBound)
         .Left = MenuItem(0).Left
-        .Top = MenuItem(.Index - 1).Top + MenuItem(0).Height + 2
+        .Top = MenuItem(.index - 1).Top + MenuItem(0).Height + 2
 
         .Source = objNavigationItem
         .Visible = True
@@ -1576,7 +1576,7 @@ Dim theDimensions As RECTF
 Dim theLabelIndex As Long
 
     theAlignment = vbLeftJustify
-    theCaption = theText.text
+    theCaption = theText.Text
     
     If Not IsNull(theText.getAttribute("href")) Then
         theHref = theText.getAttribute("href")
@@ -1623,8 +1623,8 @@ Dim theAlignment As AlignmentConstants
 
     theAlignment = vbLeftJustify
 
-    If Not IsNull(theText.text) Then
-        theCaption = theText.text
+    If Not IsNull(theText.Text) Then
+        theCaption = theText.Text
     End If
     
     If Not IsNull(theText.getAttribute("align")) Then
