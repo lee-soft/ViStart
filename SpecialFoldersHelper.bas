@@ -1,8 +1,26 @@
 Attribute VB_Name = "SpecialFoldersHelper"
 Option Explicit
 
-Public Sub RestoreDefaultFolders()
+Enum RestoreResult
+    UnknownOperatingSystem
+    AccessFailure
+    OtherFailure
+    Success
+End Enum
+    
+Private m_logger As SeverityLogger
 
+Private Property Get Logger() As SeverityLogger
+    If m_logger Is Nothing Then
+        Set m_logger = LogManager.GetLogger("SpecialFoldersHelper")
+    End If
+    
+    Set Logger = m_logger
+End Property
+
+Public Function RestoreDefaultFolders() As RestoreResult
+    On Error GoTo Handler
+    
 Dim myDocs As String: myDocs = "My Documents"
 Dim myPics As String: myPics = "My Pictures"
 Dim myMus As String: myMus = "My Music"
@@ -33,8 +51,9 @@ Dim Key As RegistryKey: Set Key = RegistryKey.OpenBaseKey(HKEY_LOCAL_MACHINE). _
                                               CreateSubKey("SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\ShellExtension")
                                                                                 
     If Key Is Nothing Then
-        MsgBox "Could not open key, aborting!"
-        Exit Sub
+        Logger.Error "Unable to create a subkey on the HKLM", "RestoreDefaultFolders"
+        RestoreDefaultFolders = AccessFailure
+        Exit Function
     End If
     
     Key.SetValue "Type", "group", REG_SZ
@@ -123,10 +142,15 @@ Dim Key As RegistryKey: Set Key = RegistryKey.OpenBaseKey(HKEY_LOCAL_MACHINE). _
        
     
     Else
-        MsgBox "Unknown system!", vbCritical
+        RestoreDefaultFolders = UnknownOperatingSystem
     End If
-
-End Sub
+    
+    RestoreDefaultFolders = Success
+    Exit Function
+Handler:
+    Logger.Fatal Err.Description, "RestoreDfeaultFolders"
+    RestoreDefaultFolders = OtherFailure
+End Function
 
 Private Sub CreateCLSID(CLSID As String, Target As String, icon As String, name As String, Optional tip As String = "", Optional index As String = "")
 
