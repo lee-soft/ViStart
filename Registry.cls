@@ -27,6 +27,7 @@ Option Explicit
 Private m_currentUser As RegistryKey
 Private m_localMachine As RegistryKey
 Private m_classesRoot As RegistryKey
+Private m_users As RegistryKey
 
 Public Property Get CurrentUser() As RegistryKey
     Set CurrentUser = m_currentUser
@@ -40,6 +41,10 @@ Public Property Get ClassesRoot() As RegistryKey
     Set ClassesRoot = m_classesRoot
 End Property
 
+Public Property Get Users() As RegistryKey
+    Set Users = m_users
+End Property
+
 Private Sub Class_Initialize()
     Set m_currentUser = New RegistryKey
     m_currentUser.Hive = HKEY_CURRENT_USER
@@ -49,4 +54,7 @@ Private Sub Class_Initialize()
     
     Set m_classesRoot = New RegistryKey
     m_classesRoot.Hive = HKEY_CLASSES_ROOT
+    
+    Set m_users = New RegistryKey
+    m_users.Hive = HKEY_USERS
 End Sub

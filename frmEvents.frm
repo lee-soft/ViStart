@@ -3,16 +3,16 @@ Begin VB.Form frmEvents
    BackColor       =   &H00808080&
    BorderStyle     =   1  'Fixed Single
    Caption         =   "ViStart_Event_Handler"
-   ClientHeight    =   2030
+   ClientHeight    =   2025
    ClientLeft      =   150
    ClientTop       =   480
-   ClientWidth     =   2270
+   ClientWidth     =   2265
    Icon            =   "frmEvents.frx":0000
    LinkTopic       =   "Form2"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   2030
-   ScaleWidth      =   2270
+   ScaleHeight     =   2025
+   ScaleWidth      =   2265
    StartUpPosition =   3  'Windows Default
    Begin VB.CommandButton Command2 
       Caption         =   "Command2"
@@ -88,8 +88,8 @@ Private Type NotifyIconData
   Id As Long
   Flags As Long
   CallBackMessage As Long
-  Icon As Long
-  Tip As String * 64
+  icon As Long
+  tip As String * 64
 End Type
 
 ' Constants for managing System Tray tasks, foudn in shellapi.h
@@ -140,7 +140,7 @@ Private m_userDPI As Long
 Private m_ORB_HEIGHT As Long
 Private m_logger As SeverityLogger
 
-Property Get Logger()
+Property Get Logger() As SeverityLogger
     Set Logger = m_logger
 End Property
 
@@ -296,8 +296,8 @@ Sub AddIconToTray()
     Data.Id = App.hInstance
     Data.Flags = IconFlag Or TipFlag Or MessageFlag
     Data.CallBackMessage = WM_MOUSEMOVE
-    Data.Icon = Icon
-    Data.Tip = App.Title & vbNullChar
+    Data.icon = icon
+    Data.tip = App.Title & vbNullChar
     Call Shell_NotifyIcon(AddIcon, Data)
 
 End Sub
@@ -840,7 +840,7 @@ Static m_NotTopMost As Boolean
     zOrderOrb = GetZOrder(m_startButton.hWnd)
 
     If (GetZOrder(g_lnghwndTaskBar) < zOrderOrb) And m_NotTopMost = False Then
-        SetWindowPos m_startButton.hWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE Or SWP_NOSIZE
+        SetWindowPos m_startButton.hWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE Or SWP_NOSIZE Or SWP_NOACTIVATE
     Else
         If Not hWndBelongToUs(hWndForeGroundWindow) And _
                     hWndForeGroundWindow <> g_lnghwndTaskBar Then

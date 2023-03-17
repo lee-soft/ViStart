@@ -5,16 +5,18 @@ Option Explicit
 Private Declare Function DestroyIcon Lib "user32.dll" (ByVal hIcon As Long) As Long
 'For Drawing the icon
 'To: Retrieve the icon from the .EXE, .DLL or .ICO
-Public Declare Function ExtractIconW Lib "shell32.dll" (ByVal hInst As Long, ByVal lpszExeFileName As Long, ByVal nIconIndex As Long) As Long
+Public Declare Function ExtractIconW Lib "shell32.dll" (ByVal hinst As Long, ByVal lpszExeFileName As Long, ByVal nIconIndex As Long) As Long
 Public Declare Function ExtractIconExW Lib "shell32.dll" _
           (ByVal lpszFile As Long, _
            ByVal nIconIndex As Long, _
            ByRef phiconLarge As Any, _
            ByRef phiconSmall As Any, _
            ByVal nIcons As Long) As Long
-           
+
+Private Declare Function LoadImageAsLong Lib "user32" Alias "LoadImageA" (ByVal hinst As Long, ByVal lpsz As Long, ByVal un1 As Long, ByVal n1 As Long, ByVal n2 As Long, ByVal un2 As Long) As Long
+
 Private Declare Function LoadImageAsString Lib "user32" Alias "LoadImageA" ( _
-      ByVal hInst As Long, _
+      ByVal hinst As Long, _
       ByVal lpsz As String, _
       ByVal uType As Long, _
       ByVal cxDesired As Long, _
@@ -197,7 +199,7 @@ End Function
 
 Public Sub SetIcon( _
       ByVal hWnd As Long, _
-      ByVal sIconResName As String, _
+      ByVal sIconResName As Variant, _
       Optional ByVal bSetAsAppIcon As Boolean = True _
    )
 Dim lhWndTop As Long
@@ -221,11 +223,21 @@ Dim hIconSmall As Long
    
    cx = GetSystemMetrics(SM_CXICON)
    cy = GetSystemMetrics(SM_CYICON)
-   hIconLarge = LoadImageAsString( _
-         App.hInstance, sIconResName, _
-         IMAGE_ICON, _
-         cx, cy, _
-         LR_SHARED)
+   
+   If VarType(sIconResName) = vbString Then
+        hIconLarge = LoadImageAsString( _
+              App.hInstance, CStr(sIconResName), _
+              IMAGE_ICON, _
+              cx, cy, _
+              LR_SHARED)
+   Else
+        hIconLarge = LoadImageAsLong( _
+              App.hInstance, CLng(sIconResName), _
+              IMAGE_ICON, _
+              cx, cy, _
+              LR_SHARED)
+   End If
+   
    If (bSetAsAppIcon) Then
       SendMessageLong lhWndTop, WM_SETICON, ICON_BIG, hIconLarge
    End If
@@ -233,11 +245,21 @@ Dim hIconSmall As Long
    
    cx = GetSystemMetrics(SM_CXSMICON)
    cy = GetSystemMetrics(SM_CYSMICON)
-   hIconSmall = LoadImageAsString( _
-         App.hInstance, sIconResName, _
-         IMAGE_ICON, _
-         cx, cy, _
-         LR_SHARED)
+   
+   If VarType(sIconResName) = vbString Then
+        hIconSmall = LoadImageAsString( _
+              App.hInstance, CStr(sIconResName), _
+              IMAGE_ICON, _
+              cx, cy, _
+              LR_SHARED)
+   Else
+        hIconSmall = LoadImageAsLong( _
+              App.hInstance, CLng(sIconResName), _
+              IMAGE_ICON, _
+              cx, cy, _
+              LR_SHARED)
+   End If
+         
    If (bSetAsAppIcon) Then
       SendMessageLong lhWndTop, WM_SETICON, ICON_SMALL, hIconSmall
    End If

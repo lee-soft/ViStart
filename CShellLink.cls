@@ -39,7 +39,7 @@ Private Const defAutoQuote As Boolean = True
 
 Private m_logger As SeverityLogger
 
-Property Get Logger()
+Property Get Logger() As SeverityLogger
     Set Logger = m_logger
 End Property
 

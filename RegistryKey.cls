@@ -9,7 +9,7 @@ END
 Attribute VB_Name = "RegistryKey"
 Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = True
-Attribute VB_PredeclaredId = False
+Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 '--------------------------------------------------------------------------------
 '    Component  : RegistryKey
@@ -28,6 +28,9 @@ Private Declare Function RegSetValueEx Lib "advapi32.dll" Alias "RegSetValueExA"
 Private Declare Function RegCloseKey Lib "advapi32.dll" (ByVal hKey As Long) As Long
 Private Declare Function RegDeleteValue Lib "advapi32.dll" Alias "RegDeleteValueA" (ByVal hKey As Long, ByVal lpValueName As String) As Long
 Private Declare Function RegEnumKey Lib "advapi32.dll" Alias "RegEnumKeyA" (ByVal hKey As Long, ByVal dwIndex As Long, ByVal lpName As String, ByVal cbName As Long) As Long
+Private Declare Function RegDeleteKeyEx Lib "advapi32.dll" Alias "RegDeleteKeyExA" (ByVal hKey As Long, ByVal lpSubKey As String, ByVal samDesired As Long, ByVal Reserved As Long) As Long
+'WindowsXP
+Private Declare Function RegDeleteKey Lib "advapi32.dll" Alias "RegDeleteKeyA" (ByVal hKey As Long, ByVal lpSubKey As String) As Long
 
 Private Const KEY_QUERY_VALUE As Long = &H1
 Private Const KEY_SET_VALUE As Long = &H2
@@ -38,6 +41,10 @@ Private Const KEY_CREATE_LINK As Long = &H20
 Private Const KEY_READ As Long = &H20019
 Private Const KEY_WRITE As Long = &H20006
 Private Const KEY_ALL_ACCESS As Long = &HF003F
+Private Const KEY_WOW64_64KEY As Long = &H100
+Private Const KEY_WOW64_32KEY As Long = &H200
+
+Private Const ERROR_SUCCESS As Long = 0
 
 Public Enum RegistryHive
     HKEY_CLASSES_ROOT = &H80000000
@@ -55,6 +62,11 @@ Public Enum RegistryValueKind
     REG_QWORD = 11
 End Enum
 
+Public Enum RegistryView
+    Registry32 = &H20000
+    Registry64 = &H10000
+End Enum
+
 Private m_hive As RegistryHive
 
 Private m_hKey As Long
@@ -63,9 +75,18 @@ Private m_Path As String
 Private m_supressErrors As Boolean
 
 Private m_logger As SeverityLogger
+Private m_view As RegistryView
 
-Property Get Logger()
+Property Get Logger() As SeverityLogger
     Set Logger = m_logger
+End Property
+
+Property Get View() As RegistryView
+    View = m_view
+End Property
+
+Property Let View(ByVal newView As RegistryView)
+    m_view = newView
 End Property
 
 Property Let Hive(ByVal newHive As RegistryHive)
@@ -93,8 +114,8 @@ Property Get Path() As String
     Path = m_Path
 End Property
 
-Public Sub DeleteValue(ByVal Name As String)
-    RegDeleteValue Me.Key, Name
+Public Sub DeleteValue(ByVal name As String)
+    RegDeleteValue Me.Key, name
 End Sub
 
 Public Function GetSubKeyNames() As Collection
@@ -140,15 +161,28 @@ Public Function CreateSubKey(ByVal subKeyName As String) As RegistryKey
         subKeyPath = subKeyName
     End If
     
+    ' Set the desired access based on the view and the writable flag
+    Dim samDesired As Long
+    If View = RegistryView.Registry32 Then
+        samDesired = KEY_READ Or KEY_WRITE Or KEY_WOW64_32KEY
+    ElseIf View = RegistryView.Registry64 Then
+        samDesired = KEY_READ Or KEY_WRITE Or KEY_WOW64_64KEY
+    Else
+        samDesired = KEY_READ Or KEY_WRITE
+    End If
+    samDesired = samDesired Or KEY_SET_VALUE
+
     ' Attempt to create the subkey
     Dim result As Long
-    result = RegCreateKeyEx(m_hive, subKeyPath, 0, vbNullString, 0, KEY_ALL_ACCESS, 0, hKey, ByVal 0&)
+    
+    Logger.Trace "RegCreateKeyEx", "CreateSubKey", "m_hive=" & m_hive, "subKeyPath=" & subKeyPath, "samDesired=" & samDesired, "hKey=" & hKey
+    result = RegCreateKeyEx(m_hive, subKeyPath, 0, vbNullString, 0, samDesired, ByVal 0&, hKey, ByVal 0&)
 
     ' Check for success
     If Not result = ERROR_SUCCESS Then
         ' Failed to create subkey
         
-        Logger.Warn "Unable to create subkey", "CreateSubKey", subKeyName
+        Logger.Warn "Unable to create subkey", "CreateSubKey", "result=" & result
         If Not m_supressErrors Then Err.Raise result, "RegistryKey", "Unable to create subkey"
         Exit Function
     End If
@@ -160,6 +194,61 @@ Public Function CreateSubKey(ByVal subKeyName As String) As RegistryKey
     Set CreateSubKey = returnObject
 End Function
 
+Public Sub DeleteSubKey(ByVal subKeyPath As String)
+    
+    ' Set the desired access based on the view
+    Dim samDesired As Long
+    If View = RegistryView.Registry32 Then
+        samDesired = KEY_READ Or KEY_WRITE Or KEY_WOW64_32KEY
+    ElseIf View = RegistryView.Registry64 Then
+        samDesired = KEY_READ Or KEY_WRITE Or KEY_WOW64_64KEY
+    Else
+        samDesired = KEY_READ Or KEY_WRITE
+    End If
+    
+Dim result As Long
+    
+    ' Delete the subkey
+    On Error GoTo HandleBadDLL
+    result = RegDeleteKeyEx(Key, subKeyPath, samDesired, 0)
+    GoTo Finally
+    
+HandleBadDLL:
+    Logger.Warn Err.Description, "DeleteSubKey", "subKeyPath=" & subKeyPath
+
+    On Error GoTo Handler
+    result = RegDeleteKey(Key, subKeyPath)
+Finally:
+        
+    ' Check for success
+    If Not result = ERROR_SUCCESS Then
+        ' Failed to delete key
+        Logger.Error "Unable to delete sub key", "DeleteSubKey", subKeyPath, "samDesired=" & samDesired, "result=" & result
+        If Not m_supressErrors Then Err.Raise result, "RegistryKey", "Unable to delete Registry sub key: " & subKeyPath
+        Exit Sub
+    End If
+    
+    Logger.Trace "Deleted key succesfully", "DeleteSubKey", subKeyPath
+    
+    Exit Sub
+Handler:
+    Logger.Error Err.Description, "DeleteSubKey", "subKeyPath=" & subKeyPath
+End Sub
+
+Public Function OpenBaseKey(ByVal baseKey As RegistryHive, Optional newView As RegistryView = 0) As RegistryKey
+
+Dim returnKey As RegistryKey
+
+    Set returnKey = New RegistryKey
+    returnKey.Hive = baseKey
+    
+    If Not IsMissing(newView) And newView <> 0 Then
+        returnKey.View = newView
+    End If
+    
+    Set OpenBaseKey = returnKey
+End Function
+
 Public Function OpenSubKey(ByVal subKeyName As String, Optional ByVal writable As Boolean = False) As RegistryKey
     Dim regKey As RegistryKey: Set regKey = New RegistryKey
     regKey.Hive = m_hive
@@ -167,44 +256,62 @@ Public Function OpenSubKey(ByVal subKeyName As String, Optional ByVal writable A
     Dim access As Long
     Dim hSubKey As Long
     Dim result As Long
+    Dim samDesired As Long
     
-    ' Determine the access level
-    If writable Then
-        access = KEY_READ Or KEY_WRITE
-    Else
-        access = KEY_READ
+    ' Set the desired access based on the view and the writable flag
+    If View = RegistryView.Registry32 Then
+        samDesired = KEY_READ Or KEY_WRITE Or KEY_WOW64_32KEY
+    ElseIf View = RegistryView.Registry64 Then
+        samDesired = KEY_READ Or KEY_WRITE Or KEY_WOW64_64KEY
     End If
     
-    result = RegOpenKeyEx(Me.Key, subKeyName, 0, access, hSubKey)
+    If writable Then
+        samDesired = samDesired Or KEY_SET_VALUE
+    End If
+    
+    result = RegOpenKeyEx(Me.Key, subKeyName, 0, samDesired, hSubKey)
     
     ' Open the subkey
     If Not result = ERROR_SUCCESS Then
-        Logger.Error "Unable to open sub key", "OpenSubKey", subKeyName, access
+        Logger.Error "Unable to open sub key", "OpenSubKey", subKeyName, samDesired
         If Not m_supressErrors Then Err.Raise result, "RegistryKey", "Unable to open Registry sub key: " & subKeyName
         Exit Function
     End If
     
+    subKeyName = Me.Path & "\" & subKeyName
+    
+    If Left(subKeyName, 1) = "\" Then
+        subKeyName = Mid(subKeyName, 2)
+    End If
+    
     regKey.Key = hSubKey
+    regKey.View = Me.View
     regKey.Path = subKeyName
+
+    Logger.Trace "Setting path", "OpenSubKey", "subKeyName=" & subKeyName, "path=" & Me.Path
     
     Set OpenSubKey = regKey
 End Function
 
-Public Function SetValue(ByVal ValueName As String, ByVal Value As Variant) As Boolean
+Public Function SetValue(ByVal ValueName As String, ByVal Value As Variant, Optional ValueType As RegistryValueKind) As Boolean
+    Logger.Trace "Setting Registry Value", "SetValue", "ValueName=" & ValueName, "Value=" & Value, "IsMissing(ValueType)=" & IsMissing(ValueType), "ValueType=" & ValueType
+    
     Dim hKey As Long
     Dim result As Long
     Dim valueAsBytes() As Byte
     
-    Dim ValueType As RegistryValueKind
     Dim vbValueType As Long: vbValueType = VarType(Value)
+    Dim valueAsULong As Long
     
-    If vbValueType = vbString Then
-        ValueType = REG_SZ
-    ElseIf vbValueType = vbLong Or vbValueType = vbInteger Then
-        ValueType = REG_DWORD
-    Else
-        Logger.Error "Unimplented type " & vbValueType, "SetValue", ValueName
-        If Not m_supressErrors Then Err.Raise 0, "RegistryKey", "Unimplmented type!"
+    If IsMissing(ValueType) Or ValueType = 0 Then
+        If vbValueType = vbString Then
+            ValueType = REG_SZ
+        ElseIf vbValueType = vbLong Or vbValueType = vbInteger Then
+            ValueType = REG_DWORD
+        Else
+            Logger.Error "Unimplented type " & vbValueType, "SetValue", ValueName
+            If Not m_supressErrors Then Err.Raise 0, "RegistryKey", "Unimplmented type!"
+        End If
     End If
     
     result = RegOpenKeyEx(Me.Key, "", 0, KEY_ALL_ACCESS, hKey)
@@ -215,7 +322,8 @@ Public Function SetValue(ByVal ValueName As String, ByVal Value As Variant) As B
                 valueAsBytes = StrConv(Value, vbFromUnicode)
                 
             Case REG_BINARY, REG_DWORD, REG_QWORD
-                valueAsBytes = LongToDWordByteArray(Value)
+                valueAsULong = ULongTovbLong(CDbl(Value))
+                valueAsBytes = LongToDWordByteArray(valueAsULong)
                 
             'Case REG_MULTI_SZ
             '    Dim MultiValue() As String
@@ -223,6 +331,11 @@ Public Function SetValue(ByVal ValueName As String, ByVal Value As Variant) As B
             '    result = RegSetValueEx(Me.Key, ValueName, 0&, ValueType, MultiValue(0), Len(value) + 2)
                 
         End Select
+        
+        'Prevent subscript errors
+        If UBound(valueAsBytes) = -1 Then
+            ReDim valueAsBytes(0 To 1)
+        End If
         
         result = RegSetValueEx(hKey, ValueName, 0&, ValueType, valueAsBytes(0), UBound(valueAsBytes) + 1)
         RegCloseKey hKey
@@ -290,6 +403,12 @@ End Function
 Private Sub Class_Initialize()
     m_supressErrors = True
     Set m_logger = LogManager.GetCurrentClassLogger(Me)
+    
+    If (Environment.Is64bit) Then
+        View = Registry64
+    Else
+        View = Registry32
+    End If
 End Sub
 
 Private Sub Class_Terminate()
