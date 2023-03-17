@@ -907,8 +907,8 @@ Private Sub Form_Load()
     Me.Height = (picFrame(0).Height + 28) * Screen.TwipsPerPixelY
     Me.Width = (naviBar.Width + picFrame(0).Width) * Screen.TwipsPerPixelX
     
-    'InitializeStyleFrame
-    'InitializeDesktopFrame
+    InitializeStyleFrame
+    InitializeDesktopFrame
 
     naviBar.AddItem GetPublicString("strStyle")
     naviBar.AddItem GetPublicString("strConfigure")
