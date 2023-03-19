@@ -356,6 +356,7 @@ Private Sub ParseText(ByRef theText As IXMLDOMText, Optional ByRef theParent As 
                 .FontUnderline = True
                 .ForeColor = vbBlue
                 .MousePointer = 99
+                .ZOrder 0
             End With
             
             Labels(0).Caption = theText.text
