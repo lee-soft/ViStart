@@ -14,15 +14,6 @@ Begin VB.UserControl VMLDocument
       Left            =   630
       Top             =   1050
    End
-   Begin VB.Image Images 
-      Appearance      =   0  'Flat
-      Height          =   855
-      Index           =   0
-      Left            =   0
-      Top             =   0
-      Visible         =   0   'False
-      Width           =   2565
-   End
    Begin VB.Label Labels 
       AutoSize        =   -1  'True
       BackColor       =   &H00FFFFFF&
@@ -40,11 +31,21 @@ Begin VB.UserControl VMLDocument
       Height          =   225
       Index           =   0
       Left            =   20
+      MouseIcon       =   "VMLDocument.ctx":0000
       MousePointer    =   99  'Custom
       TabIndex        =   0
       Top             =   0
       Visible         =   0   'False
       Width           =   1485
+   End
+   Begin VB.Image Images 
+      Appearance      =   0  'Flat
+      Height          =   855
+      Index           =   0
+      Left            =   0
+      Top             =   0
+      Visible         =   0   'False
+      Width           =   2565
    End
 End
 Attribute VB_Name = "VMLDocument"
