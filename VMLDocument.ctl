@@ -520,7 +520,8 @@ Dim lineHeight As Long
     Labels(0).Caption = theCaption
     lineHeight = Labels(0).Height
     
-    theCaption = Replace(theCaption, "%skin%", "Test Skin")
+    'TODO: add intercepter in the form of an event to allow consumer to overide captions
+    theCaption = Replace(theCaption, "%skin%", Settings.CurrentSkin)
 
     Load Labels(Labels.count)
 
