@@ -25,7 +25,7 @@ Begin VB.Form frmControlPanel
    ScaleWidth      =   1909
    StartUpPosition =   2  'CenterScreen
    Begin VB.PictureBox picFrame 
-      BackColor       =   &H00FFFFFF&
+      BackColor       =   &H00C0C0FF&
       BorderStyle     =   0  'None
       BeginProperty Font 
          Name            =   "Segoe UI"
@@ -38,69 +38,22 @@ Begin VB.Form frmControlPanel
       EndProperty
       Height          =   8175
       Index           =   3
-      Left            =   5120
+      Left            =   5140
       ScaleHeight     =   818
       ScaleMode       =   3  'Pixel
-      ScaleWidth      =   866
+      ScaleWidth      =   865
       TabIndex        =   21
       Top             =   920
       Visible         =   0   'False
-      Width           =   8655
-      Begin VB.Label lblText 
-         BackStyle       =   0  'Transparent
-         Caption         =   "<New Text Object>"
-         Height          =   375
-         Index           =   0
-         Left            =   1080
-         MouseIcon       =   "frmControlPanel.frx":74F2
-         MousePointer    =   99  'Custom
-         TabIndex        =   40
-         Top             =   1560
-         Visible         =   0   'False
-         Width           =   6660
-      End
-      Begin VB.Label lblAurthor 
-         Alignment       =   2  'Center
-         BackStyle       =   0  'Transparent
-         Caption         =   "<PLACE HOLDER>"
-         BeginProperty Font 
-            Name            =   "Segoe UI"
-            Size            =   10
-            Charset         =   0
-            Weight          =   400
-            Underline       =   -1  'True
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         ForeColor       =   &H00C00000&
-         Height          =   380
-         Left            =   1080
-         MouseIcon       =   "frmControlPanel.frx":7644
-         MousePointer    =   99  'Custom
-         TabIndex        =   39
-         Tag             =   "http://lee-soft.com"
-         Top             =   7420
-         Visible         =   0   'False
-         Width           =   6660
-      End
-      Begin VB.Label lblViStartTitle 
-         Alignment       =   2  'Center
-         BackStyle       =   0  'Transparent
-         Caption         =   "ViStart 8.1"
-         BeginProperty Font 
-            Name            =   "Segoe UI"
-            Size            =   14.5
-            Charset         =   0
-            Weight          =   400
-            Underline       =   0   'False
-            Italic          =   0   'False
-            Strikethrough   =   0   'False
-         EndProperty
-         Height          =   450
-         Left            =   720
-         TabIndex        =   22
-         Top             =   420
-         Width           =   7455
+      Width           =   8650
+      Begin ViStart.VMLDocument VMLViewer 
+         Height          =   8175
+         Left            =   0
+         TabIndex        =   45
+         Top             =   0
+         Width           =   8655
+         _ExtentX        =   15258
+         _ExtentY        =   12982
       End
    End
    Begin VB.PictureBox picFrame 
@@ -140,7 +93,7 @@ Begin VB.Form frmControlPanel
             Caption         =   "Restore Defaults"
             Height          =   495
             Left            =   2460
-            TabIndex        =   47
+            TabIndex        =   44
             Top             =   3020
             Width           =   2565
          End
@@ -170,15 +123,15 @@ Begin VB.Form frmControlPanel
             Top             =   4110
             Visible         =   0   'False
             Width           =   6735
-            _extentx        =   11889
-            _extenty        =   1094
+            _ExtentX        =   0
+            _ExtentY        =   0
          End
          Begin VB.Label Label8 
             BackStyle       =   0  'Transparent
-            Caption         =   $"frmControlPanel.frx":7796
+            Caption         =   $"frmControlPanel.frx":74F2
             Height          =   555
             Left            =   150
-            TabIndex        =   46
+            TabIndex        =   43
             Top             =   2250
             Width           =   7500
          End
@@ -196,7 +149,7 @@ Begin VB.Form frmControlPanel
             EndProperty
             Height          =   495
             Left            =   150
-            TabIndex        =   44
+            TabIndex        =   41
             Top             =   3930
             Width           =   7215
          End
@@ -246,7 +199,7 @@ Begin VB.Form frmControlPanel
          Caption         =   "Show splash screen on startup"
          Height          =   375
          Left            =   720
-         TabIndex        =   41
+         TabIndex        =   38
          Top             =   3410
          Width           =   5055
       End
@@ -254,7 +207,7 @@ Begin VB.Form frmControlPanel
          Caption         =   "Restore Windows Start Menu Shortcut"
          Height          =   400
          Left            =   720
-         TabIndex        =   38
+         TabIndex        =   37
          Top             =   3890
          Width           =   4935
       End
@@ -265,7 +218,7 @@ Begin VB.Form frmControlPanel
          Left            =   480
          ScaleHeight     =   4460
          ScaleWidth      =   8060
-         TabIndex        =   30
+         TabIndex        =   29
          Top             =   4320
          Visible         =   0   'False
          Width           =   8055
@@ -274,7 +227,7 @@ Begin VB.Form frmControlPanel
             Caption         =   "Automatically go to desktop when I log in "
             Height          =   375
             Left            =   240
-            TabIndex        =   35
+            TabIndex        =   34
             Top             =   2880
             Width           =   5055
          End
@@ -283,7 +236,7 @@ Begin VB.Form frmControlPanel
             Caption         =   "Disable bottom left (Start) hot corner"
             Height          =   375
             Left            =   240
-            TabIndex        =   34
+            TabIndex        =   33
             Top             =   2400
             Width           =   5055
          End
@@ -292,7 +245,7 @@ Begin VB.Form frmControlPanel
             Caption         =   "Disable Drag to close"
             Height          =   375
             Left            =   240
-            TabIndex        =   33
+            TabIndex        =   32
             Top             =   1920
             Width           =   5055
          End
@@ -301,7 +254,7 @@ Begin VB.Form frmControlPanel
             Caption         =   "Disable CharmsBar"
             Height          =   375
             Left            =   240
-            TabIndex        =   32
+            TabIndex        =   31
             Top             =   1440
             Width           =   5055
          End
@@ -310,7 +263,7 @@ Begin VB.Form frmControlPanel
             Caption         =   "Disable all Windows 8 hot corners"
             Height          =   375
             Left            =   240
-            TabIndex        =   31
+            TabIndex        =   30
             Top             =   960
             Width           =   5055
          End
@@ -320,7 +273,7 @@ Begin VB.Form frmControlPanel
             ForeColor       =   &H00000080&
             Height          =   375
             Left            =   840
-            TabIndex        =   37
+            TabIndex        =   36
             Top             =   3480
             Width           =   6735
          End
@@ -338,7 +291,7 @@ Begin VB.Form frmControlPanel
             EndProperty
             Height          =   615
             Left            =   240
-            TabIndex        =   36
+            TabIndex        =   35
             Top             =   360
             Width           =   7695
          End
@@ -348,7 +301,7 @@ Begin VB.Form frmControlPanel
          Caption         =   "Start ViStart with Windows"
          Height          =   375
          Left            =   720
-         TabIndex        =   29
+         TabIndex        =   28
          Top             =   2930
          Width           =   5055
       End
@@ -369,9 +322,9 @@ Begin VB.Form frmControlPanel
       End
       Begin VB.ComboBox cmbWindowsOrb 
          Height          =   360
-         ItemData        =   "frmControlPanel.frx":7847
+         ItemData        =   "frmControlPanel.frx":75A3
          Left            =   720
-         List            =   "frmControlPanel.frx":784E
+         List            =   "frmControlPanel.frx":75AA
          Style           =   2  'Dropdown List
          TabIndex        =   2
          Top             =   1200
@@ -379,9 +332,9 @@ Begin VB.Form frmControlPanel
       End
       Begin VB.ComboBox cmbWindowsKey 
          Height          =   360
-         ItemData        =   "frmControlPanel.frx":7861
+         ItemData        =   "frmControlPanel.frx":75BD
          Left            =   720
-         List            =   "frmControlPanel.frx":7868
+         List            =   "frmControlPanel.frx":75C4
          Style           =   2  'Dropdown List
          TabIndex        =   1
          Top             =   1800
@@ -428,11 +381,11 @@ Begin VB.Form frmControlPanel
       Width           =   8655
       Begin VB.ComboBox cmbChildThemes 
          Height          =   360
-         ItemData        =   "frmControlPanel.frx":787B
+         ItemData        =   "frmControlPanel.frx":75D7
          Left            =   720
-         List            =   "frmControlPanel.frx":787D
+         List            =   "frmControlPanel.frx":75D9
          Style           =   2  'Dropdown List
-         TabIndex        =   45
+         TabIndex        =   42
          Top             =   1800
          Width           =   4935
       End
@@ -440,7 +393,7 @@ Begin VB.Form frmControlPanel
          Height          =   360
          Left            =   720
          Style           =   2  'Dropdown List
-         TabIndex        =   43
+         TabIndex        =   40
          Top             =   5520
          Width           =   4935
       End
@@ -480,9 +433,9 @@ Begin VB.Form frmControlPanel
       End
       Begin VB.ComboBox cmbStartOrbs 
          Height          =   360
-         ItemData        =   "frmControlPanel.frx":787F
+         ItemData        =   "frmControlPanel.frx":75DB
          Left            =   720
-         List            =   "frmControlPanel.frx":7881
+         List            =   "frmControlPanel.frx":75DD
          Style           =   2  'Dropdown List
          TabIndex        =   7
          Top             =   3360
@@ -490,9 +443,9 @@ Begin VB.Form frmControlPanel
       End
       Begin VB.ComboBox cmbThemes 
          Height          =   360
-         ItemData        =   "frmControlPanel.frx":7883
+         ItemData        =   "frmControlPanel.frx":75DF
          Left            =   720
-         List            =   "frmControlPanel.frx":7885
+         List            =   "frmControlPanel.frx":75E1
          Style           =   2  'Dropdown List
          TabIndex        =   6
          Top             =   1200
@@ -512,7 +465,7 @@ Begin VB.Form frmControlPanel
          EndProperty
          Height          =   615
          Left            =   720
-         TabIndex        =   42
+         TabIndex        =   39
          Top             =   4800
          Width           =   5295
       End
@@ -575,7 +528,7 @@ Begin VB.Form frmControlPanel
       Left            =   9980
       ScaleHeight     =   8180
       ScaleWidth      =   8660
-      TabIndex        =   23
+      TabIndex        =   22
       Top             =   7340
       Visible         =   0   'False
       Width           =   8655
@@ -583,7 +536,7 @@ Begin VB.Form frmControlPanel
          Caption         =   "&Start Service"
          Height          =   495
          Left            =   4800
-         TabIndex        =   27
+         TabIndex        =   26
          Top             =   5040
          Width           =   2055
       End
@@ -591,7 +544,7 @@ Begin VB.Form frmControlPanel
          Caption         =   "&Install Service"
          Height          =   495
          Left            =   2400
-         TabIndex        =   26
+         TabIndex        =   25
          Top             =   5040
          Width           =   2055
       End
@@ -601,17 +554,17 @@ Begin VB.Form frmControlPanel
          Caption         =   "Service status:"
          Height          =   495
          Left            =   2040
-         TabIndex        =   28
+         TabIndex        =   27
          Tag             =   "Service status: "
          Top             =   4200
          Width           =   5055
       End
       Begin VB.Label Label10 
          BackStyle       =   0  'Transparent
-         Caption         =   $"frmControlPanel.frx":7887
+         Caption         =   $"frmControlPanel.frx":75E3
          Height          =   1455
          Left            =   840
-         TabIndex        =   25
+         TabIndex        =   24
          Top             =   1320
          Width           =   7215
       End
@@ -630,7 +583,7 @@ Begin VB.Form frmControlPanel
          EndProperty
          Height          =   615
          Left            =   840
-         TabIndex        =   24
+         TabIndex        =   23
          Top             =   480
          Width           =   7215
       End
@@ -641,8 +594,8 @@ Begin VB.Form frmControlPanel
       TabIndex        =   12
       Top             =   0
       Width           =   3375
-      _extentx        =   5944
-      _extenty        =   14429
+      _ExtentX        =   5944
+      _ExtentY        =   14429
    End
 End
 Attribute VB_Name = "frmControlPanel"
@@ -961,6 +914,7 @@ Private Sub Form_Load()
     naviBar.AddItem GetPublicString("strConfigure")
     naviBar.AddItem GetPublicString("strDesktop")
     naviBar.AddItem GetPublicString("strAbout")
+    naviBar.AddItem "Donate"
     
     naviBar.SelectedIndex = 1
     
@@ -969,7 +923,7 @@ Private Sub Form_Load()
     m_cScroll.Create picFrame(1).hWnd
     m_cScroll.SmallChange(efsVertical) = MenuItem(0).Height \ Screen.TwipsPerPixelY + 2
     
-    InitializeAboutFrame
+    InitializeFrame "credits.vml"
 
     frmControlPanel.Caption = GetPublicString("strViStartControlPanel")
 
@@ -1024,31 +978,24 @@ Private Sub Form_Unload(Cancel As Integer)
 
 End Sub
 
-Private Sub lblAurthor_Click()
-    AppLauncherHelper.ShellEx lblAurthor.Tag
-End Sub
-
-Private Sub lblText_Click(index As Integer)
-    If lblText(index).Tag = "_ABOUT_SKIN" Then
-        InitializeAboutSkinFrame
-    ElseIf lblText(index).Tag <> vbNullString Then
-        AppLauncherHelper.ShellEx lblText(index).Tag
-    End If
-End Sub
-
-Private Sub MenuItem_onChanged(index As Integer)
+Private Sub MenuItem_onChanged(Index As Integer)
     RaiseEvent onNavigationPanelChange
 End Sub
 
 Private Sub naviBar_onClick(theIndex As Long)
     On Error GoTo Handler
-
+    
     If theIndex = 1 Then
         InititalizeConfigureFrame
     ElseIf theIndex = 2 Then
         'CheckMetro
         CheckMetroShortcut
     ElseIf theIndex = 3 Then
+        InitializeFrame "credits.vml"
+        timReloadAbout.Enabled = True
+    ElseIf theIndex = 4 Then
+        theIndex = 3
+        InitializeFrame "donate.vml"
         timReloadAbout.Enabled = True
     End If
 
@@ -1080,103 +1027,15 @@ Dim buttonEnabled As Boolean
     End If
 End Sub
 
-'Sub InitializeServiceFrame()
-
-    'CheckService
-
-'End Sub
-
-'Private Sub CheckService()
-
-     'If GetServiceConfig() = 0 Then
-        'm_serviceInstalled = True
-        'm_serviceState = GetServiceStatus()
-        
-        'cmdInstallService.Caption = "&Remove Service"
-        
-        'Select Case m_serviceState
-        
-            'Case SERVICE_RUNNING
-            
-                'SetServiceStatus "Running", vbGreen
-            
-                'cmdInstallService.Enabled = False
-                'cmdStartService.Caption = "&Stop Service"
-                'cmdStartService.Enabled = True
-                
-            'Case SERVICE_STOPPED
-            
-                'SetServiceStatus "Stopped"
-            
-                'cmdInstallService.Enabled = True
-                'cmdStartService.Caption = "&Start Service"
-                'cmdStartService.Enabled = True
-                
-            'Case Else
-            
-                'SetServiceStatus "Unknown..", vbRed
-            
-                'cmdInstallService.Enabled = False
-                'cmdStartService.Enabled = False
-                
-        'End Select
-    'Else
-    
-        'SetServiceStatus "Not Installed"
-    
-        'cmdInstallService.Caption = "&Install Service"
-    
-        'm_serviceInstalled = False
-    
-        'cmdStartService.Enabled = False
-        'cmdInstallService.Enabled = True
-    'End If
-
-'End Sub
-
-'Private Sub SetServiceStatus(ByVal szNewStatus As String, Optional ByVal newForeColour As ColorConstants = vbBlack)
-
-    'lblServiceStatus.Caption = lblServiceStatus.Tag & szNewStatus
-    'lblServiceStatus.ForeColor = newForeColour
-
-'End Sub
-
-'Private Sub cmdStartService_Click()
-
-    'CheckService
-    'If Not cmdStartService.Enabled Then Exit Sub
-    'cmdStartService.Enabled = False
-    
-    'If m_serviceState = SERVICE_RUNNING Then
-        'NTServiceControl.StopNTService
-    'ElseIf m_serviceState = SERVICE_STOPPED Then
-        'NTServiceControl.StartNTService
-    'End If
-    
-    'CheckService
-
-'End Sub
-
-'Private Sub cmdInstallService_Click()
-    'CheckService
-    
-    'If Not cmdInstallService.Enabled Then Exit Sub
-    'cmdInstallService.Enabled = False
-    
-    'If m_serviceInstalled Then
-        'NTServiceControl.DeleteNTService
-    'Else
-        'NTServiceControl.SetNTService
-    'End If
-    
-    'CheckService
-'End Sub
-
-Sub InitializeAboutFrame()
+Sub InitializeFrame(ByVal frameName As String)
+    On Error GoTo Finally
 
 Dim infoXMLText As String
-    infoXMLText = LoadStringFromResource("about.xml", "SCHEMA")
+    infoXMLText = LoadStringFromResource(frameName, "VML")
     
+    RenderXMLFrame infoXMLText
+    
+Finally:
     RenderXMLFrame infoXMLText
 End Sub
 
@@ -1197,53 +1056,7 @@ Finally:
 End Sub
 
 Sub RenderXMLFrame(ByVal sourceXML As String)
-
-    lblViStartTitle.Caption = App.Title & " " & App.Major & "." & App.Minor & "." & App.Revision
-    ClearAboutText
-
-Dim xmlDoc As DOMDocument
-Dim skinInfoXML As IXMLDOMElement
-Dim thisChild As IXMLDOMElement
-Dim thisObject As Object
-
-    Set xmlDoc = New DOMDocument
-    
-    If xmlDoc.loadXML(sourceXML) = False Then
-        Exit Sub
-    End If
- 
-    m_ElementY = lblViStartTitle.Top + lblViStartTitle.Height + 10
-    
-    Set skinInfoXML = xmlDoc.firstChild
-    For Each thisObject In skinInfoXML.childNodes
-        If TypeName(thisObject) = "IXMLDOMElement" Then
-            Set thisChild = thisObject
-    
-            Select Case LCase$(thisChild.tagName)
-            
-            Case "a"
-                ParseHref thisChild
-            
-            Case "p"
-                ParseParagraph thisChild
-                
-            'Case "description"
-                'lblDescription.Caption = thisChild.Text
-            
-            End Select
-        End If
-    Next
-
-End Sub
-
-Private Sub ClearAboutText()
-    On Error GoTo Handler
-    
-    While lblText.count > 1
-        Unload lblText(lblText.UBound)
-    Wend
-    
-Handler:
+    VMLViewer.XML = sourceXML
 End Sub
 
 Sub InitializeDesktopFrame()
@@ -1373,7 +1186,7 @@ Sub AddNavigationItem(ByRef objNavigationItem As Object)
     Load MenuItem(MenuItem.count)
     With MenuItem(MenuItem.UBound)
         .Left = MenuItem(0).Left
-        .Top = MenuItem(.index - 1).Top + MenuItem(0).Height + 2
+        .Top = MenuItem(.Index - 1).Top + MenuItem(0).Height + 2
 
         .Source = objNavigationItem
         .Visible = True
@@ -1554,184 +1367,23 @@ Private Sub Picture1_Click()
 
 End Sub
 
-
-
 Private Sub timDelayUnload_Timer()
     timDelayUnload.Enabled = False
     
     InititalizeConfigureFrame
 End Sub
 
-Private Sub ParseHref(ByRef theText As IXMLDOMElement)
-    On Error GoTo Handler
-
-Dim theCaption As String
-Dim theHref As String
-Dim theAlignment As AlignmentConstants
-Dim theFontStyle As Long
-Dim realPosition_X As Long
-
-Dim theDimensions As RECTF
-Dim theLabelIndex As Long
-
-    theAlignment = vbLeftJustify
-    theCaption = theText.text
-    
-    If Not IsNull(theText.getAttribute("href")) Then
-        theHref = theText.getAttribute("href")
-    End If
-    
-    If Not IsNull(theText.getAttribute("align")) Then
-        Select Case LCase(theText.getAttribute("align"))
-        
-        Case "left"
-            theAlignment = vbLeftJustify
-        
-        Case "right"
-            theAlignment = vbRightJustify
-            
-        Case "center"
-            theAlignment = vbCenter
-            
-        End Select
-    End If
-    
-    With AddText(theCaption, FontStyleRegular, theAlignment)
-        .Tag = theHref
-        .FontUnderline = True
-        .ForeColor = vbBlue
-        .MousePointer = 99
-    End With
-    
-    Exit Sub
-Handler:
-    MsgBox Err.Description, vbCritical
-End Sub
-
-Private Sub ParseParagraph(ByRef theText As IXMLDOMElement)
-
-Dim theCaption As String
-Dim theFontStyleText As String
-Dim realPosition_X As Long
-
-Dim theDimensions As RECTF
-
-Dim theLabelIndex As Long
-Dim theFontStyle As fontStyle
-Dim theAlignment As AlignmentConstants
-
-    theAlignment = vbLeftJustify
-
-    If Not IsNull(theText.text) Then
-        theCaption = theText.text
-    End If
-    
-    If Not IsNull(theText.getAttribute("align")) Then
-        Select Case LCase(theText.getAttribute("align"))
-        
-        Case "left"
-            theAlignment = vbLeftJustify
-        
-        Case "right"
-            theAlignment = vbRightJustify
-            
-        Case "center"
-            theAlignment = vbCenter
-            
-        End Select
-    End If
-    
-    If Not IsNull(theText.getAttribute("style")) Then
-        theFontStyleText = theText.getAttribute("style")
-    End If
-    
-    theFontStyle = FontStyleRegular
-    
-    Select Case LCase$(theFontStyleText)
-    
-    Case "bold"
-        theFontStyle = FontStyleBold
-        
-    Case "italic"
-        theFontStyle = FontStyleItalic
-        
-    Case "bold|italic"
-        theFontStyle = FontStyleBoldItalic
-        
-    Case "underline"
-        theFontStyle = FontStyleUnderline
-        
-    Case "strikeout"
-        theFontStyle = FontStyleStrikeout
-    
-    End Select
-    
-    AddText theCaption, theFontStyle, theAlignment
-End Sub
-
-Private Function AddText(ByVal theCaption As String, Optional ByVal theFontStyle As fontStyle = FontStyleRegular, Optional TextAlignment As AlignmentConstants = vbLeftJustify) As Label
-    'If theCaption = vbNullString Then Exit Function
-    On Error GoTo Handler
-
-Dim newHeight As Long
-
-    theCaption = Replace(theCaption, "%skin%", Settings.CurrentSkin)
-
-    Load lblText(lblText.count)
-
-    With lblText(lblText.UBound)
-        .ForeColor = vbBlack
-        
-        If theFontStyle = FontStyleBold Then
-            .FontBold = True
-        ElseIf theFontStyle = FontStyleBoldItalic Then
-            .FontBold = True
-            .FontItalic = True
-        ElseIf theFontStyle = FontStyleItalic Then
-            .FontItalic = True
-        ElseIf theFontStyle = FontStyleStrikeout Then
-            .FontStrikethru = True
-        ElseIf theFontStyle = FontStyleUnderline Then
-            .FontUnderline = True
-        End If
-        
-        .Caption = theCaption
-        .AutoSize = True
-        .MousePointer = 0
-
-        'If .Width > lblAurthor.Width Then
-        '    newHeight = (Ceiling(.Width / lblAurthor.Width)) * (lblAurthor.Height)
-        '    .AutoSize = False
-       '
-       '     .Height = newHeight
-       '     .Width = lblAurthor.Width
-       '     .Left = lblAurthor.Left
-       ' End If
-
-        .Visible = True
-        .Width = lblAurthor.Width
-
-        .Top = m_ElementY
-        m_ElementY = m_ElementY + .Height
-        
-        .Caption = .Caption
-        .Alignment = TextAlignment
-    End With
-    
-    'm_rectPosition.Top = m_Y
-    'm_rectPosition.Left = realPosition_X
-    'm_rectPosition.Width = m_rectPosition.Left + theDimensions.Width
-    'm_rectPosition.Height = m_rectPosition.Top + theDimensions.Height
-    'm_path.AddString theCaption, m_fontF, theFontStyle, CSng(theFontSize), m_rectPosition, 0
-    
-    Set AddText = lblText(lblText.UBound)
-    
-    Exit Function
-Handler:
-    MsgBox Err.Description, vbCritical
-End Function
-
 Private Sub timReloadAbout_Timer()
-    InitializeAboutFrame
+    'InitializeFrame "about.vml"
     timReloadAbout.Enabled = False
+End Sub
+
+Private Sub VMLViewer_LinkClicked(ByVal tag As String)
+
+    If tag = "_ABOUT_SKIN" Then
+        InitializeAboutSkinFrame
+    ElseIf tag <> vbNullString Then
+        AppLauncherHelper.ShellEx tag
+    End If
+
 End Sub
