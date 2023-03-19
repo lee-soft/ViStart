@@ -5,9 +5,9 @@ Begin VB.UserControl VMLDocument
    ClientLeft      =   0
    ClientTop       =   0
    ClientWidth     =   4650
-   ScaleHeight     =   190
+   ScaleHeight     =   285
    ScaleMode       =   3  'Pixel
-   ScaleWidth      =   310
+   ScaleWidth      =   465
    Begin VB.Timer timRefresh 
       Enabled         =   0   'False
       Interval        =   1
@@ -76,6 +76,7 @@ Private m_ElementX As Long
 
 Private m_sXML As String
 Private m_Margin As RECT
+Private m_lineIsDirty As Boolean
 
 Private m_lAvailbleWidth As Long
 
@@ -291,6 +292,7 @@ Private Sub ParseText(ByRef theText As IXMLDOMText, Optional ByRef theParent As 
         AddText theText.text, FontStyleRegular, vbLeftJustify
         Labels(0).Caption = theText.text
         m_ElementX = m_ElementX + Labels(0).Width + UserControl.TextWidth(" ")
+        m_lineIsDirty = True
         Exit Sub
     End If
     
@@ -357,7 +359,8 @@ Private Sub ParseText(ByRef theText As IXMLDOMText, Optional ByRef theParent As 
             
             Labels(0).Caption = theText.text
             m_ElementX = m_ElementX + Labels(0).Width + UserControl.TextWidth(" ")
-        
+            m_lineIsDirty = True
+            
         End If
     Else
         ParseChildXML theText, theText
@@ -477,7 +480,7 @@ For i = 0 To UBound(strWords)
     
     ' If the line width exceeds the available width, start a new line
     If intLineWidth > fullTextWidth Then
-        i = i - 1
+        If i - 1 > UBound(strWords) Then i = i - 1
         
         Labels(0).Caption = ""
         intLineCount = intLineCount + 1
@@ -489,10 +492,20 @@ CalculateNumberOfLines = intLineCount
 End Function
 
 Private Function CarriageReturnLineFeed()
+
+Dim doubleDown As Boolean
+
+    If m_lineIsDirty Then
+        doubleDown = True
+    End If
+    
     Labels(0).AutoSize = True
     Labels(0).Caption = "A"
     m_ElementY = m_ElementY + Labels(0).Height
     m_ElementX = m_Margin.Left
+    m_lineIsDirty = False
+    
+    If doubleDown Then CarriageReturnLineFeed
 End Function
 
 Private Function AddText(ByVal theCaption As String, Optional ByVal theFontStyle As FontStyle, Optional TextAlignment As AlignmentConstants = vbLeftJustify) As Label
