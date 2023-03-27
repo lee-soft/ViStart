@@ -13,7 +13,10 @@ Since it is becoming increasingly more difficult to find the libraries required 
 ## Setting up the development environment
 
 - Clone the repo
-- Ensure you have Visual Basic 6.0(Service Pack 6) installed
+- Ensure you have installed:
+    1) [Microsoft Visual Basic 6.0](https://archive.org/details/en_vb6_ent_cd)
+    2) [Service Pack 6 for Visual Basic 6.0](https://download.cnet.com/Service-Pack-6-for-Visual-Basic-6-0/3000-2206_4-10726545.html)
+    3) [KB3096896 - Security Rollup Update for Service Pack 6](https://www.microsoft.com/en-us/download/details.aspx?id=50722)
 - Grab the SHELLLNK, WinU and GDIPlus TLBs - extract the TLBs and re-add as a reference to the project
 - Compile and enjoy
 
