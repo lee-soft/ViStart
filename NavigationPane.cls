@@ -145,7 +145,16 @@ Public Function ShowContextMenu(ByRef winOwner As Form)
     
         m_contextMenu.AddItem GetPublicString("strOpen"), "OPEN_OPTION", True
 
- 
+        m_contextMenu.AddItem ""
+        If m_selectedItem.OpenAsMenu Then
+            m_contextMenu.AddItem GetPublicString("strDisplayAsLink"), "DONT_SHOW_MENU", False
+        Else
+            m_contextMenu.AddItem GetPublicString("strDisplayAsMenu"), "SHOW_MENU", False
+        End If
+
+        m_contextMenu.AddItem ""
+        m_contextMenu.AddItem GetPublicString("strDontShowItem"), "HIDE_OPTION", False
+        		
                 DesktopIconStatus = 0
                 ComputerIconStatus = 0
                 
@@ -214,31 +223,28 @@ Public Function ShowContextMenu(ByRef winOwner As Form)
                 ' -1 REG key doesn't exist
                 ' -2 Other items
                 
+				If DesktopIconStatus = 1 Or ComputerIconStatus = 1 Then
+					m_contextMenu.AddItem ""
+				End If
+				
                 If DesktopIconStatus = 1 Then
-                        m_contextMenu.AddItem ""
+                        'm_contextMenu.AddItem ""
                         m_contextMenu.AddItem GetPublicString("strShowOnDesktop"), "SHOWHIDE_D"
                 ElseIf DesktopIconStatus = 0 Or DesktopIconStatus = -1 Then
-                        m_contextMenu.AddItem ""
+                        'm_contextMenu.AddItem ""
                         m_contextMenu.AddItem GetPublicString("strHideFromDesktop"), "SHOWHIDE_D"
                 End If
                 
                 If ComputerIconStatus = 1 Then
-                        m_contextMenu.AddItem ""
+                        'm_contextMenu.AddItem ""
                         m_contextMenu.AddItem GetPublicString("strShowInComputer"), "SHOWHIDE_C"
                 ElseIf ComputerIconStatus = 0 Or ComputerIconStatus = -1 Then
-                        m_contextMenu.AddItem ""
+                        'm_contextMenu.AddItem ""
                         m_contextMenu.AddItem GetPublicString("strHideFromComputer"), "SHOWHIDE_C"
                 End If
 
-        m_contextMenu.AddItem ""
-        m_contextMenu.AddItem GetPublicString("strHideOption"), "HIDE_OPTION", False
-        
-        m_contextMenu.AddItem ""
-        If m_selectedItem.OpenAsMenu Then
-            m_contextMenu.AddItem GetPublicString("strDontPopOut"), "DONT_SHOW_MENU", False
-        Else
-            m_contextMenu.AddItem GetPublicString("strPopOut"), "SHOW_MENU", False
-        End If
+
+
             
         m_contextMenu.AddItem ""
         m_contextMenu.AddItem GetPublicString("strRename"), "RENAME_OPTION"
@@ -296,24 +302,28 @@ Public Function ShowContextMenu(ByRef winOwner As Form)
                 ' -1 REG key doesn't exist
                 ' -2 Other items
                 
+				If DesktopIconStatus = 1 Or ComputerIconStatus = 1 Then
+					m_contextMenu.AddItem ""
+				End If
+				
                 If DesktopIconStatus = 1 Then
-                        m_contextMenu.AddItem ""
+                        'm_contextMenu.AddItem ""
                         m_contextMenu.AddItem GetPublicString("strShowOnDesktop"), "SHOWHIDE_D"
                 ElseIf DesktopIconStatus = 0 Or DesktopIconStatus = -1 Then
-                        m_contextMenu.AddItem ""
+                        'm_contextMenu.AddItem ""
                         m_contextMenu.AddItem GetPublicString("strHideFromDesktop"), "SHOWHIDE_D"
                 End If
                 
                 If ComputerIconStatus = 1 Then
-                        m_contextMenu.AddItem ""
+                        'm_contextMenu.AddItem ""
                         m_contextMenu.AddItem GetPublicString("strShowInComputer"), "SHOWHIDE_C"
                 ElseIf ComputerIconStatus = 0 Or ComputerIconStatus = -1 Then
-                        m_contextMenu.AddItem ""
+                        'm_contextMenu.AddItem ""
                         m_contextMenu.AddItem GetPublicString("strHideFromComputer"), "SHOWHIDE_C"
                 End If
                 
         m_contextMenu.AddItem ""
-        m_contextMenu.AddItem GetPublicString("strHideOption"), "HIDE_OPTION", False
+        m_contextMenu.AddItem GetPublicString("strDontShowItem"), "HIDE_OPTION", False
 
         m_contextMenu.AddItem ""
                 
