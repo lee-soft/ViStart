@@ -1,0 +1,136 @@
+﻿<strings>
+
+    <string value="注销" id="strLogOff" />
+    <string value="切换用户" id="strSwitchUser"  />
+    <string value="关机" id="strShutdown" />
+    <string value="重新启动" id="strRestart" />
+    <string value="待机" id="strStandBy" />
+    <string value="休眠" id="strHibernate" />
+    <string value="退出" id="strExit" />
+    <string value="关于" id="strAbout" />
+    <string value="选项" id="strOptions" />
+    
+    <string value="所有程序" id="strAllPrograms" />
+    <string value="返回" id="strBack" />
+    
+    <string value="没有符合搜索条件的程序" id="strNotFound" />
+    <string value="查看所有结果" id="strSeeAllResults" />
+    <string value="开始搜索" id="strStartSearch" />
+    
+    <string value="程序选项" id="strProgramOptions" />
+
+    <string value="启用自动点击功能" id="strEnableAutoClick" />
+    <string value="显示 ViStart 托盘图标" id="strShowTrayIcon" />
+    <string value="开机自启" id="strStartWithWindows" />
+    <string value="启动时显示启动画面" id="strSplash" />
+    <string value="清除常用程序列表" id="strClearFrequentList" />
+    <string value="索引选项" id="strIndexOptions" />
+    <string value="使用 Win 键调用 ViStart" id="strFilterWinKey" />
+    
+    <string value="选择一个新的开始菜单皮肤..." id="strNewSkin" />
+    <string value="选择一个新的开始按钮图标..." id="strOrbNew" />
+    <string value="重置球体图标" id="strOrbReset" />
+    <string value="运行..." id="strRun" />
+    <string value="睡眠..." id="strSleep" />
+    
+    <string value="确定" id="strOK" />
+    <string value="取消" id="strCancel" />
+    <string value="浏览" id="strBrowse" />
+    
+    <string value="探索" id="strExplore" />
+    <string value="管理" id="strManage" />
+    <string value="搜索" id="strSearch" />
+    <string value="在桌面上显示" id="strShowOnDesktop" />
+    <string value="在桌面上隐藏" id="strHideFromDesktop" />
+    <string value="在计算机中显示" id="strShowInComputer" />
+    <string value="在计算机中隐藏" id="strHideFromComputer" />   
+    <string value="打开" id="strOpen" />
+    <string value="不要在导航窗格中显示选项" id="strHideOption" />
+    <string value="不弹出文件夹内容" id="strDontPopOut" />
+    <string value="弹出文件夹内容" id="strPopOut" />
+    <string value="重命名" id="strRename" />
+    <string value="发送到桌面" id="strCopyToDesktop" />
+    <string value="发送到 ViPad" id="strCopyToViPad" />
+    <string value="属性" id="strProperties" />
+    
+    <string value="折叠" id="strCollapse" />
+    <string value="展开" id="strExpand" />
+    <string value="以管理员身份运行" id="strRunAsAdmin" />
+    <string value="从开始菜单取消固定" id="strUnpinToStartMenu" />
+    <string value="固定到开始菜单" id="strPinToStartMenu" />
+    <string value="从此列表中删除" id="strRemoveFromList" />
+
+    <string value="程序" id="strPrograms" />
+    <string value="文件" id="strFiles" />
+    
+    <string value="所有文件" id="strAllExtensions" />
+
+    <string value="库" id="strLibraries" />
+    <string value="文档" id="strDocuments" />
+    <string value="图片" id="strPictures" />
+    <string value="音乐" id="strMusic" />
+    <string value="视频" id="strVideos" />
+    <string value="下载" id="strDownloads"/>
+    <string value="游戏" id="strGames" />
+    <string value="3D 对象" id="strObjects" />
+        
+    <string value="计算机" id="strComputer" />
+    <string value="最近" id="strRecent" />
+    <string value="网络" id="strNetwork" />
+    <string value="连接到" id="strConnectTo"  />
+    <string value="控制面板" id="strControlPanel" />
+    <string value="打印机和传真" id="strPrinters" />
+    <string value="帮助和支持" id="strHelp" />
+    <string value="默认程序" id="strSetDefaults" />
+
+    <string value="ViStart 控制面板" id="strViStartControlPanel" />
+
+    <string value="样式" id="strStyle" />
+    <string value="配置" id="strConfigure" />
+    <string value="桌面" id="strDesktop" />
+
+    <string value="开始菜单皮肤" id="strWhichStartMenu" />
+    <string value="安装..." id="strInstall" />
+    <string value="选择一个新的 ViStart 主题文件" id="strViStartTheme" />
+    
+    <string value="启动球体皮肤" id="strWhatStarOrb" />
+    <string value="默认使用球体皮肤" id="strSkinDefaultOrb" />
+    <string value="选择图标..." id="strPick" />
+    <string value="选择新的开始按钮图标" id="strViStartOrb" />
+
+    <string value="启动滚动皮肤" id="strWhatRollover" />
+    <string value="默认使用滚动皮肤" id="strSkinDefaultRollover" />
+  
+    <string value="可视化设置" id="strWhatToSee" />
+    <string value="开始菜单项的默认设置" id="strWhatToSeeOnRight" />
+
+    <string value="优先显示程序菜单" id="strProgramsFirst" />
+    <string value="显示用户头像" id="strShowUserPicture" />
+
+    <string value="不显示项目" id="strDontShowItem" />
+    <string value="仅显示链接" id="strDisplayAsLink" />
+    <string value="显示菜单" id="strDisplayAsMenu" />
+
+    <string value="设置默认桌面操作" id="strDesktopSettings" />
+    <string value="两侧 Win 键都显示 ViStart" id="strBothWinKeysViStart" />
+    <string value="[左侧 Win 键] 显示 ViStart" id="strLeftWinKey" />
+    <string value="[右侧 Win 键] 显示 ViStart" id="strRightWinKey" />
+    <string value="两侧 Win 键都显示 Windows 菜单" id="strBothWinKeys" />
+
+    <string value="开始按钮显示 ViStart" id="strStartViStart" />
+    <string value="开始按钮显示 Windows 菜单" id="strStartWinMenu" />
+
+    <string value="恢复 Windows 开始菜单快捷方式" id="strRestoreStartMenu" />
+    
+    <string value="Windows 8 额外设置" id="strW8Features" />
+    
+    <string value="禁用 Windows 8 超级按钮和切换器" id="strHotCorners" />
+    <string value="禁用 CharmsBar 侧边栏" id="strDisableCharmsBar" />
+    <string value="禁用拖动关闭" id="strDisableDragToClose" />
+    <string value="禁用左下角（开始）超级按钮" id="strDisableBottomLeftCorner" />
+    <string value="登录时自动跳转到桌面" id="strSkipMetroScreen" />
+    <string value="Windows 8 的一些设置需要重启才能生效" id="strW8FeaturesWarning" />
+    
+    <string value="(ViStart 程序由 Lee Matthew Chantrey 创建)" id="strCopyright" />
+ 
+ </strings>

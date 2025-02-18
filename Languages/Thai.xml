@@ -1,0 +1,119 @@
+﻿<strings>
+
+    <string value="ออกจากระบบ" id="strLogOff" />
+    <string value="เปลี่ยนผู้ใช้" id="strSwitchUser"  />
+    <string value="ปิดเครื่อง" id="strShutdown" />
+    <string value="เริ่มการทำงานใหม่" id="strRestart" />
+    <string value="โหมดสแตนบาย " id="strStandBy" />
+    <string value="โหทดไฮเบอร์เนต" id="strHibernate" />
+    <string value="ออก" id="strExit" />
+    <string value="เกี่ยวกับ" id="strAbout" />
+    <string value="ตัวเลือก" id="strOptions" />
+   
+    <string value="โปรแกรมทั้งหมด" id="strAllPrograms" />
+    <string value="กลับ" id="strBack" />
+   
+    <string value="ไม่มีโปรแกรมที่ตรงกับการค้นหา" id="strNotFound" />
+    <string value="ดูผลลัพธ์ทั้งหมด" id="strSeeAllResults" />
+    <string value="เริ่มการค้นหา" id="strStartSearch" />
+   
+    <string value="ตัวเลือกโปรแกรม" id="strProgramOptions" />
+
+    <string value="เปิดใช้งานคลิกอัตโนมัติ" id="strEnableAutoClick" />
+    <string value="แสดงถาดไอคอนของ ViStart" id="strShowTrayIcon" />
+    <string value="ทำงานรวมกับ Windows" id="strStartWithWindows" />
+    <string value="ล้างรายการโปรแกรมที่ใช้งานบ่อย" id="strClearFrequentList" />
+    <string value="ตัวเลือกการจัดทำดัชนี" id="strIndexOptions" />
+    <string value="เรียกใช้ ViStart ด้วย Windows Key" id="strFilterWinKey" />
+   
+    <string value="เลือกสกินใหม่ของ Start Menu..." id="strNewSkin" />
+    <string value="เลือกรูปภาพใหม่ของ Start Button..." id="strOrbNew" />
+    <string value="รีเซ็ต Orb" id="strOrbReset" />
+    <string value="เรียกใช้..." id="strRun" />
+    <string value="สลีป..." id="strSleep" />
+   
+    <string value="ตกลง" id="strOK" />
+    <string value="ยกเลิก" id="strCancel" />
+    <string value="เรียกดู" id="strBrowse" />
+   
+    <string value="สำรวจ" id="strExplore" />
+    <string value="จัดการ" id="strManage" />
+    <string value="ค้นหา" id="strSearch" />
+    <string value="แสดงบนเดสก์ท็อป" id="strShowOnDesktop" />
+    <string value="ซ่อนจากเดสก์ท็อป" id="strHideFromDesktop" />
+    <string value="เปิด" id="strOpen" />
+    <string value="ไม่แสดงตัวเลือกใน navigation pane" id="strHideOption" />
+    <string value="อย่าเปิดเนื้อหาโฟลเดอร์ออกมา" id="strDontPopOut" />
+    <string value="เปิดเนื้อหาโฟลเดอร์ออกมา" id="strPopOut" />
+    <string value="เปลี่ยนชื่อ" id="strRename" />
+    <string value="ส่งออกไปยัง Desktop" id="strCopyToDesktop" />
+    <string value="ส่งออกไปยัง ViPad" id="strCopyToViPad" />
+    <string value="คุณสมบัติ" id="strProperties" />
+   
+    <string value="คอลแลปส์" id="strCollapse" />
+    <string value="ขยาย" id="strExpand" />
+    <string value="เรียกใช้ในฐานะผู้ดูแลระบบ" id="strRunAsAdmin" />
+    <string value="ปักหมุดจาก Start Menu" id="strUnpinToStartMenu" />
+    <string value="ปักหมุดที่ Start Menu" id="strPinToStartMenu" />
+    <string value="ลบออกจากรายการนี้" id="strRemoveFromList" />
+
+    <string value="โปรแกรม" id="strPrograms" />
+    <string value="ไฟล์" id="strFiles" />
+   
+    <string value="ไฟล์ทั้งหมด" id="strAllExtensions" />
+
+    <string value="ห้องสมุด" id="strLibraries" />
+    <string value="เอกสาร" id="strDocuments" />
+    <string value="รูปภาพ" id="strPictures" />
+    <string value="เพลง" id="strMusic" />
+    <string value="วิดิโอ" id="strVideos" />
+    <string value="ดาวน์โหลด" id="strDownloads"/>
+    <string value="เกม" id="strGames" />
+    <string value="คอมพิวเตอร์" id="strComputer" />
+    <string value="ล่าสุด" id="strRecent" />
+    <string value="เครือข่าย" id="strNetwork" />
+    <string value="เชื่อมต่อกับ" id="strConnectTo"  />
+    <string value="แผงควบคุม" id="strControlPanel" />
+    <string value="เครื่องพิมพ์และแฟกซ์ "id="strPrinters" />
+    <string value="ช่วยเหลือและสนับสนุน" id="strHelp" />
+    <string value="ตั้งค่าการเข้าถึงโปรแกรมและค่าเริ่มต้น" id="strSetDefaults" />
+
+    <string value="แผงงควบคุม ViStart" id="strViStartControlPanel" />
+
+    <string value="สไตล์" id="strStyle" />
+    <string value="กำหนดค่า" id="strConfigure" />
+    <string value="เดสก์ทอป" id="strDesktop" />
+
+    <string value="คุณต้องการเมนู Start ใด" id="strWhichStartMenu" />
+    <string value="ติดตั้ง..." id="strInstall" />
+    <string value="เลือกไฟล์ธีม ViStart ใหม่" id="strViStartTheme" />
+   
+    <string value="คุณต้องการ Start Orb อะไร" id="strWhatStarOrb" />
+    <string value="ใช้ Skin Orb" id="strSkinDefaultOrb" />
+    <string value="เลือกรูปภาพ..." id="strPick" />
+    <string value="เลือกภาพ Start Button ใหม่" id="strViStartOrb" />
+
+    <string value="คุณต้องการเห็นอะไรใน Start Menu ของคุณ" id="strWhatToSee" />
+    <string value="ทางลัดใดที่คุณต้องการดูทางด้านขวามือ" id="strWhatToSeeOnRight" />
+
+    <string value="แสดงเมนูโปรแกรมก่อน" id="strProgramsFirst" />
+    <string value="แสดงรูปภาพผู้ใช้" id="strShowUserPicture" />
+
+    <string value="ไม่ต้องแสดงรายการ" id="strDontShowItem" />
+    <string value="แสดงรายการลิงค์" id="strDisplayAsLink" />
+    <string value="แสดงรายการเมนู" id="strDisplayAsMenu" />
+
+    <string value="จะเกิดอะไรขึ้นเมื่อคุณอยู่บนเดสก์ท็อป" id="strDesktopSettings" />
+    <string value="คีย์ Windows ทั้งสองแสดง ViStart" id="strBothWinKeysViStart" />
+    <string value="[ปุ่ม Windows ซ้าย] แสดง ViStart" id="strLeftWinKey" />
+    <string value="[ปุ่ม Windows ขวา] แสดง ViStart" id="strRightWinKey" />
+    <string value="ปุ่ม Windows ทั้งสองแสดงเมนู Windows " id="strBothWinKeys" />
+
+    <string value="แสดงปุ่มเริ่ม ViStart" id="strStartViStart" />
+    <string value="แสดงปุ่มเริ่มเมนู Windows" id="strStartWinMenu" />
+
+    <string value="คืนค่าทางลัดเมนูของ Windows" id="strRestoreStartMenu" />
+   
+    <string value="(โปรแกรม ViStart ถูกสร้างขึ้นโดย  Lee Matthew Chantrey)" id="strCopyright" />
+ 
+ </strings>
