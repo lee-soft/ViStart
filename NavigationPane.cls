@@ -917,7 +917,7 @@ Private Sub m_contextMenu_onClick(theItemTag As String)
                 If WindowsVersion >= 6 Then
                         RaiseEvent onCommand("explorer shell:::{bb06c0e4-d293-4f75-8a90-cb05b6477eee}")
                 Else
-                        RaiseEvent onCommand("sysdm.cpl")
+                        RaiseEvent onCommand(Environ("windir") & "\System32\sysdm.cpl")
                 End If
 
         Case "SEARCH"
