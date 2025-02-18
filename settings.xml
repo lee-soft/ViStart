@@ -19,7 +19,6 @@
 
 	<programs>
 	
-		<pinned_program caption="Mypal" path="%programfiles%\Mypal\mypal.exe" opened="1" icon="%programfiles%\Mypal\mypal.exe" minwinversion="5.1" />
 		<pinned_program caption="Internet Explorer" path="%programfiles%\Internet Explorer\iexplore.exe" opened="1" icon="%programfiles%\Internet Explorer\iexplore.exe" minwinversion="5.1" maxwinversion="10.0" />
 		<pinned_program caption="Google Chrome" path="%programfiles%\Google\Chrome\Application\chrome.exe" opened="1" icon="%programfiles%\Google\Chrome\Application\chrome.exe" minwinversion="5.1" />
 		<pinned_program caption="Microsoft Edge" path="%programfiles%\Microsoft\Edge]Application\msedge.exe" opened="1" icon="%programfiles%\IMicrosoft\Edge]Application\msedge.exe" minwinversion="6.1" />
@@ -52,8 +51,8 @@
 		<folder caption="%strVideos%" path="%CSIDL_MYVIDEO%" rollover="videos.png" display_as_menu="False" visible="True" />
 		<folder caption="%strDownloads%" path="explorer &quot;/e,::{088e3905-0323-4b02-9826-5d99428e115f}&quot;" rollover="downloads.png" display_as_menu="False" visible="True" minwinversion="10.0" />
 		<folder caption="%strDownloads%" path="::{374DE290-123F-4565-9164-39C4925E467B}" rollover="downloads.png" display_as_menu="False" visible="False" minwinversion="5.1" maxwinversion="6.3" />
-		<folder caption="%strGames%" path="explorer &quot;/e,::{ED228FDF-9EA8-4870-83b1-96b02CFE0D52}&quot;" rollover="games.png" display_as_menu="False" visible="False" minwinversion="6.0" maxwinversion="6.3" />
-		<folder caption="%strGames%" path="::{ED228FDF-9EA8-4870-83b1-96b02CFE0D52}" rollover="games.png" display_as_menu="False" visible="False" minwinversion="5.1" maxwinversion="5.2" />
+		<!--folder caption="%strGames%" path="explorer &quot;/e,::{ED228FDF-9EA8-4870-83b1-96b02CFE0D52}&quot;" rollover="games.png" display_as_menu="False" visible="False" minwinversion="6.0" maxwinversion="6.3" /-->
+		<!--folder caption="%strGames%" path="::{ED228FDF-9EA8-4870-83b1-96b02CFE0D52}" rollover="games.png" display_as_menu="False" visible="False" minwinversion="5.1" maxwinversion="5.2" /-->
 		<!--folder caption="%strGames%" path="%ALLUSERSPROFILE%\Start Menu\Programs\Games" rollover="games.png" display_as_menu="False" visible="True" minwinversion="5.1" maxwinversion="5.2" /-->
 		<folder caption="%strObjects%" path="::{0DB7E03F-FC29-4DC6-9020-FF41B59E513A}" rollover="3dobjects.png" display_as_menu="False" visible="False" minwinversion="10.0" />
 		<folder caption="%strDesktop%" path="::{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}" rollover="desktop.png" display_as_menu="False" visible="False" minwinversion="6.2" maxwinversion="6.3" />
