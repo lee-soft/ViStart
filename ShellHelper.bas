@@ -279,7 +279,7 @@ Function DetermineWindowsVersion_IfNeeded()
     g_Windows11 = False
     g_Windows12 = False
         
-    Dim kernalPath As String: kernalPath = Environ("windir") & "\System32\ntoskrnl.exe"
+    Dim kernalPath As String: kernalPath = Environ("windir") & "\System32\kernel32.dll"                         ' ntoskrnl.exe may not be accesible in certain situations
     Dim kernalFileInfo As FileVersionInfo: Set kernalFileInfo = FileVersionInfoHelper.GetVersionInfo(kernalPath)
     
     Dim currentVersionRegKey As RegistryKey
@@ -322,7 +322,7 @@ Function DetermineWindowsVersion_IfNeeded()
                 g_Windows12 = True
                 
         Else
-        MsgBox "This version of Windows is unknown.. ViStart may not behave as expected!", vbCritical
+        MsgBox "This version of Windows (" & g_WindowsVersion & ") is unknown.. ViStart may not behave as expected!..", vbCritical
                 
     End If
     
