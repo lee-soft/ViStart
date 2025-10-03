@@ -1,23 +1,23 @@
 ﻿<strings>
 
-    <string value="Log Off" id="strLogOff" />
-    <string value="Switch User" id="strSwitchUser"  />
-    <string value="Shutdown" id="strShutdown" />
-    <string value="Restart" id="strRestart" />
+    <string value="Выйти" id="strLogOff" />
+    <string value="Переключить пользователя" id="strSwitchUser"  />
+    <string value="Завершение работы" id="strShutdown" />
+    <string value="Перезагрузка" id="strRestart" />
     <string value="Stand By" id="strStandBy" />
-    <string value="Hibernate" id="strHibernate" />
-    <string value="Exit" id="strExit" />
-    <string value="About" id="strAbout" />
-    <string value="Options" id="strOptions" />
+    <string value="Режим сна" id="strHibernate" />
+    <string value="Выход" id="strExit" />
+    <string value="О приложении" id="strAbout" />
+    <string value="Опции" id="strOptions" />
     
-    <string value="All Programs" id="strAllPrograms" />
-    <string value="Back" id="strBack" />
+    <string value="Все программы" id="strAllPrograms" />
+    <string value="Назад" id="strBack" />
     
-    <string value="No programs match the search criteria" id="strNotFound" />
-    <string value="See all results" id="strSeeAllResults" />
-    <string value="Start Search" id="strStartSearch" />
+    <string value="Нет программ, отвечающих критериям поиска" id="strNotFound" />
+    <string value="Смотреть все..." id="strSeeAllResults" />
+    <string value="Искать" id="strStartSearch" />
     
-    <string value="Program Options" id="strProgramOptions" />
+    <string value="Опции программы" id="strProgramOptions" />
 
     <string value="Enable Auto-Click feature" id="strEnableAutoClick" />
     <string value="Show ViStart's Tray Icon" id="strShowTrayIcon" />
@@ -30,16 +30,16 @@
     <string value="Pick a new Start Menu Skin..." id="strNewSkin" />
     <string value="Pick a new Start Button image..." id="strOrbNew" />
     <string value="Reset Orb image" id="strOrbReset" />
-    <string value="Run..." id="strRun" />
+    <string value="Выполнить..." id="strRun" />
     <string value="Sleep..." id="strSleep" />
     
     <string value="ОК" id="strOK" />
     <string value="Отмена" id="strCancel" />
-    <string value="Browse" id="strBrowse" />
+    <string value="Выбрать" id="strBrowse" />
     
-    <string value="Explore" id="strExplore" />
+    <string value="Посмотреть" id="strExplore" />
     <string value="Manage" id="strManage" />
-    <string value="Search" id="strSearch" />
+    <string value="Поиск" id="strSearch" />
     <string value="Show on Desktop" id="strShowOnDesktop" />
     <string value="Hide from Desktop" id="strHideFromDesktop" />
     <string value="Show in Computer" id="strShowInComputer" />
@@ -60,19 +60,19 @@
     <string value="Закрепить в меню Пуск" id="strPinToStartMenu" />
     <string value="Remove from this list" id="strRemoveFromList" />
 
-    <string value="Programs" id="strPrograms" />
-    <string value="Files" id="strFiles" />
+    <string value="Программы" id="strPrograms" />
+    <string value="Файлы" id="strFiles" />
     
-    <string value="All files" id="strAllExtensions" />
+    <string value="Все файлы" id="strAllExtensions" />
 
-    <string value="Libraries" id="strLibraries" />
+    <string value="Библиотеки" id="strLibraries" />
     <string value="Документы" id="strDocuments" />
     <string value="Изображения" id="strPictures" />
     <string value="Музыка" id="strMusic" />
     <string value="Видео" id="strVideos" />
     <string value="Downloads" id="strDownloads"/>
     <string value="Игры" id="strGames" />
-    <string value="3D Objects" id="strObjects" />
+    <string value="3D Объекты" id="strObjects" />
         
     <string value="Компьютер" id="strComputer" />
     <string value="Недавние" id="strRecent" />
@@ -80,7 +80,6 @@
     <string value="Подключиться к" id="strConnectTo"  />
     <string value="Панель управления" id="strControlPanel" />
     <string value="Справка и поддержка" id="strHelp" />
-    <string value="Help and Support" id="strHelp" />
     <string value="Set Program Defaults" id="strSetDefaults" />
 
     <string value="ViStart Control panel" id="strViStartControlPanel" />
@@ -125,7 +124,7 @@
     <string value="Windows 8 exclusive features defaults" id="strW8Features" />
     
     <string value="Disable all Windows 8 hot corners" id="strHotCorners" />
-    <string value="Disable CharmsBar" id="strDisableCharmsBar" />
+    <string value="Отключить CharmsBar" id="strDisableCharmsBar" />
     <string value="Disable Drag to close" id="strDisableDragToClose" />
     <string value="Disable bottom left (Start) hot corner" id="strDisableBottomLeftCorner" />
     <string value="Automatically go to desktop when I log in" id="strSkipMetroScreen" />
