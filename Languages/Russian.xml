@@ -4,7 +4,7 @@
     <string value="Переключить пользователя" id="strSwitchUser"  />
     <string value="Завершение работы" id="strShutdown" />
     <string value="Перезагрузка" id="strRestart" />
-    <string value="Stand By" id="strStandBy" />
+    <string value="Режим ожидания" id="strStandBy" />
     <string value="Режим сна" id="strHibernate" />
     <string value="Выход" id="strExit" />
     <string value="О приложении" id="strAbout" />
@@ -27,11 +27,11 @@
     <string value="Опции индексации" id="strIndexOptions" />
     <string value="Вызывать ViStart с клавиши Windows (Meta)" id="strFilterWinKey" />
     
-    <string value="Pick a new Start Menu Skin..." id="strNewSkin" />
-    <string value="Pick a new Start Button image..." id="strOrbNew" />
-    <string value="Reset Orb image" id="strOrbReset" />
+    <string value="Выбрать новый скин меню Пуск..." id="strNewSkin" />
+    <string value="Выбрать новую картинку кнопки..." id="strOrbNew" />
+    <string value="Сбросить изображение шара" id="strOrbReset" />
     <string value="Выполнить..." id="strRun" />
-    <string value="Sleep..." id="strSleep" />
+    <string value="Режим сна..." id="strSleep" />
     
     <string value="ОК" id="strOK" />
     <string value="Отмена" id="strCancel" />
@@ -92,15 +92,15 @@
     <string value="Установить..." id="strInstall" />
     <string value="Выбрать новый файл темы ViStart" id="strViStartTheme" />
     
-    <string value="Start Orb Skin" id="strWhatStarOrb" />
-    <string value="Use Skin default Orb" id="strSkinDefaultOrb" />
+    <string value="Скин шара Пуск" id="strWhatStarOrb" />
+    <string value="Использовать скин шара по умолчанию" id="strSkinDefaultOrb" />
     <string value="Выбрать картинку..." id="strPick" />
-    <string value="Choose new Start Button image" id="strViStartOrb" />
+    <string value="Выбрать новую картинку кнопки Пуск" id="strViStartOrb" />
 
-    <string value="Rollover Skin" id="strWhatRollover" />
-    <string value="Use Skin default Rollover" id="strSkinDefaultRollover" />
+    <string value="Стиль Свечения" id="strWhatRollover" />
+    <string value="Использовать основной стиль свечения" id="strSkinDefaultRollover" />
    
-    <string value="Visibility settings" id="strWhatToSee" />
+    <string value="Настройки видимости" id="strWhatToSee" />
     <string value="Default settings for Start menu items" id="strWhatToSeeOnRight" />
 
     <string value="Show program menu first" id="strProgramsFirst" />
@@ -112,8 +112,8 @@
 
     <string value="Set default desktop actions" id="strDesktopSettings" />
     <string value="Both Windows Keys show ViStart" id="strBothWinKeysViStart" />
-    <string value="[Left Windows Key] shows ViStart" id="strLeftWinKey" />
-    <string value="[Right Windows Key] shows ViStart" id="strRightWinKey" />
+    <string value="[Левая кнопка Windows] shows ViStart" id="strLeftWinKey" />
+    <string value="[Правая кнопка Windows] shows ViStart" id="strRightWinKey" />
     <string value="Both Windows keys shows Windows Menu" id="strBothWinKeys" />
 
     <string value="Start button shows ViStart" id="strStartViStart" />
