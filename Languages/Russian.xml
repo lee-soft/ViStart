@@ -19,13 +19,13 @@
     
     <string value="Опции программы" id="strProgramOptions" />
 
-    <string value="Enable Auto-Click feature" id="strEnableAutoClick" />
-    <string value="Show ViStart's Tray Icon" id="strShowTrayIcon" />
-    <string value="Start with Windows" id="strStartWithWindows" />
-    <string value="Show splash screen on startup" id="strSplash" />
-    <string value="Clear frequently used program list" id="strClearFrequentList" />
-    <string value="Indexing Options" id="strIndexOptions" />
-    <string value="Invoke ViStart with Windows Key" id="strFilterWinKey" />
+    <string value="Включить функцию автонажатия" id="strEnableAutoClick" />
+    <string value="Показывать ViStart в трее" id="strShowTrayIcon" />
+    <string value="Запуск во время загрузки системы" id="strStartWithWindows" />
+    <string value="Показать заставку при запуске" id="strSplash" />
+    <string value="Очистить список популярных программ" id="strClearFrequentList" />
+    <string value="Опции индексации" id="strIndexOptions" />
+    <string value="Вызывать ViStart с клавиши Windows (Meta)" id="strFilterWinKey" />
     
     <string value="Pick a new Start Menu Skin..." id="strNewSkin" />
     <string value="Pick a new Start Button image..." id="strOrbNew" />
@@ -38,19 +38,19 @@
     <string value="Выбрать" id="strBrowse" />
     
     <string value="Посмотреть" id="strExplore" />
-    <string value="Manage" id="strManage" />
+    <string value="Управление" id="strManage" />
     <string value="Поиск" id="strSearch" />
-    <string value="Show on Desktop" id="strShowOnDesktop" />
-    <string value="Hide from Desktop" id="strHideFromDesktop" />
-    <string value="Show in Computer" id="strShowInComputer" />
-    <string value="Hide from Computer" id="strHideFromComputer" />   
+    <string value="Показать на рабочем столе" id="strShowOnDesktop" />
+    <string value="Убрать с рабочего стола" id="strHideFromDesktop" />
+    <string value="Показать в Компьютере" id="strShowInComputer" />
+    <string value="Убрать с Компьютера" id="strHideFromComputer" />   
     <string value="Открыть" id="strOpen" />
-    <string value="Don't show option in navigation pane" id="strHideOption" />
-    <string value="Don't pop out folder contents" id="strDontPopOut" />
-    <string value="Pop out folder contents" id="strPopOut" />
+    <string value="Не показывать опцию в навигационной панели" id="strHideOption" />
+    <string value="Не выводить содержимое папки" id="strDontPopOut" />
+    <string value="Выводить содержимое папки" id="strPopOut" />
     <string value="Переименовать" id="strRename" />
-    <string value="Send to Desktop" id="strCopyToDesktop" />
-    <string value="Send to ViPad" id="strCopyToViPad" />
+    <string value="Отправить на рабочий стол" id="strCopyToDesktop" />
+    <string value="Отправить на ViPad" id="strCopyToViPad" />
     <string value="Свойства" id="strProperties" />
     
     <string value="Свернуть" id="strCollapse" />
@@ -58,7 +58,7 @@
     <string value="Запустить от имени администратора" id="strRunAsAdmin" />
     <string value="Изъять из меню Пуск" id="strUnpinToStartMenu" />
     <string value="Закрепить в меню Пуск" id="strPinToStartMenu" />
-    <string value="Remove from this list" id="strRemoveFromList" />
+    <string value="Убрать из этого списка" id="strRemoveFromList" />
 
     <string value="Программы" id="strPrograms" />
     <string value="Файлы" id="strFiles" />
@@ -80,21 +80,21 @@
     <string value="Подключиться к" id="strConnectTo"  />
     <string value="Панель управления" id="strControlPanel" />
     <string value="Справка и поддержка" id="strHelp" />
-    <string value="Set Program Defaults" id="strSetDefaults" />
+    <string value="Сделать программой по умолчанию" id="strSetDefaults" />
 
-    <string value="ViStart Control panel" id="strViStartControlPanel" />
+    <string value="Панель управления ViStart" id="strViStartControlPanel" />
 
-    <string value="Style" id="strStyle" />
-    <string value="Configure" id="strConfigure" />
-    <string value="Desktop" id="strDesktop" />
+    <string value="Стиль" id="strStyle" />
+    <string value="Настроить" id="strConfigure" />
+    <string value="Рабочий стол" id="strDesktop" />
 
-    <string value="Start Menu Skin" id="strWhichStartMenu" />
-    <string value="Install..." id="strInstall" />
-    <string value="Select a new ViStart theme file" id="strViStartTheme" />
+    <string value="Скин меню Пуск" id="strWhichStartMenu" />
+    <string value="Установить..." id="strInstall" />
+    <string value="Выбрать новый файл темы ViStart" id="strViStartTheme" />
     
     <string value="Start Orb Skin" id="strWhatStarOrb" />
     <string value="Use Skin default Orb" id="strSkinDefaultOrb" />
-    <string value="Pick image..." id="strPick" />
+    <string value="Выбрать картинку..." id="strPick" />
     <string value="Choose new Start Button image" id="strViStartOrb" />
 
     <string value="Rollover Skin" id="strWhatRollover" />
