@@ -119,7 +119,7 @@
     <string value="Кнопка Пуск показывает ViStart" id="strStartViStart" />
     <string value="Кнопка Пуск показывает меню Windows" id="strStartWinMenu" />
 
-    <string value="Restore Windows Start Menu Shortcut" id="strRestoreStartMenu" />
+    <string value="Восстановить ярлык меню Пуск Windows" id="strRestoreStartMenu" />
     
     <string value="Умолчания эксклюзивных опций Windows 8" id="strW8Features" />
     
