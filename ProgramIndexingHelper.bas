@@ -81,8 +81,11 @@ Dim allProgramsCollection As New Collection
 
     PopulateCollection allProgramsCollection, startMenuCommonPrograms, sVar_Reg_StartMenu_CommonPrograms
     PopulateCollection allProgramsCollection, startMenuUserPrograms, sVar_Reg_StartMenu_CurrentUserPrograms
-    
+
     PopulateCollectionFromEXEDirectory allProgramsCollection, windowsDirectory, "", False
+
+    'Store/packaged apps live in shell:AppsFolder, not the folders walked above
+    PopulateCollectionFromAppsFolder allProgramsCollection
 
     Set allProgramsCollection = SortFolders(allProgramsCollection)
 
@@ -163,6 +166,54 @@ Dim thisColItem As ColItem
     Next
 
 End Function
+
+'Merges shell:AppsFolder entries into the program collection, skipping apps the
+'filesystem walk already found (many ship both a classic .lnk and an AppsFolder
+'entry - Edge, Word, ...). Comparison is by displayed caption, like the .NET port.
+Public Function PopulateCollectionFromAppsFolder(ByRef Col As Collection)
+    On Error GoTo Handler
+
+Dim theApps As Collection
+Dim thisApp As ColItem
+Dim existingCaptions As Collection
+
+    Set existingCaptions = New Collection
+    CollectFileCaptions Col, existingCaptions
+
+    Set theApps = AppsFolderHelper.EnumerateApps
+
+    For Each thisApp In theApps
+        If Not ExistInCol(existingCaptions, UCase$(thisApp.Caption)) Then
+            If Not ExistInCol(Col, thisApp.VirtualPath) Then
+                Col.Add thisApp, thisApp.VirtualPath
+                m_exclusionList.Add thisApp, thisApp.Path
+
+                existingCaptions.Add thisApp.Caption, UCase$(thisApp.Caption)
+            End If
+        End If
+    Next
+
+    Exit Function
+Handler:
+    Logger.Error Err.Description, "PopulateCollectionFromAppsFolder"
+End Function
+
+Private Sub CollectFileCaptions(ByRef Col As Collection, ByRef captions As Collection)
+
+Dim thisColItem As ColItem
+Dim theCaption As String
+
+    For Each thisColItem In Col
+        If thisColItem.IsFile Then
+            'Compare what the tree displays: filenames minus their extension
+            theCaption = UCase$(ExtOrNot(thisColItem.Caption))
+            If Not ExistInCol(captions, theCaption) Then captions.Add theCaption, theCaption
+        ElseIf Not thisColItem.Children Is Nothing Then
+            CollectFileCaptions thisColItem.Children, captions
+        End If
+    Next
+
+End Sub
 
 Public Function PopulateCollection(ByRef Col As Collection, ByRef sourceFolder As Scripting.Folder, Optional ByVal stripperKey As String)
 On Error Resume Next
@@ -376,10 +427,19 @@ Dim newNode As INode
 
     If sourceCol Is Nothing Then Exit Sub
     
+Dim nodeCaption As String
+
     For Each thisColItem In sourceCol
         If thisColItem.IsFile Then
-            Set newNode = sourceNode.createNode(ExtOrNot(thisColItem.Caption), MakeSearchable(thisColItem.Caption), thisColItem.Path, -3, thisColItem.VirtualPath, True)
-            
+            'AppsFolder captions are display names, not filenames - never strip "extensions"
+            If LCase$(Left$(thisColItem.Path, 6)) = "shell:" Then
+                nodeCaption = thisColItem.Caption
+            Else
+                nodeCaption = ExtOrNot(thisColItem.Caption)
+            End If
+
+            Set newNode = sourceNode.createNode(nodeCaption, MakeSearchable(nodeCaption), thisColItem.Path, -3, thisColItem.VirtualPath, True)
+
             If LCase$(Right$(GetFileName(thisColItem.Path), 3)) = "lnk" Then
                 newNode.EXEName = Replace(UCase$(GetFileName(ResolveLink(thisColItem.Path))), " ", "")
             Else

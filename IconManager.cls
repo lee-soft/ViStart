@@ -62,6 +62,26 @@ Dim szExtKey As String
 
     szPath = PathRemoveBlackSlash(szPath)
     szPath = UCase$(szPath)
+
+    'Packaged/Store apps have no filesystem icon - route through the shell item
+    'image factory, cached by full parsing path
+    If Left$(szPath, 17) = "SHELL:APPSFOLDER\" Then
+        szKey = IIf(bLarge, "_large:", "_small:") & szPath
+
+        If Not ExistInCol(m_links, szKey) Then
+            Set returnObj = New ViIcon
+            returnObj.Handle = AppsFolderHelper.GetAppIcon(szPath, IIf(bLarge, 32, 16))
+
+            m_links.Add returnObj, szKey
+        Else
+            Set returnObj = m_links(szKey)
+        End If
+
+        returnObj.IconPath = szPath
+        Set GetViIcon = returnObj
+        Exit Function
+    End If
+
     szExtension = PathFindExtension(szPath)
     
     szKey = IIf(bLarge, "_large:", "_small:") & szPath

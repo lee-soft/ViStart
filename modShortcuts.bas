@@ -66,7 +66,14 @@ Dim thePathExtension As String
 
     theFile = LCase$(szFile)
     thePathExtension = PathFindExtension(szFile)
-    
+
+    'shell: parsing names (e.g. shell:AppsFolder\<AUMID> for Store apps) are
+    'launched by ShellExecute directly - they are not files
+    If Left$(theFile, 6) = "shell:" Then
+        ShellExecuteW 0, StrPtr("Open"), StrPtr(szFile), 0, StrPtr(""), SW_SHOWNORMAL
+        Exit Function
+    End If
+
     If InStr(theFile, "cmd.exe /c") = 1 Then
         If Len(theFile) > 11 Then theFile = Mid$(theFile, 11)
         ShellCommand theFile

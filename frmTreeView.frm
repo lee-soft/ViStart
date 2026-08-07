@@ -359,8 +359,11 @@ Function ShowContextMenu() As Boolean
         End If
     Else
         m_contextMenu.AddItem GetPublicString("strOpen"), "OPEN", True
-        
-        m_contextMenu.AddItem GetPublicString("strRunAsAdmin"), "RUNASADMIN"
+
+        'Elevation doesn't apply to shell: parsing names (packaged apps)
+        If LCase$(Left$(m_nTargetNode.Tag, 6)) <> "shell:" Then
+            m_contextMenu.AddItem GetPublicString("strRunAsAdmin"), "RUNASADMIN"
+        End If
         m_contextMenu.AddItem ""
     End If
     
