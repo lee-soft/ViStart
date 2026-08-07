@@ -871,22 +871,20 @@ Private Sub picRollover_MouseUp(Button As Integer, Shift As Integer, X As Single
         
             m_vistaMenu.AddItem ""
         
+            'HKCR\lnkfile\shell doesn't exist on a clean Windows 10/11 install
             Dim lnkFileShellRegKey As RegistryKey: Set lnkFileShellRegKey = Registry.ClassesRoot.OpenSubKey("lnkfile\shell")
+            Dim addToViPadKey As RegistryKey
+            If Not lnkFileShellRegKey Is Nothing Then Set addToViPadKey = lnkFileShellRegKey.OpenSubKey("Add to ViPad")
 
-            If Not lnkFileShellRegKey.OpenSubKey("Add to ViPad") Is Nothing Then
-                m_addToViPadCommand = lnkFileShellRegKey.OpenSubKey("Add to ViPad").GetValue("command", vbNullString)
+            If Not addToViPadKey Is Nothing Then
+                m_addToViPadCommand = addToViPadKey.GetValue("command", vbNullString)
                 m_addToViPadCommand = Replace(m_addToViPadCommand, "%1", lstItems(iCurIndex).Shell)
-                
-                m_vistaMenu.AddItem GetPublicString("strCopyToViPad"), "COPYTOVIPAD@NULL"
-            Else
-                If m_viPadInstalled Then
-                    m_addToViPadCommand = GenerateViPadAddToCommand(lstItems(iCurIndex).Shell)
-                
-                m_vistaMenu.AddItem GetPublicString("strCopyToViPad"), "COPYTOVIPAD@NULL"
-            '    'Else
-            '    '    m_addToViPadCommand = "http://lee-soft.com/vipad"
-                End If
 
+                m_vistaMenu.AddItem GetPublicString("strCopyToViPad"), "COPYTOVIPAD@NULL"
+            ElseIf m_viPadInstalled Then
+                m_addToViPadCommand = GenerateViPadAddToCommand(lstItems(iCurIndex).Shell)
+
+                m_vistaMenu.AddItem GetPublicString("strCopyToViPad"), "COPYTOVIPAD@NULL"
             End If
         
             m_vistaMenu.AddItem GetPublicString("strCopyToDesktop"), "COPYTODESKTOP@" & lstItems(iCurIndex).Shell

@@ -373,22 +373,20 @@ Function ShowContextMenu() As Boolean
     If FileExists(m_nTargetNode.Tag) Then
         m_contextMenu.AddItem ""
         
+        'HKCR\lnkfile\shell doesn't exist on a clean Windows 10/11 install
         Dim lnkFileRegKey As RegistryKey: Set lnkFileRegKey = Registry.ClassesRoot.OpenSubKey("lnkfile\shell")
-        
-        If Not lnkFileRegKey.OpenSubKey("Add to ViPad") Is Nothing Then
-            m_addToViPadCommand = lnkFileRegKey.OpenSubKey("Add to ViPad").GetValue("command", vbNullString)
+        Dim addToViPadKey As RegistryKey
+        If Not lnkFileRegKey Is Nothing Then Set addToViPadKey = lnkFileRegKey.OpenSubKey("Add to ViPad")
+
+        If Not addToViPadKey Is Nothing Then
+            m_addToViPadCommand = addToViPadKey.GetValue("command", vbNullString)
             m_addToViPadCommand = Replace(m_addToViPadCommand, "%1", m_nTargetNode.Tag)
-            
+
             m_contextMenu.AddItem GetPublicString("strCopyToViPad"), "COPYTOVIPAD"
-        Else
-            If m_viPadInstalled Then
-                m_addToViPadCommand = GenerateViPadAddToCommand(m_nTargetNode.Tag)
-           
-                m_contextMenu.AddItem GetPublicString("strCopyToViPad"), "COPYTOVIPAD"
-        '    'Else
-        '    '    m_addToViPadCommand = "http://lee-soft.com/vipad"
-            End If
-                
+        ElseIf m_viPadInstalled Then
+            m_addToViPadCommand = GenerateViPadAddToCommand(m_nTargetNode.Tag)
+
+            m_contextMenu.AddItem GetPublicString("strCopyToViPad"), "COPYTOVIPAD"
         End If
         
         m_contextMenu.AddItem GetPublicString("strCopyToDesktop"), "COPYTODESKTOP"
