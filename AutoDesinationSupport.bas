@@ -3,6 +3,7 @@ Option Explicit
 
 Public g_AutomaticDestinationsUpdater As AutomaticDestinationsUpdater
 
+Private m_handlerCache As Collection
 Private m_logger As SeverityLogger
 
 Private Property Get Logger() As SeverityLogger
@@ -15,10 +16,23 @@ End Property
 
 Public Function DestermineHandler(ByVal theFile As String)
 
-Dim theExtension As String
+    DestermineHandler = GetHandlerImageForExtension("." & StrEnd(theFile, "."))
 
-    theExtension = "." & StrEnd(theFile, ".")
-    DestermineHandler = UCase$(StrEnd(Trim$(GetEXEPathFromQuote(GetAbsolutePath(GetTypeHandlerPath(theExtension)))), "\"))
+End Function
+
+'The classic HKCR chain walks several registry keys per lookup; cache it per
+'extension because GetImagePathList runs it over every path in every jumplist blob.
+Public Function GetHandlerImageForExtension(ByVal theExtension As String) As String
+
+    If m_handlerCache Is Nothing Then Set m_handlerCache = New Collection
+
+    theExtension = UCase$(theExtension)
+    If ExistInCol(m_handlerCache, theExtension) Then
+        GetHandlerImageForExtension = m_handlerCache(theExtension)
+    Else
+        GetHandlerImageForExtension = UCase$(StrEnd(Trim$(GetEXEPathFromQuote(GetAbsolutePath(GetTypeHandlerPath(theExtension)))), "\"))
+        m_handlerCache.Add GetHandlerImageForExtension, theExtension
+    End If
 
 End Function
 

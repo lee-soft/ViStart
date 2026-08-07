@@ -138,22 +138,31 @@ Dim thisJumpList As New JumpList
 
     For Each thisTypeNameColItem In r_recentDocs.GetSubKeyNames
         thisTypeName = CStr(thisTypeNameColItem)
-        
-        If ExistInStringArray(GetTypeHandlersImageName(thisTypeName), srcImagePath) Then
+
+        If ExistInStringArray(GetTypeHandlersImageName(thisTypeName), srcImagePath) _
+            Or UserChoiceHelper.ImageHandlesExtension(srcImagePath, thisTypeName) Then
             thisJumpList.AddMRURegKey r_recentDocs.OpenSubKey(thisTypeName)
             setJumpList = True
         End If
     Next
-    
+
     For Each thisTypeNameColItem In r_openSaveDocs.GetSubKeyNames
         thisTypeName = CStr(thisTypeNameColItem)
 
-        If ExistInStringArray(GetTypeHandlersImageName(thisTypeName), srcImagePath) Then
+        If ExistInStringArray(GetTypeHandlersImageName(thisTypeName), srcImagePath) _
+            Or UserChoiceHelper.ImageHandlesExtension(srcImagePath, thisTypeName) Then
             thisJumpList.AddMRURegKey r_openSaveDocs.OpenSubKey(thisTypeName)
             setJumpList = True
         End If
     Next
-    
+
+    'The system jumplist blobs are the main source on Win10/11 — flag their
+    'presence so the arrow shows even when no registry MRU key matched.
+    If g_AutomaticDestinationsUpdater Is Nothing Then Set g_AutomaticDestinationsUpdater = New AutomaticDestinationsUpdater
+    If g_AutomaticDestinationsUpdater.JumplistsAvailable Then
+        thisJumpList.HasAutoDestinationItems = IsArrayInitialized(g_AutomaticDestinationsUpdater.GetImagePathList(srcImagePath))
+    End If
+
     Exit Function
 Handler:
     Logger.Error Err.Description, "GetImageJumpList", srcImagePath

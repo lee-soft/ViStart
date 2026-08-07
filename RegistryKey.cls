@@ -28,6 +28,7 @@ Private Declare Function RegSetValueEx Lib "advapi32.dll" Alias "RegSetValueExA"
 Private Declare Function RegCloseKey Lib "advapi32.dll" (ByVal hKey As Long) As Long
 Private Declare Function RegDeleteValue Lib "advapi32.dll" Alias "RegDeleteValueA" (ByVal hKey As Long, ByVal lpValueName As String) As Long
 Private Declare Function RegEnumKey Lib "advapi32.dll" Alias "RegEnumKeyA" (ByVal hKey As Long, ByVal dwIndex As Long, ByVal lpName As String, ByVal cbName As Long) As Long
+Private Declare Function RegEnumValue Lib "advapi32.dll" Alias "RegEnumValueA" (ByVal hKey As Long, ByVal dwIndex As Long, ByVal lpValueName As String, lpcbValueName As Long, ByVal lpReserved As Long, lpType As Any, lpData As Any, lpcbData As Any) As Long
 Private Declare Function RegDeleteKeyEx Lib "advapi32.dll" Alias "RegDeleteKeyExA" (ByVal hKey As Long, ByVal lpSubKey As String, ByVal samDesired As Long, ByVal Reserved As Long) As Long
 'WindowsXP
 Private Declare Function RegDeleteKey Lib "advapi32.dll" Alias "RegDeleteKeyA" (ByVal hKey As Long, ByVal lpSubKey As String) As Long
@@ -144,6 +145,36 @@ Dim length As Long
         subkey_name = Left$(subkey_name, InStr(subkey_name, Chr$(0)) - 1)
         
         SubKeysNames.Add subkey_name
+    Loop
+
+End Function
+
+Public Function GetValueNames() As Collection
+
+Dim value_num As Long
+Dim value_name As String
+
+Dim length As Long
+
+    Dim ValueNames As Collection
+    Set ValueNames = New Collection
+    Set GetValueNames = ValueNames
+
+    ' Enumerate the value names.
+    value_num = 0
+
+    Do
+        ' Enumerate values until we get an error.
+        length = 1024
+        value_name = Space$(length)
+        If RegEnumValue(Me.Key, value_num, _
+            value_name, length, 0, _
+            ByVal 0&, ByVal 0&, ByVal 0&) _
+                <> ERROR_SUCCESS Then Exit Do
+
+        value_num = value_num + 1
+
+        ValueNames.Add Left$(value_name, length)
     Loop
 
 End Function

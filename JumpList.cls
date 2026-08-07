@@ -15,6 +15,11 @@ Option Explicit
 
 Public ImageName As String
 
+'Set at build time when the AutomaticDestinations blobs hold entries for this
+'app — those items only materialize in JumpListDrawer, so IsEmpty must know
+'about them or the jumplist arrow never shows.
+Public HasAutoDestinationItems As Boolean
+
 Private m_mruKey As Collection
 
 Public Function AddMRURegKey(thisMRUKey As RegistryKey)
@@ -23,8 +28,8 @@ End Function
 
 Public Function IsEmpty() As Boolean
     IsEmpty = True
-    
-    If m_mruKey.count > 0 Then
+
+    If m_mruKey.count > 0 Or HasAutoDestinationItems Then
         IsEmpty = False
     End If
 End Function

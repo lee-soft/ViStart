@@ -151,8 +151,7 @@ Dim currentY As Long
     Set m_theList = New Collection
     
     If g_AutomaticDestinationsUpdater.JumplistsAvailable Then
-        'theList = g_AutomaticDestinationsUpdater.GetImagePathList(newSource.ImageName)
-        
+        theList = g_AutomaticDestinationsUpdater.GetImagePathList(newSource.ImageName)
     End If
     
     theList = ConcatArray(newSource.GetMRUList, theList)

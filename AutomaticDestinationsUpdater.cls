@@ -34,24 +34,29 @@ Dim thisCollection As Collection
 Dim thisPath
 Dim theResults() As String
 Dim resultIndex As Long
-Dim thisImagePath
+Dim thisExtension As String
+Dim userChoiceExts As Collection
 
     srcImagePath = UCase$(StrEnd(srcImagePath, "\"))
+    Set userChoiceExts = UserChoiceHelper.GetExtensionsForImage(srcImagePath)
 
     For Each thisCollection In m_jumpLists
-    
+
         For Each thisPath In thisCollection
-            thisImagePath = DestermineHandler(CStr(thisPath))
-            
-            If thisImagePath = srcImagePath Then
+            thisExtension = UCase$("." & StrEnd(CStr(thisPath), "."))
+
+            'Classic HKCR handler chain, else the user's Win10/11 UserChoice associations
+            If GetHandlerImageForExtension(thisExtension) = srcImagePath _
+                Or ExistInCol(userChoiceExts, thisExtension) Then
+
                 ReDim Preserve theResults(resultIndex)
                 theResults(resultIndex) = thisPath
-                
+
                 resultIndex = resultIndex + 1
             End If
         Next
     Next
-    
+
     GetImagePathList = theResults
 
 End Function
