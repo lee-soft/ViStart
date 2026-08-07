@@ -510,6 +510,12 @@ Sub UpdateDesktopImage(newPosition As POINTL)
     hdcSrc = GetWindowDC(GetDesktopWindow()) ' Get device context for entire
                                           ' window.
 
+    'The desktop DC exposes physical pixels even when this process is DPI-virtualized
+    '(HORZRES reports the virtualized width, DESKTOPHORZRES the physical one), so the
+    'capture rect must be scaled up to physical space and stretched back down.
+    Dim dpiScale As Single
+    dpiScale = GetDeviceCaps(hdcSrc, DESKTOPHORZRES) / GetDeviceCaps(hdcSrc, HORZRES)
+
     m_DesktopBitmapTemp.CreateFromSizeFormat Me.ScaleWidth, Me.ScaleHeight, PixelFormat.Format32bppArgb
     m_DesktopBitmap.CreateFromSizeFormat newWidth, newHeight, PixelFormat.Format32bppArgb
     
@@ -519,9 +525,11 @@ Sub UpdateDesktopImage(newPosition As POINTL)
     hDCMemory = theGrahipcsTemp.GetHDC
     
     ' Copy the on-screen image into the memory DC.
-    r = BitBlt(hDCMemory, 0, 0, Me.ScaleWidth, Me.ScaleHeight, hdcSrc, _
-            newPosition.X, newPosition.Y, vbSrcCopy)
-    
+    SetStretchBltMode hDCMemory, HALFTONE
+    r = StretchBlt(hDCMemory, 0, 0, Me.ScaleWidth, Me.ScaleHeight, hdcSrc, _
+            newPosition.X * dpiScale, newPosition.Y * dpiScale, _
+            Me.ScaleWidth * dpiScale, Me.ScaleHeight * dpiScale, vbSrcCopy)
+
     theGrahipcsTemp.ReleaseHDC hDCMemory
     ReleaseDC GetDesktopWindow(), hdcSrc
 

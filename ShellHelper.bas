@@ -1,4 +1,3 @@
-@ -1,691 +1,691 @@
 Attribute VB_Name = "ShellHelper"
 Option Explicit
 
@@ -7,10 +6,10 @@ Private Declare Function SHGetPathFromIDListW Lib "shell32" (ByVal pidList As Lo
 Private Declare Function GetNextWindow Lib "user32.dll" Alias "GetWindow" (ByVal hWnd As Long, ByVal wFlag As Long) As Long
 Private Declare Function SHAppBarMessage Lib "shell32.dll" (ByVal dwMessage As Long, ByRef pData As appBarData) As Long
 
-Private Declare Function SHGetSpecialFolderLocation Lib "shell32.dll" (ByVal hwndOwner As Long, ByVal nFolder As Long, pidl As ITEMIDLIST) As Long
+Private Declare Function SHGetSpecialFolderLocation Lib "shell32.dll" (ByVal hWndOwner As Long, ByVal nFolder As Long, pidl As ITEMIDLIST) As Long
 Private Declare Function SHGetPathFromIDList Lib "shell32.dll" Alias "SHGetPathFromIDListA" (ByVal pidl As Long, ByVal pszPath As String) As Long
                         
-Private Declare Function SHGetFolderPath Lib "shfolder" Alias "SHGetFolderPathA" (ByVal hwndOwner As Long, ByVal nFolder As Long, ByVal hToken As Long, ByVal dwFlags As Long, ByVal pszPath As String) As Long
+Private Declare Function SHGetFolderPath Lib "shfolder" Alias "SHGetFolderPathA" (ByVal hWndOwner As Long, ByVal nFolder As Long, ByVal hToken As Long, ByVal dwFlags As Long, ByVal pszPath As String) As Long
 
 Private Declare Function GetLocaleInfo Lib "kernel32" Alias "GetLocaleInfoW" (ByVal Locale As Long, ByVal LCType As Long, ByVal lpLCData As String, ByVal cchData As Long) As Long
 
@@ -223,7 +222,7 @@ Function BrowseForFile(sInitDir As String, Optional ByVal sFileFilters As String
     'Set the initial directory
     tFileBrowse.lpstrInitialDir = StrPtr(sInitDir)
     'Set the parent handle
-    tFileBrowse.hwndOwner = lParentHwnd
+    tFileBrowse.hWndOwner = lParentHwnd
     'Set the title
     tFileBrowse.lpstrTitle = StrPtr(sTitle)
     
@@ -555,20 +554,6 @@ Dim thisForm As Form
         End If
     Next
     
-End Function
-
-Public Function CalculateTopBasedOnDPI(ByVal theDPI As Long, ByVal clientHeight As Long) As Long
-    
-Dim scalePercentage As Single
-Dim taskBarHeight As Single
-
-Dim TaskBar As win.RECT
-    TaskBar = GetTaskBarPosition
-    
-    scalePercentage = 96 / theDPI
-    taskBarHeight = (TaskBar.Bottom - TaskBar.Top) * scalePercentage
-    
-    CalculateTopBasedOnDPI = ((Screen.Height / Screen.TwipsPerPixelY) - taskBarHeight) - (clientHeight)
 End Function
 
 Public Function GetTaskBarPosition() As win.RECT

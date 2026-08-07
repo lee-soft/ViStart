@@ -134,9 +134,6 @@ Private m_taskbarRect As RECTL
 Private m_inTray As Boolean
 Private m_showingWinStartMenu As Boolean
 
-Private m_abNormalDPI As Boolean
-Private m_userDPI As Long
-
 Private m_ORB_HEIGHT As Long
 Private m_logger As SeverityLogger
 
@@ -277,11 +274,6 @@ Private Sub Form_Load()
         Set m_windows8TaskBar = New Windows8TaskBar
     End If
 
-    m_userDPI = GeneralHelper.CurrentDPI
-
-    If m_userDPI >= 144 Then
-        m_abNormalDPI = True
-    End If
 End Sub
 
 Sub AddIconToTray()
@@ -458,8 +450,11 @@ Sub ActivateStartMenu()
 Dim TaskBar As win.RECT
 Dim taskbarEdge As AbeBarEnum
 
-    TaskBar = GetTaskBarPosition
-    
+    'ABM_GETTASKBARPOS reports physical pixels even when this process is DPI-virtualized;
+    'GetWindowRect stays in the same coordinate space as MoveWindow below.
+    If IsWindow(g_lnghwndTaskBar) = APIFALSE Then ShellHelper.UpdateHwnds
+    GetWindowRect g_lnghwndTaskBar, TaskBar
+
     lngLastDraw = 2
     m_startButton.DrawPart 2
     
@@ -472,12 +467,7 @@ Dim taskbarEdge As AbeBarEnum
         
         If taskbarEdge = abe_bottom Then
             lng_myLeft = Layout.XOffset
-            
-            If m_abNormalDPI Then
-                lng_myTop = CalculateTopBasedOnDPI(m_userDPI, m_startMenuBase.ScaleHeight)
-            Else
-                lng_myTop = (TaskBar.Top - m_startMenuBase.ScaleHeight) - Layout.YOffset
-            End If
+            lng_myTop = (TaskBar.Top - m_startMenuBase.ScaleHeight) - Layout.YOffset
         ElseIf taskbarEdge = ABE_TOP Then
             lng_myLeft = Layout.XOffset
             lng_myTop = (TaskBar.Bottom) + Layout.YOffset
