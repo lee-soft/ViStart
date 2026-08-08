@@ -23,6 +23,19 @@ Private Declare Function LockResource Lib "kernel32" (ByVal hResData As Long) As
 Private Declare Function SysReAllocStringLen Lib "oleaut32" (ByVal pBSTR As Long, ByVal psz As Long, ByVal length As Long) As Long
 Private Declare Function GetMem2 Lib "msvbvm60" (Src As Any, Dst As Any) As Long
 
+Private Declare Function SetWinEventHook Lib "user32" (ByVal eventMin As Long, ByVal eventMax As Long, ByVal hmodWinEventProc As Long, ByVal pfnWinEventProc As Long, ByVal idProcess As Long, ByVal idThread As Long, ByVal dwFlags As Long) As Long
+Private Declare Function UnhookWinEvent Lib "user32" (ByVal hWinEventHook As Long) As Long
+Private Declare Function OrbGetDesktopWindow Lib "user32" Alias "GetDesktopWindow" () As Long
+
+Private Const EVENT_SYSTEM_FOREGROUND As Long = &H3
+Private Const EVENT_OBJECT_REORDER As Long = &H8004
+Private Const OBJID_WINDOW As Long = 0
+Private Const WINEVENT_OUTOFCONTEXT As Long = &H0
+Private Const WINEVENT_SKIPOWNPROCESS As Long = &H2
+
+Private m_hOrbZOrderHook As Long
+Private m_hOrbReorderHook As Long
+
 'Declare Function GetThreadLocale Lib "kernel32" Alias "GetThreadLocale" () As Long
 
 Private m_wScriptShellObject As Object
@@ -512,6 +525,50 @@ Public Function IsStyle( _
       IsStyle = True
    End If
 End Function
+
+'The Windows 11 taskbar re-asserts its topmost position above the (equally
+'topmost) orb whenever the foreground changes AND when the taskbar itself is
+'clicked - the latter without any foreground event. With only the 1s poll the
+'orb vanishes behind the taskbar until the next tick, so watch both signals:
+'foreground changes, and top-level z-order shuffles on the desktop (which is
+'where a taskbar self-raise shows up). The timer stays as a backstop.
+Public Sub StartOrbZOrderWatch()
+    If m_hOrbZOrderHook <> 0 Then Exit Sub
+
+    m_hOrbZOrderHook = SetWinEventHook(EVENT_SYSTEM_FOREGROUND, EVENT_SYSTEM_FOREGROUND, 0, _
+        AddressOf OrbZOrderEventProc, 0, 0, WINEVENT_OUTOFCONTEXT Or WINEVENT_SKIPOWNPROCESS)
+    m_hOrbReorderHook = SetWinEventHook(EVENT_OBJECT_REORDER, EVENT_OBJECT_REORDER, 0, _
+        AddressOf OrbZOrderEventProc, 0, 0, WINEVENT_OUTOFCONTEXT Or WINEVENT_SKIPOWNPROCESS)
+End Sub
+
+Public Sub StopOrbZOrderWatch()
+    If m_hOrbZOrderHook <> 0 Then
+        UnhookWinEvent m_hOrbZOrderHook
+        m_hOrbZOrderHook = 0
+    End If
+
+    If m_hOrbReorderHook <> 0 Then
+        UnhookWinEvent m_hOrbReorderHook
+        m_hOrbReorderHook = 0
+    End If
+End Sub
+
+Private Sub OrbZOrderEventProc(ByVal hWinEventHook As Long, ByVal winEvent As Long, ByVal hWnd As Long, ByVal idObject As Long, ByVal idChild As Long, ByVal idEventThread As Long, ByVal dwmsEventTime As Long)
+    On Error Resume Next
+
+    If m_hOrbZOrderHook = 0 Then Exit Sub
+    If g_Exiting Then Exit Sub
+
+    'Reorder events fire for all sorts of accessibility objects; only sibling
+    'reorders of top-level windows (parent = desktop) mean a z-order change
+    If winEvent = EVENT_OBJECT_REORDER Then
+        If idObject <> OBJID_WINDOW Then Exit Sub
+        If hWnd <> OrbGetDesktopWindow() Then Exit Sub
+    End If
+
+    'The event races the taskbar's own raise - burst-check instead of once
+    frmEvents.KickOrbZOrderBurst
+End Sub
 
 Public Function GetZOrder(ByVal hWndTarget As Long) As Long
     

@@ -22,10 +22,16 @@ Begin VB.Form frmEvents
       Top             =   120
       Width           =   735
    End
-   Begin VB.Timer timzOrderCheck 
+   Begin VB.Timer timzOrderCheck
       Enabled         =   0   'False
       Interval        =   1000
       Left            =   1680
+      Top             =   1440
+   End
+   Begin VB.Timer timOrbBurst
+      Enabled         =   0   'False
+      Interval        =   60
+      Left            =   2160
       Top             =   1440
    End
    Begin VB.Timer timViOrb 
@@ -135,6 +141,8 @@ Private m_inTray As Boolean
 Private m_showingWinStartMenu As Boolean
 
 Private m_ORB_HEIGHT As Long
+Private m_orbNotTopMost As Boolean
+Private m_orbBurstTicks As Long
 Private m_logger As SeverityLogger
 
 Property Get Logger() As SeverityLogger
@@ -190,8 +198,9 @@ Dim startOrbPath As String
         
         m_taskbarParent.Show
         m_taskbarParent.Move 0, 0, 0, 0
-        
+
         timzOrderCheck.Enabled = True
+        ShellHelper.StartOrbZOrderWatch
     End If
     
     If FileExists(startOrbPath) Then
@@ -315,6 +324,7 @@ Dim message As Long
 End Sub
 
 Private Sub Form_Unload(Cancel As Integer)
+    ShellHelper.StopOrbZOrderWatch
     Set m_windows8TaskBar = Nothing
     
     If Not g_ViGlanceOpen Then
@@ -821,40 +831,76 @@ Private Sub timViOrb_Timer()
 End Sub
 
 Private Sub timzOrderCheck_Timer()
+    EnforceOrbZOrder
+End Sub
+
+'A foreground change is only the OPENING move: the Win11 taskbar raises itself
+'a beat later (measured ~200-350ms after the activation event) with no further
+'WinEvent. One immediate check would run too early and see nothing wrong, so
+'each trigger starts a short burst of re-checks that outlasts the raise.
+Public Sub KickOrbZOrderBurst()
+    EnforceOrbZOrder
+
+    m_orbBurstTicks = 7
+    timOrbBurst.Enabled = True
+End Sub
+
+Private Sub timOrbBurst_Timer()
+    EnforceOrbZOrder
+
+    m_orbBurstTicks = m_orbBurstTicks - 1
+    If m_orbBurstTicks <= 0 Then
+        timOrbBurst.Enabled = False
+    End If
+End Sub
+
+'Keeps the orb above the taskbar without stealing it from fullscreen apps.
+'Ran from the 1s backstop timer and, on activation changes, from the
+'EVENT_SYSTEM_FOREGROUND WinEvent hook - the Windows 11 taskbar re-raises
+'itself within the topmost band on every foreground change, so waiting for
+'the timer alone leaves the orb hidden behind it for up to a second.
+Public Sub EnforceOrbZOrder()
+    On Error GoTo Handler
 
 Dim hWndForeGroundWindow As Long
 Dim zOrderOrb As Long
-Static m_NotTopMost As Boolean
-    
+
+    If m_startButton Is Nothing Then Exit Sub
+    If Not bViOrbOpen Then Exit Sub
+
     hWndForeGroundWindow = GetForegroundWindow
     zOrderOrb = GetZOrder(m_startButton.hWnd)
 
-    If (GetZOrder(g_lnghwndTaskBar) < zOrderOrb) And m_NotTopMost = False Then
+    If (GetZOrder(g_lnghwndTaskBar) < zOrderOrb) And m_orbNotTopMost = False Then
         SetWindowPos m_startButton.hWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE Or SWP_NOSIZE Or SWP_NOACTIVATE
     Else
         If Not hWndBelongToUs(hWndForeGroundWindow) And _
                     hWndForeGroundWindow <> g_lnghwndTaskBar Then
-            
+
             'taskbar behind target window
             If IsTaskBarBehindWindow(hWndForeGroundWindow) Then
                 If IsWindowTopMost(hWndForeGroundWindow) = False Then
-                    m_NotTopMost = True
+                    m_orbNotTopMost = True
                     m_startButton.Hide
                 Else
                     'topmost target Window is behind Orb
                     If zOrderOrb < GetZOrder(hWndForeGroundWindow) Then
                         SetWindowPos hWndForeGroundWindow, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOSIZE Or SWP_NOMOVE
-                        m_NotTopMost = True
+                        m_orbNotTopMost = True
                     End If
                 End If
             Else
-                If m_NotTopMost = True Then
-                    m_NotTopMost = False
-                    
-                    Logger.Trace "Showing ViStart start button", "timzOrderCheck_Timer"
+                If m_orbNotTopMost = True Then
+                    m_orbNotTopMost = False
+
+                    Logger.Trace "Showing ViStart start button", "EnforceOrbZOrder"
                     ShowWindow m_startButton.hWnd, SW_SHOWNOACTIVATE
                 End If
             End If
         End If
     End If
+
+    Exit Sub
+Handler:
+    Logger.Error Err.Description, "EnforceOrbZOrder"
 End Sub
