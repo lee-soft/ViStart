@@ -18,7 +18,7 @@
 ; Marketing/PAD version format (matches the 2023 "8.1.0.5311" precedent; the
 ; exe's own FileVersion string is VB6-style "8.01.xxxx" - ViUpdater's version
 ; compare is numeric-tolerant so the two formats agree).
-#define MyAppVersion "8.1.0.5328"
+#define MyAppVersion "8.1.0.5332"
 #define MyAppPublisher "Lee-Soft.com"
 #define MyAppExeName "ViStart.exe"
 #ifndef BuildDir
@@ -65,6 +65,11 @@ Source: "{#BuildDir}\ViStart.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\Languages\*"; DestDir: "{app}\Languages"; Flags: recursesubdirs createallsubdirs ignoreversion
 Source: "..\Plugins\*"; DestDir: "{app}\Plugins"; Flags: recursesubdirs createallsubdirs ignoreversion
 Source: "..\Skins\*"; DestDir: "{app}\_skins"; Flags: recursesubdirs createallsubdirs ignoreversion
+; Default orb: the app falls back to _orbs\Windows 7.png when the configured
+; orb and the skin's start_button.png are both missing, so ship it (5311's
+; footprint had no orbs, which left a blank orb on skins without one).
+; onlyifdoesntexist: never clobber an orb the user replaced.
+Source: "..\Orbs\Windows 7.png"; DestDir: "{app}\_orbs"; Flags: onlyifdoesntexist
 
 [Registry]
 ; Start with Windows. The app's control-panel checkbox reads/writes this same

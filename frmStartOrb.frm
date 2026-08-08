@@ -91,6 +91,10 @@ Public Function ResetOrb()
                 Me.Path = sCon_AppDataPath & "_orbs\start_button.png"
         ElseIf FileExists(sCon_AppDataPath & "start_button.png") Then
                 Me.Path = sCon_AppDataPath & "start_button.png"
+        Else
+                'The installer ships the Windows 7 orb into _orbs, so this
+                'means the install is damaged - say so instead of going blank
+                Logger.Error "No start orb image found in the skin or _orbs", "ResetOrb"
         End If
 
     Settings.CurrentOrb = vbNullString
