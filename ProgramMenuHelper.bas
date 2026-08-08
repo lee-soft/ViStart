@@ -117,12 +117,11 @@ End Function
 
 Public Function IsValidArray(arr As Variant) As Boolean
     On Error Resume Next
-    If LBound(arr) = UBound(arr) Then
-        IsValidArray = False
-        Exit Function
-    Else
-        IsValidArray = True
-    End If
+    'Single-element arrays are valid: single-word captions (Calculator, Paint,
+    'Terminal, ...) yield exactly one word-start position and must remain
+    'searchable. Only an uninitialized array (LBound raises) is invalid -
+    'the failed comparison then leaves the default False in place.
+    IsValidArray = (UBound(arr) >= LBound(arr))
 End Function
 
 Public Function MakeSearchable(ByVal srcString As String) As String

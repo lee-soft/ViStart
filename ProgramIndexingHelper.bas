@@ -101,6 +101,7 @@ On Error Resume Next
 Dim thisFile As Scripting.File
 Dim thisFolder As Scripting.Folder
 Dim theKey As String
+Dim theCaption As String
 Dim thisColItem As ColItem
 
     Err.Clear
@@ -110,33 +111,39 @@ Dim thisColItem As ColItem
             If Err.Number <> 70 Then
                 Logger.Error Err.Description, "PopulateCollectionFromEXEDirectory"
             End If
-            
+
             Err.Clear
         Else
             If Not thisFile.Attributes And Hidden Then
                 If LCase$(Right$(thisFile.Name, 3)) = "exe" Then
-    
+
                     theKey = Replace(thisFile.Path, stripperKey, "")
                     If Not ExistInCol(Col, theKey) Then
-                        
-                    
-                        Set thisColItem = New ColItem
-                        thisColItem.IsFile = True
-                        thisColItem.FileName = thisFile.Name
-                        thisColItem.Caption = GetAppDescription(thisFile.Path)
+                        theCaption = GetAppDescription(thisFile.Path)
 
-                        thisColItem.Path = thisFile.Path
-                        thisColItem.VirtualPath = theKey
-                        thisColItem.VisibleOnlyInSearch = True
-                        
-                        Col.Add thisColItem, theKey
-                        m_exclusionList.Add thisColItem, thisColItem.Path
+                        'MUI-split system exes (Win11 notepad.exe) and resource-less
+                        'tools have no version description. Such entries could never
+                        'be found by name, and with single-word captions searchable
+                        'they would surface as nameless results - skip them.
+                        If Len(theCaption) > 0 Then
+                            Set thisColItem = New ColItem
+                            thisColItem.IsFile = True
+                            thisColItem.FileName = thisFile.Name
+                            thisColItem.Caption = theCaption
+
+                            thisColItem.Path = thisFile.Path
+                            thisColItem.VirtualPath = theKey
+                            thisColItem.VisibleOnlyInSearch = True
+
+                            Col.Add thisColItem, theKey
+                            m_exclusionList.Add thisColItem, thisColItem.Path
+                        End If
                     End If
-                
+
                 End If
             End If
         End If
-        
+
     Next
     
     If Not includeSubFolders Then Exit Function
@@ -440,7 +447,12 @@ Dim nodeCaption As String
 
             Set newNode = sourceNode.createNode(nodeCaption, MakeSearchable(nodeCaption), thisColItem.Path, -3, thisColItem.VirtualPath, True)
 
-            If LCase$(Right$(GetFileName(thisColItem.Path), 3)) = "lnk" Then
+            If LCase$(Left$(thisColItem.Path, 6)) = "shell:" Then
+                'AUMIDs make meaningless "exe names" (and dozens start with
+                'MICROSOFT.) - let the exe-prefix search fallback match the
+                'displayed name typed without spaces instead
+                newNode.EXEName = Replace(UCase$(nodeCaption), " ", "")
+            ElseIf LCase$(Right$(GetFileName(thisColItem.Path), 3)) = "lnk" Then
                 newNode.EXEName = Replace(UCase$(GetFileName(ResolveLink(thisColItem.Path))), " ", "")
             Else
                 newNode.EXEName = Replace(UCase$(GetFileName(thisColItem.Path)), " ", "")
