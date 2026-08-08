@@ -28,6 +28,10 @@ Public Declare Function TrackMouseEvent Lib "user32.dll" (ByRef lpEventTrack As 
 Public Const TME_LEAVE As Long = &H2
 Public Const WM_USER As Long = &H400
 
+Private Declare Function SHChangeNotify Lib "shell32.dll" (ByVal wEventID As Long, ByVal uFlags As Long, ByVal dwItem1 As Long, ByVal dwItem2 As Long) As Long
+Private Const SHCNE_ASSOCCHANGED As Long = &H8000000
+Private Const SHCNF_IDLIST As Long = &H0
+
 Public Declare Function ShellExecute Lib "shell32.dll" Alias "ShellExecuteA" (ByVal hWnd As Long, ByVal lpOperation As String, ByVal lpFile As String, ByVal lpParameters As String, ByVal lpDirectory As String, ByVal nShowCmd As Long) As Long
 Public Declare Function UpdateLayeredWindow Lib "user32.dll" (ByVal hWnd As Long, ByVal hdcDst As Long, pptDst As Any, psize As Any, ByVal hdcSrc As Long, pptSrc As Any, ByVal crKey As Long, ByRef pblend As BLENDFUNCTION, ByVal dwFlags As Long) As Long
 Public Declare Function SendMessageW Lib "user32" ( _
@@ -238,32 +242,61 @@ Handler:
     Logger.Error Err.Description, "AddToShellContextMenu"
 End Sub
 
+'Registers the extension under HKCU\Software\Classes, which every Windows
+'version since 2000 merges into HKEY_CLASSES_ROOT for the current user - one
+'mechanism for XP through 11, and it needs no elevation. (Writing through
+'HKEY_CLASSES_ROOT itself lands on the HKLM side, so the old version of this
+'routine silently failed on Vista+ unless ViStart happened to run as admin.)
+'Explorer is only notified when a value actually changed, keeping normal
+'startups from invalidating the shell icon cache.
 Sub CreateFileAssociation(ByVal szExtension As String, ByVal szClassName As String, _
     ByVal szDescription As String, ByVal szExeProgram As String)
-    
+
+    On Error GoTo Handler
+
+Dim bChanged As Boolean
+
     ' ensure that there is a leading dot
     If Left$(szExtension, 1) <> "." Then
         szExtension = "." & szExtension
     End If
-    
-    Dim extensionRegKey As RegistryKey
-    
-    Set extensionRegKey = Registry.ClassesRoot.CreateSubKey(szExtension)
-    If extensionRegKey Is Nothing Then
+
+    If Registry.CurrentUser.CreateSubKey("Software\Classes\" & szExtension) Is Nothing Then
         Logger.Error "Cannot create file association", "CreateFileAssociation", szExtension, szClassName, szDescription, szExeProgram
         Exit Sub
     End If
-    
-    extensionRegKey.SetValue "", szClassName
-    
-    Dim classRegKey As RegistryKey
-    Set classRegKey = Registry.ClassesRoot.CreateSubKey(szClassName)
-    classRegKey.SetValue "", szDescription
-    
-    Dim classCommandRegKey As RegistryKey
-    Set classCommandRegKey = Registry.ClassesRoot.CreateSubKey(szClassName & "\Shell\Open\Command")
-    classCommandRegKey.SetValue "", szExeProgram & " /install_theme " & " ""%1"""
+
+    If EnsureUserClassDefault("Software\Classes\" & szExtension, szClassName) Then bChanged = True
+    If EnsureUserClassDefault("Software\Classes\" & szClassName, szDescription) Then bChanged = True
+    If EnsureUserClassDefault("Software\Classes\" & szClassName & "\DefaultIcon", _
+        """" & szExeProgram & """,0") Then bChanged = True
+    If EnsureUserClassDefault("Software\Classes\" & szClassName & "\Shell\Open\Command", _
+        """" & szExeProgram & """ /install_theme ""%1""") Then bChanged = True
+
+    If bChanged Then
+        SHChangeNotify SHCNE_ASSOCCHANGED, SHCNF_IDLIST, 0, 0
+    End If
+
+    Exit Sub
+Handler:
+    Logger.Error Err.Description, "CreateFileAssociation", szExtension
 End Sub
+
+'Sets a key's default value under HKCU if it differs; returns True when a
+'write happened so the caller knows to notify the shell
+Private Function EnsureUserClassDefault(ByVal szSubKey As String, ByVal szValue As String) As Boolean
+
+Dim theKey As RegistryKey
+
+    Set theKey = Registry.CurrentUser.CreateSubKey(szSubKey)
+    If theKey Is Nothing Then Exit Function
+
+    If theKey.GetValue("", vbNullString) <> szValue Then
+        theKey.SetValue "", szValue
+        EnsureUserClassDefault = True
+    End If
+
+End Function
 
 Public Function CheckBoxToBoolean(ByVal theValue As CheckBoxConstants) As Boolean
 
