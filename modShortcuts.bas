@@ -63,6 +63,9 @@ Public Function SelectBestExecutionMethod(ByVal szFile As String)
 
 Dim theFile As String
 Dim thePathExtension As String
+Dim lngResult As Long
+
+    Logger.Trace szFile, "SelectBestExecutionMethod"
 
     theFile = LCase$(szFile)
     thePathExtension = PathFindExtension(szFile)
@@ -70,7 +73,11 @@ Dim thePathExtension As String
     'shell: parsing names (e.g. shell:AppsFolder\<AUMID> for Store apps) are
     'launched by ShellExecute directly - they are not files
     If Left$(theFile, 6) = "shell:" Then
-        ShellExecuteW 0, StrPtr("Open"), StrPtr(szFile), 0, StrPtr(""), SW_SHOWNORMAL
+        lngResult = ShellExecuteW(0, StrPtr("Open"), StrPtr(szFile), 0, 0, SW_SHOWNORMAL)
+        If lngResult <= 32 Then
+            Logger.Error "ShellExecuteW failed, rc=" & lngResult & ", trying explorer", "SelectBestExecutionMethod", szFile
+            ExplorerRun szFile
+        End If
         Exit Function
     End If
 
@@ -78,11 +85,11 @@ Dim thePathExtension As String
         If Len(theFile) > 11 Then theFile = Mid$(theFile, 11)
         ShellCommand theFile
     ElseIf Left$(theFile, 8) = "explorer" Then
-        
+
         On Error Resume Next
         Shell theFile
     Else
-    
+
         'We can't trust the LINK file in Windows 8
         If g_Windows8 Or g_Windows81 Then
             ExplorerRun szFile
@@ -91,13 +98,23 @@ Dim thePathExtension As String
                 Shell "explorer.exe " & """" & szFile & """", vbNormalFocus
             Else
                 'ExplorerRun was the old way, when it's not WindowsXP
-                ShellExecuteW 0, StrPtr("Open"), StrPtr(szFile), 0, StrPtr(""), SW_SHOWNORMAL
+                lngResult = ShellExecuteW(0, StrPtr("Open"), StrPtr(szFile), 0, 0, SW_SHOWNORMAL)
+                If lngResult <= 32 Then
+                    'From this 32-bit process the shell resolves a shortcut's
+                    'known-folder-relative target against the WOW64 view, so
+                    'links into the 64-bit Program Files come back
+                    'NOASSOC/PATH_NOT_FOUND (PowerShell 7, Brave PWAs, ...).
+                    '64-bit Explorer resolves them correctly - same dodge the
+                    'Windows 8 branch above has always used.
+                    Logger.Error "ShellExecuteW failed, rc=" & lngResult & ", trying explorer", "SelectBestExecutionMethod", szFile
+                    ExplorerRun szFile
+                End If
             End If
         End If
-        
+
         'CmdRun szFile, vbNormalFocus
     End If
-        
+
 End Function
 
 Public Function CmdRun(sPath As String, Optional winStyle As VbAppWinStyle = vbHide)
