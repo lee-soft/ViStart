@@ -12,7 +12,13 @@ Private Const IID_ISHELLITEMIMAGEFACTORY As String = "{BCC18B79-BA16-442F-80C4-8
 Private Const SHELL_APPSFOLDER_PREFIX As String = "SHELL:APPSFOLDER\"
 
 Private Const CC_STDCALL As Long = 4
-Private Const SIIGBF_ICONONLY As Long = &H4
+
+'SIIGBF_RESIZETOFIT (0), NOT SIIGBF_ICONONLY: for packaged apps ICONONLY makes
+'GetImage return the generic document icon instead of the app logo (verified
+'across all 265 AppsFolder entries with the IconTest harness - flags 0 / 0x1 /
+'0x80 give the real logo, 0x4 gives the blank page for every true UWP app).
+'Win32 entries return identical bits either way.
+Private Const SIIGBF_RESIZETOFIT As Long = 0
 
 Private Type APPICONINFO
     fIcon As Long
@@ -24,7 +30,6 @@ End Type
 
 Private Declare Function SHGetIDListFromObject Lib "shell32" (ByVal punk As IUnknown, ppidl As Long) As Long
 Private Declare Function SHCreateItemFromIDList Lib "shell32" (ByVal pidl As Long, riid As Any, ppv As Long) As Long
-Private Declare Function SHParseDisplayName Lib "shell32" (ByVal pszName As Long, ByVal pbc As Long, ppidl As Long, ByVal sfgaoIn As Long, psfgaoOut As Long) As Long
 Private Declare Function DispCallFunc Lib "oleaut32" (ByVal pvInstance As Long, ByVal oVft As Long, ByVal cc As Long, ByVal vtReturn As Integer, ByVal cActuals As Long, prgVt As Any, prgpVarg As Any, pvargResult As Variant) As Long
 Private Declare Function App_CLSIDFromString Lib "ole32" Alias "CLSIDFromString" (ByVal lpszGuid As Long, pGuid As Any) As Long
 Private Declare Sub App_CoTaskMemFree Lib "ole32" Alias "CoTaskMemFree" (ByVal pv As Long)
@@ -33,8 +38,7 @@ Private Declare Function App_CreateIconIndirect Lib "user32" Alias "CreateIconIn
 Private Declare Function App_DeleteObject Lib "gdi32" Alias "DeleteObject" (ByVal hObject As Long) As Long
 
 'PIDLs captured from the live FolderItems during enumeration, keyed by uppercase
-'parsing path. Re-binding through the PIDL yields the real UWP icon where the
-'parsing name alone reconstructs a thinner item with only a generic icon.
+'parsing path, saving a re-parse of the AppsFolder namespace per icon request.
 'They stay allocated for the process lifetime, like the .NET port.
 Private m_pidlCache As Collection
 
@@ -121,8 +125,8 @@ Dim thisPidl As Long
 Dim pFactory As Long
 Dim hBmp As Long
 Dim iidFactory(0 To 3) As Long
-Dim parseName As String
-Dim dummySfgao As Long
+Dim appsFolder As Object
+Dim parsedItem As Object
 
     szParsingPath = UCase$(szParsingPath)
     If m_pidlCache Is Nothing Then Set m_pidlCache = New Collection
@@ -130,13 +134,21 @@ Dim dummySfgao As Long
     If ExistInCol(m_pidlCache, szParsingPath) Then thisPidl = m_pidlCache(szParsingPath)
 
     'Fallback when the app hasn't been enumerated this session (e.g. a pinned
-    'Store app drawn before the program list builds). SHParseDisplayName doesn't
-    'accept the "shell:" convenience syntax - use the CLSID-rooted canonical form.
+    'Store app drawn before the program list builds). SHParseDisplayName rejects
+    'both the "shell:" syntax and the "::{CLSID}\AUMID" form with E_INVALIDARG,
+    'so parse the AUMID through the live AppsFolder namespace instead - the
+    'IconTest harness shows that resolves every entry (case-insensitively) to a
+    'PIDL whose icon bits match the enumeration PIDL exactly.
     If thisPidl = 0 Then
         If Left$(szParsingPath, Len(SHELL_APPSFOLDER_PREFIX)) <> SHELL_APPSFOLDER_PREFIX Then Exit Function
 
-        parseName = "::" & APPSFOLDER_CLSID & "\" & Mid$(szParsingPath, Len(SHELL_APPSFOLDER_PREFIX) + 1)
-        If SHParseDisplayName(StrPtr(parseName), 0, thisPidl, 0, dummySfgao) <> 0 Then Exit Function
+        Set appsFolder = CreateObject("Shell.Application").Namespace("shell:::" & APPSFOLDER_CLSID)
+        If appsFolder Is Nothing Then Exit Function
+
+        Set parsedItem = appsFolder.ParseName(Mid$(szParsingPath, Len(SHELL_APPSFOLDER_PREFIX) + 1))
+        If parsedItem Is Nothing Then Exit Function
+
+        If SHGetIDListFromObject(parsedItem, thisPidl) <> 0 Then Exit Function
         If thisPidl = 0 Then Exit Function
 
         m_pidlCache.Add thisPidl, szParsingPath
@@ -173,7 +185,7 @@ Dim i As Long
 
     vParams(0) = iconSize          'SIZE.cx
     vParams(1) = iconSize          'SIZE.cy
-    vParams(2) = SIIGBF_ICONONLY
+    vParams(2) = SIIGBF_RESIZETOFIT
     vParams(3) = VarPtr(hBmp)
 
     For i = 0 To 3
