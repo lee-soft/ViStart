@@ -85,6 +85,10 @@ Name: "{userdesktop}\ViStart"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktop
 [Run]
 Filename: "https://lee-soft.com/vistart/thankyou/"; Flags: shellexec nowait skipifsilent
 Filename: "{app}\{#MyAppExeName}"; Description: "Launch ViStart"; Flags: nowait postinstall skipifsilent
+; Silent installs (ViUpdater, scripted upgrades) kill the running app in
+; PrepareToInstall, so they must relaunch it themselves or the user is left
+; with no start menu until next logon.
+Filename: "{app}\{#MyAppExeName}"; Flags: nowait skipifnotsilent
 
 [UninstallRun]
 Filename: "{sys}\taskkill.exe"; Parameters: "/F /IM ViStart.exe /IM MetroProvider.exe /IM SearchProvider.exe"; Flags: runhidden skipifdoesntexist; RunOnceId: "KillViStart"
