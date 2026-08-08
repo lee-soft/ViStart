@@ -1,0 +1,33 @@
+<startmenu_base x_offset="0" y_offset="0">
+     <vifont id="Win8" face="Segoe UI" size="10" colour="#404040" />     
+
+     <vielement id="searchbox" x="89" y="22" width="196" height="15" font="Win8" />
+     <vielement id="programmenu" x="163" y="85" width="248" height="385" font="Win8" backcolour="#ffffff" />  
+     <vielement id="frequentprogramsmenu" x="163" y="85" width="248" height="385" font="Win8" backcolour="#ffffff" />
+     <vielement id="allprograms_text" x="180" y="482" font="Win8" />
+     <vielement id="groupoptions" x="10" y="91" font="Win8" />
+     
+     <vielement id="allprograms_rollover" x="164" y="480" />
+     <vielement id="allprograms_arrow" x="380" y="485" />
+     
+     <vielement id="rolloverplaceholder" x="20" y="13" />
+     <vielement id="userpicture" x="331" y="-7" />
+
+     <vielement id="shutdown_button" x="266" y="482" visible="false" />
+     <vielement id="logoff_button" x="319" y="482" visible="false" />
+     <vielement id="arrow_button" x="200" y="518" visible="true" />
+
+    
+
+     <groupoptions separator="38" />
+     <searchbox focuscolour="#000000" forecolour="#000000" />
+
+     <frequentprogramsmenu clientcolour="#209196">
+        <vielement id="client_separator" width="242" backcolour="#000000" visible="false" />
+     </frequentprogramsmenu>
+     <vielement id="jumplist_viewer" x="415" y="85" width="205" height="400" />
+     <vielement id="shutdown_text" x="271" y="486" visible="false" />
+
+     <programmenu />
+     <shutdowntext jumplistcolour="#000000" />
+</startmenu_base>

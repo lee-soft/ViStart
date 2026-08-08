@@ -1,0 +1,35 @@
+<startmenu_base x_offset="0" y_offset="0">
+	<!-- Layout XML file for XeBlack v2          -->
+	<!-- by Materios Dragonius (Nightware)       -->
+	<!-- contact: mt.rakowski@gmail.com          -->
+	
+	<vifont id="group" face="Tahoma" size="9" colour="#dddddd" />
+	<vifont id="mainmenu" face="Tahoma" size="10" colour="#222222" />
+	<vifont id="jumplist" face="Tahoma" size="13" colour="#a0a0a0" />
+	
+	<vielement id="searchbox" x="36" y="32" width="205" height="15" />
+	<vielement id="programmenu" x="12" y="58" width="248" height="459" font="mainmenu" />
+	<vielement id="frequentprogramsmenu" x="12" y="58" width="248" height="459" font="mainmenu" />
+	
+	<vielement id="allprograms_rollover" x="11" y="31" />
+	<vielement id="allprograms_arrow" x="12" y="30" />
+	<vielement id="allprograms_text" x="19" y="64" />
+	<vielement id="groupoptions" x="275" y="66" />
+	<vielement id="rolloverplaceholder" x="300" y="-17" />
+	
+	<vielement id="shutdown_button" x="305" y="477" visible="true" />
+	<vielement id="logoff_button" x="350" y="477" visible="true" />
+	<vielement id="arrow_button" x="375" y="477" visible="true" />
+	<vielement id="jumplist_viewer" x="270" y="59" width="165" height="416" font="jumplist"/>
+	
+	<shutdowntext jumplistcolour="#ffffff" />
+	<programmenu separatorfontcolour="#141414" />
+	
+	<viorb fullheight_superbar="true" />
+
+	<groupoptions separator="35" limit="12" />
+	<searchbox focuscolour="#111111" forecolour="#999999" />
+	
+	<frequentprogramsmenu clientcolour="#ffffff" separatorcolour="#dddddd" />
+
+</startmenu_base>
